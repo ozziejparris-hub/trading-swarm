@@ -86,6 +86,29 @@ Output: microstructure_model.py + informed ratio estimates.
 - [ ] Signal written to /brain/signals.json requesting validation
 - [ ] Telegram notification sent to agents bot
 
+## Pre-Registration Protocol (Mandatory)
+
+Before writing a single line of code on any new model or approach,
+you must first write a hypothesis file and stop.
+
+Create this file:
+/brain/strategy-notes/YYYY-MM-DD-hypothesis-TOPIC.md
+
+Containing exactly:
+- **Hypothesis**: What do you believe will be true and why?
+- **Expected improvement**: Specific, measurable target
+  (e.g. "Brier score improvement of >10% over ELO baseline")
+- **Method**: How you plan to test it in one paragraph
+- **Failure conditions**: What results would prove you wrong?
+- **Estimated compute**: How long should this take to run?
+
+Then write to /brain/signals.json with type "hypothesis_ready"
+and wait for a response before proceeding.
+
+This exists because agents implementing bad ideas waste compute.
+A weak hypothesis caught before implementation costs nothing.
+A weak hypothesis caught after costs everything.
+
 ## Output Structure
 For each completed research phase:
 
