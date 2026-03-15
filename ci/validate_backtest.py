@@ -23,13 +23,15 @@ from datetime import datetime
 # ─────────────────────────────────────────────
 
 THRESHOLDS = {
-    "sharpe_ratio": 1.0,        # Minimum acceptable Sharpe
-    "brier_score": 0.20,        # Maximum acceptable Brier (lower is better)
+    "sharpe_ratio": 1.0,        # Minimum raw Sharpe
+    "dsr": 0.95,                # Minimum Deflated Sharpe Ratio
+    "pbo": 0.1,                 # Maximum Probability of Backtest Overfitting
+    "brier_score": 0.20,        # Maximum Brier score (lower is better)
     "min_trades": 30,           # Minimum trades for statistical validity
-    "max_drawdown": -0.40,      # Maximum acceptable drawdown (-40%)
-    "min_win_rate": 0.40,       # Minimum win rate (40%)
+    "max_drawdown": -0.40,      # Maximum acceptable drawdown
+    "min_win_rate": 0.40,       # Minimum win rate
+    "max_transaction_cost": 0.02  # Polymarket fee assumption
 }
-
 # ─────────────────────────────────────────────
 # VALIDATOR
 # ─────────────────────────────────────────────
@@ -95,6 +97,72 @@ def validate(filepath):
         else:
             print(f"✅ Sharpe ratio: {sharpe:.2f} "
                   f"(minimum {THRESHOLDS['sharpe_ratio']})")
+
+    # DSR check
+    dsr = result.get("dsr")
+    if dsr is not None:
+        if dsr < THRESHOLDS["dsr"]:
+            failures.append(
+                f"DSR {dsr:.3f} below minimum "
+                f"{THRESHOLDS['dsr']} — strategy may be overfit"
+            )
+        else:
+            print(f"✅ DSR: {dsr:.3f} "
+                  f"(minimum {THRESHOLDS['dsr']})")
+    else:
+        warnings.append(
+            "DSR not calculated — log number of "
+            "strategies tested and recalculate"
+        )
+
+    # PBO check
+    pbo = result.get("pbo")
+    if pbo is not None:
+        if pbo > THRESHOLDS["pbo"]:
+            failures.append(
+                f"PBO {pbo:.3f} above maximum "
+                f"{THRESHOLDS['pbo']} — strategy is likely overfit"
+            )
+        else:
+            print(f"✅ PBO: {pbo:.3f} "
+                  f"(maximum {THRESHOLDS['pbo']})")
+    else:
+        warnings.append(
+            "PBO not calculated — "
+            "run combinatorial purged cross-validation"
+        )
+
+    # Brier score (only if present — not all strategies have this)
+    brier = result.get("brier_score")
+    if brier is not None:
+        if brier > THRESHOLDS["brier_score"]:
+            failures.append(
+                f"Brier score {brier:.3f} above maximum "
+                f"{THRESHOLDS['brier_score']} (lower is better)"
+            )
+        else:
+            print(f"✅ Brier score: {brier:.3f} "
+                  f"(maximum {THRESHOLDS['brier_score']})")
+
+    # Transaction costs check
+    tx_costs = result.get("transaction_costs_assumed")
+    if tx_costs is None or tx_costs < THRESHOLDS["max_transaction_cost"]:
+        warnings.append(
+            "Transaction costs not included or below 2% — "
+            "Polymarket charges ~2% per trade"
+        )
+    else:
+        print(f"✅ Transaction costs: {tx_costs:.1%} included")
+
+    # 7 sins check
+    sins = result.get("sins_checked", [])
+    if len(sins) < 7:
+        warnings.append(
+            f"Only {len(sins)}/7 backtesting sins checked. "
+            "Complete all 7 before approval."
+        )
+    else:
+        print("✅ All 7 backtesting sins checked")
 
     # Brier score (only if present — not all strategies have this)
     brier = result.get("brier_score")

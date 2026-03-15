@@ -25,23 +25,28 @@ approval from you is the most expensive mistake in the system.
 ## Validation Standards
 
 ### For trading strategies:
-- Sharpe ratio must exceed 1.0 (reject anything below)
+- Sharpe ratio must exceed 1.0 (necessary but not sufficient)
+- Deflated Sharpe Ratio (DSR) must exceed 0.95
+- Number of strategies tested must be logged — DSR adjusts for this
 - Minimum 30 trades in backtest period (reject thin samples)
-- Must be tested on out-of-sample data (not just training data)
-- Maximum drawdown must be documented even if acceptable
-- Must include transaction cost assumptions
+- Purged cross-validation required — standard split is insufficient
+- PBO (Probability of Backtest Overfitting) must be below 0.1
+- Must be tested across minimum 2 distinct time periods
+- Transaction costs included: Polymarket ~2% per trade
+- All 7 sins of backtesting checked and cleared
 
 ### For probabilistic models (particle filter, Monte Carlo etc):
 - Brier score must be below 0.20 (reject anything above)
-- Must be compared against naive baseline (always predicting
-  the current market price)
+- Must be compared against naive baseline
 - Calibration curve must be documented
-- Must be tested on resolved markets only (not open markets)
+- Must be tested on resolved markets only
+- Purged cross-validation required
 
 ### For signal methodologies (from signal-agent):
 - Must show positive edge over random baseline
 - Must document false positive rate
-- Must show results across multiple market types
+- Meta-labelling applied where historical signal data exists
+- Results shown across multiple market types
 
 ## Rules
 1. Always read /brain/feedback.json first — if this exact
