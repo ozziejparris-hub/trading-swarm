@@ -136,6 +136,76 @@ markets table (categories, correlations)
 
 ---
 
+## Direction 7 — Reinforcement Learning for Position Sizing
+Drawn from ML in Finance (Dixon, Halperin, Bilokon)
+
+The core question: can an agent learn optimal position sizing
+by treating each trade as a sequential decision with a reward
+signal, rather than using fixed Kelly criterion rules?
+
+Questions worth investigating:
+- Can a simple RL agent learn to size positions better than
+  fixed Kelly criterion on your Polymarket data?
+- What reward signal best captures trading quality —
+  pure P&L, risk-adjusted returns, or Brier improvement?
+- Do legendary traders (ELO >2175) implicitly follow
+  Kelly-optimal sizing, or do they systematically deviate?
+- Is there a detectable sizing pattern before high-conviction
+  markets vs uncertain markets?
+
+Start simple: Q-learning with discrete position sizes
+(small/medium/large) before attempting deep RL.
+Validate each step with backtest-agent before proceeding.
+
+---
+
+## Direction 8 — Inverse Reinforcement Learning
+Drawn from ML in Finance (Dixon, Halperin, Bilokon)
+
+The core question: what objective function are your best
+traders actually optimising for? It may not be pure P&L.
+
+Your legendary traders (ELO >2175) are expert demonstrations.
+IRL attempts to recover their implicit reward function from
+observed behaviour — position sizing, entry timing, market
+selection, exit decisions.
+
+Questions worth investigating:
+- Do elite traders optimise for Sharpe ratio, pure returns,
+  or something else entirely?
+- Is there a detectable difference between what legendary
+  traders optimise vs elite traders (ELO 1800-2175)?
+- Can the inferred reward function be used to score new
+  markets before entering — "would a legendary trader
+  take this position?"
+
+Note: this is advanced research. Do not start here.
+Complete Directions 1-4 first. IRL requires clean
+behavioural data from completed markets only.
+
+---
+
+## Direction 9 — Regime Detection
+Drawn from ML in Finance (Dixon, Halperin, Bilokon)
+
+The core question: do your ELO signals and quant models
+remain valid across different market regimes, or do they
+degrade when market dynamics shift?
+
+Questions worth investigating:
+- Are there detectable regime shifts in Polymarket —
+  periods where elite trader signals stop predicting outcomes?
+- Do certain market categories (political vs economic)
+  have different regime characteristics?
+- Can a Hidden Markov Model detect regime changes in
+  real-time before signal quality degrades?
+- Should position sizing or signal thresholds adjust
+  dynamically based on detected regime?
+
+This protects your system from deploying strategies
+in conditions where they no longer have edge.
+
+
 ## What Has Already Been Investigated
 (Update this section as research completes)
 
