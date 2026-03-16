@@ -33,6 +33,22 @@ Questions worth investigating:
 Relevant data: traders table (ELO scores), trades table
 (timestamps, sizes), markets table (resolution dates)
 
+### Priority Investigation (from live system observation)
+Trader 0xb442 holds ELO 3500 with only 4 closed positions.
+Traders 0xbf79 and 0x64aa hold ELO ~3340-3347 with 2000+
+closed positions, $8-9M realized profit, 80%+ win rate.
+
+Key question: does low-trade-count high-ELO actually predict
+outcomes better than high-trade-count moderate-ELO?
+
+Test this in Phase 1 by comparing signal accuracy for:
+- Group A: ELO > 3000, trades < 10 (high ELO, low confidence)
+- Group B: ELO > 3000, trades > 100 (high ELO, high confidence)
+- Group C: ELO 2800-3000, trades > 500 (moderate ELO, deep history)
+
+Hypothesis: Group C may be the most reliable signal source
+despite lower raw ELO score.
+
 ---
 
 ## Direction 2 — Market Pricing Factors
