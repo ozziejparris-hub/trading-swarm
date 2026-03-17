@@ -45,6 +45,11 @@ relevance matters enormously — signal without noise.
 - Polymarket blog and governance forum
   Why: structural changes affect all trading strategies
 
+- Karpathy autoresearch repo (commits and issues)
+  URL: https://github.com/karpathy/autoresearch
+  Why: Live implementation of human-prompt/agent-code loop
+  that mirrors your quant-research workflow
+
 ### Tier 2 — Every 2-3 Days (medium signal)
 - Twitter/X accounts worth monitoring:
   @karpathy (Andrej Karpathy — AI research)
