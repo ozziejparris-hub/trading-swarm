@@ -56,6 +56,8 @@ relevance matters enormously — signal without noise.
   @lopezdeprado (Marcos Lopez de Prado — quant finance)
   @quantian1 (quant finance practitioner)
   @AIatMeta, @AnthropicAI (model releases)
+  @MiniMax_AI (self-evolving model developments)
+  @deepseek_ai (open-weight model releases)
   @polymarket (market announcements)
   Prediction market research community accounts
 
@@ -70,6 +72,12 @@ relevance matters enormously — signal without noise.
 ### Tier 3 — Weekly (lower cadence, deeper content)
 - New arXiv papers with 50+ citations in first week
 - GitHub trending repositories in AI/quant categories
+- DeepSeek release announcements (huggingface.co/deepseek-ai)
+  Watch for: V4 open-weight release, local inference viability
+- Unsloth quantisation updates (github.com/unslothai/unsloth)
+  Watch for: Qwen3-Coder-480B stability on consumer hardware
+- MiniMax model releases (minimax.io/news)
+  Watch for: open-weight release of M2.7 or successors
 - New releases: LangChain, AutoGen, CrewAI, OpenClaw
   (competitor agent frameworks — what are they doing?)
 - Model releases: any new coding or reasoning model
@@ -207,7 +215,16 @@ Weekly digest format:
 - Polymarket announces API changes that affect live data pipeline
 - A critical vulnerability is found in a dependency you use
 - A paper directly replicates or invalidates a strategy you're running
-- A new local model releases that could upgrade Tier 2 (Qwen replacement)
+- A new local model releases that could upgrade Tier 2 (Qwen replacement).
+  Priority watch list for model routing changes:
+  — DeepSeek V4: leaked 80%+ SWE-bench, open-weight release imminent.
+    If verified open-weight and runnable on 128GB RAM, evaluate as
+    Tier 2 replacement or Tier 3 cost reduction.
+  — MiniMax M2.7 open weights: currently cloud-only. If released
+    open-weight, evaluate as Tier 2.5 candidate (sovereignty cleared).
+  — Qwen3-Coder-480B local: monitor Unsloth quantisation for
+    stability on 128GB RAM. If viable, shifts Tier 3 coding tasks
+    to free local inference
 
 ### Escalate to weekly digest (standard path) when:
 - New research direction worth exploring
