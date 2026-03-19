@@ -23,10 +23,10 @@ REGISTRY_FILE = BASE_DIR / "orchestrator" / "agent_registry.json"
 SIGNALS_FILE = BRAIN_DIR / "signals.json"
 FEEDBACK_FILE = BRAIN_DIR / "feedback.json"
 PRIORITIES_FILE = BRAIN_DIR / "priorities.md"
+MODEL_ROUTING_FILE = BRAIN_DIR / "model-routing.md"
 LOG_FILE = BASE_DIR / "logs" / "orchestrator.log"
 
 # Telegram configuration
-# You'll fill these in when you set up your bots
 TELEGRAM_ORCHESTRATOR_TOKEN = os.getenv("TELEGRAM_ORCHESTRATOR_TOKEN", "")
 TELEGRAM_AGENTS_TOKEN = os.getenv("TELEGRAM_AGENTS_TOKEN", "")
 TELEGRAM_METRICS_TOKEN = os.getenv("TELEGRAM_METRICS_TOKEN", "")
@@ -86,6 +86,16 @@ def read_priorities():
             return f.read()
     except FileNotFoundError:
         return "No priorities set."
+
+
+def read_model_routing():
+    """Read model routing decisions from brain."""
+    try:
+        with open(MODEL_ROUTING_FILE) as f:
+            return f.read()
+    except FileNotFoundError:
+        log.warning("model-routing.md not found. Using tier defaults.")
+        return "Model routing document not found. See /brain/model-routing.md."
 
 # ─────────────────────────────────────────────
 # TELEGRAM
@@ -222,6 +232,60 @@ def get_all_tmux_sessions():
     if result.returncode != 0:
         return []
     return [s.strip() for s in result.stdout.splitlines() if s.strip()]
+
+# ─────────────────────────────────────────────
+# MODEL TIER SELECTION
+# ─────────────────────────────────────────────
+
+# Tier assignments per agent type.
+# Source of truth: /brain/model-routing.md
+# This dict is the executable version of that document.
+# If model-routing.md changes, update this dict to match.
+
+AGENT_TIER_DEFAULTS = {
+    # Tier 1 — Ollama/Mistral (local, free)
+    # Pattern matching on text, near-zero reasoning needed
+    "orchestrator-immune":   1,   # 10-min health loop
+
+    # Tier 2 — Qwen3-Coder-Next (local, free)
+    # Well-defined tasks, clear inputs/outputs
+    "signal-agent":          2,   # DB queries, signals.json writes
+    "code-hygiene-agent":    2,   # Dead code scan, duplicate detection
+    "training-librarian":    2,   # File audits, consistency checks
+
+    # Tier 2.5 — Claude Haiku 4.5 ($1/$5 per MTok)
+    # Bounded tasks needing Anthropic reliability < Sonnet cost
+    "integration-test":      2.5, # 6 test suites, structured output
+    "research-scout":        2.5, # Daily scan, filtering, filing
+
+    # Tier 3 — Claude Sonnet 4.6 ($3/$15 per MTok)
+    # Complex multi-file reasoning, statistical validity required
+    "quant-research":        3,   # Phase 1-5 research questions
+    "backtest-agent":        3,   # DSR, PBO, 7-sins validation
+    "market-builder":        3,   # Multi-file API work, error design
+    "market-intelligence":   3,   # Domain analysis, signal routing
+    "performance-analyst":   3,   # Trend analysis, recommendations
+    "orchestrator":          3,   # Main loop (context window needed)
+
+    # Tier 4 — Claude Opus 4.6 ($5/$25 per MTok, escalation only)
+    # Only when Sonnet has failed 3 times or task is genuinely architectural
+    "escalation":            4,
+}
+
+
+def select_tier(agent_type, override=None):
+    """
+    Select the appropriate model tier for an agent.
+
+    override: explicit tier from spawn command (takes priority)
+    Falls back to AGENT_TIER_DEFAULTS, then defaults to Tier 3.
+
+    Always read /brain/model-routing.md for the full rationale
+    behind each assignment before changing defaults here.
+    """
+    if override is not None:
+        return override
+    return AGENT_TIER_DEFAULTS.get(agent_type, 3)
 
 # ─────────────────────────────────────────────
 # SIGNAL BUS
@@ -564,6 +628,14 @@ def main():
     log.info("🚀 Trading Swarm Orchestrator starting")
     log.info(f"Base directory: {BASE_DIR}")
     log.info(f"Cycle interval: {CYCLE_INTERVAL_SECONDS}s (10 minutes)")
+
+    # Verify model routing document is present
+    if not MODEL_ROUTING_FILE.exists():
+        log.warning(
+            "brain/model-routing.md not found. "
+            "Tier defaults from AGENT_TIER_DEFAULTS will be used. "
+            "Create /brain/model-routing.md to document routing decisions."
+        )
 
     send_telegram(
         "🚀 *Orchestrator online*\n"

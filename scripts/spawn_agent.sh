@@ -8,13 +8,30 @@
 #   ./scripts/spawn_agent.sh <task_id> <agent_type> <tier> <"task description">
 #
 # Tiers:
-#   1 = local ollama (monitoring/simple)
-#   2 = qwen-coder (standard coding)
-#   3 = claude-sonnet (complex coding)
-#   4 = claude-opus (architecture/review)
+#   1   = Ollama/Mistral (local, free)
+#         Health monitoring, log watching, immune system checks
+#
+#   2   = Qwen3-Coder-Next (local, free after hardware)
+#         Signal agent, code hygiene, training librarian
+#         Simple well-defined coding tasks
+#
+#   2.5 = Claude Haiku 4.5 ($1/$5 per MTok)
+#         Integration-test, bounded sub-agent tasks
+#         Tasks needing Anthropic reliability without Sonnet cost
+#
+#   3   = Claude Sonnet 4.6 ($3/$15 per MTok)
+#         Quant research, backtest validation, market builder
+#         Complex multi-file reasoning
+#
+#   4   = Claude Opus 4.6 ($5/$25 per MTok, escalation only)
+#         Architecture decisions, tasks that failed Tier 3 three times
+#         Genuine architectural design questions
+#
+# Routing reference: /brain/model-routing.md
 #
 # Example:
-#   ./scripts/spawn_agent.sh elo-brier-001 quant-research 3 "Calculate Brier scores for ELO predictions across all resolved markets"
+#   ./scripts/spawn_agent.sh elo-brier-001 quant-research 3 \
+#     "Calculate Brier scores for ELO predictions across all resolved markets"
 # ─────────────────────────────────────────────
 
 set -e  # Exit on any error
@@ -29,6 +46,15 @@ TASK_DESC=$4
 if [ -z "$TASK_ID" ] || [ -z "$AGENT_TYPE" ] || [ -z "$TASK_DESC" ]; then
     echo "ERROR: Missing required arguments"
     echo "Usage: $0 <task_id> <agent_type> <tier> <description>"
+    echo ""
+    echo "Tiers:"
+    echo "  1   = Ollama/Mistral (local, free)"
+    echo "  2   = Qwen3-Coder-Next (local, free)"
+    echo "  2.5 = Claude Haiku 4.5 (\$1/\$5 per MTok)"
+    echo "  3   = Claude Sonnet 4.6 (\$3/\$15 per MTok)"
+    echo "  4   = Claude Opus 4.6 (\$5/\$25 per MTok, escalation only)"
+    echo ""
+    echo "See /brain/model-routing.md for per-agent routing decisions."
     exit 1
 fi
 
@@ -47,29 +73,40 @@ LOG_FILE="$BASE_DIR/logs/agent_logs/$TASK_ID.log"
 case $TIER in
     1)
         MODEL_CMD="ollama run mistral"
-        MODEL_NAME="mistral (local)"
+        MODEL_NAME="mistral (local, Tier 1)"
+        NEEDS_WORKTREE=false
         ;;
     2)
-        MODEL_CMD="ollama run qwen2.5-coder"
-        MODEL_NAME="qwen2.5-coder (local)"
+        MODEL_CMD="ollama run qwen3-coder-next"
+        MODEL_NAME="qwen3-coder-next (local, Tier 2)"
+        NEEDS_WORKTREE=false
+        ;;
+    2.5)
+        MODEL_CMD="claude --model claude-haiku-4-5-20251001 --dangerously-skip-permissions -p"
+        MODEL_NAME="claude-haiku-4-5 (Tier 2.5)"
+        NEEDS_WORKTREE=true
         ;;
     3)
-        MODEL_CMD="claude --model claude-sonnet-4-5 --dangerously-skip-permissions -p"
-        MODEL_NAME="claude-sonnet"
+        MODEL_CMD="claude --model claude-sonnet-4-6 --dangerously-skip-permissions -p"
+        MODEL_NAME="claude-sonnet-4-6 (Tier 3)"
+        NEEDS_WORKTREE=true
         ;;
     4)
-        MODEL_CMD="claude --model claude-opus-4-5 --dangerously-skip-permissions -p"
-        MODEL_NAME="claude-opus"
+        MODEL_CMD="claude --model claude-opus-4-6 --dangerously-skip-permissions -p"
+        MODEL_NAME="claude-opus-4-6 (Tier 4, escalation)"
+        NEEDS_WORKTREE=true
         ;;
     *)
-        echo "ERROR: Invalid tier $TIER (must be 1-4)"
+        echo "ERROR: Invalid tier '$TIER'"
+        echo "Valid tiers: 1, 2, 2.5, 3, 4"
+        echo "See /brain/model-routing.md for guidance."
         exit 1
         ;;
 esac
 
 echo "──────────────────────────────────────"
 echo "Spawning agent: $SESSION_NAME"
-echo "Model tier $TIER: $MODEL_NAME"
+echo "Model: $MODEL_NAME"
 echo "Task: $TASK_DESC"
 echo "──────────────────────────────────────"
 
@@ -92,6 +129,7 @@ FULL_PROMPT="${TEMPLATE/\{TASK_DESCRIPTION\}/$TASK_DESC}"
 
 # ── Read current brain context ────────────────
 PRIORITIES=$(cat "$BRAIN_DIR/priorities.md" 2>/dev/null || echo "No priorities set")
+ROUTING=$(cat "$BRAIN_DIR/model-routing.md" 2>/dev/null || echo "No routing doc found")
 
 # ── Build complete agent prompt ───────────────
 AGENT_PROMPT="$FULL_PROMPT
@@ -99,8 +137,14 @@ AGENT_PROMPT="$FULL_PROMPT
 ## Current System Priorities
 $PRIORITIES
 
+## Model Routing Reference
+$ROUTING
+
 ## Task ID
 $TASK_ID
+
+## Model Tier
+Tier $TIER — $MODEL_NAME
 
 ## Started At
 $(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -112,12 +156,11 @@ echo "=== Agent Prompt ===" > "$LOG_FILE"
 echo "$AGENT_PROMPT" >> "$LOG_FILE"
 echo "=== Agent Output ===" >> "$LOG_FILE"
 
-# ── Create git worktree (for Claude tiers) ────
-if [ "$TIER" -ge 3 ]; then
+# ── Create git worktree for paid tiers ────────
+if [ "$NEEDS_WORKTREE" = true ]; then
     echo "Creating git worktree: $BRANCH_NAME"
     mkdir -p "$WORKTREES_DIR"
 
-    # Check if worktree already exists
     if [ -d "$WORKTREE_PATH" ]; then
         echo "Worktree already exists at $WORKTREE_PATH"
     else
@@ -126,7 +169,7 @@ if [ "$TIER" -ge 3 ]; then
     fi
     WORKING_DIR="$WORKTREE_PATH"
 else
-    # Local models work in base dir
+    # Local models work directly in base dir
     WORKING_DIR="$BASE_DIR"
 fi
 
@@ -139,13 +182,13 @@ tmux new-session -d \
     -x 220 -y 50
 
 # ── Run the agent inside the session ─────────
-if [ "$TIER" -ge 3 ]; then
-    # Claude Code: pipe prompt in, log output
+if [ "$NEEDS_WORKTREE" = true ]; then
+    # Paid Claude models: pipe prompt in, log output
     tmux send-keys -t "$SESSION_NAME" \
         "$MODEL_CMD \"$AGENT_PROMPT\" 2>&1 | tee -a $LOG_FILE" \
         Enter
 else
-    # Ollama: simpler invocation
+    # Local Ollama models: simpler invocation
     tmux send-keys -t "$SESSION_NAME" \
         "echo '$AGENT_PROMPT' | $MODEL_CMD 2>&1 | tee -a $LOG_FILE" \
         Enter
@@ -168,8 +211,8 @@ registry["active_tasks"].append({
     "branch": "$BRANCH_NAME",
     "tmux_session": "$SESSION_NAME",
     "model": "$MODEL_NAME",
-    "tier": $TIER,
-    "worktree": "$WORKTREE_PATH",
+    "tier": "$TIER",
+    "worktree": "$WORKTREE_PATH" if "$NEEDS_WORKTREE" == "true" else None,
     "log": "$LOG_FILE",
     "started_at": datetime.utcnow().isoformat(),
     "status": "running",
@@ -181,7 +224,7 @@ registry["active_tasks"].append({
 with open(registry_file, "w") as f:
     json.dump(registry, f, indent=2)
 
-print(f"Task registered in registry")
+print("Task registered in registry")
 EOF
 
 # ── Confirm ───────────────────────────────────
@@ -195,3 +238,5 @@ echo ""
 echo "Watch it:   tmux attach -t $SESSION_NAME"
 echo "Detach:     Ctrl+B then D"
 echo "Kill it:    tmux kill-session -t $SESSION_NAME"
+echo ""
+echo "Routing decisions: /brain/model-routing.md"
