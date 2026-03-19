@@ -48,6 +48,11 @@ relevance matters enormously — signal without noise.
 - Karpathy autoresearch repo (commits and issues)
   URL: https://github.com/karpathy/autoresearch
   Why: Live implementation of human-prompt/agent-code loop
+
+- Hugging Face Daily Papers (huggingface.co/papers)
+  Curated by @_akhaliq — filters arXiv to the papers that matter
+  440K followers, decade-long track record, endorsed by Karpathy
+  Why: replaces raw arXiv scanning with a pre-filtered daily digest
   that mirrors your quant-research workflow
 
 ### Tier 2 — Every 2-3 Days (medium signal)
@@ -55,6 +60,7 @@ relevance matters enormously — signal without noise.
   @karpathy (Andrej Karpathy — AI research)
   @lopezdeprado (Marcos Lopez de Prado — quant finance)
   @quantian1 (quant finance practitioner)
+  @_akhaliq (HuggingFace daily papers — pre-filtered arXiv)
   @AIatMeta, @AnthropicAI (model releases)
   @MiniMax_AI (self-evolving model developments)
   @deepseek_ai (open-weight model releases)
@@ -65,7 +71,15 @@ relevance matters enormously — signal without noise.
   Filter for: agent frameworks, LLM updates, trading systems
   Only surface items with 100+ points
 
-- Substack newsletters:
+ - Substack newsletters:
+- Latent Space (latent.space) — swyx & Alessio
+  Technical AI engineering: agents, model infra, LLM developments
+  200K+ subscribers, Karpathy-endorsed, covers Claude Code & agent frameworks
+  directly relevant to your swarm architecture
+- Ahead of AI (magazine.sebastianraschka.com) — Sebastian Raschka
+  LLM research engineer, 168K subscribers, weekly deep dives
+  covers model architecture, training, quantisation, practical implementation
+  directly relevant to local model tier decisions and quant-research methods
   Gradient Descent (ML research)
   Quant Finance newsletters
 
