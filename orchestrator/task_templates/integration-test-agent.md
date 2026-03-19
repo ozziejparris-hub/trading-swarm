@@ -546,6 +546,7 @@ def test_brain_integrity(base_dir):
         'brain/priorities.md',
         'brain/kpis.md',
         'brain/definition_of_done.md',
+        'brain/model-routing.md',
         'brain/strategy-notes/research-directions.md',
         'brain/reference-library/ml-in-finance-notes.md',
         'brain/reference-library/lopez-de-prado-notes.md',
