@@ -274,7 +274,7 @@ echo ""
 # ─────────────────────────────────────────────
 echo "── Step 6: Basic audit logging ──"
 
-apt-get install -y auditd > /dev/null 2>&1
+apt-get install -y auditd nvtop > /dev/null 2>&1
 
 # Log writes to the database file
 if [ -f "$DATA_DIR/polymarket_tracker.db" ]; then
@@ -363,7 +363,16 @@ echo "     curl -I https://api.anthropic.com"
 echo "     curl -I https://api.telegram.org"
 echo "     (Both should succeed)"
 echo ""
-echo "  5. Check audit logs anytime with:"
+echo "  5. Install and start orchestrator service:
+     sudo cp scripts/trading-swarm.service /etc/systemd/system/
+     sudo systemctl daemon-reload
+     sudo systemctl enable trading-swarm
+
+  6. Set up daily database backup:
+     crontab -e
+     Add: 0 3 * * * /home/parison/trading-swarm/scripts/backup_database.sh
+
+  7. Check audit logs anytime with:"
 echo "     sudo ausearch -k polymarket_db_write"
 echo "     sudo ausearch -k credentials_access"
 echo "     sudo ausearch -k agent_spawn"
