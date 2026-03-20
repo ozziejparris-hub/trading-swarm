@@ -1,3 +1,23 @@
 logs/
 __pycache__/
 *.pyc
+
+# Credentials and environment files
+.env
+.env.*
+.env_trading
+*.env
+
+# Databases - never commit these
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Python cache
+*.pyc
+*.pyo
+__pycache__/
