@@ -1,0 +1,48 @@
+# ─────────────────────────────────────────────
+# trading-swarm.service
+# Systemd service for the trading swarm orchestrator.
+# Restarts automatically on reboot or crash.
+#
+# Install (run once on server):
+#   sudo cp scripts/trading-swarm.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable trading-swarm
+#   sudo systemctl start trading-swarm
+#
+# Useful commands:
+#   sudo systemctl status trading-swarm
+#   sudo systemctl stop trading-swarm
+#   sudo journalctl -u trading-swarm -f
+# ─────────────────────────────────────────────
+
+[Unit]
+Description=Trading Swarm Orchestrator
+After=network-online.target ollama.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=parison
+WorkingDirectory=/home/parison/trading-swarm
+
+# Load environment variables (Telegram tokens etc)
+EnvironmentFile=/home/parison/.env_trading
+
+# Start the orchestrator
+ExecStart=/usr/bin/python3 /home/parison/trading-swarm/orchestrator/orchestrator.py
+
+# Restart policy
+# on-failure: restart if it crashes, not if stopped with systemctl stop
+Restart=on-failure
+RestartSec=30
+
+# Give it 60 seconds to start before systemd considers it failed
+TimeoutStartSec=60
+
+# Log to journald (view with: journalctl -u trading-swarm -f)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=trading-swarm
+
+[Install]
+WantedBy=multi-user.target
