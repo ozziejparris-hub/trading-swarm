@@ -92,6 +92,21 @@ relevance matters enormously — signal without noise.
   Watch for: Qwen3-Coder-480B stability on consumer hardware
 - MiniMax model releases (minimax.io/news)
   Watch for: open-weight release of M2.7 or successors
+
+### Tier 2 — Emerging Opportunity Watch
+- Decrypt (decrypt.co) — Web3/AI crossover developments
+- The Block (theblock.co) — on-chain AI agent activity
+- Numerai (numer.ai/blog) — AI-driven on-chain prediction markets
+- Augur/Gnosis/Omen protocol announcements
+  Watch for: on-chain prediction market volume growth,
+  AI agent wallet activity, decentralised forecasting protocols
+- Twitter/X accounts for Web3/AI crossover:
+  @balajis (on-chain prediction, network state)
+  @VitalikButerin (Ethereum prediction market commentary)
+  @numerai (AI hedge fund, tournament developments)
+  Trigger: surface to signals.json if on-chain prediction market
+  TVL exceeds 500M USD or AI agent wallet activity becomes
+  measurable — flag as niche-app-agent opportunity
 - New releases: LangChain, AutoGen, CrewAI, OpenClaw
   (competitor agent frameworks — what are they doing?)
 - Model releases: any new coding or reasoning model
