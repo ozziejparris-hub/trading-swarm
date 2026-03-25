@@ -332,3 +332,117 @@ kind of content that was found useful during the build phase:
 When evaluating whether something is worth surfacing,
 ask: "Would this have been useful during the build phase?"
 If yes, surface it. If no, discard.
+
+
+---
+
+## Phase 2 — Autonomous Source Intelligence (NOT YET BUILT)
+
+### Why This Matters
+The watch lists above are only as good as the last time a human
+reviewed them. The AI/Web3/prediction market landscape moves fast —
+accounts go quiet, protocols get superseded, entirely new categories
+emerge that nobody is watching yet. Staying on the cutting edge
+requires the system to actively maintain its own intelligence sources,
+not just monitor a static list.
+
+This is one of the highest-priority post-server features.
+Alpha needs to be fresh and on the cutting edge — AI, Web3,
+prediction markets, agent frameworks, or anything adjacent to
+this project. The system should be harder to surprise than Oscar
+is manually.
+
+### Scope — All Sources, All Tiers
+The relevance auditor applies universally to every source in
+every tier — Tier 1 daily, Tier 2 weekly, Tier 3 monthly, and
+the Web3/AI emerging opportunity watch. The tier system controls
+how often sources are checked. The relevance auditor controls
+whether they keep being checked at all.
+
+This includes:
+- All Twitter/X accounts (@karpathy, @lopezdeprado, @_akhaliq,
+  @quantian1, @AIatMeta, @AnthropicAI, @polymarket, @MiniMax_AI,
+  @deepseek_ai, @balajis, @VitalikButerin, @numerai, and any
+  added in future)
+- All Substacks (Latent Space, Ahead of AI, and any added later)
+- All GitHub repos being tracked (autoresearch, Unsloth, DeepSeek,
+  MiniMax, vllm, llama.cpp, and any added later)
+- All blogs and news sources (Anthropic, Polymarket, Decrypt,
+  The Block, Numerai, HuggingFace daily papers, arXiv)
+- Any new sources added by future horizon scans
+
+### Feature 1 — Source Relevance Auditor (Monthly)
+Runs on the 1st of each month. Reads brain/feedback.json and
+cross-references which sources generated approved signals vs
+rejected or zero signals in the past 30 days.
+
+Output written to signals.json and sent via Telegram:
+
+  SOURCE RELEVANCE AUDIT — [DATE]
+  Tier 1 Daily:
+    @karpathy        — 3 approved signals → KEEP
+    @balajis         — 0 approved signals → FLAG FOR REMOVAL
+    HuggingFace      — 5 approved signals → KEEP
+    @AnthropicAI     — 1 approved signal  → KEEP
+  Tier 2 Weekly:
+    Latent Space     — 2 approved signals → KEEP
+    Augur blog       — 0 approved signals → FLAG FOR REMOVAL
+  New candidates from this cycle:
+    @new_account     — appeared in 3 approved signals → PROPOSE ADD
+
+Oscar reviews and approves/rejects each proposed change.
+Human stays in the loop — the agent proposes, Oscar decides.
+No source is removed or added without Oscar's confirmation.
+
+### Feature 2 — Horizon Scanner (Quarterly)
+Fundamentally different from monitoring. Actively searches for
+things NOT on any current watch list. Runs a broad discovery
+sweep across:
+- GitHub trending (AI, prediction markets, Web3, agent frameworks)
+- HuggingFace trending models and spaces
+- Twitter/X search for emerging accounts in relevant domains
+- Product Hunt launches in AI/crypto/prediction categories
+- Hacker News Show HN posts in relevant domains
+- New protocol announcements in Web3/prediction market space
+
+Prompt is different from normal scout runs:
+  "Find emerging projects, accounts, and communities at the
+  intersection of AI, prediction markets, and Web3 that do NOT
+  appear in our current watch list. Prioritise things gaining
+  momentum now but not yet mainstream. Flag anything that could
+  represent a new alpha source or a niche-app-agent opportunity."
+
+Output: proposed additions list sent to Oscar via Telegram.
+Oscar approves before anything enters the active watch list.
+
+### Feature 3 — Signal Quality Scoring (Ongoing)
+Every signal the research-scout surfaces is tagged with its
+source. Over time, build a source quality score based on:
+- Approval rate (approved signals / total signals from source)
+- Lead time (how early vs mainstream coverage)
+- Actionability (did signal lead to a niche-app build or
+  strategy change)
+
+Scoring thresholds:
+- Below 20% approval over 90 days → auto-flagged at next audit
+- Above 60% approval → promoted to Tier 1 daily monitoring
+- Zero signals in 30 days → flagged regardless of history
+
+### The Core Principle
+The system should be harder to surprise than Oscar is manually.
+If something important is happening at the intersection of AI,
+prediction markets, Web3, or agent infrastructure — the scout
+should surface it before Oscar reads about it elsewhere.
+That is the standard to build toward.
+
+### Implementation Order
+1. Run server for 4 weeks first — need real signal data in
+   brain/feedback.json before any auditing is meaningful
+2. Build Feature 1 (relevance auditor) as standalone script
+   via niche-app-agent, then integrate into monthly cycle
+3. Build Feature 2 (horizon scanner) as quarterly standalone
+4. Build Feature 3 (quality scoring) last — needs 90 days
+   of signal history to be meaningful
+
+Do not build any of this prematurely. An empty feedback store
+produces meaningless audit results.
