@@ -1,14 +1,17 @@
 # Current Priorities
 
-Last updated: 2026-03-17
-Updated by: Oscar (pre-server setup phase)
+Last updated: 2026-03-28
+Updated by: Oscar (Server Pre-Setup Chat 3)
 
 ---
 
 ## System Status
-Pre-production. Server not yet arrived.
+Pre-production. UM890 Pro mini server ordered (replacing P620).
 All architecture complete. Agents ready to deploy.
 Polymarket monitoring system running independently on Windows.
+Pre-resolution intelligence running daily at 8am UTC.
+Self-improvement layer committed: feedback-loop-agent,
+strategy-registry.md, findings.json.
 
 ---
 
@@ -135,3 +138,26 @@ For performance-analyst-agent to compare against:
 - DB size: 1581 MB
 - Worker coverage: 99.7%
 - Closed positions calculated: 951,694
+
+---
+
+## Phase 5 Integration Gate — Polymarket System + Trading Swarm Merge
+**Do not merge the two systems until ALL FOUR criteria are met:**
+
+1. feedback-loop-agent has completed at least 4 weekly runs
+2. findings.json contains at least 3 HIGH confidence findings
+   (minimum sample size 20 resolved markets each)
+3. Pre-resolution intelligence accuracy >= 60% across 10+
+   resolved markets (tracked in strategy-registry.md STR-002)
+4. RQ1.1 and RQ3.2 both passed in trading swarm Phase 3
+
+Rationale: merging the systems before the edge is validated
+creates a dependency between a proven system (Polymarket
+monitoring) and an unproven one (trading swarm signals).
+The monitoring system is too valuable to risk on unvalidated
+assumptions. These four gates ensure the swarm has earned
+the right to consume monitoring system data.
+
+Integration owner: Oscar (manual approval required)
+Earliest realistic date: Phase 3 completion + 4 weeks
+

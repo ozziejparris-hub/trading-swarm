@@ -90,9 +90,12 @@ Validation metrics:
   Sample markets:       4 (insufficient — minimum 10 required)
 Notes:                  First live signals generated 2026-03-28.
                         March 31 resolution batch is first real test.
-                        Promote to ACTIVE once >= 10 resolved markets
-                        with accuracy >= 60% across all tiers.
-                        feedback-loop-agent to score after April 1.
+                        Promote to ACTIVE criteria (all three required):
+                        1. 4 weeks of daily runs completed
+                        2. >= 10 resolved markets scored
+                        3. >= 60% accuracy across all tiers
+                        feedback-loop-agent owns promotion decision.
+                        Oscar approves final status change.
 ```
 
 ---
