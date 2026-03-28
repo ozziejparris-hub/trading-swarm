@@ -1,0 +1,90 @@
+{
+  "_schema_version": "1.0",
+  "_description": "Cross-agent findings bus. feedback-loop-agent writes here weekly. signal-agent and orchestrator read at startup to adjust behaviour. Never delete entries — mark expired via expires_at. Add new findings only.",
+  "_schema": {
+    "id": "YYYY-MM-DD-TOPIC-NNN — unique identifier",
+    "generated_by": "which agent wrote this finding",
+    "generated_at": "ISO8601 timestamp",
+    "finding_type": "signal_accuracy | elo_validity | category_performance | tier_performance | strategy_performance | pre_resolution_accuracy",
+    "confidence": "HIGH (>=20 samples) | MEDIUM (10-19 samples) | LOW (<10 samples, note limitations)",
+    "sample_size": "number of resolved markets this finding is based on",
+    "summary": "one sentence plain English — what did we learn",
+    "detail": {
+      "metric": "what was measured",
+      "value": "measured value (float)",
+      "baseline": "what we expected or what random would give",
+      "direction": "above_baseline | below_baseline",
+      "weeks_observed": "how many weeks of data supports this"
+    },
+    "actionable": "true if signal-agent or orchestrator should change behaviour",
+    "action_recommendation": "specific instruction for consuming agent",
+    "expires_at": "ISO8601 — 90 days from generated_at, after which finding may be removed"
+  },
+  "findings": [
+    {
+      "id": "2026-03-28-PRE-RES-BASELINE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-03-28T00:00:00Z",
+      "finding_type": "pre_resolution_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Pre-resolution intelligence baseline established — first resolution batch pending March 31 2026",
+      "detail": {
+        "metric": "pre_resolution_signal_accuracy",
+        "value": null,
+        "baseline": 0.50,
+        "direction": "pending",
+        "weeks_observed": 0
+      },
+      "actionable": false,
+      "action_recommendation": "No action yet — await first resolution batch. feedback-loop-agent to update after April 1 2026.",
+      "expires_at": "2026-06-28T00:00:00Z",
+      "signals_in_batch": [
+        {
+          "market": "Russia x Ukraine ceasefire by March 31 2026",
+          "tier": "ELITE",
+          "market_price_pct": 0.5,
+          "smart_money_pct": 93.0,
+          "gap_pt": 92.5,
+          "direction": "YES",
+          "elite_traders": 2,
+          "legendary_traders": 0,
+          "outcome": "pending"
+        },
+        {
+          "market": "Trump out as President by March 31",
+          "tier": "LEGENDARY",
+          "market_price_pct": 0.9,
+          "smart_money_pct": 46.9,
+          "gap_pt": 46.0,
+          "direction": "NO",
+          "elite_traders": 0,
+          "legendary_traders": 1,
+          "outcome": "pending"
+        },
+        {
+          "market": "Will Anthropic have the best AI model at the end of March 2026",
+          "tier": "QUALIFIED",
+          "market_price_pct": 96.4,
+          "smart_money_pct": 59.9,
+          "gap_pt": 36.5,
+          "direction": "YES",
+          "elite_traders": 0,
+          "legendary_traders": 0,
+          "outcome": "pending"
+        },
+        {
+          "market": "Will xAI have the best AI model at the end of March 2026",
+          "tier": "QUALIFIED",
+          "market_price_pct": 2.0,
+          "smart_money_pct": 59.6,
+          "gap_pt": 57.6,
+          "direction": "YES",
+          "elite_traders": 0,
+          "legendary_traders": 0,
+          "outcome": "pending"
+        }
+      ]
+    }
+  ]
+}
