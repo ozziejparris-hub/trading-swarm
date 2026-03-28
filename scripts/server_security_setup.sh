@@ -274,7 +274,7 @@ echo ""
 # ─────────────────────────────────────────────
 echo "── Step 6: Basic audit logging ──"
 
-apt-get install -y auditd nvtop > /dev/null 2>&1
+apt-get install -y auditd > /dev/null 2>&1
 
 # Log writes to the database file
 if [ -f "$DATA_DIR/polymarket_tracker.db" ]; then

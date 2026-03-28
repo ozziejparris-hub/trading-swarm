@@ -112,9 +112,10 @@ achieves >70% on SWE-bench Verified — sufficient for
 these well-scoped tasks.
 
 **Hardware requirement:**
-Qwen3-Coder-Next (80B MoE, 3B active) requires ~46GB RAM
-at Q4 quantisation. The 128GB RAM server handles this
-comfortably with RAM to spare for concurrent processes.
+Qwen3-Coder-Next target: 14B or 32B parameter version at Q4
+quantisation (~10-20GB RAM). The UM890 Pro (96GB DDR5) handles
+this comfortably with RAM to spare for concurrent processes.
+The 80B MoE version is deferred until larger hardware is available.
 
 **Spawn command:**
 ```bash
@@ -366,12 +367,10 @@ requirements — Chinese-hosted API fails data governance.
 Open weights would remove that blocker.
 
 **Qwen3-Coder-480B quantised locally:**
-The 480B version of Qwen3-Coder achieves Sonnet-comparable
-performance on coding benchmarks. At Q2 quantisation it
-runs on high-RAM systems via llama.cpp MoE offloading.
-If this becomes stable on 128GB RAM hardware, it could
-shift several Tier 3 coding tasks to free local inference.
-Monitor Unsloth quantisation updates for viability.
+Deferred — requires ~250GB RAM, not viable on current hardware
+(96GB UM890 Pro). Revisit if hardware is upgraded in 2027.
+Continue monitoring Unsloth for 32B quantisation improvements
+which are viable on current hardware.
 
 ---
 
