@@ -77,6 +77,10 @@ Conclusion:             No automated accounts distorting elite
                         leaderboard. Safe to proceed to RQ1.1.
 Next run:               Monthly or as dataset grows — script will
                         activate as bot patterns emerge over time
+Upgrade note:           2026-03-29 — upgraded to three-type
+                        classification: SPEED_ARBITRAGE (exclude),
+                        NEWS_PROCESSING (caution), SYSTEMATIC_RESEARCH
+                        (keep — high value signal source)
 ```
 
 ---
