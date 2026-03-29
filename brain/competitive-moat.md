@@ -207,6 +207,11 @@ as the system matures:
   cross-platform signal correlation, regulatory fallback.
 - Network analysis: graph-based wash trading detection
   using Columbia cluster methodology.
+- News processing layer: real-time information aggregation
+  for geopolitics and economics markets. Dual purpose —
+  informs pre-resolution bet timing AND generates content.
+  Same infrastructure serves both use cases. Build after
+  signal quality is validated and category edge is clear.
 
 ---
 
