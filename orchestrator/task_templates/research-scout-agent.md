@@ -446,3 +446,32 @@ That is the standard to build toward.
 
 Do not build any of this prematurely. An empty feedback store
 produces meaningless audit results.
+
+## MCP and Market Data Tool Watch List
+
+Monitor these categories actively — the landscape moves fast
+and better tools than what's currently planned may emerge
+before we reach later phases:
+
+**MCP servers for market data:**
+- Unusual Whales MCP (current best-in-class — congressional
+  trading, options flow, dark pool, prediction markets)
+- Any new MCP servers offering Polymarket or Kalshi data
+- Financial data MCP servers with institutional flow data
+
+**What to flag when found:**
+- New MCP servers with prediction market data feeds
+- Congressional or insider trading data sources
+- Options flow tools with better Polymarket correlation
+- Any tool offering cross-platform signal aggregation
+
+**Why this matters:**
+By Phase 4-5 when congressional trading signals become
+relevant, Unusual Whales may have been superseded or
+a better tool may exist. research-scout-agent should
+surface alternatives so the best available tool is used
+at implementation time, not the best tool as of March 2026.
+
+Flag findings to brain/findings.json with type:
+"tool_discovery" and include: tool name, data available,
+cost, MCP compatibility, and which phase it's relevant to.
