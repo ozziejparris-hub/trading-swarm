@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-03-28
+Last updated: 2026-03-29
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -44,6 +44,39 @@ UNDER_REVIEW    — backtest-agent currently revalidating
 SUSPENDED       — failed revalidation, awaiting Oscar decision
 RETIRED         — Oscar approved retirement, kept for reference
 EXPERIMENTAL    — in development, not yet validated
+```
+
+---
+
+## Data Integrity Gates — PASSED
+
+### RQ0.1 — Wash Trading Contamination Audit
+```
+Status:                 PASSED
+Run date:               2026-03-29
+Script:                 scripts/wash_trade_audit.py (first-repo)
+Result:                 36 wallets flagged as wash_trade_suspect
+                        0 of 36 in current top-50 leaderboard
+                        0.1% of ELO >= 1500 traders affected
+Conclusion:             ELO leaderboard is clean. Contamination
+                        negligible. Safe to proceed to RQ1.1.
+Next run:               Monthly or after any major platform
+                        volume spike (run before any ELO recalculation)
+```
+
+### RQ0.2 — Bot and Automated Trader Detection
+```
+Status:                 PASSED
+Run date:               2026-03-29
+Script:                 scripts/bot_detection.py (first-repo)
+Result:                 9 traders heavy in short-duration crypto
+                        0 traders with 90%+ win rate over 30 trades
+                        0 traders with uniform sizing
+                        0 flagged (multi-signal threshold not met)
+Conclusion:             No automated accounts distorting elite
+                        leaderboard. Safe to proceed to RQ1.1.
+Next run:               Monthly or as dataset grows — script will
+                        activate as bot patterns emerge over time
 ```
 
 ---
@@ -117,7 +150,8 @@ for validation. Quant-research-agent manages that directory.
 
 | Date | Strategy | Trigger | Outcome | Approved by |
 |------|----------|---------|---------|-------------|
-| —    | —        | —       | —       | —           |
+| 2026-03-29 | RQ0.1 Wash Trading Audit | Initial run | PASSED — 36 suspects, 0 in top-50 | Oscar |
+| 2026-03-29 | RQ0.2 Bot Detection | Initial run | PASSED — 0 flagged, dataset growing | Oscar |
 
 ---
 
