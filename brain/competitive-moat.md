@@ -202,6 +202,14 @@ as the system matures:
   divergence on equivalent markets as an intelligence
   feed. $40M in documented arbitrage profits 2024-2025.
 
+**Phase 4-5 (signal generation / paper trading):**
+- Unusual Whales MCP: congressional trading feed as
+  independent pre-resolution signal. Politicians trading
+  defence stocks before military events, biotech before
+  FDA decisions etc. Cross-validates elite trader consensus
+  without relying on ELO system. API key required.
+  unusualwhales.com/public-api
+
 **Phase 7 (expansion):**
 - Kalshi integration: full trader universe analysis,
   cross-platform signal correlation, regulatory fallback.
@@ -212,6 +220,10 @@ as the system matures:
   informs pre-resolution bet timing AND generates content.
   Same infrastructure serves both use cases. Build after
   signal quality is validated and category edge is clear.
+- Unusual Whales MCP full integration: options flow, dark
+  pool, institutional 13F filings as smart money signals
+  for equities expansion. Same ELO analytical framework
+  applied to options informed money flow.
 
 ---
 
