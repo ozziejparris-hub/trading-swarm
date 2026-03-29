@@ -13,6 +13,98 @@ findings back to this file over time so it compounds.
 
 ---
 
+## Phase 0 — Data Integrity (must complete before Phase 1)
+*These two questions must pass before any other research questions run.
+ELO validation is meaningless if the trader pool is contaminated.
+Clean the pool before validating it.*
+
+---
+
+**RQ0.1 — Wash Trading Contamination Audit**
+Hypothesis: A meaningful proportion of traders in the database
+have artificially inflated activity records due to wash trading,
+which would corrupt ELO calculations.
+
+Background: Columbia University research found ~25% of Polymarket
+volume involved wash trading. Sports and election markets worst
+affected. Some weeks saw 90%+ of trades in those categories flagged.
+A wash trader who trades a market against themselves creates a false
+record of activity that could register as skill in the ELO system.
+
+Test: Using network analysis — identify wallets that frequently
+trade against each other, have correlated creation dates, trade
+primarily at very low prices (<$0.01), and show rapid open/close
+patterns. Flag likely wash trading accounts. Calculate what
+percentage of current elite traders (ELO >= 1500) would be
+reclassified after filtering.
+
+Simpler fallback if network analysis is infeasible: flag any
+trader whose trades are more than 80% concentrated in markets
+where they appear to be the primary counterparty.
+
+Data: trades table (counterparty patterns, timestamps, prices),
+positions table (open/close speed), traders table (creation dates)
+
+Success criterion: Produce a wash_trade_suspect boolean flag
+on the traders table. Do NOT delete — flag only. If more than
+5% of elite traders are flagged, rerun all ELO calculations
+against the clean pool before proceeding to RQ1.1.
+
+Null hypothesis: Fewer than 2% of elite traders are wash
+trading suspects (contamination is negligible).
+
+Why this matters: If the ELO pool is contaminated with wash
+traders, every downstream research question is built on
+corrupted foundations. This must be answered first.
+
+---
+
+**RQ0.2 — Bot and Automated Trader Detection**
+Hypothesis: A subset of high-ELO traders are automated bots
+whose edge (spread capture, speed arbitrage) is not copyable
+by a slower system, and who should be excluded from signals.
+
+Background: 15-minute crypto bots on Polymarket achieve high
+win rates through spread capture. Their edge disappears when
+copied at market price because the opportunity is gone by the
+time a human or slower system can act. These bots likely score
+highly on ELO because their win rates are genuine — but the
+edge is structural, not informational, and not copyable.
+
+Test: Identify traders whose win rate is concentrated in
+short-duration crypto markets (resolving in 15 minutes to
+24 hours) and who trade at unusually high frequency with
+consistent position sizing. Also flag traders with 90%+
+win rates over more than 30 trades — statistically
+improbable without either insider information or automated
+execution.
+
+Simpler fallback heuristic: flag traders with more than
+50% of trades in crypto markets resolving under 24 hours.
+
+Data: trades table (timestamp patterns, market categories,
+position sizing consistency, frequency),
+markets table (category, resolution timing),
+traders table (win rates, trade counts)
+
+Success criterion: Produce a bot_suspect boolean flag on
+the traders table. Calculate what the ELO leaderboard
+looks like with bot suspects excluded. If more than 20%
+of the top 50 change, document this as a critical finding
+requiring signal-agent filter update.
+
+Null hypothesis: Fewer than 5% of top-50 ELO traders
+are bot suspects (automation is not meaningfully
+distorting the leaderboard).
+
+Why this matters: Following a bot into a position after
+it has already moved gives you a worse price and no edge.
+If bots dominate the elite leaderboard, signals based
+on their activity are systematically misleading.
+
+---
+
+
 ## Direction 1 — Trader Behaviour Factors
 Prediction markets are driven by people, not algorithms.
 Understanding trader behaviour patterns may reveal edge.
