@@ -1,0 +1,549 @@
+# Server Runbook
+
+Last updated: 2026-03-29
+Maintained by: Oscar
+
+---
+
+## Purpose
+
+This document contains exact commands for diagnosing and fixing
+the most common problems with the trading swarm server.
+
+Read this BEFORE SSHing in when something goes wrong. Knowing
+what you're going to do before you do it prevents making things
+worse under pressure.
+
+---
+
+## Quick Reference — First Steps for Any Problem
+
+```bash
+# 1. SSH into the server
+ssh trading-swarm
+
+# 2. Instant health check
+cd ~/trading-swarm
+bash scripts/check_agents.sh
+
+# 3. Check orchestrator status
+sudo systemctl status trading-swarm
+
+# 4. Check what's running in tmux
+tmux ls
+
+# 5. Check recent logs
+tail -50 logs/orchestrator.log
+tail -50 logs/agent_logs/signal-agent.log
+```
+
+If those five commands don't reveal the problem, work through
+the relevant section below.
+
+---
+
+## Section 1 — Orchestrator Is Down
+
+**Symptoms:** No Telegram messages for more than 2 hours.
+check_agents.sh shows no active sessions.
+
+**Step 1 — Check if systemd restarted it:**
+```bash
+sudo systemctl status trading-swarm
+sudo journalctl -u trading-swarm -n 50
+```
+
+**Step 2 — If systemd shows failed, restart it:**
+```bash
+sudo systemctl restart trading-swarm
+sudo systemctl status trading-swarm
+# Wait 30 seconds then check Telegram for startup message
+```
+
+**Step 3 — If systemd restart fails, start manually:**
+```bash
+tmux new -s orchestrator
+cd ~/trading-swarm
+source ~/.env_trading
+python3 orchestrator/orchestrator.py
+# Ctrl+B then D to detach
+```
+
+**Step 4 — If orchestrator crashes immediately, check the error:**
+```bash
+cd ~/trading-swarm
+source ~/.env_trading
+python3 orchestrator/orchestrator.py 2>&1 | head -50
+# Read the error before doing anything else
+```
+
+**Common causes:**
+- Database locked → see Section 4
+- Missing environment variable → check `echo $TELEGRAM_AGENTS_TOKEN`
+- File permission issue → check `ls -la brain/signals.json`
+- Import error after a bad commit → see Section 7 (rollback)
+
+---
+
+## Section 2 — Polymarket Monitoring System Issues
+
+**Symptoms:** No hourly Telegram health reports. P&L worker
+not processing traders. ELO not updating.
+
+**Step 1 — Check which processes are running:**
+```bash
+# Named screen sessions for Polymarket system
+screen -ls
+# Should show: monitoring, observer (or similar)
+```
+
+**Step 2 — Check monitoring process:**
+```bash
+screen -r monitoring
+# Read the output
+# Ctrl+A then D to detach without killing
+```
+
+**Step 3 — If monitoring is dead, restart it:**
+```bash
+screen -S monitoring
+cd ~/projects/first-repo
+source ~/.env_trading
+python scripts/start_monitoring.py
+# Ctrl+A then D to detach
+```
+
+**Step 4 — Check observer process:**
+```bash
+screen -r observer
+# Ctrl+A then D to detach
+```
+
+**Step 5 — If observer is dead, restart it:**
+```bash
+screen -S observer
+cd ~/projects/first-repo
+source ~/.env_trading
+python scripts/run_system_observer.py
+# Ctrl+A then D to detach
+```
+
+**Step 6 — Verify daily maintenance cron is set:**
+```bash
+crontab -l
+# Should show: 0 6 * * * cd ~/projects/first-repo && python scripts/daily_maintenance.py
+# If missing, add it:
+crontab -e
+# Add: 0 6 * * * cd ~/projects/first-repo && python scripts/daily_maintenance.py
+```
+
+**Common causes:**
+- Screen session died after SSH disconnect → restart with screen
+- fcntl file locking issue → check logs for lock errors
+- Database file permissions → see Section 5
+- Environment variables not loaded → check `echo $TELEGRAM_CHAT_ID`
+
+---
+
+## Section 3 — Agent Producing Empty Output
+
+**Symptoms:** Agent session exists in tmux but no output files
+in brain/agent-outputs/. No signal written to signals.json.
+
+**Step 1 — Attach to the agent session:**
+```bash
+tmux attach -t <agent-name>
+# Read what's on screen
+# Ctrl+B then D to detach
+```
+
+**Step 2 — Check the agent's log:**
+```bash
+tail -100 logs/agent_logs/<agent-name>.log
+```
+
+**Step 3 — Check if the agent is waiting for something:**
+```bash
+# Check signals.json for pending signals it may be waiting on
+cat brain/signals.json | python3 -m json.tool | grep -A5 "pending"
+```
+
+**Step 4 — If agent is stuck, kill and respawn:**
+```bash
+# Kill the tmux session
+tmux kill-session -t <agent-name>
+
+# Remove stale registry entry
+# Edit brain/agent_registry.json and remove the stuck entry
+
+# Respawn the agent
+bash scripts/spawn_agent.sh <task_id> <agent_type> <tier> "<description>"
+```
+
+**Common causes:**
+- Waiting for a signal response that never came → clear pending signals
+- Database read timeout → see Section 4
+- API rate limit hit → wait 60 seconds and check logs
+- Context window overflow on large tasks → split the task
+
+---
+
+## Section 4 — Database Locked
+
+**Symptoms:** Errors containing "database is locked" or
+"unable to open database file" in any log.
+
+**Step 1 — Check what's holding the lock:**
+```bash
+lsof ~/projects/first-repo/data/polymarket_tracker.db
+# Or for trading swarm DB:
+lsof /data/polymarket_tracker.db
+```
+
+**Step 2 — Check WAL mode is active:**
+```bash
+sqlite3 /data/polymarket_tracker.db "PRAGMA journal_mode;"
+# Should return: wal
+# If not: sqlite3 /data/polymarket_tracker.db "PRAGMA journal_mode=WAL;"
+```
+
+**Step 3 — If a process is holding an exclusive lock:**
+```bash
+# Identify the PID from lsof output
+kill -9 <PID>
+# Then restart whatever process was killed
+```
+
+**Step 4 — If WAL files are corrupted:**
+```bash
+# Check for stale WAL files
+ls -la /data/polymarket_tracker.db*
+# If -wal or -shm files exist and the DB is not open:
+sqlite3 /data/polymarket_tracker.db "PRAGMA wal_checkpoint(FULL);"
+```
+
+**Step 5 — Last resort — restore from backup:**
+```bash
+# List available backups
+ls -la ~/trading-swarm/backups/
+# Restore (ONLY if DB is genuinely corrupted):
+cp ~/trading-swarm/backups/polymarket_tracker_YYYY-MM-DD.db \
+   /data/polymarket_tracker.db
+# Verify integrity:
+sqlite3 /data/polymarket_tracker.db "PRAGMA integrity_check;"
+```
+
+**Prevention:** WAL mode should prevent most locking issues.
+If locking is recurring, check that all scripts use:
+`PRAGMA journal_mode=WAL;` at connection open.
+
+---
+
+## Section 5 — File Permission Issues
+
+**Symptoms:** Permission denied errors in logs. Agents
+cannot write to brain/ directory. Database read errors.
+
+**Step 1 — Check current permissions:**
+```bash
+ls -la /data/polymarket_tracker.db
+ls -la ~/trading-swarm/brain/
+ls -la ~/.env_trading
+```
+
+**Step 2 — Expected permissions:**
+```bash
+# Database: owner rw, group r, others none
+# -rw-r----- parison:swarm /data/polymarket_tracker.db
+sudo chown parison:swarm /data/polymarket_tracker.db
+sudo chmod 640 /data/polymarket_tracker.db
+
+# Env file: owner read/write only
+# -rw------- parison:parison ~/.env_trading
+chmod 600 ~/.env_trading
+
+# Brain directory: owner rwx, group rx, others none
+chmod 750 ~/trading-swarm/brain/
+```
+
+**Step 3 — If swarm user can't write to agent outputs:**
+```bash
+sudo chown -R parison:swarm ~/trading-swarm/brain/agent-outputs/
+sudo chmod -R g+w ~/trading-swarm/brain/agent-outputs/
+```
+
+---
+
+## Section 6 — Telegram Alerts Not Firing
+
+**Symptoms:** System appears running but no Telegram messages
+received. No alerts for known events.
+
+**Step 1 — Test Telegram connectivity directly:**
+```bash
+source ~/.env_trading
+python3 << 'EOF'
+import requests, os
+resp = requests.post(
+    f"https://api.telegram.org/bot{os.environ['TELEGRAM_AGENTS_TOKEN']}/sendMessage",
+    json={"chat_id": os.environ["TELEGRAM_CHAT_ID"],
+          "text": "Manual test ping from server"}
+)
+print(resp.json())
+EOF
+```
+
+**Step 2 — If test fails, check environment variables:**
+```bash
+echo $TELEGRAM_AGENTS_TOKEN
+echo $TELEGRAM_ORCHESTRATOR_TOKEN
+echo $TELEGRAM_CHAT_ID
+# If blank, env file not loaded:
+source ~/.env_trading
+```
+
+**Step 3 — If env variables are set but API call fails:**
+```bash
+# Check outbound HTTPS is allowed
+curl -I https://api.telegram.org
+# Should return HTTP 200
+# If blocked, check UFW:
+sudo ufw status
+# Should show: 443/tcp ALLOW OUT
+```
+
+**Step 4 — Check if bot token is still valid:**
+```bash
+curl "https://api.telegram.org/bot$TELEGRAM_AGENTS_TOKEN/getMe"
+# Should return bot info JSON
+# If returns 401, token has been revoked — generate new token via BotFather
+```
+
+---
+
+## Section 7 — Rolling Back a Bad Commit
+
+**Symptoms:** System was working, a git pull or code change
+broke something. Need to revert to last working state.
+
+**Step 1 — Identify the last working commit:**
+```bash
+cd ~/trading-swarm
+git log --oneline -10
+# Find the commit hash before the problem started
+```
+
+**Step 2 — Check what changed:**
+```bash
+git diff <commit-hash> HEAD
+# Read carefully before reverting
+```
+
+**Step 3 — Revert to last working commit (safe method):**
+```bash
+# This creates a new commit that undoes the bad one
+git revert HEAD
+# Or revert a specific commit:
+git revert <commit-hash>
+```
+
+**Step 4 — Hard reset (only if you're sure):**
+```bash
+# WARNING: this permanently discards commits
+# Only use if revert doesn't work and you understand what you're losing
+git reset --hard <commit-hash>
+git push --force origin master
+```
+
+**Step 5 — Restart affected services after rollback:**
+```bash
+sudo systemctl restart trading-swarm
+screen -r monitoring  # verify still running
+```
+
+---
+
+## Section 8 — Server Unreachable via SSH
+
+**Symptoms:** `ssh trading-swarm` times out or refuses connection.
+
+**Step 1 — Check if it's a network issue:**
+```bash
+# From your Windows PC / WSL2:
+ping <server-ip>
+# If no response, server may be down or IP changed
+```
+
+**Step 2 — If IP changed (router reassigned it):**
+```bash
+# Check router admin page for new IP
+# Update SSH config:
+nano ~/.ssh/config
+# Change HostName to new IP
+```
+
+**Step 3 — Connect via Tailscale (backup method):**
+```bash
+# Tailscale gives stable hostname regardless of local IP
+ssh parison@trading-swarm.tail<xxxxx>.ts.net
+```
+
+**Step 4 — If server is genuinely down:**
+- Check physical power and ethernet connection
+- Check if power outage occurred
+- Server should auto-restart on power restore if BIOS
+  is configured for it (set this on day one)
+- Check systemd services restart automatically on boot:
+  `sudo systemctl is-enabled trading-swarm` → should show "enabled"
+
+**Step 5 — BIOS auto-power-on setting (do this on day one):**
+On the UM890 Pro, set "Restore on AC Power Loss" to "Power On"
+in BIOS so server restarts automatically after any power cut.
+
+---
+
+## Section 9 — API Costs Spiking
+
+**Symptoms:** Unexpected charges on Anthropic account.
+Weekly costs significantly above expected.
+
+**Step 1 — Identify which agent is running frequently:**
+```bash
+# Count agent spawns in logs
+grep "spawning" logs/orchestrator.log | \
+  grep "$(date +%Y-%m-%d)" | \
+  awk '{print $NF}' | sort | uniq -c | sort -rn
+```
+
+**Step 2 — Check for runaway agent loops:**
+```bash
+# An agent that keeps failing and being respawned costs money
+grep "respawn\|retry\|failed" logs/orchestrator.log | tail -50
+```
+
+**Step 3 — Temporarily throttle a specific agent:**
+```bash
+# Kill the agent session
+tmux kill-session -t <agent-name>
+# Remove from registry
+# Edit brain/agent_registry.json
+# Do not respawn until cause is identified
+```
+
+**Step 4 — Check Anthropic usage dashboard:**
+```
+https://console.anthropic.com/usage
+```
+
+**Step 5 — Emergency — pause all paid API calls:**
+```bash
+# Stop the orchestrator
+sudo systemctl stop trading-swarm
+# Investigate before restarting
+```
+
+---
+
+## Section 10 — Pre-Resolution Intelligence Not Firing
+
+**Symptoms:** No pre-resolution Telegram messages at 8am UTC.
+
+**Step 1 — Check observer is running:**
+```bash
+screen -r observer
+# Look for pre-resolution loop log entries
+```
+
+**Step 2 — Run manually to test:**
+```bash
+cd ~/projects/first-repo
+source ~/.env_trading
+python scripts/pre_resolution_intelligence.py
+```
+
+**Step 3 — Check for errors:**
+```bash
+# The script logs to stdout — check screen session output
+# Common error: database path wrong on Linux vs Windows
+# Check DB path in script matches actual location
+```
+
+---
+
+## Daily Health Check (2 minutes)
+
+Run this every morning:
+
+```bash
+ssh trading-swarm
+bash ~/trading-swarm/scripts/check_agents.sh
+tail -20 ~/trading-swarm/logs/orchestrator.log
+screen -ls
+exit
+```
+
+If everything looks normal, you're done. If anything looks
+wrong, work through the relevant section above.
+
+---
+
+## Weekly Health Check (10 minutes)
+
+Every Monday:
+1. Read performance-analyst Telegram report
+2. Check findings.json for new feedback-loop-agent entries
+3. Review strategy-registry.md for overdue revalidations
+4. Check Anthropic usage dashboard for cost trends
+5. Run: `sudo systemctl status trading-swarm`
+6. Run: `df -h` (check disk space — models + DB can fill fast)
+
+---
+
+## Monthly Maintenance (30 minutes)
+
+1. Run wash_trade_audit.py and bot_detection.py in first-repo
+2. Review API costs — flag if any agent exceeded budget
+3. Check disk space and clean old logs if needed:
+   ```bash
+   find ~/trading-swarm/logs -name "*.log" -mtime +30 -delete
+   ```
+4. Verify backup integrity:
+   ```bash
+   sqlite3 ~/trading-swarm/backups/$(ls -t ~/trading-swarm/backups/ | head -1) \
+     "PRAGMA integrity_check;"
+   ```
+5. Update competitive-moat.md if any major new tools emerged
+6. Review research-scout-agent outputs for anything flagged
+
+---
+
+## Emergency Contacts and Resources
+
+```
+Anthropic status:     status.anthropic.com
+Telegram bot issues:  t.me/BotFather
+Polymarket status:    polymarket.com (check manually)
+Tailscale dashboard:  login.tailscale.com
+Server SSH config:    ~/.ssh/config (WSL2)
+DB backups:           ~/trading-swarm/backups/
+Env file:             ~/.env_trading
+```
+
+---
+
+## Key File Locations (Server)
+
+```
+Trading swarm repo:   ~/trading-swarm/
+Polymarket system:    ~/projects/first-repo/
+Database:             /data/polymarket_tracker.db
+DB backups:           ~/trading-swarm/backups/
+Env file:             ~/.env_trading
+Orchestrator logs:    ~/trading-swarm/logs/orchestrator.log
+Agent logs:           ~/trading-swarm/logs/agent_logs/
+Brain directory:      ~/trading-swarm/brain/
+Signals bus:          ~/trading-swarm/brain/signals.json
+Findings bus:         ~/trading-swarm/brain/findings.json
+Strategy registry:    ~/trading-swarm/brain/strategy-registry.md
+Runbook:              ~/trading-swarm/brain/runbook.md (this file)
+```
