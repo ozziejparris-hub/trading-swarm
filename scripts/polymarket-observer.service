@@ -1,0 +1,33 @@
+[Unit]
+Description=Polymarket System Observer
+After=network-online.target polymarket-monitoring.service
+Wants=network-online.target
+
+# Start after monitoring is up — observer watches monitoring health
+# If monitoring isn't running yet, observer starts anyway after network
+
+[Service]
+Type=simple
+User=parison
+WorkingDirectory=/home/parison/projects/first-repo
+
+# Load environment variables from trading env file
+EnvironmentFile=/home/parison/.env_trading
+
+# The observer script
+ExecStart=/usr/bin/python3 scripts/run_system_observer.py
+
+# Restart on any failure
+Restart=on-failure
+RestartSec=30s
+
+# Give it 60 seconds to start before systemd considers it failed
+TimeoutStartSec=60
+
+# Log to journald — read with: sudo journalctl -u polymarket-observer -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=polymarket-observer
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+[Unit]
+Description=Polymarket Monitoring System
+After=network-online.target
+Wants=network-online.target
+
+# Start after network is fully up
+# Does not depend on trading-swarm — runs independently
+
+[Service]
+Type=simple
+User=parison
+WorkingDirectory=/home/parison/projects/first-repo
+
+# Load environment variables from trading env file
+EnvironmentFile=/home/parison/.env_trading
+
+# The monitoring script
+ExecStart=/usr/bin/python3 scripts/start_monitoring.py
+
+# Restart on any failure
+Restart=on-failure
+RestartSec=30s
+
+# Give it 60 seconds to start before systemd considers it failed
+TimeoutStartSec=60
+
+# Log to journald — read with: sudo journalctl -u polymarket-monitoring -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=polymarket-monitoring
+
+[Install]
+WantedBy=multi-user.target
