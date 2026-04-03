@@ -215,6 +215,11 @@ as the system matures:
   cross-platform signal correlation, regulatory fallback.
 - Network analysis: graph-based wash trading detection
   using Columbia cluster methodology.
+- pmxt library: unified API for Polymarket + Kalshi +
+  Limitless in one library (pip install pmxt). Replaces
+  separate API integrations for each platform. Evaluate
+  at Phase 7 Kalshi integration — may simplify the build
+  significantly. github.com/pmxt-dev/pmxt
 - News processing layer: real-time information aggregation
   for geopolitics and economics markets. Dual purpose —
   informs pre-resolution bet timing AND generates content.

@@ -365,6 +365,13 @@ at significantly lower cost makes it a Tier 2.5 or
 Tier 3 candidate. Blocked currently by sovereignty
 requirements — Chinese-hosted API fails data governance.
 Open weights would remove that blocker.
+Update April 2026: M2.7 claims Anthropic-compatible API
+(drop-in replacement, no code changes needed), native
+tool use with agentic loop, and 95% cheaper than Opus.
+Workflow engine implementations emerging. If open-weight
+released, priority evaluation — compatible API means
+zero integration cost. Sovereignty blocker remains
+until open weights confirmed.
 
 **Qwen3-Coder-480B quantised locally:**
 Deferred — requires ~250GB RAM, not viable on current hardware

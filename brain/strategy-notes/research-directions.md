@@ -314,6 +314,52 @@ This protects your system from deploying strategies
 in conditions where they no longer have edge.
 
 
+
+---
+
+## Social Media Noise Contamination — Pre-Resolution Intelligence Gap
+
+Identified: April 2026
+Source: Polyfactual analysis of Netanyahu market ($84M volume)
+
+**The problem:**
+A market ("Netanyahu out by March 31") was driven to $84M volume
+almost entirely by unverified X rumours. Smart money correctly
+held at ~8% odds. The crowd drove the price up based on viral
+misinformation rather than informed trading.
+
+This creates a false signal problem for the pre-resolution
+intelligence system: if elite traders are correctly positioned
+at 8% while the market price is elevated due to noise, the
+divergence signal fires correctly — but without knowing WHY
+the crowd price moved, the signal interpretation is ambiguous.
+
+**The gap:**
+The system currently cannot distinguish:
+- Price moved because informed money disagrees with crowd → strong signal
+- Price moved because viral X post inflated crowd price → weaker signal
+  (elite traders may simply be ignoring noise, not making an informed bet)
+
+**Proposed addition (Phase 5-6):**
+A social media noise filter for pre-resolution signals. When a
+market shows unusual price movement, cross-reference against
+whether that movement correlates with viral X/news activity vs
+genuine order flow. Polymarket volume spike + X trending =
+noise flag. Polymarket volume spike without X activity =
+potentially informed trading signal.
+
+This connects to the Phase 7 news processing layer — the same
+infrastructure that reads news for betting signals can flag
+when a market price is likely noise-driven rather than
+information-driven.
+
+**Interim approach (now):**
+When reviewing pre-resolution signals manually, check whether
+the market has had unusual volume spikes recently and whether
+those spikes correlate with X activity. Flag manually as
+NOISE_RISK if so. This is a human judgement call until the
+automated filter is built.
+
 ## What Has Already Been Investigated
 (Update this section as research completes)
 
