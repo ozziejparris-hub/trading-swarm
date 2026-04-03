@@ -92,40 +92,33 @@ not processing traders. ELO not updating.
 
 **Step 1 — Check which processes are running:**
 ```bash
-# Named screen sessions for Polymarket system
-screen -ls
-# Should show: monitoring, observer (or similar)
+sudo systemctl status polymarket-monitoring
+sudo systemctl status polymarket-observer
 ```
 
-**Step 2 — Check monitoring process:**
+**Step 2 — Check monitoring logs:**
 ```bash
-screen -r monitoring
-# Read the output
-# Ctrl+A then D to detach without killing
+sudo journalctl -u polymarket-monitoring -n 50
+# Or follow live:
+sudo journalctl -u polymarket-monitoring -f
 ```
 
 **Step 3 — If monitoring is dead, restart it:**
 ```bash
-screen -S monitoring
-cd ~/projects/first-repo
-source ~/.env_trading
-python scripts/start_monitoring.py
-# Ctrl+A then D to detach
+sudo systemctl restart polymarket-monitoring
+sudo systemctl status polymarket-monitoring
 ```
 
 **Step 4 — Check observer process:**
 ```bash
-screen -r observer
-# Ctrl+A then D to detach
+sudo systemctl status polymarket-observer
+sudo journalctl -u polymarket-observer -n 50
 ```
 
 **Step 5 — If observer is dead, restart it:**
 ```bash
-screen -S observer
-cd ~/projects/first-repo
-source ~/.env_trading
-python scripts/run_system_observer.py
-# Ctrl+A then D to detach
+sudo systemctl restart polymarket-observer
+sudo systemctl status polymarket-observer
 ```
 
 **Step 6 — Verify daily maintenance cron is set:**
