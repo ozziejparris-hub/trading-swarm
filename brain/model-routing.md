@@ -349,6 +349,32 @@ refer to the previous generation.
 These developments may warrant tier reassignments.
 research-scout-agent should flag these when they mature:
 
+**Llama 4 Scout (available now — test on server arrival):**
+Open-weight MoE model, 109B total / 17B active parameters.
+At Q4 quantisation needs ~55GB RAM — potentially runnable on
+UM890 Pro's 96GB DDR5 via Ollama CPU inference. If response
+time is under 10 seconds for simple tasks, replaces Mistral
+at Tier 1 with significantly better capability at zero cost.
+Test immediately on server setup before committing to Mistral.
+Command: ollama pull llama4:scout
+Benchmark: time echo "Is this session alive?" | ollama run llama4:scout
+
+**Gemini 3.1 Pro (cloud, evaluate for Tier 3 cost reduction):**
+Leads 13 of 16 major benchmarks. Input pricing $2.00/MTok vs
+Sonnet's $3.00/MTok — 33% cheaper at comparable capability.
+Not open-weight so sovereignty requirements still apply for
+Polymarket system agents. For trading swarm API-driven agents
+(quant-research, backtest, orchestrator) evaluate as Tier 3
+alternative once system is live and weekly API costs are known.
+Blocked until 4 weeks of live cost data available.
+
+**Claude Mythos (Anthropic internal — monitor for Tier 4):**
+Leaked March 26 2026. Positioned above Opus, described as
+a step change. Currently in early access with cybersecurity
+partners only. No public date confirmed. If released and
+priced reasonably, evaluate as new Tier 4 escalation model
+replacing Opus 4.6. Monitor Anthropic blog for announcement.
+
 **DeepSeek V4 (anticipated 2026):**
 Leaked benchmarks suggest 80%+ SWE-bench Verified with
 open weights. If released open-weight and localizable

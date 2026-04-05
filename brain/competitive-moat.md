@@ -232,6 +232,28 @@ as the system matures:
 
 ---
 
+## Timeline Pressure — Institutional Entry
+
+As of April 2026, JPMorgan CEO is actively exploring prediction
+market services (excluding sports and politics). This signals
+institutional money is preparing to enter the space seriously.
+
+Implications:
+- The window where a small system can compete with institutional
+  desks on information processing is narrowing, not static
+- Your ELO database and historical depth become MORE valuable
+  as institutions enter — they start from zero, you have years
+- Phase 3 research validation and Phase 4 signal generation
+  should not be delayed — the edge degrades as more capital
+  and sophistication enters the market
+- Kalshi's $1B funding round and $11B valuation confirms
+  this is no longer a niche market
+
+This does not change the plan — it increases urgency of
+executing the plan on schedule.
+
+---
+
 ## Review Schedule
 
 Review this document quarterly or after any major
