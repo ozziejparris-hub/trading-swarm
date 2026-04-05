@@ -73,3 +73,39 @@ Every completed app must be in its own folder:
   ├── requirements.txt
   ├── README.md
   └── .env.example (showing required env vars, no real values)
+
+## Completion Learning Capture (Mandatory)
+
+When the build is complete, before closing the session, write
+a structured entry to /brain/findings.json. This ensures every
+completed build contributes to institutional memory rather than
+being lost when the agent session ends.
+
+Entry format:
+{
+  "id": "YYYY-MM-DD-NICHE-APP-name-001",
+  "generated_by": "niche-app-agent",
+  "generated_at": "ISO8601",
+  "finding_type": "niche_app_completed",
+  "confidence": "HIGH",
+  "sample_size": 1,
+  "summary": "One sentence: what was built and why",
+  "detail": {
+    "app_name": "",
+    "problem_solved": "",
+    "tech_stack": "",
+    "time_to_build": "",
+    "reusable_patterns": "",
+    "what_failed_first": ""
+  },
+  "actionable": true,
+  "action_recommendation": "What future agents or Oscar should know before building something similar",
+  "expires_at": "2099-01-01T00:00:00Z"
+}
+
+The what_failed_first field is non-optional. Every build hits
+something unexpected. Document it so the next build doesn't
+repeat it. This is the most valuable field in the entry.
+
+expires_at is set far in the future — completed app records
+do not expire, they are permanent institutional memory.
