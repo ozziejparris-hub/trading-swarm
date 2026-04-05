@@ -124,10 +124,10 @@ sudo systemctl status polymarket-observer
 **Step 6 — Verify daily maintenance cron is set:**
 ```bash
 crontab -l
-# Should show: 0 6 * * * cd ~/projects/first-repo && python scripts/daily_maintenance.py
+# Should show: 0 6 * * * cd ~/projects/first-repo && PYTHONUTF8=1 python3 scripts/daily_maintenance.py >> logs/daily_maintenance.log 2>&1
 # If missing, add it:
 crontab -e
-# Add: 0 6 * * * cd ~/projects/first-repo && python scripts/daily_maintenance.py
+# Add: 0 6 * * * cd ~/projects/first-repo && PYTHONUTF8=1 python3 scripts/daily_maintenance.py >> logs/daily_maintenance.log 2>&1
 ```
 
 **Common causes:**
