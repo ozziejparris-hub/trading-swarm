@@ -368,12 +368,32 @@ Polymarket system agents. For trading swarm API-driven agents
 alternative once system is live and weekly API costs are known.
 Blocked until 4 weeks of live cost data available.
 
-**Claude Mythos (Anthropic internal — monitor for Tier 4):**
-Leaked March 26 2026. Positioned above Opus, described as
-a step change. Currently in early access with cybersecurity
-partners only. No public date confirmed. If released and
-priced reasonably, evaluate as new Tier 4 escalation model
-replacing Opus 4.6. Monitor Anthropic blog for announcement.
+**Claude Mythos (released April 7 — gated, Tier 4 candidate):**
+Released April 7 to 50 organisations under Project Glasswing.
+93.9% SWE-bench Verified, 94.6% GPQA Diamond — best available.
+Pricing when public: $25 input / $125 output per MTok.
+At that price: Tier 4 escalation only, replaces Opus 4.6.
+Not publicly available yet — monitor for general release.
+
+**GPT-6 (released April 14 — evaluate for Tier 4):**
+Released April 14. $2.50 input / $12 output per MTok.
+40%+ capability improvement over GPT-5.4 at flat pricing.
+At $12/MTok output vs Opus $25/MTok — meaningfully cheaper
+for comparable capability. Evaluate as Tier 4 alternative
+once public benchmarks vs Mythos are clearer.
+
+**Gemma 4 31B (released April 2 — test on server):**
+Apache 2.0, free open weights. Outperforms Llama 4 Maverick
+on math, reasoning, and coding at 31B parameters.
+Potentially runnable on UM890 Pro. Test alongside Llama 4
+Scout on server setup — may replace or supplement Tier 2.
+
+**DeepSeek V4 (imminent — most important watch item):**
+Reuters confirmed weeks away as of April 3. 1T total / 32B
+active parameters, Apache 2.0, $0.14-0.30 per MTok.
+If benchmarks hold: replaces Sonnet at Tier 3 at 10x lower
+cost. Highest priority model routing change of Q2 2026.
+Halt all Tier 3 cost optimisation decisions until V4 drops.
 
 **DeepSeek V4 (anticipated 2026):**
 Leaked benchmarks suggest 80%+ SWE-bench Verified with
