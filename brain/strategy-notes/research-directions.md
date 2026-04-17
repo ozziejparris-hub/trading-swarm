@@ -915,3 +915,30 @@ E% with Brier score B and Sharpe ratio S."
 That sentence, filled in with real validated numbers,
 is a trading strategy. Everything before it is
 research infrastructure.
+
+---
+
+## Exit Timing Intelligence — Pre-Resolution Layer Gap
+
+91% of top wallet exits happen before resolution.
+Average exit captures 73% of max potential profit.
+Primary trigger: volume spike within 10 minutes.
+Secondary: price target at ~85% of estimated gap.
+
+Add volume spike monitoring to pre-resolution signals.
+3x normal volume in 10-minute window + elite open positions
+= smart money exit. Flag as close signal, not open signal.
+
+## NEAR_RESOLUTION Bot Type — Fourth Classification
+
+Buys near-certain outcomes (98-99c) before settlement.
+High win rate but structural not predictive edge.
+Following them gives worse fills on tiny margin.
+Classify separately — do not follow into positions.
+Already confirmed in bot_detection.py RQ0.2 work.
+
+## Sports Markets — Deprioritise
+
+52% win rate for systematic approaches on sports.
+Geopolitics and macro is where edge exists.
+Category filter must exclude sports in Phase 6.
