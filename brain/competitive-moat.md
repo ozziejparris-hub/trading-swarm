@@ -261,3 +261,49 @@ competitive development (new tool launch, regulatory
 change, platform policy update). research-scout-agent
 should flag competitive developments that affect this
 document.
+
+---
+
+## Combinatorial Arbitrage — Phase 6 Research Direction
+
+Source: arXiv:2508.03474 — documented $39.7M extracted from
+Polymarket April 2024-April 2025 using this method.
+
+Cross-market logical dependency analysis. Markets are not always
+independent — "If Republicans win Pennsylvania by 5+ points,
+Trump must win Pennsylvania." These dependencies create guaranteed
+arbitrage when markets price them inconsistently.
+
+Frank-Wolfe algorithm reduces exponential outcome space to tractable
+linear programs. After 45+ events settle, solve time drops under 5s.
+
+Not copy trading — mathematical certainty. Add as research question
+for quant-research-agent after Phase 5 paper trading validates
+core signal approach. Phase 6-7 priority.
+
+---
+
+## Exit Timing Intelligence — Phase 5-6 Gap
+
+91% of top wallet exits happen before resolution.
+Average exit captures 73% of max potential profit.
+Primary trigger: volume spike within 10 minutes of exit.
+Secondary: price target at ~85% of estimated gap.
+
+Current pre_resolution_intelligence.py has no exit signals.
+Add volume spike monitoring as Phase 5-6 addition.
+3x normal volume in 10-minute window + elite open positions
+= smart money exit signal. Close position, don't open one.
+
+---
+
+## Hard Rules for Phase 6 Live Trading
+
+LIMIT ORDERS ONLY — non-negotiable.
+Every profitable bot in the top 1000 uses limit orders.
+Market orders destroy edge on every single trade.
+This is not a preference. It is a hard architectural constraint.
+
+Sports markets: 52% win rate for systematic approaches.
+Geopolitics and macro: where the edge actually exists.
+Category filter must exclude sports in Phase 6.
