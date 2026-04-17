@@ -469,3 +469,24 @@ Task has failed Tier 3 three times OR is genuinely
 architectural in scope?
 → Tier 4 (Claude Opus 4.6, $5/$25 per MTok)
 ```
+
+
+## Server Benchmark Results — April 17 2026
+UM890 Pro (Ryzen 9 8945HS, 96GB DDR5, Radeon 780M)
+
+| Model              | Size   | Time    | Decision              |
+|--------------------|--------|---------|-----------------------|
+| Gemma 4 E2B        | 7.2GB  | 0.79s   | TIER 1 PRIMARY        |
+| Mistral            | 4.4GB  | 2.80s   | TIER 1 FALLBACK       |
+| Gemma 4 E4B        | 9.6GB  | 5.86s   | TIER 2 PRIMARY        |
+| Llama 4 Scout      | 67GB   | 24.00s  | REMOVED — too slow    |
+
+Key finding: thinking mode must be disabled for Tier 1/2 tasks.
+Gemma 4 E2B with --think=false is 12x faster than with thinking on.
+All Ollama calls must pass --think=false for classification/routing tasks.
+Thinking mode only appropriate for complex reasoning at Tier 2+.
+
+Invoke commands:
+  Tier 1: ollama run gemma4:e2b --think=false
+  Tier 2: ollama run gemma4:e4b --think=false
+  Tier 1 fallback: ollama run mistral
