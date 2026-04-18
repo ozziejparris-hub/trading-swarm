@@ -17,8 +17,8 @@
 
 set -e
 
-DB_SOURCE="/data/polymarket_tracker.db"
-BACKUP_DIR="/data/backups"
+DB_SOURCE="/home/parison/projects/first-repo/data/polymarket_tracker.db"
+BACKUP_DIR="/home/parison/projects/first-repo/data/backups"
 TIMESTAMP=$(date +%Y-%m-%d)
 BACKUP_FILE="$BACKUP_DIR/polymarket_tracker_$TIMESTAMP.db"
 LOG_FILE="/home/parison/trading-swarm/logs/backup.log"
