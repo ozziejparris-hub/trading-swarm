@@ -22,7 +22,9 @@ Restart=on-failure
 RestartSec=30s
 
 # Give it 60 seconds to start before systemd considers it failed
-TimeoutStartSec=60
+TimeoutStartSec=300
+TimeoutStopSec=30
+KillMode=mixed
 
 # Log to journald — read with: sudo journalctl -u polymarket-observer -f
 StandardOutput=journal
