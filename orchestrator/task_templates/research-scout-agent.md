@@ -65,6 +65,8 @@ relevance matters enormously — signal without noise.
   @MiniMax_AI (self-evolving model developments)
   @deepseek_ai (open-weight model releases)
   @polymarket (market announcements)
+  @nousr_computer (Nous Research — Hermes open-weight models, agentic fine-tuning;
+    CEO Jeffrey Quesnelle @jquesnelle — tracks model releases and agent evals)
   Prediction market research community accounts
 
 - Hacker News (https://news.ycombinator.com)
@@ -362,8 +364,8 @@ whether they keep being checked at all.
 This includes:
 - All Twitter/X accounts (@karpathy, @lopezdeprado, @_akhaliq,
   @quantian1, @AIatMeta, @AnthropicAI, @polymarket, @MiniMax_AI,
-  @deepseek_ai, @balajis, @VitalikButerin, @numerai, and any
-  added in future)
+  @deepseek_ai, @nousr_computer, @jquesnelle, @balajis,
+  @VitalikButerin, @numerai, and any added in future)
 - All Substacks (Latent Space, Ahead of AI, and any added later)
 - All GitHub repos being tracked (autoresearch, Unsloth, DeepSeek,
   MiniMax, vllm, llama.cpp, and any added later)

@@ -918,6 +918,36 @@ research infrastructure.
 
 ---
 
+## Nous Research / Hermes Agent — Open-Weight Agentic Fine-Tuning
+
+Source: @nousr_computer, @jquesnelle (added April 2026)
+
+Nous Research's Hermes series represents the leading open-weight
+approach to instruction-following and agentic task performance.
+Hermes 3 on Llama 3.1 70B outperforms base Llama on:
+- Structured output adherence (JSON schemas, function call formats)
+- Multi-turn instruction following (critical for agent prompt templates)
+- Tool-use reliability (signals.json format, task template parsing)
+
+**Research question (non-blocking, Phase 3+):**
+Can a Hermes 3 (or Hermes 4 when released) checkpoint replace
+Claude Haiku 4.5 as the Tier 2.5 model for structured tasks
+(integration-test-agent, research-scout-agent), reducing API cost
+to zero for that tier?
+
+Benchmark criteria (when evaluated):
+- JSON schema adherence rate: must match or exceed Haiku 4.5
+- Inference speed on UM890 Pro: must be under 15s per agent call
+- Agent prompt template following: must pass integration-test suite
+- If all three pass: propose Tier 2.5 routing change to Oscar
+
+**Do not evaluate prematurely.** Wait until Nous releases a Hermes
+checkpoint on a Llama 4-class base or equivalent. Current Hermes 3
+on Llama 3.1 70B is a candidate but has not been benchmarked locally.
+research-scout-agent will escalate when a relevant new release appears.
+
+---
+
 ## Exit Timing Intelligence — Pre-Resolution Layer Gap
 
 91% of top wallet exits happen before resolution.

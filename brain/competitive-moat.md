@@ -297,6 +297,40 @@ Add volume spike monitoring as Phase 5-6 addition.
 
 ---
 
+## Nous Research / Hermes Models — Local Tier Upgrade Watch
+
+Source: @nousr_computer, @jquesnelle (added April 2026)
+
+Nous Research produces the Hermes series of open-weight fine-tuned
+models. Hermes 3 (on Llama 3.x base) is currently among the strongest
+open-source instruction-following and function-calling models available.
+This matters specifically for the local model tiers:
+
+**Why this is moat-relevant:**
+- Competitors using cloud-only LLMs pay per-token for every agent call.
+  A strong Hermes checkpoint on a capable base model could move Tier 2.5
+  (currently Claude Haiku at $1/$5 per MTok) to free local inference.
+- Hermes tool-call reliability exceeds base Llama significantly —
+  critical for the orchestrator's structured output parsing (signals.json,
+  agent_registry.json, task templates).
+- Apache 2.0 licensed — no sovereignty concerns, full local deployment.
+
+**Current assessment (April 2026):**
+Hermes 3 on Llama 3.1 70B is a credible Tier 2.5 candidate IF
+runnable at useful speed on the UM890 Pro (128GB RAM). Not yet
+benchmarked. Evaluate when Nous releases a Hermes checkpoint on
+Llama 4 or equivalent next-gen base — benchmark against Claude
+Haiku 4.5 on structured output tasks (JSON schema adherence,
+function call format, agent prompt following).
+
+**Escalation trigger for research-scout-agent:**
+Any new Hermes release on a base model with >80B parameters
+or on a Llama 4 / next-gen base → escalate immediately via
+signals.json for model routing evaluation. Do not wait for
+the weekly digest.
+
+---
+
 ## Hard Rules for Phase 6 Live Trading
 
 LIMIT ORDERS ONLY — non-negotiable.
