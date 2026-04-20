@@ -254,6 +254,22 @@ executing the plan on schedule.
 
 ---
 
+## AI Models Watch List
+
+Models tracked as cost reduction candidates for the agent infrastructure.
+Evaluate at Phase 2 once baseline performance with Claude Sonnet 4.6 is established.
+
+### Tier 3 Cost Reduction Candidates
+
+**Kimi K2.6** — Released 2026-04-20. Open-weight, modified MIT license.
+- API pricing: $0.60/$2.50 per MTok input/output (5-6x cheaper than Claude Sonnet 4.6)
+- Benchmarks competitive with Claude Opus 4.6 and GPT-5.4 on coding and agent tasks
+- Agent Swarm feature (up to 300 parallel agents) is a closed platform feature — not applicable to this architecture
+- Priority: benchmark against Sonnet 4.6 at Phase 2 as potential Tier 3 replacement
+- Watch alongside DeepSeek V4 as the two most important cost reduction candidates
+
+---
+
 ## Review Schedule
 
 Review this document quarterly or after any major

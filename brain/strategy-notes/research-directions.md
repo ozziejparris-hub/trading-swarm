@@ -317,6 +317,21 @@ in conditions where they no longer have edge.
 
 ---
 
+## AI Model Watch List
+
+Models being tracked as cost reduction candidates for the agent infrastructure.
+Benchmark against Claude Sonnet 4.6 at Phase 2 before making any swap.
+
+**Kimi K2.6** — Released 2026-04-20. Open-weight, modified MIT license.
+- API pricing: $0.60/$2.50 per MTok input/output (5-6x cheaper than Claude Sonnet 4.6)
+- Benchmarks competitive with Claude Opus 4.6 and GPT-5.4 on coding and agent tasks
+- Agent Swarm feature (up to 300 parallel agents) is a closed platform feature — not applicable to this architecture
+- OpenAI-compatible API endpoint via platform.moonshot.ai — can be tested in spawn_agent.sh without code changes by swapping the base URL
+- Priority: benchmark against Sonnet 4.6 at Phase 2 as potential Tier 3 replacement
+- Watch alongside DeepSeek V4 as the two most important cost reduction candidates
+
+---
+
 ## Social Media Noise Contamination — Pre-Resolution Intelligence Gap
 
 Identified: April 2026
