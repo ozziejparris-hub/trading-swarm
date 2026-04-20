@@ -1,6 +1,6 @@
 # Server Runbook
 
-Last updated: 2026-03-29
+Last updated: 2026-04-20
 Maintained by: Oscar
 
 ---
@@ -305,6 +305,12 @@ sudo ufw status
 # Should show: 443/tcp ALLOW OUT
 ```
 
+> **Note — UFW outgoing policy:** UFW's default outgoing policy is set to `allow` (not `deny`).
+> This is intentional: Mullvad VPN's kill switch conflicts with `ufw default deny outgoing` and
+> prevents all traffic when the rule is active. Mullvad handles outbound traffic protection while
+> connected. **If Mullvad is ever removed**, run `sudo ufw default deny outgoing` and re-add
+> explicit allow rules for required ports (443, 53, etc.) before restarting the server.
+
 **Step 4 — Check if bot token is still valid:**
 ```bash
 curl "https://api.telegram.org/bot$TELEGRAM_AGENTS_TOKEN/getMe"
@@ -460,6 +466,37 @@ python scripts/pre_resolution_intelligence.py
 # Common error: database path wrong on Linux vs Windows
 # Check DB path in script matches actual location
 ```
+
+---
+
+## Section 11 — Mullvad Stuck on "Connecting"
+
+**Symptoms:** `mullvad status` shows "Connecting" indefinitely.
+Outbound internet access is blocked. Telegram alerts stop firing.
+
+**Cause:** UFW default outgoing policy can flip to `deny` (e.g. after a
+system update or manual UFW reset), which blocks the UDP/TCP packets
+Mullvad needs to establish its tunnel.
+
+**Fix:**
+```bash
+# Re-allow outgoing traffic so Mullvad can connect
+sudo ufw default allow outgoing
+
+# Force Mullvad to retry
+mullvad reconnect
+
+# Verify tunnel is up
+mullvad status
+# Should return: "Connected to <server>"
+
+# Confirm internet is back
+curl -I https://api.telegram.org
+```
+
+**After the tunnel is up:** Do NOT reset outgoing to `deny` — see the
+note in Section 6 Step 3. Mullvad's kill switch is the intended outbound
+protection mechanism on this server.
 
 ---
 
