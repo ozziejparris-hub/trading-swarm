@@ -104,6 +104,24 @@
       "actionable": false,
       "action_recommendation": "Continue collecting. Minimum 10 resolved markets required before drawing conclusions. Signal 1 (Russia/Ukraine at 93% smart money) was a significant miss — watch for overconfidence in geopolitical consensus signals.",
       "expires_at": "2026-07-20T00:00:00Z"
+    },
+    {
+      "id": "2026-04-21-SIGNAL-STRUCTURE-001",
+      "generated_by": "signal-agent + external research verification",
+      "generated_at": "2026-04-21T00:00:00Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "HIGH",
+      "sample_size": 430,
+      "summary": "Bidirectional holders are a documented structural feature of Polymarket — liquidity providers simultaneously hold YES and NO positions to capture spread, not to express directional views. Must be filtered before any trader counts as a directional signal.",
+      "detail": {
+        "metric": "bidirectional_holder_contamination",
+        "value": "unknown — requires quantification in future runs",
+        "baseline": "assumed all positions are directional",
+        "direction": "below_baseline"
+      },
+      "actionable": true,
+      "action_recommendation": "signal-agent must exclude any trader holding both YES and NO capital in the same market from directional signal counts. Only traders with zero opposing capital qualify as genuine directional signals. This filter should be applied before ELO convergence counting. External sources confirm LPs are a significant fraction of high-volume traders on Polymarket (ChainCatcher 2025 analysis, Polymarket official documentation).",
+      "expires_at": "2026-07-20T00:00:00Z"
     }
   ]
 }

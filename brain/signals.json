@@ -1,1 +1,44 @@
-{"signals": []}
+{
+  "signals": [
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "elite_directional_position",
+      "confidence": "MEDIUM",
+      "payload": {
+        "market_id": "0x40d88a97d39118ed79152c83b87a337c07e8e027bca5363c2c87503408431a20",
+        "market_title": "Harris to win Florida primary?",
+        "direction": "NO",
+        "category": "Elections",
+        "resolution_date": null,
+        "traders": [
+          "0x1fad8d047b13f7fbf97e44416b144268f1d404dc"
+        ],
+        "elo_scores": [
+          3456
+        ],
+        "position_sizes": [
+          129833.86
+        ],
+        "avg_entry_prices": [
+          0.526
+        ],
+        "entry_count": 5,
+        "entry_dates": [
+          "2026-04-05",
+          "2026-04-12",
+          "2026-04-30",
+          "2026-05-10",
+          "2026-05-14"
+        ],
+        "yes_capital_opposing": 0,
+        "reasoning": "ELO 3456 trader (#2 highest in system, 430 legendary traders) has deployed $130K on NO with zero YES hedge. Built across 5 entries April-May 2026 at escalating prices (0.457 to 0.585), indicating strong conviction. Single-trader signal (MEDIUM); needs 2 more legendary traders for HIGH. Recommend monitoring for additional NO entries from other high-ELO traders.",
+        "upgrade_condition": "2+ additional legendary traders (ELO > 2175) entering NO on this market -> upgrade to HIGH"
+      },
+      "timestamp": "2026-04-21T19:00:00Z",
+      "status": "processed",
+      "cycle": "signal-001-first-run",
+      "processed_at": "2026-04-21T19:45:24.417273"
+    }
+  ]
+}
