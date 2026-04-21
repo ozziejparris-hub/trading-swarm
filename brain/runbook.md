@@ -1,6 +1,6 @@
 # Server Runbook
 
-Last updated: 2026-04-20
+Last updated: 2026-04-21
 Maintained by: Oscar
 
 ---
@@ -497,6 +497,99 @@ curl -I https://api.telegram.org
 **After the tunnel is up:** Do NOT reset outgoing to `deny` — see the
 note in Section 6 Step 3. Mullvad's kill switch is the intended outbound
 protection mechanism on this server.
+
+---
+
+## Section 12 — Weekly Swarm Review (Human Checklist)
+
+This is the recurring human review Oscar runs to verify the swarm is functioning
+as intended. It is intentionally lightweight — the goal is to catch drift early,
+not to micromanage the agents.
+
+> **Update this checklist as the swarm matures.** Once more agents are active and
+> Phase 5 gate criteria are approaching, expand the gate tracker and add
+> agent-specific health checks as needed.
+
+---
+
+### Daily Check (~2 minutes)
+
+Run this every morning before starting work:
+
+```bash
+ssh trading-swarm
+sudo journalctl -u trading-swarm -n 20
+```
+
+Then check Telegram for any alert messages from the orchestrator.
+
+**What you're looking for:**
+- No `ERROR` or `CRITICAL` lines in journalctl
+- No Telegram alerts that you haven't already triaged
+- If anything looks wrong, find the relevant Section above before acting
+
+---
+
+### Weekly Check (~10 minutes)
+
+Run every Monday after the daily check:
+
+**1. Did feedback-loop-agent write new findings?**
+```bash
+cat ~/trading-swarm/brain/findings.json
+```
+Look for new entries with `"status": "resolved"` since last week. The count should
+be climbing toward the Phase 5 gate of 3 HIGH-confidence findings.
+
+**2. Were signals generated and acted on?**
+```bash
+cat ~/trading-swarm/brain/signals.json
+```
+Any `"status": "pending"` signals older than a few hours may indicate a stuck agent.
+Any `"status": "processed"` entries show the orchestrator is routing correctly.
+
+**3. Did any agents complete tasks this week?**
+```bash
+cat ~/trading-swarm/orchestrator/agent_registry.json
+```
+Look for entries with `"status": "completed"` and a recent timestamp. Zero completions
+for a full week is a signal something is stalled.
+
+**4. Were there orchestrator errors across the week?**
+```bash
+tail -100 ~/trading-swarm/logs/orchestrator.log
+```
+Scan for `ERROR`, `CRITICAL`, or repeated `retry` entries. A single failure followed by
+a successful retry is fine. Repeated failures on the same task need investigation.
+
+---
+
+### Phase 5 Gate Tracker
+
+Update this block each week with current status:
+
+| Gate Criterion | Status | Notes |
+|----------------|--------|-------|
+| feedback-loop-agent weekly runs | 0 / 4 | Started 2026-04-21 |
+| HIGH-confidence findings in findings.json | 0 / 3 | Minimum 20 resolved markets each |
+| Pre-resolution accuracy ≥60% | 50% from 4 samples — **below threshold** | STR-002; need 10+ markets |
+| RQ1.1 (ELO predicts Brier T+1) | Not started | Blocked on quant-research-agent activation |
+| RQ3.2 (elite consensus > market price) | Not started | Blocked on quant-research-agent activation |
+
+**All 4 criteria must be met before live trading.** Do not lower or skip any gate.
+
+---
+
+### What Healthy Looks Like
+
+| Signal | Healthy | Needs Attention |
+|--------|---------|-----------------|
+| journalctl -u trading-swarm | No errors; regular 10-min loop entries | Any ERROR or CRITICAL; silence > 30 min |
+| Telegram | Routine status messages; no unresolved alerts | Silence > 2 hours; repeated escalation alerts |
+| signals.json | Signals processed promptly; no stale pending entries | Pending signals > 6 hours old |
+| agent_registry.json | Tasks completing; no agent stuck in `running` for > 4 hours | Same task retried 3+ times; registry not updating |
+| findings.json | New entries accumulating over weeks | No new entries after 2+ weeks of operation |
+| Anthropic usage | Stable weekly cost; no unexpected spikes | Cost 2× above prior week without explanation |
 
 ---
 
