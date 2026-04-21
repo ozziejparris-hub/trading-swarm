@@ -68,6 +68,7 @@ SESSION_NAME="$AGENT_TYPE-$TASK_ID"
 BRANCH_NAME="feat/$TASK_ID"
 WORKTREE_PATH="$WORKTREES_DIR/$TASK_ID"
 LOG_FILE="$BASE_DIR/logs/agent_logs/$TASK_ID.log"
+PROMPT_FILE="/tmp/$TASK_ID.prompt"
 
 # ── Select model based on tier ───────────────
 case $TIER in
@@ -150,11 +151,14 @@ Tier $TIER — $MODEL_NAME
 $(date -u +%Y-%m-%dT%H:%M:%SZ)
 "
 
-# ── Save prompt to log ────────────────────────
+# ── Save prompt to log and temp file ─────────
 mkdir -p "$(dirname $LOG_FILE)"
 echo "=== Agent Prompt ===" > "$LOG_FILE"
 echo "$AGENT_PROMPT" >> "$LOG_FILE"
 echo "=== Agent Output ===" >> "$LOG_FILE"
+
+# Write to temp file to avoid tmux character limit when passing prompt inline
+printf '%s' "$AGENT_PROMPT" > "$PROMPT_FILE"
 
 # ── Create git worktree for paid tiers ────────
 if [ "$NEEDS_WORKTREE" = true ]; then
@@ -183,14 +187,14 @@ tmux new-session -d \
 
 # ── Run the agent inside the session ─────────
 if [ "$NEEDS_WORKTREE" = true ]; then
-    # Paid Claude models: pipe prompt in, log output
+    # Paid Claude models: read prompt from file to avoid tmux character limit
     tmux send-keys -t "$SESSION_NAME" \
-        "$MODEL_CMD \"$AGENT_PROMPT\" 2>&1 | tee -a $LOG_FILE" \
+        "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE" \
         Enter
 else
-    # Local Ollama models: simpler invocation
+    # Local Ollama models: read prompt from file to avoid tmux character limit
     tmux send-keys -t "$SESSION_NAME" \
-        "echo '$AGENT_PROMPT' | $MODEL_CMD 2>&1 | tee -a $LOG_FILE" \
+        "cat $PROMPT_FILE | $MODEL_CMD 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE" \
         Enter
 fi
 
