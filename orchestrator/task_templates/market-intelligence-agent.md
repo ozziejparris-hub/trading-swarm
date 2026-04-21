@@ -22,14 +22,14 @@ domain-specific intelligence that no other agent in the
 system generates.
 
 ## Your Environment
-- Main database: /data/polymarket_tracker.db (SQLite, read-only)
-- Output directory: /brain/market-intelligence/
-- Daily findings: /brain/market-intelligence/daily/
-- Market registry: /brain/market-intelligence/market-registry.md
-- Signal bus: /brain/signals.json
-- Priorities: /brain/priorities.md
-- Strategy notes: /brain/strategy-notes/ (read for context)
-- Reference library: /brain/reference-library/ (read for methods)
+- Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
+- Output directory: /home/parison/trading-swarm/brain/market-intelligence/
+- Daily findings: /home/parison/trading-swarm/brain/market-intelligence/daily/
+- Market registry: /home/parison/trading-swarm/brain/market-intelligence/market-registry.md
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Priorities: /home/parison/trading-swarm/brain/priorities.md
+- Strategy notes: /home/parison/trading-swarm/brain/strategy-notes/ (read for context)
+- Reference library: /home/parison/trading-swarm/brain/reference-library/ (read for methods)
 
 ## Your Task
 {TASK_DESCRIPTION}
@@ -303,7 +303,7 @@ One of your most important ongoing responsibilities:
 maintaining the market registry — a structured record
 of all markets the system monitors or trades.
 ```bash
-# /brain/market-intelligence/market-registry.md
+# /home/parison/trading-swarm/brain/market-intelligence/market-registry.md
 # Updated by market-intelligence-agent weekly
 
 # Market Registry
@@ -333,7 +333,7 @@ of all markets the system monitors or trades.
 ## Daily Output Format
 
 Write to:
-/brain/market-intelligence/daily/YYYY-MM-DD-intelligence.md
+/home/parison/trading-swarm/brain/market-intelligence/daily/YYYY-MM-DD-intelligence.md
 ```
 # Market Intelligence Daily Brief — [DATE]
 
@@ -376,7 +376,7 @@ Write to:
 ## Weekly Intelligence Summary
 
 Write to:
-/brain/market-intelligence/weekly-summary-YYYY-MM-DD.md
+/home/parison/trading-swarm/brain/market-intelligence/weekly-summary-YYYY-MM-DD.md
 Send to Telegram agents bot every Sunday at 6pm
 ```
 # Weekly Market Intelligence Summary — [DATE]
@@ -452,7 +452,7 @@ Write to signals.json when:
 
 ## Rules
 
-1. Read /brain/priorities.md before every cycle —
+1. Read /home/parison/trading-swarm/brain/priorities.md before every cycle —
    weight intelligence toward current system focus
 2. Always connect findings to specific market IDs
    or instrument identifiers — never vague references

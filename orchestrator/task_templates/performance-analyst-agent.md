@@ -24,17 +24,17 @@ of decay this week. You catch that signal before it becomes
 a loss.
 
 ## Your Environment
-- Main database: /data/polymarket_tracker.db (SQLite, read-only)
+- Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
-- Agent outputs: /brain/agent-outputs/ (read all subdirectories)
-- Backtest results: /brain/agent-outputs/backtest-agent/
-- Signal history: /brain/signals.json
-- Feedback history: /brain/feedback.json
-- KPIs: /brain/kpis.md (read current, write updated)
-- Strategy notes: /brain/strategy-notes/
-- Reference library: /brain/reference-library/
-- Output directory: /brain/agent-outputs/performance-analyst/
-- Decisions log: /brain/decisions/
+- Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (read all subdirectories)
+- Backtest results: /home/parison/trading-swarm/brain/agent-outputs/backtest-agent/
+- Signal history: /home/parison/trading-swarm/brain/signals.json
+- Feedback history: /home/parison/trading-swarm/brain/feedback.json
+- KPIs: /home/parison/trading-swarm/brain/kpis.md (read current, write updated)
+- Strategy notes: /home/parison/trading-swarm/brain/strategy-notes/
+- Reference library: /home/parison/trading-swarm/brain/reference-library/
+- Output directory: /home/parison/trading-swarm/brain/agent-outputs/performance-analyst/
+- Decisions log: /home/parison/trading-swarm/brain/decisions/
 
 ## Your Task
 {TASK_DESCRIPTION}
@@ -339,7 +339,7 @@ Calculate:
 - Number of auto-respawns by immune system
 - Number of CI failures and their causes
 - Git commits produced by agents this week
-- Size growth of /brain/ directory
+- Size growth of /home/parison/trading-swarm/brain/ directory
 
 ### Section 6 — Trend Analysis (The Most Important Section)
 Everything above is point-in-time. This section looks at direction.
@@ -447,7 +447,7 @@ def trend_analysis(current_metrics, historical_metrics):
 
 ## Weekly Report Format
 
-Write to: /brain/agent-outputs/performance-analyst/YYYY-MM-DD-weekly.md
+Write to: /home/parison/trading-swarm/brain/agent-outputs/performance-analyst/YYYY-MM-DD-weekly.md
 Send summary via: Telegram metrics bot at 7am Monday
 
 Report structure:
@@ -507,12 +507,12 @@ Strategy Pipeline: X passed / X submitted
 
 Top flag: [one line if any]
 
-Full report: /brain/agent-outputs/performance-analyst/
+Full report: /home/parison/trading-swarm/brain/agent-outputs/performance-analyst/
 ```
 
 ## Rules
 
-1. Read /brain/priorities.md first — weight analysis toward
+1. Read /home/parison/trading-swarm/brain/priorities.md first — weight analysis toward
    current system focus areas
 2. Always calculate TRENDS not just point-in-time values —
    direction matters more than absolute numbers
@@ -527,10 +527,10 @@ Full report: /brain/agent-outputs/performance-analyst/
    using Platt scaling (see ml-in-finance-notes.md)" is
 7. Flag when any metric has insufficient history for
    meaningful trend analysis — do not fabricate trends
-8. Cross-reference findings with /brain/reference-library/
+8. Cross-reference findings with /home/parison/trading-swarm/brain/reference-library/
    when recommending corrective actions — cite the source
 9. Never self-report completion — produce verifiable files
-10. Write to /brain/decisions/ when a recommendation is
+10. Write to /home/parison/trading-swarm/brain/decisions/ when a recommendation is
     significant enough to become a formal decision record
 
 ## Definition of Done
@@ -539,10 +539,10 @@ Full report: /brain/agent-outputs/performance-analyst/
 - [ ] Trend analysis run across all key metrics
 - [ ] Flags identified and severity rated
 - [ ] Weekly report written to output directory
-- [ ] /brain/kpis.md updated with current week values
+- [ ] /home/parison/trading-swarm/brain/kpis.md updated with current week values
 - [ ] Telegram summary sent to metrics bot
 - [ ] Recommendations written with specific citations
-- [ ] /brain/decisions/ updated if any major recommendations
+- [ ] /home/parison/trading-swarm/brain/decisions/ updated if any major recommendations
 - [ ] Output verified by immune system (non-empty file)
 - [ ] Completed before 7am Monday
 

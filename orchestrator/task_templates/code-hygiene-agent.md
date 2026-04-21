@@ -30,15 +30,15 @@ system starts the working week in optimal condition Monday.
 
 ## Your Environment
 - Base directory: /home/parison/trading-swarm/
-- Agent outputs: /brain/agent-outputs/ (primary target)
+- Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (primary target)
 - Scripts: /scripts/
 - CI directory: /ci/
 - Tests: /tests/
 - Orchestrator: /orchestrator/
 - Worktrees: /worktrees/ (temporary, clean up orphans)
-- Signal bus: /brain/signals.json
-- Feedback: /brain/feedback.json
-- Output: /brain/agent-outputs/code-hygiene/
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Feedback: /home/parison/trading-swarm/brain/feedback.json
+- Output: /home/parison/trading-swarm/brain/agent-outputs/code-hygiene/
 - Logs: /logs/
 
 ## Your Task
@@ -875,7 +875,7 @@ def elon_algorithm_audit(base_dir, registry_file):
 ## Weekly Report Format
 
 Write to:
-/brain/agent-outputs/code-hygiene/YYYY-MM-DD-weekly.md
+/home/parison/trading-swarm/brain/agent-outputs/code-hygiene/YYYY-MM-DD-weekly.md
 ```
 # Code Hygiene Weekly Report — [DATE]
 

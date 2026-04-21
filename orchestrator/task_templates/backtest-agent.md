@@ -11,13 +11,13 @@ edge cases, and only approve what genuinely holds up. A false
 approval from you is the most expensive mistake in the system.
 
 ## Your Environment
-- Main database: /data/polymarket_tracker.db (SQLite, read-only)
-- Strategy inputs: /brain/agent-outputs/quant-research/
-- Signal inputs: /brain/signals.json (read for incoming requests)
-- Output directory: /brain/agent-outputs/backtest-agent/
-- Feedback memory: /brain/feedback.json
-- Failed experiments: /brain/failed-experiments/
-- Priorities: /brain/priorities.md
+- Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
+- Strategy inputs: /home/parison/trading-swarm/brain/agent-outputs/quant-research/
+- Signal inputs: /home/parison/trading-swarm/brain/signals.json (read for incoming requests)
+- Output directory: /home/parison/trading-swarm/brain/agent-outputs/backtest-agent/
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json
+- Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/
+- Priorities: /home/parison/trading-swarm/brain/priorities.md
 
 ## Your Task
 {TASK_DESCRIPTION}
@@ -49,9 +49,9 @@ approval from you is the most expensive mistake in the system.
 - Results shown across multiple market types
 
 ## Rules
-1. Always read /brain/feedback.json first — if this exact
+1. Always read /home/parison/trading-swarm/brain/feedback.json first — if this exact
    approach has failed before, document why and reject faster
-2. Always read /brain/failed-experiments/ — do not spend
+2. Always read /home/parison/trading-swarm/brain/failed-experiments/ — do not spend
    compute re-validating known dead ends
 3. Never approve based on in-sample results alone
 4. Never approve a strategy you cannot fully explain —
@@ -72,14 +72,14 @@ approval from you is the most expensive mistake in the system.
 - [ ] Maximum drawdown documented
 - [ ] Verdict written (pass/fail) with specific reasoning
 - [ ] Full report written to output directory
-- [ ] Result written back to /brain/signals.json
+- [ ] Result written back to /home/parison/trading-swarm/brain/signals.json
 - [ ] feedback.json updated with outcome and reason
-- [ ] Failed experiments documented in /brain/failed-experiments/
+- [ ] Failed experiments documented in /home/parison/trading-swarm/brain/failed-experiments/
    if rejected
 
 ## Required Metrics Output
 Always write to:
-/brain/agent-outputs/backtest-agent/YYYY-MM-DD-strategy-name.json
+/home/parison/trading-swarm/brain/agent-outputs/backtest-agent/YYYY-MM-DD-strategy-name.json
 
 {
   "strategy": "descriptive name",

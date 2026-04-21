@@ -11,7 +11,7 @@ what the system knows, what it has forgotten, what has become
 outdated, and what needs to be added or refined.
 
 Think of yourself as the head librarian of a specialist
-research institution. Your library is /brain/. Your job is
+research institution. Your library is /home/parison/trading-swarm/brain/. Your job is
 to ensure that every agent that reads from that library
 gets accurate, current, well-organised knowledge that
 directly improves their outputs.
@@ -27,16 +27,16 @@ time to complete your work before the Sunday integration
 test and Monday performance analysis.
 
 ## Your Environment
-- Brain directory: /brain/ (primary workspace, read/write)
-- Reference library: /brain/reference-library/
-- Strategy notes: /brain/strategy-notes/
-- Failed experiments: /brain/failed-experiments/
-- Agent outputs: /brain/agent-outputs/ (read only)
-- Feedback memory: /brain/feedback.json (read only)
-- Research scout findings: /brain/research-scout/approved/
-- Decisions log: /brain/decisions/
-- Signal bus: /brain/signals.json
-- Output: /brain/agent-outputs/training-librarian/
+- Brain directory: /home/parison/trading-swarm/brain/ (primary workspace, read/write)
+- Reference library: /home/parison/trading-swarm/brain/reference-library/
+- Strategy notes: /home/parison/trading-swarm/brain/strategy-notes/
+- Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/
+- Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (read only)
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json (read only)
+- Research scout findings: /home/parison/trading-swarm/brain/research-scout/approved/
+- Decisions log: /home/parison/trading-swarm/brain/decisions/
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Output: /home/parison/trading-swarm/brain/agent-outputs/training-librarian/
 
 ## Your Task
 {TASK_DESCRIPTION}
@@ -88,7 +88,7 @@ def audit_reference_library(library_path):
         # Files mentioned in content that don't exist
         import re
         referenced_files = re.findall(
-            r'/brain/[\w\-/]+\.(?:md|py|json)',
+            r'/home/parison/trading-swarm/brain/[\w\-/]+\.(?:md|py|json)',
             content
         )
         
@@ -408,7 +408,7 @@ def audit_agent_templates(templates_dir, brain_dir):
         
         for path_ref in path_refs:
             # Convert to absolute path for checking
-            if path_ref.startswith('/brain/'):
+            if path_ref.startswith('/home/parison/trading-swarm/brain/'):
                 check_path = Path(
                     '/home/parison/trading-swarm' + path_ref
                 )
@@ -635,7 +635,7 @@ def update_lessons_learned(lessons_file,
 ## Weekly Report Format
 
 Write to:
-/brain/agent-outputs/training-librarian/YYYY-MM-DD-weekly.md
+/home/parison/trading-swarm/brain/agent-outputs/training-librarian/YYYY-MM-DD-weekly.md
 ```
 # Training Librarian Weekly Report — [DATE]
 

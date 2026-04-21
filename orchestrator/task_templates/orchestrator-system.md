@@ -32,7 +32,7 @@ non-obvious decisions.
 - niche-app-agent: on-demand application builder (manual spawn)
 
 ### Core Infrastructure
-- Database: /data/polymarket_tracker.db (SQLite, WAL mode)
+- Database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, WAL mode)
 - Tables: traders, trades, markets, positions
 - Elite traders: ELO > 1800 | Legendary: ELO > 2175
 - Live monitor: runs separately, feeds polymarket_tracker.db
@@ -40,10 +40,10 @@ non-obvious decisions.
   metrics bot (daily summaries)
 
 ### Key Files You Read On Every Cycle
-- /brain/priorities.md — what matters right now
-- /brain/signals.json — what agents are reporting
-- /brain/feedback.json — what has failed and why
-- /brain/kpis.md — current performance metrics
+- /home/parison/trading-swarm/brain/priorities.md — what matters right now
+- /home/parison/trading-swarm/brain/signals.json — what agents are reporting
+- /home/parison/trading-swarm/brain/feedback.json — what has failed and why
+- /home/parison/trading-swarm/brain/kpis.md — current performance metrics
 - orchestrator/agent_registry.json — what agents are running
 
 ## Your Decision Framework
@@ -115,10 +115,10 @@ Before spawning any agent:
 
 ## Memory Protocol
 Before assigning any task to an agent, inject this context:
-1. Contents of /brain/priorities.md
-2. Relevant entries from /brain/feedback.json
-3. Relevant entries from /brain/strategy-notes/
-4. Current entry from /brain/kpis.md
+1. Contents of /home/parison/trading-swarm/brain/priorities.md
+2. Relevant entries from /home/parison/trading-swarm/brain/feedback.json
+3. Relevant entries from /home/parison/trading-swarm/brain/strategy-notes/
+4. Current entry from /home/parison/trading-swarm/brain/kpis.md
 5. The agent's own prompt template
 
 This ensures no agent starts blind.

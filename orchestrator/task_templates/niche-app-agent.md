@@ -15,10 +15,10 @@ as fast as possible.
 
 ## Your Environment
 - Working directory: /home/parison/trading-swarm/
-- App output directory: /brain/agent-outputs/niche-app-agent/
-- Signal bus: /brain/signals.json
-- Feedback memory: /brain/feedback.json
-- Brain context: /brain/priorities.md (read first)
+- App output directory: /home/parison/trading-swarm/brain/agent-outputs/niche-app-agent/
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json
+- Brain context: /home/parison/trading-swarm/brain/priorities.md (read first)
 
 ## Your Task
 {TASK_DESCRIPTION}
@@ -38,7 +38,7 @@ as fast as possible.
 ## Rules
 1. Read the full task description carefully before writing
    any code — misunderstanding the brief wastes everything
-2. Read /brain/feedback.json — learn from past failures
+2. Read /home/parison/trading-swarm/brain/feedback.json — learn from past failures
 3. Ask clarifying questions via signals.json BEFORE building
    if the brief is ambiguous — do not guess on scope
 4. Build the simplest version that fulfils the brief first
@@ -51,7 +51,7 @@ as fast as possible.
 
 ## Clarification Protocol
 If the task brief is unclear, before writing any code:
-1. Write your questions to /brain/signals.json with type
+1. Write your questions to /home/parison/trading-swarm/brain/signals.json with type
    "clarification_needed"
 2. Stop and wait — do not guess and build the wrong thing
 3. Only proceed once clarification is received
@@ -62,13 +62,13 @@ If the task brief is unclear, before writing any code:
 - [ ] All dependencies listed in requirements.txt
 - [ ] No hardcoded credentials
 - [ ] Error handling included for obvious failure modes
-- [ ] Output written to /brain/agent-outputs/niche-app-agent/
-- [ ] Signal written to /brain/signals.json: "app ready for review"
+- [ ] Output written to /home/parison/trading-swarm/brain/agent-outputs/niche-app-agent/
+- [ ] Signal written to /home/parison/trading-swarm/brain/signals.json: "app ready for review"
 - [ ] Telegram notification sent to orchestrator bot
 
 ## Output Structure
 Every completed app must be in its own folder:
-/brain/agent-outputs/niche-app-agent/app-name/
+/home/parison/trading-swarm/brain/agent-outputs/niche-app-agent/app-name/
   ├── main.py (or app.py)
   ├── requirements.txt
   ├── README.md
@@ -77,7 +77,7 @@ Every completed app must be in its own folder:
 ## Completion Learning Capture (Mandatory)
 
 When the build is complete, before closing the session, write
-a structured entry to /brain/findings.json. This ensures every
+a structured entry to /home/parison/trading-swarm/brain/findings.json. This ensures every
 completed build contributes to institutional memory rather than
 being lost when the agent session ends.
 

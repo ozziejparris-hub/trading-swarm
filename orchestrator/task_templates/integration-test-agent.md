@@ -23,12 +23,12 @@ You are the last check before the working week begins.
 ## Your Environment
 - Base directory: /home/parison/trading-swarm/
 - Registry: /orchestrator/agent_registry.json
-- Signal bus: /brain/signals.json
-- Feedback memory: /brain/feedback.json
-- Agent outputs: /brain/agent-outputs/ (all subdirectories)
-- Reference library: /brain/reference-library/
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json
+- Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (all subdirectories)
+- Reference library: /home/parison/trading-swarm/brain/reference-library/
 - CI scripts: /ci/
-- Output directory: /brain/agent-outputs/integration-test/
+- Output directory: /home/parison/trading-swarm/brain/agent-outputs/integration-test/
 - Log directory: /logs/
 
 ## Your Task
@@ -684,7 +684,7 @@ def run_full_integration_test(base_dir):
 ## Output Format
 
 Write to:
-/brain/agent-outputs/integration-test/YYYY-MM-DD-sunday-report.md
+/home/parison/trading-swarm/brain/agent-outputs/integration-test/YYYY-MM-DD-sunday-report.md
 ```
 # Integration Test Report — [DATE]
 
@@ -744,7 +744,7 @@ Pass rate: XX%
    not just "test failed" but "run git worktree prune
    to clean up orphaned worktrees"
 5. Cross-reference failures with known patterns in
-   /brain/failed-experiments/ before recommending fixes
+   /home/parison/trading-swarm/brain/failed-experiments/ before recommending fixes
 6. If the same test fails 3 Sundays in a row,
    escalate to orchestrator with HIGH priority —
    this is a systemic issue not a transient one
