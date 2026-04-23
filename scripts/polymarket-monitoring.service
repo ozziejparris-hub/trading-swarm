@@ -13,6 +13,7 @@ WorkingDirectory=/home/parison/projects/first-repo
 
 # Load environment variables from trading env file
 EnvironmentFile=/home/parison/.env_trading
+Environment=PYTHONUNBUFFERED=1
 
 # The monitoring script
 ExecStart=/usr/bin/python3 scripts/start_monitoring.py
