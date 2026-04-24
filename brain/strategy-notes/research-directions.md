@@ -313,7 +313,59 @@ Questions worth investigating:
 This protects your system from deploying strategies
 in conditions where they no longer have edge.
 
+---
 
+## Direction 10 — News-to-Signal Intelligence Layer (Phase 5-6)
+
+The core idea: press conferences, news articles, and social media
+contain structured signals that move markets with a delay of minutes
+to hours. Claude can extract these as JSON before the market adjusts.
+
+**Validated architecture precedent:**
+The tennis stack Layer 4 architecture demonstrated this pattern:
+injury flags, form deltas, surface comfort scores — all extracted as
+structured JSON from unstructured text and fed into a decision engine.
+The geopolitics equivalent is: escalation signals, diplomatic momentum,
+ceasefire probability shifts.
+
+**Live proof (Feb 28 2026):**
+Six wallets traded on the Iran/Israel/US strike market 71 minutes
+before news broke, at 17% implied probability. The pre-resolution
+intelligence layer needs to detect the signals those traders were
+reading — before the market adjusts, not after. This is the gap.
+
+**Proposed implementation:**
+Claude reads diplomatic statements, official press releases, and X posts
+from key accounts (foreign ministries, senior officials, verified
+journalists on the beat). Outputs structured JSON per market:
+
+```json
+{
+  "escalation_flag": true,
+  "ceasefire_probability_delta": -0.12,
+  "key_actor_positioning": "US SecDef statement ambiguous on red lines",
+  "confidence": 0.7,
+  "source_count": 3
+}
+```
+
+Output feeds into pre_resolution_intelligence.py as an additional
+signal layer alongside the ELO wallet tracking. ELO tells you
+WHERE smart money is positioned. This tells you WHY.
+
+**Phase:** 5-6, after signal quality is validated on wallet-based signals.
+Do not build before Phase 5 — validate the ELO signal layer first.
+
+Questions worth investigating:
+- Which source types (official statements vs journalist posts vs wire)
+  have the best signal-to-noise ratio for geopolitics markets?
+- What is the average lag between a structured news signal and
+  a measurable market price movement? (This determines build urgency.)
+- Can Claude reliably extract escalation_flag as a binary from
+  ambiguous diplomatic language? Test on historical statements
+  with known market outcomes.
+- Does combining news-signal JSON with elite wallet positioning
+  improve Brier score over wallet signal alone?
 
 ---
 
@@ -862,6 +914,59 @@ market life. This is a strategy, not just a signal.
 
 ---
 
+### Category 7 — Market Efficiency Creep
+*As leaderboard visibility grows, does broadcasting ELO signals
+degrade the edge those signals are based on?*
+
+**RQ7.1 — Signal Crowding Detection**
+Hypothesis: As copy trading and leaderboard visibility have grown,
+simple top-wallet following is being front-run in real time.
+At some point, ELO signal broadcasting degrades its own edge
+by attracting enough followers to move the market before position
+entry is complete.
+
+Background: PolyTrack, Kiyotaka, Polycool, and HashDive all
+surface elite wallet activity with varying latency. As these tools
+proliferate, the window between a legendary trader entering a position
+and the copy-following crowd reacting is shrinking. A signal that
+had a 30-minute entry window in 2024 may have a 5-minute window
+by Phase 6. The ELO edge is in identifying the signal; the timing
+edge is the moat that competition erodes.
+
+Test: For all resolved markets, measure the time lag between first
+legendary trader entry and subsequent volume spike (>2x baseline).
+Track this lag over calendar time (2024 vs 2025 vs 2026).
+Hypothesis: the lag is shrinking monotonically.
+
+Secondary test: measure whether entry price disadvantage for followers
+(entering after the legendary trader) has grown over time. If the
+market moves further against followers on entry, crowding is confirmed.
+
+Data: trades table (timestamps, prices, volumes),
+traders table (ELO tiers),
+markets table (creation date, category)
+
+Success criterion: Measurable reduction in entry lag over time
+AND measurable increase in price slippage for follow-on entry.
+
+Null hypothesis: Entry lag and slippage are stable over time
+(crowding is not yet affecting signal quality).
+
+Implications for build decisions:
+- If crowding is confirmed, the moat response is longitudinal ELO
+  trajectory (not available to leaderboard scrapers) and pre-resolution
+  intelligence (news-to-signal layer) — both identify position intent
+  before public entry is visible.
+- Static leaderboard copying degrades; trajectory-aware calibrated
+  skill scoring does not. This validates the Direction 10 build priority.
+- Flag for Phase 5 paper trading validation: measure live entry lag
+  vs the historical baseline established here.
+
+Flag: Phase 5 paper trading validation. Do not build mitigation
+before measuring the problem.
+
+---
+
 ### Priority Order for Quant-Research Agent
 
 Run these in this order. Earlier questions validate
@@ -987,3 +1092,21 @@ Already confirmed in bot_detection.py RQ0.2 work.
 52% win rate for systematic approaches on sports.
 Geopolitics and macro is where edge exists.
 Category filter must exclude sports in Phase 6.
+
+---
+
+## Validated Geopolitics Trader Watch List
+
+Live examples of real-world geopolitics edge — use these to calibrate
+what skill looks like in the category this system targets.
+
+**@wickier** — polymarket.com/@wickier
+Strategy: buys $10K-$95K on conflict outcomes at 2¢-18¢ odds.
+Returns: 800%-2,000% per trade.
+Best single trade: $9,951 → $217,308 (+2,083%) on Iran/Israel/US conflict.
+All-time P&L: $660,484. 919 predictions logged.
+Significance: real-world validation that geopolitics at low odds is where
+the edge exists — exactly the category this system targets. The position
+sizing ($10K-$95K range) and the odds range (2¢-18¢) are the empirical
+benchmarks for what informed geopolitics trading looks like in practice.
+Cross-reference against ELO system when geopolitics wallet data is pulled.
