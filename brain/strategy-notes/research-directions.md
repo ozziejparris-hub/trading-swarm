@@ -1110,3 +1110,24 @@ the edge exists — exactly the category this system targets. The position
 sizing ($10K-$95K range) and the odds range (2¢-18¢) are the empirical
 benchmarks for what informed geopolitics trading looks like in practice.
 Cross-reference against ELO system when geopolitics wallet data is pulled.
+
+---
+
+## Community Tool Directories — Research-Scout Monitoring
+
+The most complete community-maintained indexes of prediction market tools.
+Research-scout-agent should check both weekly for new entries and flag
+anything relevant to competitive-moat.md or this file.
+
+**github.com/aarora4/Awesome-Prediction-Market-Tools**
+Broadest coverage — Polymarket, Kalshi, Manifold, and adjacent tools.
+Preferred source for cross-platform competitive intelligence.
+
+**github.com/harish-garg/Awesome-Polymarket-Tools**
+Polymarket-specific curated index. More focused; useful for catching
+new entrants in the core competitive space before they gain traction.
+
+Monitoring instruction: check both repos weekly. If a new tool appears
+that overlaps with ELO tracking, wallet clustering, informed trader
+detection, or pre-resolution intelligence — escalate via signals.json
+with signal_type: COMPETITIVE_ALERT before the weekly digest.

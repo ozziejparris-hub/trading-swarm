@@ -1,6 +1,6 @@
 # Competitive Moat
 
-Last updated: 2026-04-24
+Last updated: 2026-04-24 (second update)
 Maintained by: Oscar (review quarterly)
 
 ---
@@ -200,6 +200,14 @@ as the system matures:
 - RQ0.1: Wash trading contamination audit
 - RQ0.2: Bot and automated trader detection
 
+  Documented SPEED_ARBITRAGE example — **swisstony**: $6.2M all-time PnL
+  via 84,883 predictions. Strategy: broadcast lag arbitrage (15-40 second
+  TV delay vs real-time stadium API data) combined with multi-outcome
+  hedging across 23+ directions in a single sports game. Average profit
+  $156 per trade at high frequency. Correctly classified by bot_detection.py
+  as SPEED_ARBITRAGE. Do not follow into positions — the edge is structural
+  (data speed), not informational, and disappears on copy entry.
+
 **Phase 3 (research questions):**
 - RQ2.4: Do category specialists outperform generalists
   in their specialist categories? Track specialisation
@@ -334,6 +342,16 @@ Add volume spike monitoring as Phase 5-6 addition.
 3x normal volume in 10-minute window + elite open positions
 = smart money exit signal. Close position, don't open one.
 
+**Tail-end structural edge (ChainCatcher 2025):** approximately 90% of
+large orders over $10K on Polymarket are executed at prices above $0.95.
+This is structural, not informational — NEAR_RESOLUTION bots buying
+near-certain outcomes before settlement. The exit timing gap (91% of
+top wallets exit before resolution) and this tail-end structural edge
+are two sides of the same phenomenon: smart money exits at ~0.85-0.92;
+NEAR_RESOLUTION bots enter at 0.95-0.99 to capture the final settlement
+spread. Both are confirmed by the bot classification in bot_detection.py.
+Neither represents a copyable informational edge.
+
 ---
 
 ## Nous Research / Hermes Models — Local Tier Upgrade Watch
@@ -367,6 +385,29 @@ Any new Hermes release on a base model with >80B parameters
 or on a Llama 4 / next-gen base → escalate immediately via
 signals.json for model routing evaluation. Do not wait for
 the weekly digest.
+
+---
+
+## Documented Live Validation — Autonomous Wallet Clustering
+
+A documented case of Claude autonomously building a wallet clustering
+model during a 48-hour live trading session: detected three coordinated
+wallets moving in sync before 6 consecutive resolutions and faded them
+successfully (4/5 wins).
+
+This validates two things:
+1. **RQ5.2 (copy trader contamination hypothesis)** — coordinated wallets
+   distort the consensus signal and are detectable from on-chain behaviour
+   patterns alone. The clustering model did not need ground truth labels.
+2. **Columbia network analysis methodology (Phase 7)** — graph-based
+   cluster detection is tractable in near-real-time on live data, not just
+   in retrospective research. This should inform the Phase 7 build spec
+   for network analysis and wash trading detection.
+
+Implication for build decisions: cluster detection does not need to wait
+for Phase 7. A lightweight version (3-wallet sync detection as a signal
+quality flag) is a Phase 5 candidate once paper trading validates the
+core ELO signal layer.
 
 ---
 
