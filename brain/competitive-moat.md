@@ -1,6 +1,6 @@
 # Competitive Moat
 
-Last updated: 2026-03-28
+Last updated: 2026-04-24
 Maintained by: Oscar (review quarterly)
 
 ---
@@ -40,6 +40,18 @@ insider finder flagging anomalous new wallet trades.
 
 **PolyMaster** — AI analytics with whale tracking and predictive
 modelling for advanced traders.
+
+**Bullpen** — trading terminal with built-in CLI + Claude Code integration
+for on-chain data analysis and trade execution. Backed by 6th Man Ventures.
+Most direct competitor to the swarm's execution layer.
+
+**Kiyotaka** — scores wallets by historical accuracy not just trade size —
+$10K from an 85% win-rate wallet is flagged; $50K from a 30% wallet is
+ignored. Closest competitor in philosophy to the ELO system.
+
+**PolyTrack** — the only tracker with cluster detection identifying related
+wallets controlled by the same trader. Relevant to wash trading and copy
+trader detection work.
 
 These tools are real competitors. They are well-funded, have
 active user bases, and are improving rapidly. Do not pretend
@@ -154,9 +166,14 @@ Capabilities that don't deepen the moat (don't build these):
 
 ## Regulatory Risk Awareness
 
-As of March 2026:
+As of April 2026:
 - Polymarket partnered with Palantir for AI trade surveillance
-- Columbia/Haifa academic paper identified $143M in informed trading
+- Columbia/Haifa academic paper (Mitts & Ofir, March 2026) screened
+  93,000+ markets and 50,000 wallet addresses. Live case: six new wallets
+  earned $1.2M on the Feb 28 US-Israel Iran strike, one trading 71 minutes
+  before news broke at 17% implied probability. This is live validation of
+  the Columbia 5-criteria model already flagged as Phase 4 build target.
+  Original paper identified $143M in informed trading.
 - US lawmakers proposing legislation targeting prediction markets
 - Israeli military reservist indicted for Polymarket insider trading
 - Kalshi growing rapidly with CFTC oversight ($50B annualised volume)
@@ -251,6 +268,12 @@ Implications:
 
 This does not change the plan — it increases urgency of
 executing the plan on schedule.
+
+**Market efficiency creep (April 2026):** As copy trading and leaderboard
+visibility have grown, simple wallet following is being front-run in real
+time. Longitudinal ELO and pre-resolution intelligence is the correct moat
+response — static leaderboard copying degrades; trajectory-aware calibrated
+skill scoring does not.
 
 ---
 
@@ -356,4 +379,5 @@ This is not a preference. It is a hard architectural constraint.
 
 Sports markets: 52% win rate for systematic approaches.
 Geopolitics and macro: where the edge actually exists.
+Geopolitics market scale (April 2026): 688 active markets, $464.5M total volume.
 Category filter must exclude sports in Phase 6.
