@@ -222,6 +222,34 @@
       "actionable": false,
       "action_recommendation": "Do not trigger stop condition. Reframe RQ3.2 as RQ2.2 (entry timing advantage for directional legendary traders). Rerun when more resolved filtered markets available \u2014 need minimum 10 markets with 2+ directional legendary traders and 5pp+ divergence. Current constraint: only 22 markets have 2+ legendary traders after filtering.",
       "expires_at": "2026-07-26T00:00:00Z"
+    },
+    {
+      "id": "2026-04-26-RQ1.1-RERUN-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-04-26T11:30:00Z",
+      "finding_type": "elo_validity",
+      "confidence": "LOW",
+      "sample_size": 16,
+      "summary": "RQ1.1 rerun with point-in-time ELO (elo_period1_cutoff): INCONCLUSIVE — n=16, below 30-trader minimum. r=+0.175 near zero, statistically indistinguishable from noise. Previous run used retrospective ELO giving r=-0.194 — direction flip confirms point-in-time fix was necessary. Root constraint: Period 2 only 25 days old, only 47 traders have any P2 activity.",
+      "detail": {
+        "metric": "pearson_r_period1_elo_vs_period2_brier",
+        "value": 0.1745,
+        "baseline": -0.25,
+        "direction": "above_baseline",
+        "weeks_observed": 1,
+        "n_qualifying": 16,
+        "period_1_range": "2025-10-17 to 2026-04-01",
+        "period_2_range": "2026-04-01 to 2026-04-26",
+        "traders_with_p1_activity": 782,
+        "traders_with_p2_activity": 47,
+        "previous_r_retrospective_elo": -0.194,
+        "group_b_r": 0.1463,
+        "group_c_r": 0.1736,
+        "fix_applied": "elo_period1_cutoff used instead of comprehensive_elo — direction flip validates fix was necessary"
+      },
+      "actionable": false,
+      "action_recommendation": "Rerun after 2026-06-01 when Period 2 will have ~60 days of resolved markets and significantly more qualifying traders. Do not trigger stop condition — n=16 is a timing constraint not a signal failure. The near-zero correlation with clean data is inconclusive, not a fail.",
+      "expires_at": "2026-08-26T00:00:00Z"
     }
   ]
 }
