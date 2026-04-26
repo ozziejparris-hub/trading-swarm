@@ -1,0 +1,31 @@
+{
+  "n_qualifying": 73,
+  "n_directional_filtered": 81,
+  "n_sufficient_post_entry_data": 73,
+  "pct_positive_movement": 50.68,
+  "avg_price_movement_pp": 0.0009,
+  "by_elo_tier": {
+    "top_3000": {
+      "n": 17,
+      "pct_positive": 29.41,
+      "avg_movement_pp": 0.0079
+    },
+    "mid_2175_3000": {
+      "n": 56,
+      "pct_positive": 57.14,
+      "avg_movement_pp": -0.0012
+    }
+  },
+  "by_direction": {
+    "YES": {
+      "n": 54,
+      "pct_positive": 59.26
+    },
+    "NO": {
+      "n": 19,
+      "pct_positive": 26.32
+    }
+  },
+  "verdict": "INCONCLUSIVE",
+  "pass_criterion": ">60% positive movement AND avg_movement > 2pp"
+}
