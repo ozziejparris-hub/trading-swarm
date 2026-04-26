@@ -155,3 +155,42 @@ For emergencies, see `brain/runbook.md` (10 sections covering orchestrator down,
 | `orchestrator/agent_registry.json` | Live task registry |
 | `ci/validate_backtest.py` | Backtest threshold enforcement |
 | `brain/decisions/` | Timestamped architecture decision records |
+
+---
+
+## Session Discipline
+
+### Commit Protocol
+At the end of every session that modifies any file, commit
+before closing. Do not let changes accumulate as unstaged.
+
+After any set of related changes:
+  git add -A
+  git commit -m "descriptive message covering all changes"
+  git push origin main
+
+Commit message format:
+  "feat: ..." for new functionality
+  "fix: ..." for bug fixes
+  "refactor: ..." for restructuring
+  "defensive: ..." for hardening/future-proofing
+  "docs: ..." for documentation only
+
+### Information Gathering vs Editing
+These two types of prompts must be kept distinct:
+
+INFORMATION GATHERING (no commits needed):
+- Reading files, querying database, running diagnostics
+- grep, cat, sqlite3 queries, tail logs
+- Any prompt that starts with "check", "verify", "audit",
+  "show me", "what is", "diagnose"
+- Never commit after a pure information-gathering session
+
+EDITING (always commit):
+- Writing or modifying any .py, .md, .json, .sh file
+- Any prompt that starts with "add", "fix", "update",
+  "change", "create", "write", "patch", "refactor"
+- Commit immediately after each logical group of changes
+- Do not bundle unrelated edits into one commit
+
+If unsure: if a file was modified, commit it.
