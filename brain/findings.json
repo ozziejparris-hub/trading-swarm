@@ -224,6 +224,33 @@
       "expires_at": "2026-07-26T00:00:00Z"
     },
     {
+      "id": "2026-04-26-RQ2.2-PRELIMINARY-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-04-26T12:00:00Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 13,
+      "summary": "RQ2.2 preliminary: YES positions at 95% directional threshold show 75% positive price movement within 7 days — above 60% pass criterion. NO positions show 0% at all thresholds. Average movement near-zero across all configurations. INCONCLUSIVE — magnitude criterion not met, NO signal broken, n=13 too thin.",
+      "detail": {
+        "metric": "pct_positive_price_movement_7d",
+        "value": 0.692,
+        "baseline": 0.60,
+        "direction": "above_baseline",
+        "weeks_observed": 1,
+        "threshold_sweep": {
+          "0.80": {"n": 73, "pct_positive": 0.507, "verdict": "INCONCLUSIVE"},
+          "0.95": {"n": 13, "pct_positive": 0.692, "yes_pct": 0.75, "no_pct": 0.0, "verdict": "INCONCLUSIVE"},
+          "0.99": {"n": 3, "pct_positive": 0.333, "verdict": "FAIL"}
+        },
+        "key_finding": "YES positions at 95% threshold: 75% positive movement. NO positions: 0% across all thresholds — structural weakness, 7-day window likely too short for NO timing.",
+        "recommended_threshold": 0.95,
+        "next_test": "Extend post-entry window to 14 and 30 days — magnitude may require more time"
+      },
+      "actionable": true,
+      "action_recommendation": "Signal-agent should use 95% directional threshold for YES positions only. NO positions need separate methodology — possibly measure over 14-30 day window rather than 7 days. Rerun RQ2.2 with extended windows before treating NO signals as actionable.",
+      "expires_at": "2026-07-26T00:00:00Z"
+    },
+    {
       "id": "2026-04-26-RQ1.1-RERUN-001",
       "generated_by": "quant-research-agent",
       "generated_at": "2026-04-26T11:30:00Z",
