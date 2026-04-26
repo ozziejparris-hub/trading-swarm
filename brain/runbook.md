@@ -570,11 +570,18 @@ Update this block each week with current status:
 
 | Gate Criterion | Status | Notes |
 |----------------|--------|-------|
-| feedback-loop-agent weekly runs | 0 / 4 | Started 2026-04-21 |
-| HIGH-confidence findings in findings.json | 0 / 3 | Minimum 20 resolved markets each |
-| Pre-resolution accuracy ≥60% | 50% from 4 samples — **below threshold** | STR-002; need 10+ markets |
-| RQ1.1 (ELO predicts Brier T+1) | Not started | Blocked on quant-research-agent activation |
-| RQ3.2 (elite consensus > market price) | Not started | Blocked on quant-research-agent activation |
+| feedback-loop-agent weekly runs | 1 / 4 | First run 2026-04-25, cron every Monday 7am UTC |
+| HIGH-confidence findings in findings.json | 0 / 3 | 9 total findings, all LOW confidence — need 20+ resolved markets per finding |
+| Pre-resolution accuracy ≥60% | 50% from 4 samples — below threshold | STR-002; need 10+ markets |
+| RQ1.1 (ELO predicts Brier T+1) | INCONCLUSIVE — rerun 2026-06-01 | n=16, timing constraint. point-in-time ELO fix applied. |
+| RQ3.2 (elite consensus > market price) | INCONCLUSIVE — rerun when sample grows | n=4 after clean filters. Methodology reframe to RQ2.2 needed. |
+
+**Scheduled reruns:**
+- RQ1.1: 2026-06-01 — Period 2 will have 60 days, expect 50-100 qualifying traders
+- RQ3.2: reframe as RQ2.2 (directional entry timing) — design session needed
+- feedback-loop-agent run 2: 2026-04-28 (Monday)
+- feedback-loop-agent run 3: 2026-05-05 (Monday)
+- feedback-loop-agent run 4: 2026-05-12 (Monday) — gate criterion met if run completes
 
 **All 4 criteria must be met before live trading.** Do not lower or skip any gate.
 
