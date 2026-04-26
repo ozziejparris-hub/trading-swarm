@@ -1,14 +1,14 @@
 {
   "_schema_version": "1.0",
-  "_description": "Cross-agent findings bus. feedback-loop-agent writes here weekly. signal-agent and orchestrator read at startup to adjust behaviour. Never delete entries — mark expired via expires_at. Add new findings only.",
+  "_description": "Cross-agent findings bus. feedback-loop-agent writes here weekly. signal-agent and orchestrator read at startup to adjust behaviour. Never delete entries \u2014 mark expired via expires_at. Add new findings only.",
   "_schema": {
-    "id": "YYYY-MM-DD-TOPIC-NNN — unique identifier",
+    "id": "YYYY-MM-DD-TOPIC-NNN \u2014 unique identifier",
     "generated_by": "which agent wrote this finding",
     "generated_at": "ISO8601 timestamp",
     "finding_type": "signal_accuracy | elo_validity | category_performance | tier_performance | strategy_performance | pre_resolution_accuracy",
     "confidence": "HIGH (>=20 samples) | MEDIUM (10-19 samples) | LOW (<10 samples, note limitations)",
     "sample_size": "number of resolved markets this finding is based on",
-    "summary": "one sentence plain English — what did we learn",
+    "summary": "one sentence plain English \u2014 what did we learn",
     "detail": {
       "metric": "what was measured",
       "value": "measured value (float)",
@@ -18,7 +18,7 @@
     },
     "actionable": "true if signal-agent or orchestrator should change behaviour",
     "action_recommendation": "specific instruction for consuming agent",
-    "expires_at": "ISO8601 — 90 days from generated_at, after which finding may be removed"
+    "expires_at": "ISO8601 \u2014 90 days from generated_at, after which finding may be removed"
   },
   "findings": [
     {
@@ -28,16 +28,16 @@
       "finding_type": "pre_resolution_accuracy",
       "confidence": "LOW",
       "sample_size": 4,
-      "summary": "Pre-resolution intelligence baseline established — first resolution batch resolved April 2026",
+      "summary": "Pre-resolution intelligence baseline established \u2014 first resolution batch resolved April 2026",
       "detail": {
         "metric": "pre_resolution_signal_accuracy",
         "value": null,
-        "baseline": 0.50,
+        "baseline": 0.5,
         "direction": "pending",
         "weeks_observed": 0
       },
       "actionable": false,
-      "action_recommendation": "No action yet — await first resolution batch. feedback-loop-agent to update after April 1 2026.",
+      "action_recommendation": "No action yet \u2014 await first resolution batch. feedback-loop-agent to update after April 1 2026.",
       "expires_at": "2026-06-28T00:00:00Z",
       "signals_in_batch": [
         {
@@ -93,16 +93,16 @@
       "finding_type": "pre_resolution_accuracy",
       "confidence": "LOW",
       "sample_size": 4,
-      "summary": "First pre-resolution signal batch: 2/4 correct (50%) — at baseline, below the 60% Phase 5 gate threshold. Small sample, inconclusive.",
+      "summary": "First pre-resolution signal batch: 2/4 correct (50%) \u2014 at baseline, below the 60% Phase 5 gate threshold. Small sample, inconclusive.",
       "detail": {
         "metric": "pre_resolution_signal_accuracy",
-        "value": 0.50,
-        "baseline": 0.50,
+        "value": 0.5,
+        "baseline": 0.5,
         "direction": "at_baseline",
         "weeks_observed": 4
       },
       "actionable": false,
-      "action_recommendation": "Continue collecting. Minimum 10 resolved markets required before drawing conclusions. Signal 1 (Russia/Ukraine at 93% smart money) was a significant miss — watch for overconfidence in geopolitical consensus signals.",
+      "action_recommendation": "Continue collecting. Minimum 10 resolved markets required before drawing conclusions. Signal 1 (Russia/Ukraine at 93% smart money) was a significant miss \u2014 watch for overconfidence in geopolitical consensus signals.",
       "expires_at": "2026-07-20T00:00:00Z"
     },
     {
@@ -112,16 +112,116 @@
       "finding_type": "signal_accuracy",
       "confidence": "HIGH",
       "sample_size": 430,
-      "summary": "Bidirectional holders are a documented structural feature of Polymarket — liquidity providers simultaneously hold YES and NO positions to capture spread, not to express directional views. Must be filtered before any trader counts as a directional signal.",
+      "summary": "Bidirectional holders are a documented structural feature of Polymarket \u2014 liquidity providers simultaneously hold YES and NO positions to capture spread, not to express directional views. Must be filtered before any trader counts as a directional signal.",
       "detail": {
         "metric": "bidirectional_holder_contamination",
-        "value": "unknown — requires quantification in future runs",
+        "value": "unknown \u2014 requires quantification in future runs",
         "baseline": "assumed all positions are directional",
         "direction": "below_baseline"
       },
       "actionable": true,
       "action_recommendation": "signal-agent must exclude any trader holding both YES and NO capital in the same market from directional signal counts. Only traders with zero opposing capital qualify as genuine directional signals. This filter should be applied before ELO convergence counting. External sources confirm LPs are a significant fraction of high-volume traders on Polymarket (ChainCatcher 2025 analysis, Polymarket official documentation).",
       "expires_at": "2026-07-20T00:00:00Z"
+    },
+    {
+      "id": "2026-04-25-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-25T15:05:25Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 1
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-07-24T15:05:25Z"
+    },
+    {
+      "id": "2026-04-25-ELO-ELITE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-25T15:05:25Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 29,
+      "summary": "ELITE tier consensus accuracy: 72% over 29 non-sports markets",
+      "detail": {
+        "metric": "elo_elite_consensus_accuracy",
+        "value": 0.7241,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 1
+      },
+      "actionable": true,
+      "action_recommendation": "Increase ELITE tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-07-24T15:05:25Z"
+    },
+    {
+      "id": "2026-04-25-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-25T15:05:25Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 153,
+      "summary": "QUALIFIED tier consensus accuracy: 81% over 153 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.8105,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 1
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-07-24T15:05:25Z"
+    },
+    {
+      "id": "2026-04-25-STRATEGY-OVERDUE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-25T15:05:25Z",
+      "finding_type": "strategy_performance",
+      "confidence": "HIGH",
+      "sample_size": 1,
+      "summary": "1 strategy/strategies overdue for revalidation: STR-001 \u2014 Elite Convergence Signal",
+      "detail": {
+        "metric": "strategies_overdue_revalidation",
+        "value": 1.0,
+        "baseline": 0.0,
+        "direction": "above_baseline",
+        "weeks_observed": 1
+      },
+      "actionable": true,
+      "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
+      "expires_at": "2026-07-24T15:05:25Z"
+    },
+    {
+      "id": "2026-04-26-RQ3.2-PRELIMINARY-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-04-26T10:30:00Z",
+      "finding_type": "elo_validity",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "RQ3.2 preliminary: INCONCLUSIVE \u2014 n=4 qualifying markets after clean filters, below 10-market minimum. Legendary traders cluster within 5-10pp of market price on filtered markets, providing insufficient divergence for meaningful testing. Methodology may be testing wrong signal.",
+      "detail": {
+        "metric": "legendary_consensus_vs_market_accuracy",
+        "value": 0.25,
+        "baseline": 0.55,
+        "direction": "below_baseline",
+        "weeks_observed": 1,
+        "pass_a_n": 4,
+        "pass_b_n": 22,
+        "legendary_accuracy_pass_a": 0.25,
+        "market_accuracy_pass_a": 0.75,
+        "methodology_note": "Tests aggregate legendary consensus vs market price. May be measuring post-information-incorporation rather than predictive lead. Directional single-trader signals (zero opposing hedge) may be more appropriate test \u2014 see RQ2.2."
+      },
+      "actionable": false,
+      "action_recommendation": "Do not trigger stop condition. Reframe RQ3.2 as RQ2.2 (entry timing advantage for directional legendary traders). Rerun when more resolved filtered markets available \u2014 need minimum 10 markets with 2+ directional legendary traders and 5pp+ divergence. Current constraint: only 22 markets have 2+ legendary traders after filtering.",
+      "expires_at": "2026-07-26T00:00:00Z"
     }
   ]
 }
