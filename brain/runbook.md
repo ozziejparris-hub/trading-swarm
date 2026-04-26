@@ -654,6 +654,32 @@ Env file:             ~/.env_trading
 
 ---
 
+## Section 13 — Post-Polymarket-Upgrade Checklist
+
+Run this after any Polymarket API upgrade announcement:
+
+1. Check fetch_market_resolutions.py still works:
+   cd ~/projects/first-repo
+   python scripts/fetch_market_resolutions.py --force 2>&1 | head -30
+   Confirm tokens[].winner field still present in response.
+
+2. Check Data API trade response format unchanged:
+   curl "https://data-api.polymarket.com/trades?limit=1" | python3 -m json.tool
+   Confirm timestamp field is still in seconds (value < 2e9 for current dates)
+   If value > 1e12 it has switched to milliseconds — update monitor.py line ~638
+
+3. Check monitoring is still ingesting trades:
+   tail -20 ~/projects/first-repo/logs/monitoring.log
+   Should show trades processed within last 15 minutes
+
+4. Monitor Polymarket changelog weekly:
+   https://docs.polymarket.com/changelog
+   Bookmark and check every Monday as part of weekly review.
+
+Next scheduled Polymarket upgrade: CLOB V2 — April 28 2026 (verified safe, no changes needed)
+
+---
+
 ## Key File Locations (Server)
 
 ```
