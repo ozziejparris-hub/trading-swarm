@@ -204,6 +204,11 @@ else
 fi
 
 # ── Register task in registry ─────────────────
+# Write TASK_DESC to a temp file so special chars (em-dashes, newlines,
+# quotes) don't break Python string interpolation inside the heredoc.
+TASK_DESC_FILE="/tmp/${TASK_ID}.taskdesc"
+printf '%s' "$TASK_DESC" > "$TASK_DESC_FILE"
+
 python3 - <<EOF
 import json
 from datetime import datetime
@@ -213,10 +218,13 @@ registry_file = Path("$REGISTRY_FILE")
 with open(registry_file) as f:
     registry = json.load(f)
 
+with open("$TASK_DESC_FILE") as f:
+    task_desc = f.read()
+
 registry["active_tasks"].append({
     "id": "$TASK_ID",
     "agent": "$AGENT_TYPE",
-    "description": "$TASK_DESC",
+    "description": task_desc[:200],
     "branch": "$BRANCH_NAME",
     "tmux_session": "$SESSION_NAME",
     "model": "$MODEL_NAME",
@@ -233,6 +241,7 @@ registry["active_tasks"].append({
 with open(registry_file, "w") as f:
     json.dump(registry, f, indent=2)
 
+Path("$TASK_DESC_FILE").unlink(missing_ok=True)
 print("Task registered in registry")
 EOF
 

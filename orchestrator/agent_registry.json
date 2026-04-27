@@ -47,6 +47,22 @@
       "retries": 0,
       "pr": null,
       "verified": false
+    },
+    {
+      "id": "backtest-str001",
+      "agent": "backtest-agent",
+      "description": "Validate STR-001 \u2014 Elite Convergence Signal. Accuracy backtest across all resolved markets.",
+      "branch": "feat/backtest-str001",
+      "tmux_session": "backtest-agent-backtest-str001",
+      "model": "claude-sonnet-4-6 (Tier 3)",
+      "tier": "3",
+      "worktree": "/home/parison/trading-swarm/worktrees/backtest-str001",
+      "log": "/home/parison/trading-swarm/logs/agent_logs/backtest-str001.log",
+      "started_at": "2026-04-27T19:14:27.000000",
+      "status": "running",
+      "retries": 0,
+      "pr": null,
+      "verified": false
     }
   ]
 }
