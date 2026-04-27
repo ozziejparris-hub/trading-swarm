@@ -1,3 +1,7 @@
+# DISMISSED — local inference requires 142GB RAM (server has 96GB)
+# Revisit if Unsloth releases Q2/Q3 quant that fits in 96GB
+# No cloud API — sovereignty + cost preference is local only
+
 # DeepSeek V4 Open Weights Released — Tier 3 Cost Reduction Trigger
 
 ## Source
