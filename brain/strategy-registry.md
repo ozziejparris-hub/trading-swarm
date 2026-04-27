@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-03-29
+Last updated: 2026-04-27
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -126,6 +126,47 @@ Path to ACTIVE:         quant-research-agent must pre-register STR-001b
                         deployment. Oscar must approve the hypothesis.
 Full report:            brain/agent-outputs/backtest-agent/
                         STR-001-validation-2026-04-27.json
+```
+
+### STR-001b — Elite Exclusive Convergence Signal (PROPOSED)
+```
+Status:                 PENDING_REVIEW
+Description:            3+ legendary traders (ELO > 2175) entering
+                        the SAME side of a market within 14 days,
+                        WITH fewer than 2 legendary traders on the
+                        opposing side. Requires genuine consensus,
+                        not just convergence.
+
+                        Key difference from STR-001: the exclusive
+                        filter prevents both sides qualifying
+                        simultaneously, which caused STR-001 to
+                        fail at 56.1% accuracy.
+
+                        Sub-findings from STR-001 backtest support:
+                        - Unambiguous single-side signals: 100% (n=5)
+                        - 30-90 day horizon: 84.6% (n=13)
+                        - ELO 3000+ tier: 75.0% (n=4)
+
+Category:               Signal detection
+First validated:        Pending
+Pre-registered:         2026-04-27
+Approved by:            Oscar (2026-04-27)
+Validation criteria:
+  - Minimum 10 qualifying signals
+  - Accuracy > 60% (minimum actionable)
+  - Accuracy > 70% (HIGH confidence)
+  - Tested across 2+ market categories
+Sample size check:      2026-04-27 — 0 qualifying signals in
+                        historical data (ELO > 2175, 3+ same side,
+                        <2 opposing, 14-day window, resolved markets).
+                        Below 10-signal minimum. Awaiting data
+                        accumulation before backtest can proceed.
+Literature:             Machine Spirits (2026) — peer-reviewed
+                        validation that sophisticated LLMs exploit
+                        unsophisticated agents in heterogeneous
+                        markets. Supports premise that legendary
+                        traders have genuine information advantage
+                        over market consensus.
 ```
 
 ### STR-002 — Pre-Resolution Intelligence
