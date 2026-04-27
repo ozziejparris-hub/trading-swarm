@@ -35,6 +35,7 @@ STRATEGY_REG   = REPO_ROOT / "brain/strategy-registry.md"
 SIGNAL_OUT_DIR = REPO_ROOT / "brain/agent-outputs/signal-agent"
 PRE_RES_DIR    = REPO_ROOT / "brain/agent-outputs/pre-resolution"
 FL_OUT_DIR     = REPO_ROOT / "brain/agent-outputs/feedback-loop"
+FL_STATE_FILE  = REPO_ROOT / "brain/feedback_loop_state.json"
 STRAT_NOTES    = REPO_ROOT / "brain/strategy-notes"
 
 # ── Constants ─────────────────────────────────────────────────────────────────
@@ -112,6 +113,21 @@ def get_db_conn():
     """Open polymarket_tracker.db read-only via URI."""
     uri = f"file:{DB_PATH}?mode=ro"
     return sqlite3.connect(uri, uri=True)
+
+
+def load_and_increment_run_count() -> int:
+    """Read run_count from state file, increment, write back, return new count."""
+    if FL_STATE_FILE.exists():
+        try:
+            state = json.loads(FL_STATE_FILE.read_text())
+            count = int(state.get("run_count", 0)) + 1
+        except (json.JSONDecodeError, ValueError):
+            count = 1
+    else:
+        count = 1
+    FL_STATE_FILE.write_text(json.dumps({"run_count": count, "last_run": TODAY_STR}, indent=2))
+    log(f"Run count: {count}")
+    return count
 
 
 def send_telegram(message: str):
@@ -478,7 +494,7 @@ def step4_strategy_review() -> dict:
 
 # ── Step 5 — Write findings ───────────────────────────────────────────────────
 
-def step5_write_findings(s1, s2, s3, s4) -> list:
+def step5_write_findings(s1, s2, s3, s4, run_count: int = 1) -> list:
     log("Step 5 — Writing findings to findings.json")
     data        = load_json(FINDINGS_JSON)
     existing    = data.get("findings", [])
@@ -506,7 +522,7 @@ def step5_write_findings(s1, s2, s3, s4) -> list:
                 "value":          round(acc, 4),
                 "baseline":       0.50,
                 "direction":      "above_baseline" if acc > 0.50 else "below_baseline",
-                "weeks_observed": 1,
+                "weeks_observed": run_count,
             },
             "actionable": acc < 0.55,
             "action_recommendation": (
@@ -531,7 +547,7 @@ def step5_write_findings(s1, s2, s3, s4) -> list:
                 "value":          None,
                 "baseline":       0.50,
                 "direction":      "pending",
-                "weeks_observed": 1,
+                "weeks_observed": run_count,
             },
             "actionable": False,
             "action_recommendation": (
@@ -561,7 +577,7 @@ def step5_write_findings(s1, s2, s3, s4) -> list:
                         "value":          round(acc, 4),
                         "baseline":       0.50,
                         "direction":      "above_baseline" if acc > 0.50 else "below_baseline",
-                        "weeks_observed": 1,
+                        "weeks_observed": run_count,
                     },
                     "actionable": acc > 0.60,
                     "action_recommendation": (
@@ -586,7 +602,7 @@ def step5_write_findings(s1, s2, s3, s4) -> list:
                 "value":          None,
                 "baseline":       0.50,
                 "direction":      "pending",
-                "weeks_observed": 1,
+                "weeks_observed": run_count,
             },
             "actionable": False,
             "action_recommendation": (
@@ -612,7 +628,7 @@ def step5_write_findings(s1, s2, s3, s4) -> list:
                 "value":          float(len(overdue_strats)),
                 "baseline":       0.0,
                 "direction":      "above_baseline",
-                "weeks_observed": 1,
+                "weeks_observed": run_count,
             },
             "actionable": True,
             "action_recommendation": (
@@ -679,7 +695,7 @@ def write_revalidation_signals(overdue: list) -> list:
 
 # ── Write weekly report ────────────────────────────────────────────────────────
 
-def write_report(s1, s2, s3, s4, new_findings, reval_written) -> Path:
+def write_report(s1, s2, s3, s4, new_findings, reval_written, run_count: int = 1) -> Path:
     FL_OUT_DIR.mkdir(parents=True, exist_ok=True)
     path = FL_OUT_DIR / f"{TODAY_STR}-weekly-audit.md"
 
@@ -910,7 +926,8 @@ def write_report(s1, s2, s3, s4, new_findings, reval_written) -> Path:
         "",
         "| Gate | Requirement | Current Status |",
         "|------|------------|----------------|",
-        "| feedback-loop-agent weekly runs | 4+ | **1** (this run is the first) |",
+        f"| feedback-loop-agent weekly runs | 4+ | **{run_count}** "
+        f"{'(this run is the first)' if run_count == 1 else 'run(s) complete'} |",
         "| findings.json HIGH-confidence entries | 3+ (≥20 samples each) | **0** |",
         "| Pre-resolution accuracy | ≥60% across 10+ markets | **50% across 4 markets — insufficient** |",
         "| RQ1.1 + RQ3.2 | Both passed | **Pending** |",
@@ -940,6 +957,8 @@ def main():
     log(f"Feedback memory: {len(feedback.get('rejected', []))} rejected, "
         f"{len(feedback.get('approved', []))} approved")
 
+    run_count = load_and_increment_run_count()
+
     conn = get_db_conn()
     try:
         s1 = step1_signal_accuracy(conn)
@@ -948,8 +967,8 @@ def main():
         s4 = step4_strategy_review()
 
         reval_written = write_revalidation_signals(s4["overdue"])
-        new_findings  = step5_write_findings(s1, s2, s3, s4)
-        report_path   = write_report(s1, s2, s3, s4, new_findings, reval_written)
+        new_findings  = step5_write_findings(s1, s2, s3, s4, run_count)
+        report_path   = write_report(s1, s2, s3, s4, new_findings, reval_written, run_count)
     finally:
         conn.close()
 

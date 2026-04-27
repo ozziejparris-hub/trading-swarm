@@ -8,10 +8,10 @@
 #   ./scripts/spawn_agent.sh <task_id> <agent_type> <tier> <"task description">
 #
 # Tiers:
-#   1   = Ollama/Mistral (local, free)
+#   1   = Ollama/Gemma4:e2b (local, free, 0.79s)
 #         Health monitoring, log watching, immune system checks
 #
-#   2   = Qwen3-Coder-Next (local, free after hardware)
+#   2   = Ollama/Gemma4:e4b (local, free, 5.86s)
 #         Signal agent, code hygiene, training librarian
 #         Simple well-defined coding tasks
 #
@@ -48,8 +48,8 @@ if [ -z "$TASK_ID" ] || [ -z "$AGENT_TYPE" ] || [ -z "$TASK_DESC" ]; then
     echo "Usage: $0 <task_id> <agent_type> <tier> <description>"
     echo ""
     echo "Tiers:"
-    echo "  1   = Ollama/Mistral (local, free)"
-    echo "  2   = Qwen3-Coder-Next (local, free)"
+    echo "  1   = Ollama/Gemma4:e2b (local, free, 0.79s)"
+    echo "  2   = Ollama/Gemma4:e4b (local, free, 5.86s)"
     echo "  2.5 = Claude Haiku 4.5 (\$1/\$5 per MTok)"
     echo "  3   = Claude Sonnet 4.6 (\$3/\$15 per MTok)"
     echo "  4   = Claude Opus 4.6 (\$5/\$25 per MTok, escalation only)"
@@ -73,13 +73,13 @@ PROMPT_FILE="/tmp/$TASK_ID.prompt"
 # ── Select model based on tier ───────────────
 case $TIER in
     1)
-        MODEL_CMD="ollama run mistral"
-        MODEL_NAME="mistral (local, Tier 1)"
+        MODEL_CMD="ollama run gemma4:e2b --think=false"
+        MODEL_NAME="gemma4:e2b (local, Tier 1)"
         NEEDS_WORKTREE=false
         ;;
     2)
-        MODEL_CMD="ollama run qwen3-coder-next"
-        MODEL_NAME="qwen3-coder-next (local, Tier 2)"
+        MODEL_CMD="ollama run gemma4:e4b --think=false"
+        MODEL_NAME="gemma4:e4b (local, Tier 2)"
         NEEDS_WORKTREE=false
         ;;
     2.5)

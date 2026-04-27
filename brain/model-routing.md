@@ -1,6 +1,6 @@
 # Model Routing Strategy
 
-Last updated: 2026-03-19
+Last updated: 2026-04-27
 Updated by: Oscar (Server Pre-Setup Chat 2)
 Next review: when server has been live 4 weeks
 
@@ -28,8 +28,8 @@ into every agent prompt via the spawn script.
 ## The Four-Tier Architecture
 
 ```
-Tier 1 — Ollama/Mistral          (local, free)
-Tier 2 — Qwen3-Coder-Next        (local, free after hardware)
+Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 0.79s)
+Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 5.86s)
 Tier 2.5 — Claude Haiku 4.5      ($1/$5 per MTok)
 Tier 3 — Claude Sonnet 4.6       ($3/$15 per MTok)
 Tier 4 — Claude Opus 4.6         ($5/$25 per MTok, escalation only)
@@ -46,8 +46,8 @@ anything ambiguous. Never use Tier 4 as a first attempt.
 ```
 Model                    Input           Output
 ────────────────────────────────────────────────
-Mistral (Ollama)         Free            Free
-Qwen3-Coder-Next         Free (local)    Free (local)
+Gemma 4 E2B (Ollama)     Free            Free
+Gemma 4 E4B (Ollama)     Free (local)    Free (local)
 Claude Haiku 4.5         $1.00/MTok      $5.00/MTok
 Claude Sonnet 4.6        $3.00/MTok      $15.00/MTok
 Claude Opus 4.6          $5.00/MTok      $25.00/MTok
@@ -68,7 +68,7 @@ tasks that load large sections of brain/ alongside data.
 
 ## Per-Agent Routing Decisions
 
-### Tier 1 — Ollama/Mistral
+### Tier 1 — Gemma 4 E2B (Ollama)
 
 **Assigned to:**
 - Orchestrator immune system health loop (10-minute cycles)
@@ -89,7 +89,7 @@ check would be absurd cost for zero benefit.
 
 ---
 
-### Tier 2 — Qwen3-Coder-Next (local)
+### Tier 2 — Gemma 4 E4B (Ollama)
 
 **Assigned to:**
 - signal-agent (database queries, pattern matching, signals.json writes)
@@ -268,11 +268,11 @@ not as a first resort for anything difficult.
 ```
 Agent                    Tier   Model                    Reason
 ─────────────────────────────────────────────────────────────────────
-Immune system checks     1      Ollama/Mistral           Pattern match
-Log watching             1      Ollama/Mistral           Pattern match
-signal-agent             2      Qwen3-Coder-Next         Well-defined
-code-hygiene-agent       2      Qwen3-Coder-Next         Mechanical
-training-librarian       2      Qwen3-Coder-Next         Structured
+Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
+Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
+signal-agent             2      Gemma 4 E4B (Ollama)     Well-defined
+code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
+training-librarian       2      Gemma 4 E4B (Ollama)     Structured
 integration-test         2.5    Claude Haiku 4.5         Reliability
 research-scout           2.5    Claude Haiku 4.5         Daily cadence
 quant-research           3      Claude Sonnet 4.6        Stats reasoning
@@ -292,8 +292,8 @@ escalation (any)         4      Claude Opus 4.6          3x Sonnet fail
 Based on system design and agent cadences:
 
 ```
-Tier 1 (Ollama/Mistral):      ~40-50% of requests, $0 cost
-Tier 2 (Qwen3-Coder-Next):    ~30-40% of requests, $0 cost
+Tier 1 (Gemma 4 E2B):         ~40-50% of requests, $0 cost
+Tier 2 (Gemma 4 E4B):         ~30-40% of requests, $0 cost
 Tier 2.5 (Haiku 4.5):         ~5-10% of requests, ~$1/$5 per MTok
 Tier 3 (Sonnet 4.6):          ~15-20% of requests, ~$3/$15 per MTok
 Tier 4 (Opus 4.6):            ~1-5% of requests, ~$5/$25 per MTok
@@ -451,11 +451,11 @@ costs more than $2 to fix.
 
 ```
 Task requires near-zero reasoning, pattern matching?
-→ Tier 1 (Ollama/Mistral, free)
+→ Tier 1 (Gemma 4 E2B, free)
 
 Task is well-defined with clear inputs and outputs,
 runs frequently, mechanical in nature?
-→ Tier 2 (Qwen3-Coder-Next, free)
+→ Tier 2 (Gemma 4 E4B, free)
 
 Task needs Anthropic reliability, runs on a schedule,
 bounded scope but judgment required?
