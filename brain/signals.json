@@ -57,5 +57,38 @@
       "status": "processed",
       "processed_at": "2026-04-25T15:10:14.473016"
     }
+  ],
+  "pending": [
+    {
+      "from": "research-scout-agent",
+      "to": "orchestrator",
+      "type": "escalation_immediate",
+      "urgency": "NOW",
+      "payload": {
+        "title": "Polymarket CTF Exchange V2 API — cutover April 28 ~11:00 UTC",
+        "summary": "Polymarket is deploying a full exchange overhaul tomorrow. Three breaking changes: (1) EIP-712 domain version must change from '1' to '2' — v1-signed orders rejected at cutover. (2) Pagination endpoints replaced by keyset cursors. (3) POST /submit no longer returns transactionHash immediately. market-builder-agent templates must be audited before the trading-swarm service is ever started. System is not yet live — no production incident. Migration guide: https://docs.polymarket.com/v2-migration",
+        "action_required": "Audit orchestrator/task_templates/ for market-builder-agent Polymarket API patterns before spawning that agent. Update to v2 SDK and v2 endpoint patterns.",
+        "finding_file": "brain/research-scout/pending-review/2026-04-27-13-polymarket-v2-api-breaking-changes.md",
+        "deadline": "2026-04-28T11:00:00Z"
+      },
+      "timestamp": "2026-04-27T18:56:17Z",
+      "status": "pending",
+      "cycle": "scout-20260427"
+    },
+    {
+      "from": "research-scout-agent",
+      "to": "orchestrator",
+      "type": "model_routing_update",
+      "urgency": "Now",
+      "payload": {
+        "title": "DeepSeek V4 open weights released — Tier 3 freeze trigger fired",
+        "summary": "DeepSeek V4-Flash released April 24 with MIT license. $0.14/$0.28 per MTok vs Sonnet $3/$15 — 53x cheaper output at 79.0% SWE-bench Verified (Sonnet: 79.6%). brain/model-routing.md states 'Halt all Tier 3 cost optimisation decisions until V4 drops' — that trigger has fired. Schedule benchmark comparison before committing. Sovereignty blocker (Chinese-hosted API) requires Oscar's decision.",
+        "action_required": "Schedule 3-task benchmark: Sonnet 4.6 vs V4-Flash vs Kimi K2.6. Oscar decides sovereignty line for quant-research and backtest agents.",
+        "finding_file": "brain/research-scout/pending-review/2026-04-27-13-deepseek-v4-open-weights-released.md"
+      },
+      "timestamp": "2026-04-27T18:56:17Z",
+      "status": "pending",
+      "cycle": "scout-20260427"
+    }
   ]
 }

@@ -1,1 +1,30 @@
-{"rejected": [], "approved": []}
+{
+  "rejected": [],
+  "approved": [],
+  "scout_cycles": [
+    {
+      "cycle_date": "2026-04-27",
+      "cycle_id": "scout-20260427",
+      "sources_checked": [
+        "huggingface-daily-papers",
+        "arxiv-q-fin",
+        "arxiv-cs-ai",
+        "karpathy-autoresearch",
+        "deepseek-huggingface",
+        "polymarket-changelog",
+        "anthropic-news"
+      ],
+      "findings_surfaced": 4,
+      "findings_discarded": 3,
+      "pending_review_items": [
+        "2026-04-27-13-polymarket-v2-api-breaking-changes.md",
+        "2026-04-27-13-deepseek-v4-open-weights-released.md",
+        "2026-04-27-13-claude-opus-4-7-model-routing-update.md",
+        "2026-04-27-13-machine-spirits-llm-agents-in-markets.md"
+      ],
+      "escalations_sent": ["polymarket-v2-api-cutover-2026-04-28"],
+      "weekly_digest_written": true,
+      "notes": "First scout cycle. 4/5 finding slots used. Twitter/X not accessible — flagged for Phase 2."
+    }
+  ]
+}
