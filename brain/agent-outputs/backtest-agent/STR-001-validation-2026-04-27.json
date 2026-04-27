@@ -1,0 +1,53 @@
+{
+  "strategy": "STR-001 — Elite Convergence Signal",
+  "tested_by": "backtest-agent",
+  "test_date": "2026-04-27",
+  "data_range": "2025-09-27 to 2025-11-30",
+  "total_qualifying_signals": 41,
+  "accuracy_pct": 56.1,
+  "vs_random_baseline_pct": 50.0,
+  "vs_market_price_baseline_pct": 100.0,
+  "breakdown_by_n_traders": {
+    "4": {"total": 2, "correct": 1, "accuracy_pct": 50.0},
+    "5": {"total": 8, "correct": 4, "accuracy_pct": 50.0},
+    "6+": {"total": 31, "correct": 18, "accuracy_pct": 58.1}
+  },
+  "breakdown_by_elo_tier": {
+    "2175-2500": {"total": 14, "correct": 8, "accuracy_pct": 57.1},
+    "2500-3000": {"total": 23, "correct": 12, "accuracy_pct": 52.2},
+    "3000+": {"total": 4, "correct": 3, "accuracy_pct": 75.0}
+  },
+  "breakdown_by_time_horizon": {
+    "7-30 days": {"total": 28, "correct": 12, "accuracy_pct": 42.9},
+    "30-90 days": {"total": 13, "correct": 11, "accuracy_pct": 84.6}
+  },
+  "breakdown_by_category": {
+    "Elections": {"total": 21, "correct": 12, "accuracy_pct": 57.1},
+    "Geopolitics": {"total": 20, "correct": 11, "accuracy_pct": 55.0}
+  },
+  "false_positive_rate": 43.9,
+  "false_positive_patterns": "Heavily concentrated in 7-30 day window (16/18 false positives). False positives split evenly across Geopolitics (9) and Elections (9). All trader-count buckets affected: 6+ (13), 5 (4), 4 (1). No category or ELO tier is protective at current thresholds.",
+  "verdict": "FAIL",
+  "new_status": "SUSPENDED",
+  "reason": "Accuracy 56.1% fails to exceed the 60% minimum actionable threshold across n=41 signals. CRITICAL STRUCTURAL FLAW IDENTIFIED: 18 of 23 qualifying unique markets (78.3%) triggered signals on BOTH Yes and No sides simultaneously, indicating legendary traders were split across both sides of the same market. When both sides qualify, exactly one must be wrong by construction — these paired signals contribute at most 50% accuracy regardless of legendary trader quality. The signal definition does not require consensus, only convergence, and cannot distinguish between a split market (noise) and a genuine directional call (signal). BREAKDOWN OF STRUCTURAL ISSUE: (1) Markets with only ONE side qualifying: n=5, accuracy=100.0% — this is the true signal, but too few cases for a conclusion. (2) Markets with BOTH sides qualifying: n=36 paired signals, accuracy=50.0% — exactly random by construction. (3) If dominant-side selection is applied to split markets (more traders wins, earliest-entry tiebreak): n=23 unique markets, accuracy=65.2% — above 60% threshold, but this is a post-hoc modification requiring pre-registered validation. SECONDARY FAILURE: 7-30 day horizon accuracy was 42.9% (below random baseline). POSITIVE SUB-SIGNALS FOR REFINEMENT: 30-90 day horizon: 84.6% (n=13); ELO 3000+ tier: 75.0% (n=4). MARKET PRICE BASELINE: The market price (avg entry price as proxy) correctly predicted outcomes 100% of the time in this sample, confirming Polymarket is well-calibrated. Legendary convergence adds no incremental predictive value over market price under the current signal definition. RECOMMENDED PATH: Quant-research-agent should pre-register a refined hypothesis requiring exclusive convergence (3+ legendary traders on one side AND fewer than 3 on the opposite side) before any revalidation.",
+  "sample_scope": {
+    "total_resolved_markets_in_db": 10497,
+    "markets_after_filter": 3699,
+    "markets_with_any_legendary_trades": 65,
+    "markets_with_no_legendary_trades": 3634,
+    "markets_where_no_side_had_3plus_distinct_traders": 70,
+    "markets_skipped_window_too_wide": 19,
+    "unique_markets_with_qualifying_signals": 23
+  },
+  "no_lookahead_confirmation": "All trades filtered to timestamp <= resolution_date. No future data used.",
+  "anti_data_snooping_note": "Strategy definition was pre-specified. No parameter tuning performed during this validation. ELO threshold (2175), window (14 days), minimum traders (3) were fixed before running.",
+  "seven_sins_checklist": {
+    "survivorship_bias": "PASS — all resolved markets included, not just profitable ones",
+    "lookahead_bias": "PASS — all trades filtered to timestamp <= resolution_date",
+    "data_snooping": "PASS — parameters pre-specified, no optimisation performed",
+    "transaction_costs": "N/A — signal accuracy test only, not P&L backtest; transaction costs not applicable to this validation phase",
+    "volatility_clustering": "N/A — binary resolution markets, not price series",
+    "liquidity": "PARTIAL — legendary traders by definition traded these markets; liquidity assumed sufficient",
+    "temporal_dependency": "NOTE — data range is Jul 2025 to Nov 2025, single 5-month window; multiple period testing not yet possible with current dataset size"
+  }
+}

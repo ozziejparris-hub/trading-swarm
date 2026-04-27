@@ -1,5 +1,22 @@
 {
-  "rejected": [],
+  "rejected": [
+    {
+      "strategy": "STR-001 — Elite Convergence Signal (as-defined)",
+      "date": "2026-04-27",
+      "rejected_by": "backtest-agent",
+      "accuracy": 56.1,
+      "threshold": 60.0,
+      "n_signals": 41,
+      "reason": "Signal fires on both Yes and No sides of same market when legendary traders are split (78% of markets). Paired signals contribute exactly 50% by construction. 7-30 day horizon below random baseline (42.9%). Signal adds no predictive value over market price as currently defined.",
+      "do_not_retry_without": "Pre-registered STR-001b hypothesis with exclusive convergence filter (3+ on one side, <3 on other). quant-research-agent owns this. Oscar must approve hypothesis before backtest-agent retests.",
+      "positive_sub_signals": {
+        "30_90_day_horizon": "84.6% accuracy (n=13)",
+        "elo_3000_plus": "75.0% accuracy (n=4)",
+        "exclusive_convergence_dominant_side": "65.2% accuracy (n=23 unique markets)"
+      },
+      "report": "brain/agent-outputs/backtest-agent/STR-001-validation-2026-04-27.json"
+    }
+  ],
   "approved": [],
   "scout_cycles": [
     {

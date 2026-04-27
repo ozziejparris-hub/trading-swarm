@@ -89,22 +89,43 @@ Upgrade note:           2026-03-29 — upgraded to three-type
 
 ### STR-001 — Elite Convergence Signal
 ```
-Status:                 ACTIVE
+Status:                 SUSPENDED
 Description:            3+ legendary traders (ELO > 2175) entering
                         same side of market within short window
                         triggers HIGH confidence signal
 Category:               Signal detection
-First validated:        —
-Last revalidation:      —
-Next revalidation due:  —
+First validated:        2026-04-27
+Last revalidation:      2026-04-27
+Next revalidation due:  BLOCKED — requires pre-registered refinement
+                        (see suspension reason below)
 Validated by:           backtest-agent
 Validation metrics:
-  DSR:                  —
-  Sharpe:               —
-  PBO:                  —
-  Sample markets:       —
-Notes:                  Foundational signal type. Revalidate
-                        quarterly or after any ELO methodology change.
+  Accuracy:             56.1% (n=41 signals, threshold: 60%)
+  vs random baseline:   +6.1pp edge (fails minimum)
+  vs market price:      market price 100% accurate; signal adds no edge
+  DSR:                  N/A — signal accuracy test, not P&L backtest
+  Sharpe:               N/A — signal accuracy test, not P&L backtest
+  PBO:                  N/A — signal accuracy test, not P&L backtest
+  Sample markets:       23 unique markets triggering signals
+  Data range:           2025-09-27 to 2025-11-30
+Suspension reason:      CRITICAL STRUCTURAL FLAW: 78.3% of qualifying
+                        markets (18/23) triggered signals on BOTH Yes
+                        and No sides simultaneously — legendary traders
+                        split across both sides. Paired signals
+                        contribute exactly 50% accuracy by construction.
+                        7-30 day horizon accuracy: 42.9% (below random).
+                        Signal as defined cannot reach 60% threshold.
+Positive sub-signals:   30-90 day horizon: 84.6% (n=13)
+                        ELO 3000+ tier: 75.0% (n=4)
+                        Single-side unambiguous convergence: 100% (n=5)
+Path to ACTIVE:         quant-research-agent must pre-register STR-001b
+                        with exclusive convergence filter (3+ on one side
+                        AND <3 on opposite side). Dominant-side approach
+                        achieved 65.2% on 23 markets (above 60% threshold)
+                        but requires pre-registered validation before
+                        deployment. Oscar must approve the hypothesis.
+Full report:            brain/agent-outputs/backtest-agent/
+                        STR-001-validation-2026-04-27.json
 ```
 
 ### STR-002 — Pre-Resolution Intelligence
@@ -156,6 +177,7 @@ for validation. Quant-research-agent manages that directory.
 |------|----------|---------|---------|-------------|
 | 2026-03-29 | RQ0.1 Wash Trading Audit | Initial run | PASSED — 36 suspects, 0 in top-50 | Oscar |
 | 2026-03-29 | RQ0.2 Bot Detection | Initial run | PASSED — 0 flagged, dataset growing | Oscar |
+| 2026-04-27 | STR-001 Elite Convergence Signal | First validation (never previously run) | FAILED — 56.1% accuracy (min 60%), structural flaw: 78% of markets trigger both Yes+No signals simultaneously | backtest-agent |
 
 ---
 
