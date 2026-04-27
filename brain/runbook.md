@@ -562,6 +562,22 @@ tail -100 ~/trading-swarm/logs/orchestrator.log
 Scan for `ERROR`, `CRITICAL`, or repeated `retry` entries. A single failure followed by
 a successful retry is fine. Repeated failures on the same task need investigation.
 
+**5. ELO recalculation health check:**
+```bash
+sqlite3 ~/projects/first-repo/data/polymarket_tracker.db "
+SELECT
+  date(MAX(elo_last_updated)) as last_full_recalc,
+  CAST(julianday('now') - julianday(MAX(elo_last_updated)) AS INT)
+    as days_ago
+FROM traders
+WHERE elo_last_updated IS NOT NULL;"
+```
+Expected: `days_ago <= 7` (Sunday auto-run in `daily_maintenance.py` keeps this fresh).
+If `days_ago > 14`: run `recalculate_comprehensive_elo.py` manually and verify with:
+```bash
+cd ~/projects/first-repo && python3 scripts/verify_elo_recalculation.py
+```
+
 ---
 
 ### Phase 5 Gate Tracker

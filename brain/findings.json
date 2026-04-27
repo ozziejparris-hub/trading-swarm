@@ -230,24 +230,38 @@
       "finding_type": "signal_accuracy",
       "confidence": "LOW",
       "sample_size": 13,
-      "summary": "RQ2.2 preliminary: YES positions at 95% directional threshold show 75% positive price movement within 7 days — above 60% pass criterion. NO positions show 0% at all thresholds. Average movement near-zero across all configurations. INCONCLUSIVE — magnitude criterion not met, NO signal broken, n=13 too thin.",
+      "summary": "RQ2.2 preliminary: YES positions at 95% directional threshold show 75% positive price movement within 7 days \u2014 above 60% pass criterion. NO positions show 0% at all thresholds. Average movement near-zero across all configurations. INCONCLUSIVE \u2014 magnitude criterion not met, NO signal broken, n=13 too thin.",
       "detail": {
         "metric": "pct_positive_price_movement_7d",
         "value": 0.692,
-        "baseline": 0.60,
+        "baseline": 0.6,
         "direction": "above_baseline",
         "weeks_observed": 1,
         "threshold_sweep": {
-          "0.80": {"n": 73, "pct_positive": 0.507, "verdict": "INCONCLUSIVE"},
-          "0.95": {"n": 13, "pct_positive": 0.692, "yes_pct": 0.75, "no_pct": 0.0, "verdict": "INCONCLUSIVE"},
-          "0.99": {"n": 3, "pct_positive": 0.333, "verdict": "FAIL"}
+          "0.80": {
+            "n": 73,
+            "pct_positive": 0.507,
+            "verdict": "INCONCLUSIVE"
+          },
+          "0.95": {
+            "n": 13,
+            "pct_positive": 0.692,
+            "yes_pct": 0.75,
+            "no_pct": 0.0,
+            "verdict": "INCONCLUSIVE"
+          },
+          "0.99": {
+            "n": 3,
+            "pct_positive": 0.333,
+            "verdict": "FAIL"
+          }
         },
-        "key_finding": "YES positions at 95% threshold: 75% positive movement. NO positions: 0% across all thresholds — structural weakness, 7-day window likely too short for NO timing.",
+        "key_finding": "YES positions at 95% threshold: 75% positive movement. NO positions: 0% across all thresholds \u2014 structural weakness, 7-day window likely too short for NO timing.",
         "recommended_threshold": 0.95,
-        "next_test": "Extend post-entry window to 14 and 30 days — magnitude may require more time"
+        "next_test": "Extend post-entry window to 14 and 30 days \u2014 magnitude may require more time"
       },
       "actionable": true,
-      "action_recommendation": "Signal-agent should use 95% directional threshold for YES positions only. NO positions need separate methodology — possibly measure over 14-30 day window rather than 7 days. Rerun RQ2.2 with extended windows before treating NO signals as actionable.",
+      "action_recommendation": "Signal-agent should use 95% directional threshold for YES positions only. NO positions need separate methodology \u2014 possibly measure over 14-30 day window rather than 7 days. Rerun RQ2.2 with extended windows before treating NO signals as actionable.",
       "expires_at": "2026-07-26T00:00:00Z"
     },
     {
@@ -257,7 +271,7 @@
       "finding_type": "elo_validity",
       "confidence": "LOW",
       "sample_size": 16,
-      "summary": "RQ1.1 rerun with point-in-time ELO (elo_period1_cutoff): INCONCLUSIVE — n=16, below 30-trader minimum. r=+0.175 near zero, statistically indistinguishable from noise. Previous run used retrospective ELO giving r=-0.194 — direction flip confirms point-in-time fix was necessary. Root constraint: Period 2 only 25 days old, only 47 traders have any P2 activity.",
+      "summary": "RQ1.1 rerun with point-in-time ELO (elo_period1_cutoff): INCONCLUSIVE \u2014 n=16, below 30-trader minimum. r=+0.175 near zero, statistically indistinguishable from noise. Previous run used retrospective ELO giving r=-0.194 \u2014 direction flip confirms point-in-time fix was necessary. Root constraint: Period 2 only 25 days old, only 47 traders have any P2 activity.",
       "detail": {
         "metric": "pearson_r_period1_elo_vs_period2_brier",
         "value": 0.1745,
@@ -272,11 +286,68 @@
         "previous_r_retrospective_elo": -0.194,
         "group_b_r": 0.1463,
         "group_c_r": 0.1736,
-        "fix_applied": "elo_period1_cutoff used instead of comprehensive_elo — direction flip validates fix was necessary"
+        "fix_applied": "elo_period1_cutoff used instead of comprehensive_elo \u2014 direction flip validates fix was necessary"
       },
       "actionable": false,
-      "action_recommendation": "Rerun after 2026-06-01 when Period 2 will have ~60 days of resolved markets and significantly more qualifying traders. Do not trigger stop condition — n=16 is a timing constraint not a signal failure. The near-zero correlation with clean data is inconclusive, not a fail.",
+      "action_recommendation": "Rerun after 2026-06-01 when Period 2 will have ~60 days of resolved markets and significantly more qualifying traders. Do not trigger stop condition \u2014 n=16 is a timing constraint not a signal failure. The near-zero correlation with clean data is inconclusive, not a fail.",
       "expires_at": "2026-08-26T00:00:00Z"
+    },
+    {
+      "id": "2026-04-27-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-27T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 1
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-07-26T07:00:01Z"
+    },
+    {
+      "id": "2026-04-27-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-27T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "MEDIUM",
+      "sample_size": 11,
+      "summary": "QUALIFIED tier consensus accuracy: 91% over 11 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.9091,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 1
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-07-26T07:00:01Z"
+    },
+    {
+      "id": "2026-04-27-STRATEGY-OVERDUE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-04-27T07:00:01Z",
+      "finding_type": "strategy_performance",
+      "confidence": "HIGH",
+      "sample_size": 1,
+      "summary": "1 strategy/strategies overdue for revalidation: STR-001 \u2014 Elite Convergence Signal",
+      "detail": {
+        "metric": "strategies_overdue_revalidation",
+        "value": 1.0,
+        "baseline": 0.0,
+        "direction": "above_baseline",
+        "weeks_observed": 1
+      },
+      "actionable": true,
+      "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
+      "expires_at": "2026-07-26T07:00:01Z"
     }
   ]
 }

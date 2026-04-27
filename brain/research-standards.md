@@ -40,3 +40,11 @@ comprehensive_elo is a batch-recalculated retrospective score.
 It cannot be used as a point-in-time metric for RQ1.1.
 RQ1.1 requires ELO to be recomputed on filtered trade sets.
 This is Fix 3 — not yet implemented.
+
+## Gap Period Warning
+Markets resolving April 7–18, 2026 have incomplete trade data
+due to server migration (UM890 Pro setup). Near-zero trade
+collection during this window: 1–6 trades/day vs 500+ normal.
+These markets are flagged with trade_gap_flag=1 in the markets table.
+Exclude from time-series analysis with:
+  AND (m.trade_gap_flag = 0 OR m.trade_gap_flag IS NULL)

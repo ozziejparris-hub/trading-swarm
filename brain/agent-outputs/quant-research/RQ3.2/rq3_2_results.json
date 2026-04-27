@@ -1,0 +1,41 @@
+{
+  "legendary_threshold": 2175,
+  "broad_elite_threshold": 1800,
+  "legendary_n_qualifying": 4,
+  "legendary_accuracy_pct": 0.25,
+  "legendary_brier": 0.2398,
+  "market_brier_on_legendary_markets": 0.2112,
+  "no_divergence_filter": {
+    "n_markets": 22,
+    "legendary_accuracy": 0.2727,
+    "market_accuracy": 0.7273
+  },
+  "min_divergence_threshold": 0.05,
+  "min_legendary_traders": 2,
+  "by_divergence_band": {
+    "5_10pp": {
+      "n": 4,
+      "legendary_accuracy": 0.25
+    },
+    "10_20pp": {
+      "n": 0,
+      "legendary_accuracy": 0.0
+    },
+    "over_20pp": {
+      "n": 0,
+      "legendary_accuracy": 0.0
+    }
+  },
+  "by_direction": {
+    "legendary_yes_market_no": {
+      "n": 2,
+      "legendary_accuracy": 0.0
+    },
+    "legendary_no_market_yes": {
+      "n": 0,
+      "legendary_accuracy": 0.0
+    }
+  },
+  "verdict": "FAIL",
+  "pass_criterion": "Legendary correct >55% of qualifying markets"
+}

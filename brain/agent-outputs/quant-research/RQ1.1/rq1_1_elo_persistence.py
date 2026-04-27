@@ -90,14 +90,14 @@ def get_period_split(conn: sqlite3.Connection) -> tuple[str, str, str]:
 
 
 def get_trader_elo(conn: sqlite3.Connection) -> dict[str, dict]:
-    """Fetch comprehensive_elo and total_trades for research-eligible traders."""
+    """Fetch elo_period1_cutoff and total_trades for research-eligible traders."""
     rows = conn.execute(
-        "SELECT address, comprehensive_elo, total_trades FROM traders"
+        "SELECT address, elo_period1_cutoff, total_trades FROM traders"
         " WHERE research_excluded = 0"
     ).fetchall()
     return {
         r["address"]: {
-            "elo": r["comprehensive_elo"] or 1500.0,
+            "elo": r["elo_period1_cutoff"] or 1500.0,
             "total_trades": r["total_trades"] or 0,
         }
         for r in rows
@@ -335,7 +335,7 @@ def main():
         "pass_criterion": f"Pearson r < {PASS_THRESHOLD} (negative because higher ELO = lower Brier)",
         "fail_criterion": f"Pearson r > {FAIL_THRESHOLD}",
         "notes": {
-            "elo_source": "comprehensive_elo from traders table (built from full history)",
+            "elo_source": "elo_period1_cutoff from traders table (point-in-time, Period 1 only)",
             "brier_normalisation": (
                 "Prices normalised to YES-probability space: "
                 "p_yes = entry_avg_price if bet=YES, else 1 - entry_avg_price. "

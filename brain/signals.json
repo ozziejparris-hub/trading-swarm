@@ -39,6 +39,23 @@
       "status": "processed",
       "cycle": "signal-001-first-run",
       "processed_at": "2026-04-21T19:45:24.417273"
+    },
+    {
+      "from": "feedback-loop-agent",
+      "to": "backtest-agent",
+      "type": "revalidation_requested",
+      "payload": {
+        "strategy_name": "STR-001 \u2014 Elite Convergence Signal",
+        "strategy_path": "/home/parison/trading-swarm/brain/strategy-registry.md",
+        "last_validated": "\u2014",
+        "days_since_validation": 0,
+        "original_dsr": null,
+        "original_sharpe": null,
+        "reason": "ACTIVE strategy has never been revalidated"
+      },
+      "timestamp": "2026-04-25T15:05:25Z",
+      "status": "processed",
+      "processed_at": "2026-04-25T15:10:14.473016"
     }
   ]
 }

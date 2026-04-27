@@ -1,0 +1,192 @@
+{
+  "rq": "RQ1.1",
+  "description": "Does ELO in period T predict Brier score in period T+1?",
+  "run_timestamp": "2026-04-26T11:18:37.392910+00:00",
+  "overall_correlation": 0.174493641913479,
+  "p_value": 0.5180561820664321,
+  "n_traders_qualified": 16,
+  "min_positions_per_period": 20,
+  "period_1_date_range": [
+    "2025-10-17 12:26:19.564100",
+    "2026-04-01 16:19:13.912491"
+  ],
+  "period_2_date_range": [
+    "2026-04-01 16:19:13.912491",
+    "2026-04-26 06:01:08.323592"
+  ],
+  "by_trade_count_group": {
+    "A": {
+      "correlation": null,
+      "p_value": null,
+      "n": 2,
+      "label": "total_trades < 50"
+    },
+    "B": {
+      "correlation": 0.14633476347088664,
+      "p_value": 0.7071578883458474,
+      "n": 9,
+      "label": "50 \u2264 total_trades \u2264 500"
+    },
+    "C": {
+      "correlation": 0.17357599270839816,
+      "p_value": 0.7801110090225654,
+      "n": 5,
+      "label": "total_trades > 500"
+    }
+  },
+  "verdict": "FAIL",
+  "pass_criterion": "Pearson r < -0.25 (negative because higher ELO = lower Brier)",
+  "fail_criterion": "Pearson r > -0.1",
+  "notes": {
+    "elo_source": "elo_period1_cutoff from traders table (point-in-time, Period 1 only)",
+    "brier_normalisation": "Prices normalised to YES-probability space: p_yes = entry_avg_price if bet=YES, else 1 - entry_avg_price. Brier = mean((p_yes - actual_yes)^2).",
+    "period_split": "Chronological NTILE(2) on resolution_date of binary (Yes/No) resolved markets",
+    "small_sample_warning": "WARNING: n=16 is below the 30-trade minimum for reliable inference. Statistical power is very low; treat results as preliminary only.",
+    "qualified_traders": [
+      {
+        "address": "0x09fe78c8b9f10fb9c7c0a584bfab4205c76876ee",
+        "elo": 1496.079664458889,
+        "p2_brier": 0.08664576874817616,
+        "p1_n": 20,
+        "p2_n": 21,
+        "total_trades": 37,
+        "group": "A"
+      },
+      {
+        "address": "0x8575467a6743c81ef0a8d06acc76e99b454a87fe",
+        "elo": 1483.6965611880491,
+        "p2_brier": 0.06329954475019532,
+        "p1_n": 46,
+        "p2_n": 72,
+        "total_trades": 89,
+        "group": "B"
+      },
+      {
+        "address": "0xb6fa57039ea79185895500dbd0067c288594abcf",
+        "elo": 1483.3357540214354,
+        "p2_brier": 0.03782937250232558,
+        "p1_n": 85,
+        "p2_n": 43,
+        "total_trades": 300,
+        "group": "B"
+      },
+      {
+        "address": "0xebc0df15e665da95bf819105b723ae90042ffa41",
+        "elo": 1475.7228449851646,
+        "p2_brier": 0.008474440000895051,
+        "p1_n": 24,
+        "p2_n": 25,
+        "total_trades": 35,
+        "group": "A"
+      },
+      {
+        "address": "0x6c979ffcc3528a5d2395a2f7c89135711da0988c",
+        "elo": 1470.1688927180583,
+        "p2_brier": 0.01734408695652173,
+        "p1_n": 102,
+        "p2_n": 92,
+        "total_trades": 246,
+        "group": "B"
+      },
+      {
+        "address": "0x63d43bbb87f85af03b8f2f9e2fad7b54334fa2f1",
+        "elo": 1464.1932734073598,
+        "p2_brier": 0.01579556985269925,
+        "p1_n": 285,
+        "p2_n": 22,
+        "total_trades": 545,
+        "group": "C"
+      },
+      {
+        "address": "0xfcf2378f20cf408d077c21e731272f21cccea469",
+        "elo": 1457.2667342704538,
+        "p2_brier": 0.34339339389242335,
+        "p1_n": 38,
+        "p2_n": 26,
+        "total_trades": 93,
+        "group": "B"
+      },
+      {
+        "address": "0x1d8c256b15d3cd1f5db221e70c77f552eb8d757a",
+        "elo": 1456.2222276240968,
+        "p2_brier": 0.017721151218664525,
+        "p1_n": 305,
+        "p2_n": 87,
+        "total_trades": 462,
+        "group": "B"
+      },
+      {
+        "address": "0x4df7da721042bf8b75bd1cb7acbeb7f83aaf522d",
+        "elo": 1453.3778879179283,
+        "p2_brier": 0.013532333333333337,
+        "p1_n": 42,
+        "p2_n": 39,
+        "total_trades": 95,
+        "group": "B"
+      },
+      {
+        "address": "0xcd91a549956854fdc38efad7e80ff5da8f5432b8",
+        "elo": 1443.2970461655173,
+        "p2_brier": 0.0192343257581733,
+        "p1_n": 150,
+        "p2_n": 157,
+        "total_trades": 303,
+        "group": "B"
+      },
+      {
+        "address": "0xa3ad70cf48a2f2b44163e798223c01a2c2536866",
+        "elo": 1435.5507172411576,
+        "p2_brier": 0.04070437396056878,
+        "p1_n": 266,
+        "p2_n": 141,
+        "total_trades": 546,
+        "group": "C"
+      },
+      {
+        "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+        "elo": 1418.0541544368923,
+        "p2_brier": 0.0324339525862069,
+        "p1_n": 281,
+        "p2_n": 232,
+        "total_trades": 578,
+        "group": "C"
+      },
+      {
+        "address": "0x3dd2db2d398ff72c2c71c9ad6473368b941e9ab1",
+        "elo": 1377.2013185329954,
+        "p2_brier": 0.006585368015872908,
+        "p1_n": 51,
+        "p2_n": 30,
+        "total_trades": 276,
+        "group": "B"
+      },
+      {
+        "address": "0x30cecdf29f069563ea21b8ae94492e41e53a6b2b",
+        "elo": 1368.135433505155,
+        "p2_brier": 0.022995613496932518,
+        "p1_n": 359,
+        "p2_n": 326,
+        "total_trades": 1008,
+        "group": "C"
+      },
+      {
+        "address": "0xe8dd7741ccb12350957ec71e9ee332e0d1e6ec86",
+        "elo": 1332.8819763705344,
+        "p2_brier": 0.02160911222186589,
+        "p1_n": 564,
+        "p2_n": 395,
+        "total_trades": 1815,
+        "group": "C"
+      },
+      {
+        "address": "0x5f390e4b7d6f06d6756a6c92afdbf7b3176aa78c",
+        "elo": 1315.2178657432453,
+        "p2_brier": 0.04210738121542244,
+        "p1_n": 103,
+        "p2_n": 80,
+        "total_trades": 205,
+        "group": "B"
+      }
+    ]
+  }
+}
