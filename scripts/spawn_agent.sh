@@ -113,8 +113,13 @@ echo "────────────────────────�
 
 # ── Validate template exists ─────────────────
 if [ ! -f "$TEMPLATE_FILE" ]; then
-    echo "ERROR: Template not found: $TEMPLATE_FILE"
-    exit 1
+    FALLBACK_TEMPLATE="$BASE_DIR/orchestrator/task_templates/$AGENT_TYPE-agent.md"
+    if [ -f "$FALLBACK_TEMPLATE" ]; then
+        TEMPLATE_FILE="$FALLBACK_TEMPLATE"
+    else
+        echo "ERROR: Template not found: $TEMPLATE_FILE"
+        exit 1
+    fi
 fi
 
 # ── Check session not already running ────────
