@@ -63,6 +63,22 @@
       "retries": 0,
       "pr": null,
       "verified": false
+    },
+    {
+      "id": "signal-002",
+      "agent": "signal-agent",
+      "description": "Run signal-agent second cycle. Two tasks:\n\nTASK 1 \u2014 Check Harris/Florida signal upgrade:\nThe existing signal in signals.json shows trader\n0x1fad8d047b13f7fbf97e44416b144268f1d404dc\n(ELO 3456) with $13",
+      "branch": "feat/signal-002",
+      "tmux_session": "signal-agent-signal-002",
+      "model": "claude-sonnet-4-6 (Tier 3)",
+      "tier": "3",
+      "worktree": "/home/parison/trading-swarm/worktrees/signal-002",
+      "log": "/home/parison/trading-swarm/logs/agent_logs/signal-002.log",
+      "started_at": "2026-04-27T19:30:42.390507",
+      "status": "running",
+      "retries": 0,
+      "pr": null,
+      "verified": false
     }
   ]
 }
