@@ -126,11 +126,16 @@ Path to ACTIVE:         quant-research-agent must pre-register STR-001b
                         deployment. Oscar must approve the hypothesis.
 Full report:            brain/agent-outputs/backtest-agent/
                         STR-001-validation-2026-04-27.json
+Notes:
+  Superseded by STR-001b (also SUSPENDED) and STR-003
+  (PENDING_REVIEW). Root cause: legendary traders are
+  predominantly LPs trading both sides, not directional
+  bettors. The convergence premise was incorrect.
 ```
 
 ### STR-001b — Elite Exclusive Convergence Signal (PROPOSED)
 ```
-Status:                 PENDING_REVIEW
+Status:                 SUSPENDED
 Description:            3+ legendary traders (ELO > 2175) entering
                         the SAME side of a market within 14 days,
                         WITH fewer than 2 legendary traders on the
@@ -167,6 +172,58 @@ Literature:             Machine Spirits (2026) — peer-reviewed
                         markets. Supports premise that legendary
                         traders have genuine information advantage
                         over market consensus.
+Notes:
+  Distribution analysis (2026-04-27): legendary traders
+  appear on both sides of markets in 95%+ of cases.
+  The exclusive convergence filter will almost never fire
+  with 3+ traders because high-ELO traders are predominantly
+  LPs not directional bettors.
+
+  The exception is single highly-directional traders at
+  95%+ capital on one side — see RQ2.2 finding which showed
+  75% positive price movement at 95% threshold (n=13).
+
+  Recommend: retire STR-001 family and replace with
+  STR-003 — Single Legendary Directional Signal based
+  on RQ2.2 methodology. Pre-register when quant-research-agent
+  has sufficient data.
+```
+
+### STR-003 — Single Legendary Directional Signal (PROPOSED)
+```
+Status:                 PENDING_REVIEW
+Description:            A legendary trader (ELO > 2175,
+                        research_excluded = 0) with >= 95% of
+                        their capital on one side of a market
+                        (zero or near-zero opposing hedge).
+                        Based on RQ2.2 finding: YES positions
+                        at 95% threshold showed 75% positive
+                        price movement within 7 days (n=13).
+
+                        Simpler and more empirically grounded
+                        than STR-001 family. Fires on individual
+                        conviction not group consensus.
+
+Category:               Signal detection
+Pre-registered:         2026-04-27
+Approved by:            Oscar (2026-04-27)
+Validation criteria:
+  - Minimum 20 qualifying signals
+  - Accuracy > 60% on outcome prediction
+  - Price movement > 2pp in correct direction
+  - Separate validation for YES vs NO signals
+  - NO signal needs 14-30 day window (RQ2.2 finding)
+Blockers:
+  - Need more resolved markets with 95% directional
+    legendary entries (currently n=13 from RQ2.2)
+  - Rerun RQ2.2 with extended 14/30 day windows
+    before declaring NO signal broken
+Notes:
+  RQ2.2 preliminary (n=13, LOW confidence):
+  YES positions: 75% positive movement (above 60% threshold)
+  NO positions: 0% at 7-day window (needs longer window)
+  Current Harris/Florida signal in signals.json is
+  STR-003 pattern — one trader, $130K NO, zero YES hedge.
 ```
 
 ### STR-002 — Pre-Resolution Intelligence
