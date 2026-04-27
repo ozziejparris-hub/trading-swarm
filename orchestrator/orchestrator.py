@@ -568,34 +568,42 @@ def send_weekly_metrics():
     Send a weekly summary every Monday at 8am.
     Reads from feedback.json and registry for stats.
     """
-    now = datetime.utcnow()
-    # Only send on Mondays between 8-9am UTC
-    if now.weekday() != 0 or now.hour != 8:
-        return
+    # DISABLED — performance-analyst-agent not yet activated.
+    # Weekly metrics report has no meaningful data until:
+    # 1. Phase 5 gate passes
+    # 2. Trading swarm agents are fully activated
+    # 3. Live trading begins
+    # Re-enable by removing this comment block.
+    return
 
-    feedback = load_json(FEEDBACK_FILE)
-    registry = load_registry()
+    # now = datetime.utcnow()
+    # # Only send on Mondays between 8-9am UTC
+    # if now.weekday() != 0 or now.hour != 8:
+    #     return
 
-    approved = len(feedback.get("approved", [])) if feedback else 0
-    rejected = len(feedback.get("rejected", [])) if feedback else 0
-    total = approved + rejected
-    rate = (approved / total * 100) if total > 0 else 0
+    # feedback = load_json(FEEDBACK_FILE)
+    # registry = load_registry()
 
-    all_tasks = registry.get("active_tasks", [])
-    failed = len([t for t in all_tasks if t["status"] == "failed"])
+    # approved = len(feedback.get("approved", [])) if feedback else 0
+    # rejected = len(feedback.get("rejected", [])) if feedback else 0
+    # total = approved + rejected
+    # rate = (approved / total * 100) if total > 0 else 0
 
-    message = (
-        f"📊 *Weekly Metrics Report*\n"
-        f"─────────────────\n"
-        f"Tasks approved: {approved}\n"
-        f"Tasks rejected: {rejected}\n"
-        f"Approval rate: {rate:.0f}%\n"
-        f"Failed (needs review): {failed}\n"
-        f"─────────────────\n"
-        f"Review /brain/kpis.md for trading metrics"
-    )
-    send_telegram(message, bot="metrics")
-    log.info("Weekly metrics report sent")
+    # all_tasks = registry.get("active_tasks", [])
+    # failed = len([t for t in all_tasks if t["status"] == "failed"])
+
+    # message = (
+    #     f"📊 *Weekly Metrics Report*\n"
+    #     f"─────────────────\n"
+    #     f"Tasks approved: {approved}\n"
+    #     f"Tasks rejected: {rejected}\n"
+    #     f"Approval rate: {rate:.0f}%\n"
+    #     f"Failed (needs review): {failed}\n"
+    #     f"─────────────────\n"
+    #     f"Review /brain/kpis.md for trading metrics"
+    # )
+    # send_telegram(message, bot="metrics")
+    # log.info("Weekly metrics report sent")
 
 # ─────────────────────────────────────────────
 # MAIN ORCHESTRATOR LOOP
