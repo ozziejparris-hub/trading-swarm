@@ -1,3 +1,7 @@
+# APPROVED — assessed 2026-04-27, no changes needed
+# System is read-only, no CLOB trading endpoints used
+# See runbook.md Section 13 for full assessment
+
 # Polymarket CTF Exchange V2 Upgrade — Breaking API Changes
 
 ## Source

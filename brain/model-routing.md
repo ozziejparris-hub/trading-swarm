@@ -32,7 +32,7 @@ Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 0.79s)
 Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 5.86s)
 Tier 2.5 — Claude Haiku 4.5      ($1/$5 per MTok)
 Tier 3 — Claude Sonnet 4.6       ($3/$15 per MTok)
-Tier 4 — Claude Opus 4.6         ($5/$25 per MTok, escalation only)
+Tier 4 — Claude Opus 4.7         ($5/$25 per MTok, escalation only)
 ```
 
 The routing logic is simple: use the lowest tier that
@@ -50,7 +50,7 @@ Gemma 4 E2B (Ollama)     Free            Free
 Gemma 4 E4B (Ollama)     Free (local)    Free (local)
 Claude Haiku 4.5         $1.00/MTok      $5.00/MTok
 Claude Sonnet 4.6        $3.00/MTok      $15.00/MTok
-Claude Opus 4.6          $5.00/MTok      $25.00/MTok
+Claude Opus 4.7          $5.00/MTok      $25.00/MTok
 ────────────────────────────────────────────────
 
 MTok = million tokens
@@ -58,7 +58,7 @@ MTok = million tokens
 Prompt caching discount: up to 90% on repeated context
 Batch API discount:      50% on both input and output
 
-Note: Sonnet 4.6 and Opus 4.6 have a 1M token context
+Note: Sonnet 4.6 and Opus 4.7 both have a 1M token context
 window with standard pricing (no long-context surcharge
 as of March 14 2026). This matters for quant-research
 tasks that load large sections of brain/ alongside data.
@@ -226,7 +226,7 @@ with substantive output. Budget accordingly.
 
 ---
 
-### Tier 4 — Claude Opus 4.6 (escalation only)
+### Tier 4 — Claude Opus 4.7 (escalation only)
 
 **Assigned to:**
 - Any task that failed Tier 3 validation three times
@@ -250,7 +250,7 @@ to the orchestrator loop. Not "this is a hard coding task."
 - Any task where Sonnet hasn't been tried first
 
 **Why this matters:**
-Opus 4.6 costs $5/$25 per MTok — 5x Sonnet's output price.
+Opus 4.7 costs $5/$25 per MTok — 5x Sonnet's output price.
 Unnecessary Opus usage at scale would dominate the cost
 budget. The 3-failure gate exists to ensure Opus is
 used only when Sonnet has genuinely reached its limit,
@@ -281,7 +281,7 @@ market-builder           3      Claude Sonnet 4.6        API multi-file
 market-intelligence      3      Claude Sonnet 4.6        Domain analysis
 performance-analyst      3      Claude Sonnet 4.6        Trend analysis
 orchestrator             3      Claude Sonnet 4.6        Context window
-escalation (any)         4      Claude Opus 4.6          3x Sonnet fail
+escalation (any)         4      Claude Opus 4.7          3x Sonnet fail
 ─────────────────────────────────────────────────────────────────────
 ```
 
@@ -296,7 +296,7 @@ Tier 1 (Gemma 4 E2B):         ~40-50% of requests, $0 cost
 Tier 2 (Gemma 4 E4B):         ~30-40% of requests, $0 cost
 Tier 2.5 (Haiku 4.5):         ~5-10% of requests, ~$1/$5 per MTok
 Tier 3 (Sonnet 4.6):          ~15-20% of requests, ~$3/$15 per MTok
-Tier 4 (Opus 4.6):            ~1-5% of requests, ~$5/$25 per MTok
+Tier 4 (Opus 4.7):            ~1-5% of requests, ~$5/$25 per MTok
 ```
 
 The majority of token spend flows from Tier 3. Quant-research
@@ -333,12 +333,12 @@ calls Claude directly:
 ```
 claude-haiku-4-5-20251001   ← Tier 2.5
 claude-sonnet-4-6            ← Tier 3
-claude-opus-4-6              ← Tier 4
+claude-opus-4-7              ← Tier 4
 ```
 
 The Haiku string includes a date suffix (`20251001`) because
-Haiku 4.5 was versioned differently from the Sonnet/Opus
-4.6 family. Use these exact strings. Do not use older
+Haiku 4.5 was versioned differently from the Sonnet 4.6 /
+Opus 4.7 family. Use these exact strings. Do not use older
 strings (claude-sonnet-4-5, claude-opus-4-5) — those
 refer to the previous generation.
 
@@ -372,7 +372,7 @@ Blocked until 4 weeks of live cost data available.
 Released April 7 to 50 organisations under Project Glasswing.
 93.9% SWE-bench Verified, 94.6% GPQA Diamond — best available.
 Pricing when public: $25 input / $125 output per MTok.
-At that price: Tier 4 escalation only, replaces Opus 4.6.
+At that price: Tier 4 escalation only, replaces Opus 4.7.
 Not publicly available yet — monitor for general release.
 
 **GPT-6 (released April 14 — evaluate for Tier 4):**
@@ -467,7 +467,7 @@ validity, reading across reference library simultaneously?
 
 Task has failed Tier 3 three times OR is genuinely
 architectural in scope?
-→ Tier 4 (Claude Opus 4.6, $5/$25 per MTok)
+→ Tier 4 (Claude Opus 4.7, $5/$25 per MTok)
 ```
 
 
