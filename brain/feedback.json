@@ -17,7 +17,32 @@
       "report": "brain/agent-outputs/backtest-agent/STR-001-validation-2026-04-27.json"
     }
   ],
-  "approved": [],
+  "approved": [
+    {
+      "task_id": "scout-20260428-info-aggregation",
+      "description": "Information Aggregation AI Agents paper",
+      "approved_at": "2026-04-29",
+      "action_taken": "Added RQ3.2 theoretical grounding note, feedback-loop-agent guidance"
+    },
+    {
+      "task_id": "scout-20260428-omc-framework",
+      "description": "OneManCompany agent orchestration framework",
+      "approved_at": "2026-04-29",
+      "action_taken": "Added to reference library for Phase 3+ review"
+    },
+    {
+      "task_id": "scout-20260428-polymarket-microstructure",
+      "description": "Polymarket order book microstructure paper",
+      "approved_at": "2026-04-29",
+      "action_taken": "Validated data source is clean — no bug. Notes added."
+    },
+    {
+      "task_id": "scout-20260428-price-focal-point",
+      "description": "Price as focal point / Signal Credibility Index",
+      "approved_at": "2026-04-29",
+      "action_taken": "Added to reference library, noted for market selection and Phase 6"
+    }
+  ],
   "scout_cycles": [
     {
       "cycle_date": "2026-04-28",
