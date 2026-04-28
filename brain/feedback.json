@@ -20,6 +20,36 @@
   "approved": [],
   "scout_cycles": [
     {
+      "cycle_date": "2026-04-28",
+      "cycle_id": "scout-20260428",
+      "sources_checked": [
+        "huggingface-daily-papers",
+        "arxiv-q-fin",
+        "arxiv-cs-ai",
+        "karpathy-autoresearch",
+        "deepseek-huggingface",
+        "anthropic-news",
+        "hackernews"
+      ],
+      "findings_surfaced": 4,
+      "findings_discarded": 4,
+      "pending_review_items": [
+        "2026-04-28-09-polymarket-orderbook-microstructure.md",
+        "2026-04-28-09-information-aggregation-ai-prediction-markets.md",
+        "2026-04-28-09-prediction-market-price-focal-point-sci.md",
+        "2026-04-28-09-onemancompany-heterogeneous-agent-orchestration.md"
+      ],
+      "discarded": [
+        "2604.22818 Representation Homogeneity — too close to Machine Spirits (already approved)",
+        "2604.23897 MarketBench — LLM self-calibration, not directly actionable",
+        "DeepSeek V4 update — no new content vs dismissed finding from 2026-04-27",
+        "2604.22818 systemic instability — equity markets only, not prediction markets"
+      ],
+      "escalations_sent": [],
+      "weekly_digest_written": false,
+      "notes": "Second scout cycle. 4/5 slots used (slot 5 unused by design — quality over quantity). Karpathy autoresearch: 77.3k stars, no new commits visible from last 7 days. HackerNews: no relevant items above 100 pts. DeepSeek V4 remains dismissed — no new info since yesterday. Twitter/X still inaccessible."
+    },
+    {
       "cycle_date": "2026-04-27",
       "cycle_id": "scout-20260427",
       "sources_checked": [
