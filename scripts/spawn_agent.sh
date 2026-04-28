@@ -69,6 +69,7 @@ BRANCH_NAME="feat/$TASK_ID"
 WORKTREE_PATH="$WORKTREES_DIR/$TASK_ID"
 LOG_FILE="$BASE_DIR/logs/agent_logs/$TASK_ID.log"
 PROMPT_FILE="/tmp/$TASK_ID.prompt"
+CLEANUP_FILE="/tmp/$TASK_ID.cleanup.py"
 
 # ── Select model based on tier ───────────────
 case $TIER in
@@ -165,6 +166,28 @@ echo "=== Agent Output ===" >> "$LOG_FILE"
 # Write to temp file to avoid tmux character limit when passing prompt inline
 printf '%s' "$AGENT_PROMPT" > "$PROMPT_FILE"
 
+# Write registry cleanup script — runs inside tmux after agent exits
+cat > "$CLEANUP_FILE" << 'CLEANUP_EOF'
+import json, sys
+registry_path = '/home/parison/trading-swarm/orchestrator/agent_registry.json'
+task_id = sys.argv[1]
+try:
+    with open(registry_path) as f:
+        registry = json.load(f)
+    for t in registry['active_tasks']:
+        if t['id'] == task_id:
+            t['status'] = 'completed'
+            break
+    with open(registry_path, 'w') as f:
+        json.dump(registry, f, indent=2)
+    registry['active_tasks'] = [t for t in registry['active_tasks'] if t['id'] != task_id]
+    with open(registry_path, 'w') as f:
+        json.dump(registry, f, indent=2)
+    print(f'[REGISTRY] Cleaned up task {task_id}')
+except Exception as e:
+    print(f'[REGISTRY] Cleanup failed: {e}')
+CLEANUP_EOF
+
 # ── Create git worktree for paid tiers ────────
 if [ "$NEEDS_WORKTREE" = true ]; then
     echo "Creating git worktree: $BRANCH_NAME"
@@ -194,12 +217,12 @@ tmux new-session -d \
 if [ "$NEEDS_WORKTREE" = true ]; then
     # Paid Claude models: read prompt from file to avoid tmux character limit
     tmux send-keys -t "$SESSION_NAME" \
-        "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE" \
+        "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE" \
         Enter
 else
     # Local Ollama models: read prompt from file to avoid tmux character limit
     tmux send-keys -t "$SESSION_NAME" \
-        "cat $PROMPT_FILE | $MODEL_CMD 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE" \
+        "cat $PROMPT_FILE | $MODEL_CMD 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE" \
         Enter
 fi
 
