@@ -60,7 +60,7 @@ fi
 
 # ── Configuration ───────────────────────────
 BASE_DIR="/home/parison/trading-swarm"
-WORKTREES_DIR="$BASE_DIR/worktrees"
+WORKTREES_DIR="/tmp/trading-swarm-worktrees"
 TEMPLATE_FILE="$BASE_DIR/orchestrator/task_templates/$AGENT_TYPE.md"
 REGISTRY_FILE="$BASE_DIR/orchestrator/agent_registry.json"
 BRAIN_DIR="$BASE_DIR/brain"

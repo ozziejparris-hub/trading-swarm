@@ -79,6 +79,22 @@
       "retries": 0,
       "pr": null,
       "verified": false
+    },
+    {
+      "id": "scout-20260428",
+      "agent": "research-scout",
+      "description": "Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-28. It is Tuesday \u2014 if Monday, write weekly ",
+      "branch": "feat/scout-20260428",
+      "tmux_session": "research-scout-scout-20260428",
+      "model": "claude-sonnet-4-6 (Tier 3)",
+      "tier": "3",
+      "worktree": "/home/parison/trading-swarm/worktrees/scout-20260428",
+      "log": "/home/parison/trading-swarm/logs/agent_logs/scout-20260428.log",
+      "started_at": "2026-04-28T08:00:01.433009",
+      "status": "running",
+      "retries": 0,
+      "pr": null,
+      "verified": false
     }
   ]
 }

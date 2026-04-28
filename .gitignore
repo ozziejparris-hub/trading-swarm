@@ -21,3 +21,6 @@ logs/
 *.pyc
 *.pyo
 __pycache__/
+
+# Worktrees are now in /tmp — ignore any remnants here
+worktrees/
