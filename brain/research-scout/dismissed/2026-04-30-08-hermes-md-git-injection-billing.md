@@ -1,4 +1,5 @@
 # HERMES.md Bug Reveals Claude Code Injects Git History Into Agent Prompts
+<!-- DISMISSED 2026-04-30: spawn_agent.sh audited — no git history injection. Claude CLI invoked via -p (print mode), not interactive; no git-status auto-injection in this mode. No "HERMES.md" string in any commit message; billing routing bug does not apply. Git history contains no sensitive data. Concern is real for interactive Claude Code sessions but does not apply to this swarm's agent-spawning architecture. -->
 
 ## Source
 https://github.com/anthropics/claude-code/issues/53262
