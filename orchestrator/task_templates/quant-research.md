@@ -75,6 +75,15 @@ Output: microstructure_model.py + informed ratio estimates.
    PRAGMA journal_mode=WAL;
 8. Never hardcode credentials or API keys
 9. Never self-report completion — produce verifiable files
+10. Before finalising any probability estimate or research conclusion, run an explicit
+    pre-mortem: (a) list the top 3 ways your analysis could be wrong, (b) name one
+    black swan that would invalidate the result. If any item materially changes your
+    confidence, update before finalising. Document the pre-mortem in your research notes.
+    (Source: BTF-2 benchmark — pre-mortem is the single largest edge over baseline LLMs.)
+11. Apply elevated uncertainty priors to markets involving: political/business leader
+    intent, stated commitment execution ("will X follow through on Y?"), or institutional
+    process outcomes (legislative, regulatory, corporate). Require higher Brier score
+    thresholds before accepting signal confidence on these market types.
 
 ## Definition of Done
 - [ ] Research documented in /home/parison/trading-swarm/brain/strategy-notes/

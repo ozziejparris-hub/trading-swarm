@@ -1,3 +1,4 @@
+<!-- DISMISSED 2026-04-30: No benchmarks published, no confirmed open weights, multimodal capability not needed in current phase (all data tabular/text). Revisit if open weights + text benchmarks materialise within 30 days. -->
 # GLM-5V-Turbo: Z.ai Releases Native Multimodal Agent Foundation Model
 
 ## Source

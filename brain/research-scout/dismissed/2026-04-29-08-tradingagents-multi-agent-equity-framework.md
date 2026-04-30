@@ -1,3 +1,4 @@
+<!-- DISMISSED 2026-04-30: Equities-only framework, Phase 6+ — no transferable patterns for current prediction market phase. Debate mechanism noted but not actionable until equities expansion. -->
 # TradingAgents — Multi-Agent LLM Financial Trading Framework (54k Stars)
 
 ## Source

@@ -792,6 +792,41 @@ derived value specific to Polymarket.
 
 ---
 
+**RQ4-MULTI — Multivariate Kelly for Correlated Positions**
+Hypothesis: Standard single-asset Kelly applied independently to correlated Polymarket
+positions systematically overfits and risks ruin when correlated events co-resolve.
+A multivariate Kelly optimisation using the O(N) integral transform (arXiv:2604.24723)
+will produce more robust sizing by accounting for the 933 high-correlation pairs already
+in correlation_cache.json.
+
+Test: Implement multivariate Kelly using the integral transform approach from
+arXiv:2604.24723. Apply to historical position data using the 933 high-correlation pairs
+as the correlation structure input. Compare simulated blow-up risk vs independent
+single-asset Kelly on the same positions.
+
+Data: positions table, correlation_cache.json (high_correlation_pairs)
+
+Success criterion: Multivariate Kelly reduces max drawdown in simulated portfolio vs
+independent Kelly by > 10% while maintaining similar expected return.
+
+Null hypothesis: Correlation structure is already captured by independent Kelly on each
+position (i.e., correlated positions do not materially change optimal sizing).
+
+Why this matters: The 933 high-correlation pairs are a documented systemic risk (RQ5.1).
+When correlated positions co-resolve unexpectedly, independent Kelly fails. The O(N)
+integral transform (arXiv:2604.24723) makes this tractable for hundreds of simultaneous
+positions. The correlation data structure (correlation_cache.json) already exists —
+the algorithm input is ready.
+
+Priority: Phase 4+ — do not implement before RQ4.1–4.3 are complete and Phase 5 gate
+criteria are met. This is position sizing infrastructure; signal quality must be
+validated first.
+
+Reference: arXiv:2604.24723 (approved research-scout 2026-04-30). See
+brain/reference-library/ for implementation notes once Phase 4 begins.
+
+---
+
 ### Category 5 — Correlation and Portfolio Risk
 *How do positions interact?
 What does a well-diversified Polymarket portfolio look like?*
