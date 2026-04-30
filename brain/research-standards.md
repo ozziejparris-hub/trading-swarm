@@ -1,5 +1,5 @@
 # Research Query Standards
-Last updated: 2026-04-26
+Last updated: 2026-04-30
 Source: Data integrity audit findings
 
 ## Mandatory Filters for All Research Queries
@@ -27,10 +27,13 @@ AND m.winning_outcome NOT IN ('unknown', '')
 AND m.winning_outcome IS NOT NULL
 -- Excludes 497 markets with unknown resolution (4.5%)
 
-## Clean Research Pool (as of 2026-04-26)
+## Clean Research Pool (as of 2026-04-30)
 Total traders: 86,816
-research_excluded = 0: 6,829
-Legendary (ELO > 2175, not excluded): run query to confirm
+research_excluded = 0: **857** (updated after April 30 audit)
+  — Previous figure (6,829) was inflated: exclusion flags had not been
+    fully propagated by update_research_exclusions.py. Step 0 of
+    daily_maintenance.py now ensures flags are current before any ELO work.
+Legendary (ELO > 2175, not excluded): run query to confirm current count
 
 ## Known Data Issues
 See reports/data_integrity_audit_20260426.md in first-repo

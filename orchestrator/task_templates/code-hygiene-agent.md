@@ -35,7 +35,7 @@ system starts the working week in optimal condition Monday.
 - CI directory: /ci/
 - Tests: /tests/
 - Orchestrator: /orchestrator/
-- Worktrees: /worktrees/ (temporary, clean up orphans)
+- Worktrees: /tmp/trading-swarm-worktrees/ (temporary, clean up orphans)
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
 - Feedback: /home/parison/trading-swarm/brain/feedback.json
 - Output: /home/parison/trading-swarm/brain/agent-outputs/code-hygiene/
@@ -509,7 +509,7 @@ space and confuse future agents.
 cleanup_orphaned_worktrees() {
     BASE_DIR="/home/parison/trading-swarm"
     REGISTRY="$BASE_DIR/orchestrator/agent_registry.json"
-    WORKTREES_DIR="$BASE_DIR/worktrees"
+    WORKTREES_DIR="/tmp/trading-swarm-worktrees"
     
     echo "Checking for orphaned worktrees..."
     
