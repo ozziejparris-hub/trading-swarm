@@ -45,6 +45,38 @@
   ],
   "scout_cycles": [
     {
+      "cycle_date": "2026-04-30",
+      "cycle_id": "scout-20260430",
+      "sources_checked": [
+        "huggingface-daily-papers",
+        "arxiv-q-fin",
+        "arxiv-cs-ai",
+        "anthropic-news",
+        "hackernews"
+      ],
+      "findings_surfaced": 5,
+      "findings_discarded": 7,
+      "pending_review_items": [
+        "2026-04-30-08-hermes-md-git-injection-billing.md",
+        "2026-04-30-08-btf2-forecasting-agents-benchmark.md",
+        "2026-04-30-08-futureworld-live-rl-prediction-agents.md",
+        "2026-04-30-08-architectural-heterogeneity-multi-agent-forecasting.md",
+        "2026-04-30-08-glm5v-turbo-multimodal-agent-model.md"
+      ],
+      "discarded": [
+        "2604.24366 Polymarket order book microstructure — already approved cycle 2",
+        "2604.23897 MarketBench — already discarded cycle 2",
+        "2604.22818 Representation Homogeneity — discarded cycles 2 and 3",
+        "2604.24723 Multivariate Kelly — already in pending-review from cycle 3",
+        "2604.24147 Price as Focal Point — already approved cycle 2",
+        "2604.26805 Bian Que agentic framework — agent orchestration for online ops, no novel technique vs existing reference library",
+        "Anthropic news — no new releases or API changes since cycle 3"
+      ],
+      "escalations_sent": [],
+      "weekly_digest_written": false,
+      "notes": "Fourth scout cycle (Thursday). All 5 slots used. HN surfaced high-signal item (1099 pts): HERMES.md billing bug reveals Claude Code injects git history into agent prompts — Domain 6 finding. BTF-2 forecasting benchmark (2604.26106) directly applicable to quant-research methodology. FutureWorld RL prediction environment (2604.26733) architectural precedent for Phase 3+. Architectural heterogeneity paper (2604.26561) provides empirical validation for multi-model ensemble approach. GLM-5V-Turbo (2604.26752) monitoring — 2280 HF upvotes but no benchmarks yet. q-fin arXiv returned only previously-covered papers. Karpathy autoresearch and Polymarket changelog not checked today (no new content expected; will prioritise next cycle). Twitter/X still inaccessible."
+    },
+    {
       "cycle_date": "2026-04-29",
       "cycle_id": "scout-20260429",
       "sources_checked": [

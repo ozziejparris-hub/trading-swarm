@@ -73,6 +73,24 @@
         "report": "brain/agent-outputs/backtest-agent/STR-001-validation-2026-04-27.json",
         "action_required": "Oscar decision on STR-001 suspension. quant-research-agent pre-registration of STR-001b required before any reactivation."
       }
+    },
+    {
+      "from": "research-scout-agent",
+      "to": "orchestrator",
+      "type": "escalation_immediate",
+      "urgency": "NOW",
+      "payload": {
+        "title": "Polymarket CTF Exchange V2 API — cutover April 28 ~11:00 UTC",
+        "summary": "Polymarket is deploying a full exchange overhaul tomorrow. Three breaking changes: (1) EIP-712 domain version must change from '1' to '2' — v1-signed orders rejected at cutover. (2) Pagination endpoints replaced by keyset cursors. (3) POST /submit no longer returns transactionHash immediately. market-builder-agent templates must be audited before the trading-swarm service is ever started. System is not yet live — no production incident. Migration guide: https://docs.polymarket.com/v2-migration",
+        "action_required": "Audit orchestrator/task_templates/ for market-builder-agent Polymarket API patterns before spawning that agent. Update to v2 SDK and v2 endpoint patterns.",
+        "finding_file": "brain/research-scout/pending-review/2026-04-27-13-polymarket-v2-api-breaking-changes.md",
+        "deadline": "2026-04-28T11:00:00Z"
+      },
+      "timestamp": "2026-04-27T18:56:17Z",
+      "status": "completed",
+      "completed_at": "2026-04-28",
+      "completion_note": "V2 cutover confirmed clean. System is read-only via Data API and Gamma API only — CLOB trading endpoints not used. fetch_market_resolutions.py verified post-cutover: 702 resolutions found, zero errors.",
+      "cycle": "scout-20260427"
     }
   ],
   "pending": [
@@ -195,22 +213,6 @@
       "timestamp": "2026-04-27T20:00:00Z",
       "status": "pending",
       "cycle": "signal-002"
-    },
-    {
-      "from": "research-scout-agent",
-      "to": "orchestrator",
-      "type": "escalation_immediate",
-      "urgency": "NOW",
-      "payload": {
-        "title": "Polymarket CTF Exchange V2 API — cutover April 28 ~11:00 UTC",
-        "summary": "Polymarket is deploying a full exchange overhaul tomorrow. Three breaking changes: (1) EIP-712 domain version must change from '1' to '2' — v1-signed orders rejected at cutover. (2) Pagination endpoints replaced by keyset cursors. (3) POST /submit no longer returns transactionHash immediately. market-builder-agent templates must be audited before the trading-swarm service is ever started. System is not yet live — no production incident. Migration guide: https://docs.polymarket.com/v2-migration",
-        "action_required": "Audit orchestrator/task_templates/ for market-builder-agent Polymarket API patterns before spawning that agent. Update to v2 SDK and v2 endpoint patterns.",
-        "finding_file": "brain/research-scout/pending-review/2026-04-27-13-polymarket-v2-api-breaking-changes.md",
-        "deadline": "2026-04-28T11:00:00Z"
-      },
-      "timestamp": "2026-04-27T18:56:17Z",
-      "status": "pending",
-      "cycle": "scout-20260427"
     },
     {
       "from": "research-scout-agent",

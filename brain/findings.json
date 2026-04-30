@@ -157,8 +157,10 @@
         "direction": "above_baseline",
         "weeks_observed": 1
       },
-      "actionable": true,
+      "actionable": false,
       "action_recommendation": "Increase ELITE tier weighting \u2014 exceeds 60% accuracy",
+      "invalidated_at": "2026-04-30",
+      "invalidation_reason": "Computed against contaminated research pool (9,993 traders with research_excluded=0 when correct clean pool is 857). ELO modifiers were also frozen at 1.0x when these ran. Requires revalidation by feedback-loop-agent against clean pool.",
       "expires_at": "2026-07-24T15:05:25Z"
     },
     {
@@ -176,8 +178,10 @@
         "direction": "above_baseline",
         "weeks_observed": 1
       },
-      "actionable": true,
+      "actionable": false,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "invalidated_at": "2026-04-30",
+      "invalidation_reason": "Computed against contaminated research pool (9,993 traders with research_excluded=0 when correct clean pool is 857). ELO modifiers were also frozen at 1.0x when these ran. Requires revalidation by feedback-loop-agent against clean pool.",
       "expires_at": "2026-07-24T15:05:25Z"
     },
     {
@@ -326,8 +330,10 @@
         "direction": "above_baseline",
         "weeks_observed": 1
       },
-      "actionable": true,
+      "actionable": false,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "invalidated_at": "2026-04-30",
+      "invalidation_reason": "Computed against contaminated research pool (9,993 traders with research_excluded=0 when correct clean pool is 857). ELO modifiers were also frozen at 1.0x when these ran. Requires revalidation by feedback-loop-agent against clean pool.",
       "expires_at": "2026-07-26T07:00:01Z"
     },
     {
