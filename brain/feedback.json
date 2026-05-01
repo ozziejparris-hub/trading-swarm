@@ -45,6 +45,41 @@
   ],
   "scout_cycles": [
     {
+      "cycle_date": "2026-05-01",
+      "cycle_id": "scout-20260501",
+      "sources_checked": [
+        "arxiv-cs-ai",
+        "arxiv-q-fin",
+        "anthropic-news",
+        "huggingface-daily-papers",
+        "karpathy-autoresearch",
+        "polymarket-changelog",
+        "minimax-huggingface",
+        "deepseek-huggingface",
+        "hackernews"
+      ],
+      "findings_surfaced": 3,
+      "findings_discarded": 8,
+      "pending_review_items": [
+        "2026-05-01-08-minimax-m27-open-weights-watch-trigger.md",
+        "2026-05-01-08-polymarket-us-cftc-regulated-launch.md",
+        "2026-05-01-08-in-context-prompting-vs-orchestration.md"
+      ],
+      "discarded": [
+        "2604.27041 Signal Credibility Index (Nechepurenko) — same author's technical follow-up to 2604.24147 (already approved cycle 2); concept already in reference library; implementation metrics noted in raw notes of existing approved file",
+        "2604.27707 Contextual Agentic Memory is a Memo — limitations of context-window memory for agents; too abstract for current phase, no actionable implementation path",
+        "2604.27859 Rethinking Agentic RL in LLMs — RL training paper, not applicable to API-based system",
+        "2604.27819 MCPHunt cross-boundary MCP agents — multi-server MCP security evaluation framework; not relevant to current single-server architecture",
+        "HuggingFace Claw-Eval-Live (4 upvotes) — below meaningful signal threshold; agent benchmark not yet validated",
+        "HuggingFace Heterogeneous Scientific Foundation Model Collaboration — multi-domain scientific foundation models, not relevant to trading or prediction markets",
+        "DeepSeek V4 Flash/Pro — already dismissed cycle 1 (local inference requires 142GB; sovereignty + cost preference is local-first)",
+        "Anthropic news — Claude Design product launch; no model capability or API changes since Opus 4.7 (cycle 1); no escalation triggered"
+      ],
+      "escalations_sent": [],
+      "weekly_digest_written": false,
+      "notes": "Fifth scout cycle (Friday). 3/5 slots used (quality over quantity). Primary finding: MiniMax M2.7 open weights confirmed viable on UM890 Pro at UD-Q2_K_XL (75.3GB) — explicit watch list trigger in model-routing.md, both sovereignty and hardware blockers now cleared. Polymarket US CFTC-regulated launch is a structural change distinct from V2 API upgrade (already approved cycle 1) — affects Phase 6 planning and market selection strategy. In-context prompting paper surfaces an architectural question for procedural agents but is a preprint with limited scope. Karpathy autoresearch: no new commits (36 total, no releases). HN: no items above 100 points in target domains. SCI follow-up paper (2604.27041) discarded — same author continuation of approved finding, concept already in reference library. Twitter/X still inaccessible."
+    },
+    {
       "cycle_date": "2026-04-30",
       "cycle_id": "scout-20260430",
       "sources_checked": [
