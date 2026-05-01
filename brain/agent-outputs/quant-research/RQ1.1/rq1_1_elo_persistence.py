@@ -39,15 +39,8 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
-try:
-    from scipy import stats
-    import numpy as np
-except ImportError:
-    print("Installing required packages...")
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "scipy", "numpy", "-q"])
-    from scipy import stats
-    import numpy as np
+from scipy import stats
+import numpy as np
 
 DB_PATH = Path.home() / "projects/first-repo/data/polymarket_tracker.db"
 OUT_DIR = Path.home() / "trading-swarm/brain/agent-outputs/quant-research/RQ1.1"

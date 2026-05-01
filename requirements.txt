@@ -1,0 +1,4 @@
+scipy>=1.11
+numpy>=1.26
+pytest>=8.0
+flake8>=7.0
