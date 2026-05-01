@@ -1,7 +1,7 @@
 # Current Priorities
 
-Last updated: 2026-03-28
-Updated by: Oscar (Server Pre-Setup Chat 3)
+Last updated: 2026-05-01
+Updated by: Claude (research scout triage)
 
 ---
 
@@ -12,6 +12,30 @@ Polymarket monitoring system running independently on Windows.
 Pre-resolution intelligence running daily at 8am UTC.
 Self-improvement layer committed: feedback-loop-agent,
 strategy-registry.md, findings.json.
+
+---
+
+## Active Action Items (May 2026)
+
+**MiniMax M2.7 — this week (watch-list trigger fired 2026-05-01):**
+Open weights confirmed (HuggingFace, MIT license). Hardware viable:
+UD-Q2_K_XL GGUF (75.3GB) fits UM890 Pro 96GB DDR5.
+Actions required:
+1. RAM baseline — check available headroom with both services running
+2. Pull UD-Q2_K_XL GGUF if headroom > 80GB
+3. Benchmark 3 Tier 2.5 tasks (integration-test, research-scout, code-hygiene)
+   against Haiku 4.5 on: output format adherence, reasoning quality, latency
+4. Oscar decides on routing update (model-routing.md + orchestrator.py)
+Reference: brain/research-scout/approved/2026-05-01-08-minimax-m27-open-weights-watch-trigger.md
+
+**US political markets — signal quality watch (May–June 2026):**
+Polymarket US launched under CFTC regulation April 28 2026. Sharp US money
+(hedge funds, DC insiders) now entering US political markets for first time.
+Monitor signal quality for 30 days from CFTC launch — increased sharp money
+may reduce exploitable mispricings in this category.
+Review due: mid-June 2026. If edge reduced: downweight or avoid US political
+markets in Phase 6 portfolio construction.
+Reference: brain/strategy-notes/us-market-signal-quality-watch.md
 
 ---
 
