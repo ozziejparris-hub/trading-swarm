@@ -4,13 +4,26 @@ Standalone market filter module.
 Copied verbatim from ~/projects/first-repo/monitoring/monitor.py:
   - _keyword_exclusion_check()  (exclusion_keywords list + all regex patterns)
   - geopolitics_signals list from _should_exclude_market()
+  - HARD_EXCLUDE_CATEGORIES / HARD_INCLUDE_CATEGORIES for tag-first gate
 
 No dependencies on first-repo classes (no Database, no PolymarketClient, etc.).
-No AI/Ollama calls — keyword and regex only.
-Last synced from monitor.py: 2026-04-25
+No AI/Ollama calls — category gate + keyword and regex only.
+Last synced from monitor.py: 2026-05-02
 """
 
 import re
+from typing import Optional
+
+# Tag-first category gate — mirrors monitor.py constants exactly.
+# event_category comes from Gamma /events endpoint (event.category field).
+HARD_EXCLUDE_CATEGORIES: frozenset = frozenset({
+    'Sports', 'Crypto', 'Pop-Culture', 'NBA Playoffs',
+    'Chess', 'Art', 'NFTs', 'Olympics', 'Poker',
+})
+HARD_INCLUDE_CATEGORIES: frozenset = frozenset({
+    'Global Politics', 'Ukraine & Russia',
+    'Geopolitics', 'Elections',  # legacy Polymarket API category values
+})
 
 # Fast-path geopolitics signals — verbatim from _should_exclude_market()
 GEOPOLITICS_SIGNALS = [
@@ -388,23 +401,37 @@ def _keyword_exclusion_check(market_title: str) -> bool:
     return False
 
 
-def should_include_market(title: str) -> bool:
+def should_include_market(title: str, event_category: Optional[str] = None) -> bool:
     """
     Returns True if market should be included in analysis.
-    Copied verbatim from first-repo/monitoring/monitor.py
-    _keyword_exclusion_check() and _should_exclude_market().
-    No AI/Ollama — keyword and regex only.
-    Last synced from monitor.py: 2026-04-25 (extended categories)
+
+    Gate 0: HARD_EXCLUDE / HARD_INCLUDE category sets (fastest path).
+    Gate 1: Keyword / regex exclusion check.
+    Gate 2: Geopolitics fast-path include.
+    Gate 3: Conservative default — include if uncertain.
+
+    event_category: value from Gamma /events endpoint (event.category).
+    Optional — existing callers that don't pass it fall through to keyword check.
+    Last synced from monitor.py: 2026-05-02
     """
-    # Keyword/regex exclusion runs first — prevents 'president' in "Presidents' Trophy"
+    # Gate 0: Tag-first category filter
+    if event_category:
+        cat = event_category.strip()
+        if cat in HARD_EXCLUDE_CATEGORIES:
+            return False
+        if cat in HARD_INCLUDE_CATEGORIES:
+            return True
+        # Ambiguous/unknown — fall through
+
+    # Gate 1: Keyword/regex exclusion — prevents 'president' in "Presidents' Trophy"
     # from short-circuiting via the geopolitics fast-path before NHL exclusion fires.
     if _keyword_exclusion_check(title):
         return False
 
-    # Geopolitics fast-path: strong signal → include
+    # Gate 2: Geopolitics fast-path: strong signal → include
     title_lower = title.lower()
     if any(signal in title_lower for signal in GEOPOLITICS_SIGNALS):
         return True
 
-    # Default: conservative, include if uncertain
+    # Gate 3: Default: conservative, include if uncertain
     return True
