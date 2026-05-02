@@ -199,9 +199,10 @@
         "direction": "above_baseline",
         "weeks_observed": 1
       },
-      "actionable": true,
+      "actionable": false,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
-      "expires_at": "2026-07-24T15:05:25Z"
+      "expires_at": "2026-05-02",
+      "expiry_reason": "STR-001 validated and SUSPENDED 2026-04-27 by backtest-agent. 56.1% accuracy, structural LP contamination flaw. No further revalidation needed."
     },
     {
       "id": "2026-04-26-RQ3.2-PRELIMINARY-001",
@@ -351,9 +352,10 @@
         "direction": "above_baseline",
         "weeks_observed": 1
       },
-      "actionable": true,
+      "actionable": false,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
-      "expires_at": "2026-07-26T07:00:01Z"
+      "expires_at": "2026-05-02",
+      "expiry_reason": "STR-001 validated and SUSPENDED 2026-04-27 by backtest-agent. 56.1% accuracy, structural LP contamination flaw. No further revalidation needed."
     }
   ]
 }

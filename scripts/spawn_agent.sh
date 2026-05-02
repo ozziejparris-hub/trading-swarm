@@ -114,8 +114,8 @@ case $TIER in
         NEEDS_WORKTREE=true
         ;;
     4)
-        MODEL_CMD="claude --model claude-opus-4-6 --dangerously-skip-permissions -p"
-        MODEL_NAME="claude-opus-4-6 (Tier 4, escalation)"
+        MODEL_CMD="claude --model claude-opus-4-7 --dangerously-skip-permissions -p"
+        MODEL_NAME="claude-opus-4-7 (Tier 4, escalation)"
         NEEDS_WORKTREE=true
         ;;
     *)
