@@ -1,7 +1,7 @@
 # Model Routing Strategy
 
-Last updated: 2026-04-27
-Updated by: Oscar (Server Pre-Setup Chat 2)
+Last updated: 2026-05-02
+Updated by: Oscar (Vulkan GPU benchmark session)
 Next review: when server has been live 4 weeks
 
 ---
@@ -28,8 +28,8 @@ into every agent prompt via the spawn script.
 ## The Four-Tier Architecture
 
 ```
-Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 0.79s)
-Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 5.86s)
+Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 38 tok/s eval hot — Vulkan iGPU)
+Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 15 tok/s eval hot — Vulkan iGPU)
 Tier 2.5 — Claude Haiku 4.5      ($1/$5 per MTok)
 Tier 3 — Claude Sonnet 4.6       ($3/$15 per MTok)
 Tier 4 — Claude Opus 4.7         ($5/$25 per MTok, escalation only)
@@ -471,15 +471,42 @@ architectural in scope?
 ```
 
 
-## Server Benchmark Results — April 17 2026
-UM890 Pro (Ryzen 9 8945HS, 96GB DDR5, Radeon 780M)
+## GPU Acceleration Setup
 
-| Model              | Size   | Time    | Decision              |
-|--------------------|--------|---------|-----------------------|
-| Gemma 4 E2B        | 7.2GB  | 0.79s   | TIER 1 PRIMARY        |
-| Mistral            | 4.4GB  | 2.80s   | TIER 1 FALLBACK       |
-| Gemma 4 E4B        | 9.6GB  | 5.86s   | TIER 2 PRIMARY        |
-| Llama 4 Scout      | 67GB   | 24.00s  | REMOVED — too slow    |
+Hardware: AMD Radeon 780M iGPU (gfx1103, 12 CUs, RDNA3) — UM890 Pro
+Backend:  Vulkan (OLLAMA_VULKAN=1)
+Status:   ACTIVE as of 2026-05-02
+BIOS:     UMA Frame Buffer = 4G, UMA Specified mode
+Config:   /etc/systemd/system/ollama.service.d/rocm.conf
+
+ROCm/HIP path (libggml-hip.so) segfaults on gfx1103 with Ollama 0.22.1 /
+bundled ROCm 7.2 libs. Vulkan is the working path. Do NOT set
+OLLAMA_LLM_LIBRARY=rocm — leave unset and set OLLAMA_VULKAN=1 only.
+
+Upgrade path: increase BIOS UMA to 8G on next reboot for ~20-25 tok/s on E4B.
+BIOS path: AMD CBS → GFX Configuration → UMA Frame Buffer Size → 8G
+
+---
+
+## Server Benchmark Results
+
+### April 17 2026 — CPU baseline (pre-GPU)
+UM890 Pro (Ryzen 9 8945HS, 96GB DDR5, Radeon 780M — CPU only)
+
+| Model              | Size   | Time (first tok) | Decision              |
+|--------------------|--------|------------------|-----------------------|
+| Gemma 4 E2B        | 7.2GB  | 0.79s            | TIER 1 PRIMARY        |
+| Mistral            | 4.4GB  | 2.80s            | TIER 1 FALLBACK       |
+| Gemma 4 E4B        | 9.6GB  | 5.86s            | TIER 2 PRIMARY        |
+| Llama 4 Scout      | 67GB   | 24.00s           | REMOVED — too slow    |
+
+### May 2 2026 — Vulkan iGPU (AMD Radeon 780M, 4G VRAM)
+OLLAMA_VULKAN=1, UMA Frame Buffer = 4G
+
+| Model         | Load cold | Load hot | Eval (tok/s) | Prompt eval (tok/s) | Notes                          |
+|---------------|-----------|----------|--------------|---------------------|--------------------------------|
+| Gemma 4 E2B   | 6.9s      | 211ms    | 37.97        | 216                 | Fully VRAM-resident at 4G      |
+| Gemma 4 E4B   | 12.1s     | 223ms    | 14.79        | 388                 | Partially VRAM-bound at 4G; upgrade BIOS to 8G for ~20-25 tok/s |
 
 Key finding: thinking mode must be disabled for Tier 1/2 tasks.
 Gemma 4 E2B with --think=false is 12x faster than with thinking on.
