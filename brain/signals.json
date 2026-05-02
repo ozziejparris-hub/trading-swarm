@@ -80,8 +80,8 @@
       "type": "escalation_immediate",
       "urgency": "NOW",
       "payload": {
-        "title": "Polymarket CTF Exchange V2 API — cutover April 28 ~11:00 UTC",
-        "summary": "Polymarket is deploying a full exchange overhaul tomorrow. Three breaking changes: (1) EIP-712 domain version must change from '1' to '2' — v1-signed orders rejected at cutover. (2) Pagination endpoints replaced by keyset cursors. (3) POST /submit no longer returns transactionHash immediately. market-builder-agent templates must be audited before the trading-swarm service is ever started. System is not yet live — no production incident. Migration guide: https://docs.polymarket.com/v2-migration",
+        "title": "Polymarket CTF Exchange V2 API \u2014 cutover April 28 ~11:00 UTC",
+        "summary": "Polymarket is deploying a full exchange overhaul tomorrow. Three breaking changes: (1) EIP-712 domain version must change from '1' to '2' \u2014 v1-signed orders rejected at cutover. (2) Pagination endpoints replaced by keyset cursors. (3) POST /submit no longer returns transactionHash immediately. market-builder-agent templates must be audited before the trading-swarm service is ever started. System is not yet live \u2014 no production incident. Migration guide: https://docs.polymarket.com/v2-migration",
         "action_required": "Audit orchestrator/task_templates/ for market-builder-agent Polymarket API patterns before spawning that agent. Update to v2 SDK and v2 endpoint patterns.",
         "finding_file": "brain/research-scout/pending-review/2026-04-27-13-polymarket-v2-api-breaking-changes.md",
         "deadline": "2026-04-28T11:00:00Z"
@@ -89,7 +89,76 @@
       "timestamp": "2026-04-27T18:56:17Z",
       "status": "completed",
       "completed_at": "2026-04-28",
-      "completion_note": "V2 cutover confirmed clean. System is read-only via Data API and Gamma API only — CLOB trading endpoints not used. fetch_market_resolutions.py verified post-cutover: 702 resolutions found, zero errors.",
+      "completion_note": "V2 cutover confirmed clean. System is read-only via Data API and Gamma API only \u2014 CLOB trading endpoints not used. fetch_market_resolutions.py verified post-cutover: 702 resolutions found, zero errors.",
+      "cycle": "scout-20260427"
+    },
+    {
+      "from": "code-hygiene-agent",
+      "to": "orchestrator",
+      "type": "hygiene_complete",
+      "payload": {
+        "task_id": "hygiene-20260501",
+        "report_path": "brain/agent-outputs/code-hygiene/2026-05-01-weekly.md",
+        "bugs_fixed": 4,
+        "dead_code_removed": 2,
+        "proposals": 4,
+        "security_issues": 0,
+        "codebase_health": "NEEDS ATTENTION",
+        "action_required": true,
+        "action_summary": "Review 4 proposals: requirements.txt, shared_utils.py, test_market_filter.py, scout worktree cleanup"
+      },
+      "timestamp": "2026-05-01T08:37:07.437063+00:00",
+      "status": "processed",
+      "processed_at": "2026-05-01T08:37:33.465510"
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "str003_directional_single",
+      "confidence": "MEDIUM",
+      "payload": {
+        "strategy": "STR-003",
+        "market_id": "0xa31ff6771c847763f4f961ee85af4f2459bd8addba7d753a6ece040412927be2",
+        "market_title": "Will Ramaswamy announce presidential run by Q2 2026?",
+        "direction": "NO",
+        "category": "Elections",
+        "resolution_date": "Q2 2026 (expires June 30, 2026)",
+        "traders": [
+          "0xef1dd16257bd9cde80d30fa9197417b1b6711c96"
+        ],
+        "elo_scores": [
+          3150
+        ],
+        "position_sizes": [
+          9780.54
+        ],
+        "directional_pcts": [
+          1.0
+        ],
+        "reasoning": "ELO 3150 trader holds $9,781 100% NO on Ramaswamy announcing presidential run by Q2 2026. URGENT: We are currently in Q2 2026 (April 2026). Q2 expires June 30. Check current YES price — may already be near resolution. Same trader (ELO 3150) also holds Signal 2 (USA UN Council). Two strong NO positions from this wallet.",
+        "upgrade_condition": "Time-sensitive: check current Polymarket YES price immediately"
+      },
+      "timestamp": "2026-04-27T20:00:00Z",
+      "status": "resolved",
+      "resolved_at": "2026-05-02",
+      "resolution": "NO — Ramaswamy running for Ohio Governor (primary May 5 2026, 99.6% favourite), not announcing presidential run. ELO 3150 trader's NO bet validated correct.",
+      "cycle": "signal-002"
+    },
+    {
+      "from": "research-scout-agent",
+      "to": "orchestrator",
+      "type": "model_routing_update",
+      "urgency": "Now",
+      "payload": {
+        "title": "DeepSeek V4 open weights released — Tier 3 freeze trigger fired",
+        "summary": "DeepSeek V4-Flash released April 24 with MIT license. $0.14/$0.28 per MTok vs Sonnet $3/$15 — 53x cheaper output at 79.0% SWE-bench Verified (Sonnet: 79.6%). brain/model-routing.md states 'Halt all Tier 3 cost optimisation decisions until V4 drops' — that trigger has fired. Schedule benchmark comparison before committing. Sovereignty blocker (Chinese-hosted API) requires Oscar's decision.",
+        "action_required": "Schedule 3-task benchmark: Sonnet 4.6 vs V4-Flash vs Kimi K2.6. Oscar decides sovereignty line for quant-research and backtest agents.",
+        "finding_file": "brain/research-scout/pending-review/2026-04-27-13-deepseek-v4-open-weights-released.md"
+      },
+      "timestamp": "2026-04-27T18:56:17Z",
+      "status": "completed",
+      "completed_at": "2026-05-02",
+      "completion_note": "Sovereignty decision made: remain on claude-sonnet-4-6 for all Tier 3 work. Chinese-hosted API not acceptable. Revisit if open-weights non-Chinese hosted version released.",
       "cycle": "scout-20260427"
     }
   ],
@@ -110,9 +179,18 @@
           "0x72a1ac129a75877887d31c847508ffef7baf466b",
           "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302"
         ],
-        "elo_scores": [2741, 2398],
-        "position_sizes": [30616.42, 3475.32],
-        "directional_pcts": [1.0, 1.0],
+        "elo_scores": [
+          2741,
+          2398
+        ],
+        "position_sizes": [
+          30616.42,
+          3475.32
+        ],
+        "directional_pcts": [
+          1.0,
+          1.0
+        ],
         "combined_no_capital": 34091.74,
         "reasoning": "Two independent legendary traders (ELO 2741 + 2398) both hold 100% NO on Newsom dropping out before September 2026. Convergence of two qualifying STR-003 traders on same side. Combined $34K NO. Upgrade to HIGH if 1+ additional legendary trader enters NO.",
         "upgrade_condition": "1+ additional legendary trader (ELO > 2175) entering NO -> upgrade to HIGH"
@@ -133,12 +211,20 @@
         "direction": "NO",
         "category": "Geopolitics",
         "resolution_date": "2026 (date unspecified)",
-        "traders": ["0xef1dd16257bd9cde80d30fa9197417b1b6711c96"],
-        "elo_scores": [3150],
-        "position_sizes": [40580.88],
-        "directional_pcts": [1.0],
+        "traders": [
+          "0xef1dd16257bd9cde80d30fa9197417b1b6711c96"
+        ],
+        "elo_scores": [
+          3150
+        ],
+        "position_sizes": [
+          40580.88
+        ],
+        "directional_pcts": [
+          1.0
+        ],
         "additional_context": "Two more legendary traders (ELO 3308, 3307) are net NO but hold mixed YES+NO positions (not pure directional). All three legendary traders lean NO.",
-        "reasoning": "ELO 3150 trader has $40,581 at 100% NO. Largest single directional position in STR-003 scan. Two additional legendary traders (ELO 3308, 3307) are net NO but excluded by 95% threshold (mixed positions). Strong legendary-tier consensus against USA joining UN Security Council in 2026. Note: USA is already a permanent member — may refer to non-permanent seat. Upgrade to HIGH if 2+ fully directional legendary traders confirmed.",
+        "reasoning": "ELO 3150 trader has $40,581 at 100% NO. Largest single directional position in STR-003 scan. Two additional legendary traders (ELO 3308, 3307) are net NO but excluded by 95% threshold (mixed positions). Strong legendary-tier consensus against USA joining UN Security Council in 2026. Note: USA is already a permanent member \u2014 may refer to non-permanent seat. Upgrade to HIGH if 2+ fully directional legendary traders confirmed.",
         "upgrade_condition": "2+ fully directional legendary traders on NO -> upgrade to HIGH"
       },
       "timestamp": "2026-04-27T20:00:00Z",
@@ -157,10 +243,18 @@
         "direction": "NO",
         "category": "Economics",
         "resolution_date": "March 2027",
-        "traders": ["0x9fb0f92a17531afe232b7f2cdd0e48d157068b61"],
-        "elo_scores": [2923],
-        "position_sizes": [33389.56],
-        "directional_pcts": [1.0],
+        "traders": [
+          "0x9fb0f92a17531afe232b7f2cdd0e48d157068b61"
+        ],
+        "elo_scores": [
+          2923
+        ],
+        "position_sizes": [
+          33389.56
+        ],
+        "directional_pcts": [
+          1.0
+        ],
         "reasoning": "ELO 2923 trader built $33,390 NO position across 4 entries over 40 days (2025-09-13 to 2025-10-23). Deliberate accumulation pattern indicates conviction. 100% directional. Resolves March 2027.",
         "upgrade_condition": "Additional legendary trader (ELO > 2175) entering NO -> upgrade confidence"
       },
@@ -180,54 +274,24 @@
         "direction": "NO",
         "category": "Geopolitics",
         "resolution_date": "June 2026",
-        "traders": ["0xdffc6760f9b8e760ee248ea8509c6502cf838302"],
-        "elo_scores": [3323],
-        "position_sizes": [7191.08],
-        "directional_pcts": [1.0],
-        "reasoning": "ELO 3323 (top 5 in system) placed $7,191 100% NO on Putin invasion by June 2026. Near-term resolution (~6 weeks). Entry was Nov 2025 — position held 5 months unchanged.",
+        "traders": [
+          "0xdffc6760f9b8e760ee248ea8509c6502cf838302"
+        ],
+        "elo_scores": [
+          3323
+        ],
+        "position_sizes": [
+          7191.08
+        ],
+        "directional_pcts": [
+          1.0
+        ],
+        "reasoning": "ELO 3323 (top 5 in system) placed $7,191 100% NO on Putin invasion by June 2026. Near-term resolution (~6 weeks). Entry was Nov 2025 \u2014 position held 5 months unchanged.",
         "upgrade_condition": "Additional legendary trader entering NO -> upgrade confidence; near-term watch"
       },
       "timestamp": "2026-04-27T20:00:00Z",
       "status": "pending",
       "cycle": "signal-002"
-    },
-    {
-      "from": "signal-agent",
-      "to": "orchestrator",
-      "type": "str003_directional_single",
-      "confidence": "MEDIUM",
-      "payload": {
-        "strategy": "STR-003",
-        "market_id": "0xa31ff6771c847763f4f961ee85af4f2459bd8addba7d753a6ece040412927be2",
-        "market_title": "Will Ramaswamy announce presidential run by Q2 2026?",
-        "direction": "NO",
-        "category": "Elections",
-        "resolution_date": "Q2 2026 (expires June 30, 2026)",
-        "traders": ["0xef1dd16257bd9cde80d30fa9197417b1b6711c96"],
-        "elo_scores": [3150],
-        "position_sizes": [9780.54],
-        "directional_pcts": [1.0],
-        "reasoning": "ELO 3150 trader holds $9,781 100% NO on Ramaswamy announcing presidential run by Q2 2026. URGENT: We are currently in Q2 2026 (April 2026). Q2 expires June 30. Check current YES price — may already be near resolution. Same trader (ELO 3150) also holds Signal 2 (USA UN Council). Two strong NO positions from this wallet.",
-        "upgrade_condition": "Time-sensitive: check current Polymarket YES price immediately"
-      },
-      "timestamp": "2026-04-27T20:00:00Z",
-      "status": "pending",
-      "cycle": "signal-002"
-    },
-    {
-      "from": "research-scout-agent",
-      "to": "orchestrator",
-      "type": "model_routing_update",
-      "urgency": "Now",
-      "payload": {
-        "title": "DeepSeek V4 open weights released — Tier 3 freeze trigger fired",
-        "summary": "DeepSeek V4-Flash released April 24 with MIT license. $0.14/$0.28 per MTok vs Sonnet $3/$15 — 53x cheaper output at 79.0% SWE-bench Verified (Sonnet: 79.6%). brain/model-routing.md states 'Halt all Tier 3 cost optimisation decisions until V4 drops' — that trigger has fired. Schedule benchmark comparison before committing. Sovereignty blocker (Chinese-hosted API) requires Oscar's decision.",
-        "action_required": "Schedule 3-task benchmark: Sonnet 4.6 vs V4-Flash vs Kimi K2.6. Oscar decides sovereignty line for quant-research and backtest agents.",
-        "finding_file": "brain/research-scout/pending-review/2026-04-27-13-deepseek-v4-open-weights-released.md"
-      },
-      "timestamp": "2026-04-27T18:56:17Z",
-      "status": "pending",
-      "cycle": "scout-20260427"
     }
   ]
 }
