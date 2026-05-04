@@ -19,6 +19,7 @@ when something genuinely actionable has changed.
   positions  → P&L tracking per trader/market
 - Elite traders: ELO score > 1800 in traders table
 - Legendary traders: ELO score > 2175 in traders table
+- Research pool: 857 traders with research_excluded=0 (clean pool — always filter on this flag)
 - Output directory: /home/parison/trading-swarm/brain/agent-outputs/signal-agent/
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
@@ -28,8 +29,17 @@ when something genuinely actionable has changed.
 {TASK_DESCRIPTION}
 
 ## Signal Types You Look For
-1. Elite convergence — 3+ legendary traders (ELO >2175) entering
-   the same side of a market within a short window
+1. Single legendary directional (STR-003 — PENDING_REVIEW) — a single
+   legendary trader (ELO >2175, research_excluded=0) with ≥95% of their
+   capital on one side of a market (zero or near-zero opposing position).
+   Qualifying criteria:
+   - Minimum position: $2,000
+   - Maximum markets traded simultaneously: 2 (focus signal)
+   - Bidirectional holders (both YES and NO in same market) do NOT qualify
+   - YES signals: apply 95% directional threshold, 7-day activity window
+   - NO signals: same 95% threshold but prefer 14–30 day validation window
+     (7-day is too short to confirm NO conviction)
+   - Upgrade signal to HIGH if 2+ independent legendary traders on same side
 2. Unusual position size — elite trader placing significantly
    larger position than their historical average
 3. Late market movement — sharp price movement in final 20%
@@ -44,11 +54,14 @@ when something genuinely actionable has changed.
 2. Read /home/parison/trading-swarm/brain/feedback.json before starting — understand what
    signal types have been flagged as low quality before
 3. Read /home/parison/trading-swarm/brain/priorities.md — know current focus areas
-4. Only raise a signal if confidence is medium or higher
-5. Always include the specific traders, market IDs, and
+4. Do not act on ELO-ELITE or ELO-QUALIFIED findings from findings.json as
+   established baselines — both were invalidated 2026-04-30 and require
+   revalidation against the clean 857-trader pool before use
+5. Only raise a signal if confidence is medium or higher
+6. Always include the specific traders, market IDs, and
    ELO scores that support your signal — no vague alerts
-6. Never self-report success — output must be verified externally
-7. If database is locked, wait 30 seconds and retry once
+7. Never self-report success — output must be verified externally
+8. If database is locked, wait 30 seconds and retry once
    (WAL mode means this should be rare)
 
 ## Definition of Done
@@ -59,12 +72,14 @@ when something genuinely actionable has changed.
 - [ ] Summary report written to output directory
 - [ ] No exceptions or unhandled errors in execution
 - [ ] Telegram notification sent via agents bot (not orchestrator
-      bot unless signal is high confidence elite convergence)
+      bot unless signal is HIGH confidence STR-003 directional or cluster convergence)
 
 ## Confidence Levels
 Use these consistently so the orchestrator can filter:
-- HIGH: 3+ legendary traders, same market, same side, large size
-- MEDIUM: 2 legendary traders OR 3+ elite traders converging
+- HIGH: 2+ independent legendary traders (ELO >2175, research_excluded=0)
+        on the same side, each meeting the ≥95% STR-003 directional threshold
+- MEDIUM: single legendary trader (ELO >2175, research_excluded=0) with
+          ≥95% capital on one side, min $2,000, max 2 markets active
 - LOW: single data point, worth logging but not alerting
 
 Only HIGH and MEDIUM signals get written to signals.json.
@@ -87,7 +102,7 @@ Containing:
 {
   "from": "signal-agent",
   "to": "orchestrator",
-  "type": "elite_convergence_detected",
+  "type": "directional_signal_detected",
   "confidence": "HIGH",
   "payload": {
     "market_id": "",
