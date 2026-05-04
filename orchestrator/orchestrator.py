@@ -485,7 +485,7 @@ def process_signals():
 
         log.info(f"Signal: {signal_type} from {from_agent}")
 
-        # Elite convergence detected by signal-agent
+        # Elite convergence detected by signal-agent (legacy type — STR-001 suspended)
         if signal_type == "elite_convergence_detected":
             confidence = signal.get("confidence", "MEDIUM")
             if confidence == "HIGH":
@@ -497,6 +497,37 @@ def process_signals():
                     f"Reasoning: {payload.get('reasoning', '')}"
                 )
                 send_telegram(message, bot="orchestrator")
+
+        # STR-003 single legendary directional signal
+        # Types: directional_signal_detected (template), str003_directional_single,
+        #        str003_directional_convergence
+        elif signal_type in (
+            "directional_signal_detected",
+            "str003_directional_single",
+            "str003_directional_convergence",
+        ):
+            confidence = signal.get("confidence", "MEDIUM")
+            market_title = payload.get("market_title", payload.get("market", "Unknown"))
+            direction = payload.get("direction", "Unknown")
+            reasoning = payload.get("reasoning", payload.get("rationale", ""))
+            traders = payload.get("traders", [])
+            if confidence == "HIGH":
+                message = (
+                    f"🎯 *STR-003 High Confidence Signal*\n"
+                    f"Market: {market_title}\n"
+                    f"Direction: {direction}\n"
+                    f"Traders: {len(traders) if traders else 'see payload'}\n"
+                    f"Reasoning: {reasoning}"
+                )
+                send_telegram(message, bot="orchestrator")
+            else:
+                message = (
+                    f"📊 *STR-003 Signal (MEDIUM)*\n"
+                    f"Market: {market_title}\n"
+                    f"Direction: {direction}\n"
+                    f"Reasoning: {reasoning}"
+                )
+                send_telegram(message, bot="agents")
 
         # Quant research ready for validation
         elif signal_type == "validation_requested":
