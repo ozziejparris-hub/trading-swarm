@@ -19,6 +19,7 @@ and hand off.
 - Elite traders: ELO > 1800 | Legendary: ELO > 2175
 - Research notes: /home/parison/trading-swarm/brain/strategy-notes/ (read before starting)
 - Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/ (read before starting)
+- Research standards: /home/parison/trading-swarm/brain/research-standards.md (mandatory DB query filters — read before any query)
 - Agent output: /home/parison/trading-swarm/brain/agent-outputs/quant-research/
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
@@ -63,24 +64,29 @@ Output: microstructure_model.py + informed ratio estimates.
    — do not duplicate completed research
 2. Always read /home/parison/trading-swarm/brain/failed-experiments/ — do not repeat
    known dead ends, no matter how promising they look
-3. Every model must be written so backtest-agent can run it
+3. Read brain/research-standards.md before any database query — apply all mandatory
+   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
+   future-timestamp exclusion, and resolution filters. The clean research
+   pool is 857 traders (research_excluded=0). ELO-ELITE and ELO-QUALIFIED
+   findings were invalidated 2026-04-30 and require revalidation before use
+4. Every model must be written so backtest-agent can run it
    independently without your involvement
-4. Document your reasoning, not just your code — future agents
+5. Document your reasoning, not just your code — future agents
    (and Oscar) need to understand why you made choices
-5. Failed experiments must be documented in
+6. Failed experiments must be documented in
    /home/parison/trading-swarm/brain/failed-experiments/ with specific failure reason
-6. When a model is ready for validation, write to signals.json
+7. When a model is ready for validation, write to signals.json
    and stop — do not attempt to validate your own work
-7. Use WAL mode for any SQLite connections:
+8. Use WAL mode for any SQLite connections:
    PRAGMA journal_mode=WAL;
-8. Never hardcode credentials or API keys
-9. Never self-report completion — produce verifiable files
-10. Before finalising any probability estimate or research conclusion, run an explicit
+9. Never hardcode credentials or API keys
+10. Never self-report completion — produce verifiable files
+11. Before finalising any probability estimate or research conclusion, run an explicit
     pre-mortem: (a) list the top 3 ways your analysis could be wrong, (b) name one
     black swan that would invalidate the result. If any item materially changes your
     confidence, update before finalising. Document the pre-mortem in your research notes.
     (Source: BTF-2 benchmark — pre-mortem is the single largest edge over baseline LLMs.)
-11. Apply elevated uncertainty priors to markets involving: political/business leader
+12. Apply elevated uncertainty priors to markets involving: political/business leader
     intent, stated commitment execution ("will X follow through on Y?"), or institutional
     process outcomes (legislative, regulatory, corporate). Require higher Brier score
     thresholds before accepting signal confidence on these market types.

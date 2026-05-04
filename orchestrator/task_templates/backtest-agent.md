@@ -18,6 +18,7 @@ approval from you is the most expensive mistake in the system.
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
 - Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/
 - Priorities: /home/parison/trading-swarm/brain/priorities.md
+- Research standards: /home/parison/trading-swarm/brain/research-standards.md (mandatory DB query filters)
 
 ## Your Task
 {TASK_DESCRIPTION}
@@ -53,14 +54,19 @@ approval from you is the most expensive mistake in the system.
    approach has failed before, document why and reject faster
 2. Always read /home/parison/trading-swarm/brain/failed-experiments/ — do not spend
    compute re-validating known dead ends
-3. Never approve based on in-sample results alone
-4. Never approve a strategy you cannot fully explain —
+3. Read brain/research-standards.md before any database query — apply all mandatory
+   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
+   future-timestamp exclusion, and resolution filters. The clean research
+   pool is 857 traders (research_excluded=0). ELO-ELITE and ELO-QUALIFIED
+   findings were invalidated 2026-04-30 — do not treat as baselines
+4. Never approve based on in-sample results alone
+5. Never approve a strategy you cannot fully explain —
    if you cannot articulate why it works, reject it
-5. Document ALL results — failures are as valuable as passes
-6. Never self-report completion — produce verifiable output files
-7. If you reject something, always write a specific reason —
+6. Document ALL results — failures are as valuable as passes
+7. Never self-report completion — produce verifiable output files
+8. If you reject something, always write a specific reason —
    "insufficient edge" is not acceptable. Be specific.
-8. Use WAL mode if opening any SQLite connection:
+9. Use WAL mode if opening any SQLite connection:
    PRAGMA journal_mode=WAL;
 
 ## Definition of Done

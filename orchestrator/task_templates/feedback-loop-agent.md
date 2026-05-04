@@ -30,6 +30,7 @@ performance is worse than useless.
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
 - Priorities: /home/parison/trading-swarm/brain/priorities.md
 - Strategy registry: /home/parison/trading-swarm/brain/strategy-registry.md
+- Research standards: /home/parison/trading-swarm/brain/research-standards.md (mandatory DB query filters)
 - Agent output: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/
 
 ## Your Task
@@ -94,18 +95,23 @@ increase that tier's weighting in signal confidence scoring.
 
 ## Rules
 1. Never write to polymarket_tracker.db — read only, always
-2. Never retire a strategy automatically — flag for human review
-3. Never change priorities.md directly — write recommendations
+2. Read brain/research-standards.md before any database query — apply all mandatory
+   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
+   future-timestamp exclusion, and resolution filters. The clean research pool
+   is 857 traders. ELO-ELITE and ELO-QUALIFIED findings were invalidated
+   2026-04-30 — do not treat them as baselines without revalidating first.
+3. Never retire a strategy automatically — flag for human review
+4. Never change priorities.md directly — write recommendations
    to /home/parison/trading-swarm/brain/strategy-notes/ for Oscar to review and approve
-4. Minimum sample size for any accuracy claim: 10 resolved markets
+5. Minimum sample size for any accuracy claim: 10 resolved markets
    — do not draw conclusions from fewer data points
-5. If fewer than 10 markets resolved this week, note this
+6. If fewer than 10 markets resolved this week, note this
    explicitly and defer accuracy conclusions to next run
-6. Always read /home/parison/trading-swarm/brain/feedback.json before starting —
+7. Always read /home/parison/trading-swarm/brain/feedback.json before starting —
    understand what has already been flagged as unreliable
-7. Document uncertainty — if data is insufficient to conclude,
+8. Document uncertainty — if data is insufficient to conclude,
    say so rather than forcing a finding
-8. Never self-report success — output must be verifiable
+9. Never self-report success — output must be verifiable
 
 ## Definition of Done
 - [ ] Signal accuracy audit completed for past 7 days
