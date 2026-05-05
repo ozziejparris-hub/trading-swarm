@@ -177,6 +177,23 @@
       "status": "processed",
       "cycle": "scout-20260504",
       "processed_at": "2026-05-04T16:31:10.112287"
+    },
+    {
+      "from": "feedback-loop-agent",
+      "to": "backtest-agent",
+      "type": "revalidation_requested",
+      "payload": {
+        "strategy_name": "STR-002 \u2014 Pre-Resolution Intelligence",
+        "strategy_path": "/home/parison/trading-swarm/brain/strategy-registry.md",
+        "last_validated": "\u2014",
+        "days_since_validation": 7,
+        "original_dsr": null,
+        "original_sharpe": null,
+        "reason": "Past next revalidation due date 2026-04-28 (7 days overdue)"
+      },
+      "timestamp": "2026-05-05T12:11:47Z",
+      "status": "processed",
+      "processed_at": "2026-05-05T12:21:10.241241"
     }
   ],
   "pending": [

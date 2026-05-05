@@ -356,6 +356,63 @@
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
       "expires_at": "2026-05-02",
       "expiry_reason": "STR-001 validated and SUSPENDED 2026-04-27 by backtest-agent. 56.1% accuracy, structural LP contamination flaw. No further revalidation needed."
+    },
+    {
+      "id": "2026-05-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-05T12:11:47Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 3
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-08-03T12:11:47Z"
+    },
+    {
+      "id": "2026-05-05-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-05T12:11:47Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 67,
+      "summary": "QUALIFIED tier consensus accuracy: 82% over 67 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.8209,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 3
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-08-03T12:11:47Z"
+    },
+    {
+      "id": "2026-05-05-STRATEGY-OVERDUE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-05T12:11:47Z",
+      "finding_type": "strategy_performance",
+      "confidence": "HIGH",
+      "sample_size": 1,
+      "summary": "1 strategy/strategies overdue for revalidation: STR-002 \u2014 Pre-Resolution Intelligence",
+      "detail": {
+        "metric": "strategies_overdue_revalidation",
+        "value": 1.0,
+        "baseline": 0.0,
+        "direction": "above_baseline",
+        "weeks_observed": 3
+      },
+      "actionable": true,
+      "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
+      "expires_at": "2026-08-03T12:11:47Z"
     }
   ]
 }

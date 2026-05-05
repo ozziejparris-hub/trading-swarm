@@ -113,65 +113,75 @@ System target:                  < 0.20 minimum
 
 ## Current Week
 
-*Not yet populated. Performance-analyst-agent will write
-here on its first Monday run after the server is live.*
+Last updated: 2026-05-05
+Updated by: performance-analyst-agent (first run)
 
-When populated, this section will contain:
-
-### Week of [DATE]
+### Week of 2026-05-05
 
 #### Prediction Accuracy
 ```
-Overall Brier score (7-day):    —
-Overall Brier score (30-day):   —
-vs naive baseline:              —
-By category (Political):        —
-By category (Economic):         —
-By category (Sports):           —
-By category (Crypto):           —
-By category (Other):            —
+ELO QUALIFIED consensus accuracy (7d): 82%  (n=67 markets — HIGH confidence)
+ELO ELITE consensus accuracy (7d):    100%  (n=4 markets — LOW confidence)
+ELO LEGENDARY resolved markets (7d):    —   (0 qualifying markets)
+Brier score proxy (elite, 30d):       0.28  (n=5 markets — borderline acceptable)
+vs naive baseline (50%):            +32pp   (QUALIFIED accuracy 82% vs 50% random)
+By category:                           —    (category field = "Unknown" for most positions)
+Note: Direct position-level Brier scores unreliable at n=2-5 scale.
+      ELO consensus accuracy is the primary accuracy metric until n grows.
 ```
 
 #### ELO System Health
 ```
-Total traders:                  —
-Legendary traders (>2175):      —
-Elite traders (1800-2175):      —
-Active traders (trades 7d):     —
+Total traders (DB):                 92,228  (vs 53,140 March baseline; +73.5%)
+Legendary traders (>2175, full):       432  (⚠ 28x above March baseline ~15)
+Legendary traders (research pool):     341  (of 965 research_excluded=0 traders)
+Elite traders (1800-2175, full):       904
+Max ELO observed:                    3,471
+Active traders (trades 7d):            279
+Trades executed (7d):                1,048
+ELO last updated:                 2026-05-05 (857 research pool traders updated)
 ```
 
 #### Signal Quality
 ```
-Signals generated (HIGH):       —
-Signals generated (MEDIUM):     —
-High signal accuracy:           —
-Medium signal accuracy:         —
+Signals generated (HIGH):              0
+Signals generated (MEDIUM):            6  (5 STR-003 pending, 1 legacy STR-001)
+Signals resolved with known outcome:   1  (Ramaswamy NO — CORRECT)
+Signal accuracy (n=1):              100%  (INSUFFICIENT DATA — do not cite)
+Upgrade conditions met (MEDIUM→HIGH):  0
 ```
 
 #### Strategy Pipeline
 ```
-Strategies submitted:           —
-Strategies passed:              —
-Pass rate:                      —
-Most common failure reason:     —
+Strategies submitted (30d):            0  (STR-003 pre-registered April 27)
+Strategies validated (30d):            1  (STR-001 — FAILED)
+Pass rate:                            0%  (1/1 failed)
+Most common failure reason:   LP contamination (legendary traders hold both sides)
+RQ1.1 status:             INCONCLUSIVE (n=16, rerun June 1)
+RQ3.2 status:             INCONCLUSIVE (n=4, methodology reframe needed)
+RQ2.2 status:             INCONCLUSIVE (YES 75% n=13, NO 0% — extend window)
 ```
 
 #### System Resources
 ```
-Estimated API spend (week):     —
-Agent tasks completed:          —
-Agent tasks failed:             —
-Auto-respawns by immune system: —
-CI failures:                    —
-Brain directory size:           —
+Estimated API spend (week):         ~$5.40  (6 Tier 3 runs, 4 Tier 2.5 runs)
+Agent tasks completed:                 14+
+Agent tasks failed:                      0
+Auto-respawns by immune system:          0
+CI failures:                             0
+Git commits (past week):                23
+Brain directory size:                 904KB
+Orchestrator status:                HEALTHY
 ```
 
 #### Week-on-Week Trends
 ```
-Brier score trend:              —
-Signal accuracy trend:          —
-Strategy pass rate trend:       —
-Cost trend:                     —
+Brier score trend:              — (first run, no prior week)
+Signal accuracy trend:          — (first run)
+Strategy pass rate trend:       — (first run)
+Cost trend:                     — (first run)
+ELO QUALIFIED accuracy:      82%  (baseline established)
+Phase 5 feedback-loop gate:  3/4  (↑ on track)
 ```
 
 ---
@@ -184,8 +194,8 @@ Updated by performance-analyst-agent as phases complete.
 ```
 Phase         RQ        Status          Started     Completed
 ──────────────────────────────────────────────────────────────
-Phase 1       RQ1.1     Not started     —           —
-              RQ3.2     Not started     —           —
+Phase 1       RQ1.1     INCONCLUSIVE    2026-04-26  — (rerun June 1)
+              RQ3.2     INCONCLUSIVE    2026-04-26  — (reframe needed)
 Phase 2       RQ2.1     Not started     —           —
               RQ1.2     Not started     —           —
               RQ4.1     Not started     —           —
@@ -197,7 +207,13 @@ Phase 4       RQ4.2     Not started     —           —
               RQ1.3     Not started     —           —
 Phase 5+      All RQ    Not started     —           —
 ──────────────────────────────────────────────────────────────
+Supporting    RQ0.1     PASSED          2026-03-29  2026-03-29
+              RQ0.2     PASSED          2026-03-29  2026-03-29
+              RQ2.2     INCONCLUSIVE    2026-04-26  — (extend to 14/30d window)
+──────────────────────────────────────────────────────────────
 ```
+
+Last updated by performance-analyst-agent: 2026-05-05
 
 Stopping rules (halt all research if either fails):
 - RQ1.1: ELO has no predictive validity → redesign ELO system
