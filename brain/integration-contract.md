@@ -143,6 +143,62 @@ they are handled by the query filters in Section 2.
 
 ---
 
+## Section 6b — Resolved Data Quality Issues (fixed, documented for context)
+
+| Issue | Resolved | Detail |
+|-------|----------|--------|
+| Position duplication — BST/UTC timezone mismatch | 2026-05-05 | April 18-20 server migration imported positions twice due to 1-hour BST/UTC offset. 38,630 duplicate rows removed. Post-cleanup totals: 1,026,810 positions total, 73,910 open, 952,900 closed. Dedup guard now in place. |
+| `traders.total_pnl` never written | 2026-05-05 | Column existed but the monitor.py UPDATE only wrote `realized_pnl`. Fixed: `total_pnl` now set to `realized_pnl` in every P&L update (unrealized_pnl is a permanent placeholder at 0.0). **Use `realized_pnl` for all P&L queries — it is the authoritative column.** |
+
+---
+
+## Section 6c — Open Data Quality Issues (known, no fix yet applied)
+
+### LP Artifact Contamination in Research Pool (⚠ action needed)
+
+The research pool (`research_excluded = 0`) contains ~267 LP artifact traders that were
+NOT caught by existing bot detection. These traders have:
+
+- Thousands of positions (6,000–6,600+) on a single market
+- `bot_suspect = 0`, `bot_type = NULL` — not flagged
+- Massive negative realized_pnl (−$1.2B to −$1.4B per trader) from LP interactions
+- `pnl_modifier = 0.4` (floor), pulling their comprehensive_elo to the floor ~447
+
+**Affected markets (high-volume LP markets in positions table):**
+- "Will Iran recognize Iran by June 2025?" — 619,196 positions / 182 traders
+- "USA ceasefire agreement before December 2025?" — ~60,000 positions / 30 traders
+- "Will Haley drop out of 2027 race before January?" — ~48,000 positions / 44 traders
+
+**ELO impact:** The bimodal distribution (267 traders at ELO 400–600) is this LP contamination,
+not genuine underperformers. Top ELO traders (3200–3471) are legitimate: 6–15 distinct markets,
+120–187 total positions.
+
+**Fix pending Oscar approval:**
+```sql
+-- Flag single-market LP artifact traders (> 1000 positions, < 3 distinct markets)
+UPDATE traders
+SET research_excluded = 1,
+    bot_type = 'LP_ARTIFACT'
+WHERE address IN (
+    SELECT trader_address
+    FROM positions
+    GROUP BY trader_address
+    HAVING COUNT(*) > 1000 AND COUNT(DISTINCT market_id) < 3
+)
+AND research_excluded = 0;
+```
+After applying: re-run `recalculate_comprehensive_elo.py` to clean up the ELO distribution.
+
+### ELO Recalculation Needed Post-Dedup
+
+ELO was last recalculated at 2026-05-05T13:54 UTC. The position dedup fix was applied at
+2026-05-05T19:29 UTC. The current ELO scores reflect the pre-dedup positions table.
+Impact is limited to traders active during April 18–20 migration window, but a full
+recalculation should run before the next Sunday scheduled recalc (or manually via
+`python scripts/recalculate_comprehensive_elo.py`).
+
+---
+
 ## Section 7 — Daily Maintenance Schedule
 
 Agents should not query the database during the maintenance window
@@ -171,6 +227,9 @@ Agents should not query the database during the maintenance window
 | 2026-04-30 | Analysis modules fixed (were returning 1.0x neutral multiplier) | ELO modifier accuracy |
 | 2026-05-05 | `resync_position_counts.py` added as Step 4 of daily maintenance | Position count data |
 | 2026-05-05 | This contract created | All agents querying first-repo |
+| 2026-05-05 | Position dedup fix: 38,630 BST/UTC duplicate rows removed. Totals: 73,910 open, 952,900 closed | Position-derived P&L and ELO queries |
+| 2026-05-05 | `traders.total_pnl` now written by monitor.py (was always 0). Use `realized_pnl` for P&L — it is authoritative | Any query on `total_pnl` |
+| 2026-05-05 | LP artifact contamination identified in research pool (~267 traders). ELO bimodal distribution is this artifact, not real underperformers. Pending fix (see Section 6c) | ELO distribution queries |
 
 ---
 
