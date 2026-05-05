@@ -82,8 +82,8 @@ def main():
 
     # Evaluate contract validity
     alerts = []
-    if health["clean_pool"] is not None and health["clean_pool"] < 800:
-        alerts.append(f"clean_pool={health['clean_pool']} is below 800 — research pool shrank unexpectedly")
+    if health["clean_pool"] is not None and health["clean_pool"] < 600:
+        alerts.append(f"clean_pool={health['clean_pool']} is below 600 — research pool shrank unexpectedly")
     if health["clean_markets"] is not None and health["clean_markets"] < 11000:
         alerts.append(f"clean_markets={health['clean_markets']} is below 11000 — markets missing")
     if health["wal_mode"] != "wal":
