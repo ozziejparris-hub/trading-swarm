@@ -168,15 +168,40 @@ def step1_signal_accuracy(conn) -> dict:
     results        = []
 
     for sig in auditable:
-        payload   = sig.get("payload", {})
-        market_id = payload.get("market_id", "")
-        direction = (payload.get("direction") or "").upper()
+        payload    = sig.get("payload", {})
+        market_id  = payload.get("market_id", "")
+        direction  = (payload.get("direction") or "").upper()
         confidence = sig.get("confidence", "")
         title      = payload.get("market_title", "unknown")
+        sig_status = (sig.get("status") or "").lower()
 
         if not market_id:
             continue
 
+        # Operational signals (completed) are not accuracy-trackable
+        if sig_status == "completed":
+            continue
+
+        # Signal was manually resolved — use its own resolution field
+        if sig_status == "resolved":
+            resolution = (sig.get("resolution") or "").upper()
+            # Resolution field starts with YES or NO (e.g. "NO — Ramaswamy running...")
+            resolved_outcome = resolution.split()[0] if resolution else None
+            was_correct = bool(resolved_outcome and direction == resolved_outcome)
+            resolved_count += 1
+            if was_correct:
+                correct += 1
+            else:
+                incorrect += 1
+            results.append({
+                "title": title, "direction": direction, "confidence": confidence,
+                "resolved": True, "outcome": resolved_outcome,
+                "correct": was_correct,
+                "note": f"resolved in signals.json: {sig.get('resolution', '')}",
+            })
+            continue
+
+        # For pending/processed signals fall through to DB lookup
         row = conn.execute(
             "SELECT resolved, winning_outcome, title, category FROM markets WHERE market_id = ?",
             (market_id,),
