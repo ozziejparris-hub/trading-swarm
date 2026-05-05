@@ -192,7 +192,8 @@
         "reason": "Past next revalidation due date 2026-04-28 (7 days overdue)"
       },
       "timestamp": "2026-05-05T12:11:47Z",
-      "status": "processed",
+      "status": "deferred",
+      "deferred_reason": "Insufficient resolved signals (4/10 minimum). STR-002 needs 10+ resolved pre-resolution signals before backtest is meaningful. Requeue after June 1 when more signals have resolved.",
       "processed_at": "2026-05-05T12:21:10.241241"
     }
   ],

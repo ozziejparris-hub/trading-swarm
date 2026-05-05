@@ -237,7 +237,7 @@ Category:               Pre-resolution analysis
 First validated:        2026-03-28 (dry run — 4 signals, pending
                         outcome validation after March 31 resolutions)
 Last revalidation:      —
-Next revalidation due:  2026-04-28
+Next revalidation due:  2026-07-01
 Validated by:           —
 Validation metrics:
   Accuracy (LEGENDARY): pending first resolution batch

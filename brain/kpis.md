@@ -186,6 +186,33 @@ Phase 5 feedback-loop gate:  3/4  (↑ on track)
 
 ---
 
+## Phase 5 Gate Tracker
+
+Last updated: 2026-05-05
+
+```
+Feedback-loop runs: 3/4 complete
+  Run 1: 2026-04-25
+  Run 2: 2026-04-27
+  Run 3: 2026-05-05  ← latest
+  Run 4: scheduled 2026-05-11
+
+HIGH confidence findings: 1/3 valid
+  ✅ 2026-05-05-ELO-QUALIFIED-001: QUALIFIED 82% accuracy, n=67
+  ⏳ Need 2 more with n≥20
+
+Pre-resolution accuracy: 50% / 4 markets
+  (unchanged — still accumulating, 10-market minimum not yet reached)
+
+RQ1.1 status:   INCONCLUSIVE (n=16, rerun scheduled June 1)
+RQ3.2 status:   INCONCLUSIVE (methodology reframe needed)
+
+Signal accuracy: 1/1 resolved correct
+  Ramaswamy NO — validated ✅
+```
+
+---
+
 ## Research Phase Tracker
 
 Tracks progress through the formal research questions.
