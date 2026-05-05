@@ -41,7 +41,8 @@ BRAIN (Knowledge Layer)
 ├── reference-library/        — research book summaries (Lopez de Prado etc.)
 ├── strategy-notes/           — pre-registered hypotheses awaiting approval
 ├── decisions/                — timestamped decision records
-└── research-scout/           — approved/dismissed/pending-review research pipeline
+├── research-scout/           — approved/dismissed/pending-review research pipeline
+└── integration-contract.md  — authoritative interface spec for first-repo DB queries
 
 ORCHESTRATOR (orchestrator/orchestrator.py — 667 lines, runs every 10 min)
 ├── Immune system             — checks tmux sessions, timeouts (>4h), file existence
@@ -76,6 +77,7 @@ Key principle: **agents cannot self-report success — files either exist or the
 | `brain/findings.json` | Structured research findings from agents | quant-research-agent |
 | `brain/feedback.json` | Approved/rejected outcomes; agents read before starting | Orchestrator + agents |
 | `brain/signals.json` | Inter-agent message bus; orchestrator processes pending signals | All agents |
+| `brain/integration-contract.md` | Authoritative interface spec between first-repo DB and all agents | Oscar (manually) |
 
 ---
 
@@ -155,6 +157,7 @@ For emergencies, see `brain/runbook.md` (10 sections covering orchestrator down,
 | `orchestrator/agent_registry.json` | Live task registry |
 | `ci/validate_backtest.py` | Backtest threshold enforcement |
 | `brain/decisions/` | Timestamped architecture decision records |
+| `brain/integration-contract.md` | **Agents must follow this contract before querying first-repo** |
 
 ---
 

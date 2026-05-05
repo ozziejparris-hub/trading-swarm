@@ -616,11 +616,138 @@ def test_brain_integrity(base_dir):
     return results
 ```
 
+### Test Suite 7 — Integration Contract (first-repo)
+The integration contract defines what the database exposes and how agents
+must connect to it. A broken contract means every research query is wrong.
+```python
+def test_integration_contract(db_path):
+    """
+    Test 7: Verify the first-repo integration contract is satisfied.
+
+    Contract spec: brain/integration-contract.md Section 9.
+    Run before any research query. Halt if contract is broken.
+    """
+    import sqlite3
+    results = []
+
+    try:
+        conn = sqlite3.connect(db_path, timeout=30)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA busy_timeout=30000")
+    except Exception as e:
+        results.append({
+            'test': 'contract_db_connectable',
+            'passed': False,
+            'detail': f"Cannot connect to first-repo DB: {e}"
+        })
+        return results
+
+    results.append({
+        'test': 'contract_db_connectable',
+        'passed': True,
+        'detail': f"Connected: {db_path}"
+    })
+
+    # Check 7.1: WAL mode active
+    try:
+        row = conn.execute(
+            "SELECT journal_mode FROM pragma_journal_mode()"
+        ).fetchone()
+        wal_mode = row[0] if row else 'unknown'
+    except Exception as e:
+        wal_mode = f"error: {e}"
+
+    results.append({
+        'test': 'contract_wal_mode',
+        'passed': wal_mode == 'wal',
+        'detail': f"journal_mode={wal_mode} (expected: wal)"
+    })
+
+    # Check 7.2: Clean pool >= 800
+    try:
+        row = conn.execute(
+            "SELECT COUNT(*) FROM traders WHERE research_excluded = 0"
+        ).fetchone()
+        clean_pool = row[0] if row else 0
+    except Exception as e:
+        clean_pool = 0
+        results.append({
+            'test': 'contract_clean_pool',
+            'passed': False,
+            'detail': f"Query failed: {e}"
+        })
+        conn.close()
+        return results
+
+    results.append({
+        'test': 'contract_clean_pool',
+        'passed': clean_pool >= 800,
+        'detail': (
+            f"clean_pool={clean_pool} (expected >=800)"
+        )
+    })
+
+    # Check 7.3: Clean markets >= 11000
+    try:
+        row = conn.execute(
+            """SELECT COUNT(*) FROM markets
+               WHERE resolved = 1
+                 AND (trade_gap_flag = 0 OR trade_gap_flag IS NULL)"""
+        ).fetchone()
+        clean_markets = row[0] if row else 0
+    except Exception as e:
+        clean_markets = 0
+        results.append({
+            'test': 'contract_clean_markets',
+            'passed': False,
+            'detail': f"Query failed: {e}"
+        })
+        conn.close()
+        return results
+
+    results.append({
+        'test': 'contract_clean_markets',
+        'passed': clean_markets >= 11000,
+        'detail': f"clean_markets={clean_markets} (expected >=11000)"
+    })
+
+    conn.close()
+
+    # Write contract_violation signal if any check failed
+    contract_ok = all(r['passed'] for r in results)
+    if not contract_ok:
+        import json
+        from datetime import datetime
+        signals_path = Path(
+            "/home/parison/trading-swarm/brain/signals.json"
+        )
+        try:
+            with open(signals_path) as f:
+                bus = json.load(f)
+            bus.setdefault('signals', []).append({
+                'type': 'contract_violation',
+                'from': 'integration-test-agent',
+                'status': 'pending',
+                'timestamp': datetime.utcnow().isoformat(),
+                'payload': {
+                    'failures': [
+                        r for r in results if not r['passed']
+                    ]
+                }
+            })
+            with open(signals_path, 'w') as f:
+                json.dump(bus, f, indent=2)
+        except Exception:
+            pass  # signal write failure is secondary to the test result
+
+    return results
+```
+
 ## Running All Test Suites
 ```python
 def run_full_integration_test(base_dir):
     """
-    Run all 6 test suites and produce a unified report.
+    Run all 7 test suites and produce a unified report.
     """
     base = Path(base_dir)
     
@@ -655,6 +782,11 @@ def run_full_integration_test(base_dir):
     
     # Suite 6: Brain integrity
     all_results['brain'] = test_brain_integrity(base_dir)
+
+    # Suite 7: Integration contract (first-repo)
+    all_results['integration_contract'] = test_integration_contract(
+        "/home/parison/projects/first-repo/data/polymarket_tracker.db"
+    )
     
     # Summarise
     total_tests = sum(len(v) for v in all_results.values())
@@ -755,7 +887,7 @@ Pass rate: XX%
 
 ## Definition of Done
 
-- [ ] All 6 test suites executed
+- [ ] All 7 test suites executed (including Suite 7 — Integration Contract)
 - [ ] Full report written to output directory
 - [ ] Telegram alert sent if any CRITICAL failures
 - [ ] Sunday report file is non-empty and valid markdown
