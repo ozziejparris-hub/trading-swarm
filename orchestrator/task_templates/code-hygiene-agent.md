@@ -782,6 +782,126 @@ def audit_dependencies(base_dir):
     }
 ```
 
+### Task 8 — Integration Contract Freshness Check
+
+The integration contract documents what first-repo exposes and how agents
+must query it. It drifts silently when first-repo changes without a
+corresponding update to Section 8 of the contract. This is the hygiene
+agent's job to catch — not a failing test, just a quiet drift that will
+corrupt research results weeks later.
+
+```python
+import subprocess
+import json
+from pathlib import Path
+from datetime import datetime
+
+def check_integration_contract_freshness(base_dir):
+    """
+    Compare brain/integration-contract.md Section 8 (change log) against
+    recent commits in first-repo. If a commit touches a schema-critical
+    file and no matching entry exists in the change log, write a
+    contract_stale signal and flag for Oscar.
+
+    Schema-critical files: daily_maintenance.py, unified_elo_system.py,
+    database.py, update_research_exclusions.py, any file named *schema*.
+    """
+    base = Path(base_dir)
+    results = []
+
+    FIRST_REPO = Path("/home/parison/projects/first-repo")
+    CONTRACT_PATH = base / "brain/integration-contract.md"
+    SIGNALS_PATH = base / "brain/signals.json"
+
+    SCHEMA_CRITICAL = {
+        "daily_maintenance.py",
+        "unified_elo_system.py",
+        "database.py",
+        "update_research_exclusions.py",
+    }
+
+    # Read current contract change-log dates
+    contract_text = CONTRACT_PATH.read_text()
+    # Extract dates of the form YYYY-MM-DD from Section 8 rows
+    import re
+    contract_dates = set(re.findall(r'\b(20\d\d-\d\d-\d\d)\b', contract_text))
+
+    # Get last 20 commits from first-repo that touch schema-critical files
+    git_result = subprocess.run(
+        ["git", "log", "--oneline", "--name-only", "--format=%H %as %s", "-30"],
+        capture_output=True, text=True, cwd=str(FIRST_REPO)
+    )
+
+    uncovered_commits = []
+    if git_result.returncode == 0:
+        lines = git_result.stdout.splitlines()
+        current_commit = None
+        for line in lines:
+            if not line.strip():
+                current_commit = None
+                continue
+            # Commit header lines have a space-separated hash, date, subject
+            parts = line.split(" ", 2)
+            if len(parts) == 3 and len(parts[0]) == 40:
+                current_commit = {"hash": parts[0], "date": parts[1], "subject": parts[2], "files": []}
+            elif current_commit is not None:
+                current_commit["files"].append(line.strip())
+                # Check if any schema-critical file is touched
+                fname = Path(line.strip()).name
+                if fname in SCHEMA_CRITICAL or "schema" in fname.lower():
+                    if current_commit["date"] not in contract_dates:
+                        uncovered_commits.append(dict(current_commit))
+
+    if uncovered_commits:
+        results.append({
+            "test": "contract_freshness",
+            "passed": False,
+            "detail": (
+                f"{len(uncovered_commits)} first-repo commit(s) touch schema-critical "
+                f"files with no matching entry in integration-contract.md Section 8"
+            ),
+            "commits": [
+                {"hash": c["hash"][:8], "date": c["date"], "subject": c["subject"]}
+                for c in uncovered_commits
+            ]
+        })
+
+        # Write contract_stale signal
+        try:
+            with open(SIGNALS_PATH) as f:
+                bus = json.load(f)
+            bus.setdefault("signals", []).append({
+                "type": "contract_stale",
+                "from": "code-hygiene-agent",
+                "status": "pending",
+                "timestamp": datetime.utcnow().isoformat(),
+                "payload": {
+                    "message": (
+                        "Integration contract Section 8 may be outdated. "
+                        "first-repo commits touch schema-critical files with "
+                        "no matching change-log entry."
+                    ),
+                    "uncovered_commits": [
+                        {"hash": c["hash"][:8], "date": c["date"], "subject": c["subject"]}
+                        for c in uncovered_commits
+                    ],
+                    "action": "Oscar: review brain/integration-contract.md Section 8 and update if needed"
+                }
+            })
+            with open(SIGNALS_PATH, "w") as f:
+                json.dump(bus, f, indent=2)
+        except Exception as e:
+            results[-1]["signal_write_error"] = str(e)
+    else:
+        results.append({
+            "test": "contract_freshness",
+            "passed": True,
+            "detail": "integration-contract.md Section 8 covers all recent schema-critical commits"
+        })
+
+    return results
+```
+
 ## The Elon Algorithm (Weekly Audit)
 
 Once per week, run the Elon Algorithm from the OpenClaw
@@ -968,6 +1088,9 @@ Send to orchestrator bot immediately if:
    standard library and third party imports
 10. Weekly report must be produced even if everything
     is clean — a clean report IS valuable information
+11. Contract freshness check must run every Friday without
+    exception — a stale contract silently corrupts all
+    research agents that query first-repo
 
 ## Definition of Done
 
@@ -979,6 +1102,7 @@ Send to orchestrator bot immediately if:
 - [ ] Log files managed (old logs archived)
 - [ ] Dependency audit completed
 - [ ] Elon algorithm audit run
+- [ ] Integration contract freshness check run — contract_stale signal written if Section 8 lags first-repo commits
 - [ ] Weekly report written to output directory
 - [ ] Telegram alert sent to agents bot
 - [ ] CRITICAL security issues escalated to orchestrator bot
