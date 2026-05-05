@@ -237,6 +237,38 @@
             "notes": "Monday cycle (cycle 7). Weekly digest written. 3 net findings surfaced (SCI removed after history check revealed double-prior discard \u2014 process error: should check feedback.json BEFORE writing files). Key findings: (1) DeepSeek V4 local inference path \u2014 new angle not in prior sovereignty decision (Q2 GGUF 71GB potentially fits 96GB); (2) Polymarket info leakage 2020-2026 \u2014 empirical finding that regulatory_formal markets show near-zero leakage post-2024, relevant to RQ3.2 design; (3) Bayes-consistent orchestration ICML 2026 \u2014 backlog item for orchestrator Phase 3+ redesign. HuggingFace daily papers were low signal today (computer vision heavy). arXiv q-fin had strong batch of prediction market papers. Self-improvement note: must check feedback.json scout_cycles.discarded before filing any finding \u2014 two sources filed today were previously discarded."
         },
         {
+            "cycle_date": "2026-05-05",
+            "cycle_id": "scout-20260505",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "huggingface-daily-papers",
+                "hackernews-best"
+            ],
+            "findings_surfaced": 1,
+            "findings_discarded": 11,
+            "pending_review_items": [
+                "2026-05-05-08-polymarket-insider-cases-pre-event-leakage-minimal.md"
+            ],
+            "discarded": [
+                "2605.02287 Per-Market Information Leakage (Nechepurenko) — companion paper to existing pending-review item (2605.00459); per-market granularity adds incremental value but implementation path already identified; note added to raw notes of filed finding",
+                "2605.01176 Decision-Induced Ranking SPO Portfolio — equity-focused portfolio optimization; 'prediction inflation' concept not transferable to binary prediction markets at current phase",
+                "2605.00864 Arbitrage in Polymarket NBA Markets — auto-discard: sports markets",
+                "2605.01370 Martingale Cohomology Homological Arbitrage — pure topology/math, no practical implementation path",
+                "2605.01384 SBCA Multi-Asset Portfolio RL — equity/multi-asset RL, not relevant to prediction markets in current phase",
+                "HuggingFace daily papers (May 5) — top papers: context-to-skills (46 upvotes), MolmoAct2 robotics (28 upvotes), AcademiClaw (3 upvotes); all below relevance bar — computer vision, medical, robotics domains",
+                "Anthropic news: Blackstone/Goldman/H&F enterprise AI services venture (May 4) — business partnership, no model capability or API changes; no escalation triggered",
+                "HN: DeepClaude (657 pts) — Claude Code + DeepSeek V4 Pro hybrid; sovereignty concerns identical to existing pending-review DeepSeek V4 finding; no new angle not already covered",
+                "HN: Agentic Coding Is a Trap (431 pts) — organizational/epistemological cautions about AI coding agent skill atrophy; no novel technical architecture; supervision paradox validates existing system design but adds no new architectural insight",
+                "2605.02396 HeavySkill (arXiv cs.AI) — parallel reasoning as internalized agent skill via RL training; RL training not applicable to API-based system; thinking budget allocation already documented in model-routing.md",
+                "Karpathy autoresearch — GitHub API error; cannot retrieve commit history this cycle"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Eighth scout cycle (Tuesday). Low-signal day: 1 finding from ~25 evaluated items. Single finding (2605.02286) has direct RQ3.2 implications — empirical validation that even confirmed Polymarket insiders show near-zero pre-event leakage in short windows, strengthening the 'elite signal = skill not insider access' theoretical basis. arXiv q-fin had 7 papers, 4 auto-discarded (sports, pure math, equity RL, equity portfolio). HuggingFace heavily computer-vision/robotics/medical today. Anthropic has no model or API changes. HN had no prediction market or quant finance items. Two companion papers from Nechepurenko (same author as ForesightFlow suite) appeared in q-fin today — filed one (2605.02286), discarded one as companion-extension (2605.02287). Karpathy autoresearch GitHub API error — second consecutive failure, will retry cycle 9."
+        },
+        {
             "cycle_date": "2026-05-03",
             "cycle_id": "scout-20260503",
             "sources_checked": [
