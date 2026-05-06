@@ -269,6 +269,41 @@
             "notes": "Eighth scout cycle (Tuesday). Low-signal day: 1 finding from ~25 evaluated items. Single finding (2605.02286) has direct RQ3.2 implications — empirical validation that even confirmed Polymarket insiders show near-zero pre-event leakage in short windows, strengthening the 'elite signal = skill not insider access' theoretical basis. arXiv q-fin had 7 papers, 4 auto-discarded (sports, pure math, equity RL, equity portfolio). HuggingFace heavily computer-vision/robotics/medical today. Anthropic has no model or API changes. HN had no prediction market or quant finance items. Two companion papers from Nechepurenko (same author as ForesightFlow suite) appeared in q-fin today — filed one (2605.02286), discarded one as companion-extension (2605.02287). Karpathy autoresearch GitHub API error — second consecutive failure, will retry cycle 9."
         },
         {
+            "cycle_date": "2026-05-06",
+            "cycle_id": "scout-20260506",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "huggingface-daily-papers",
+                "hackernews-best",
+                "karpathy-autoresearch",
+                "ollama-library",
+                "huggingface-qwen3-6"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 9,
+            "pending_review_items": [
+                "2026-05-06-08-gemma4-mtp-drafters-tier12-speedup.md",
+                "2026-05-06-08-qwen3-6-35b-free-local-haiku-parity.md",
+                "2026-05-06-08-memtier-tiered-memory-long-running-agents.md"
+            ],
+            "discarded": [
+                "Anthropic 'Agents for financial services' (May 5) — 10 finance agent templates (pitch builder, KYC screener, etc.) for banks and insurers; marketing/enterprise push, no new model capabilities or API changes; finance tasks (earnings review, ledger reconciliation) not applicable to trading swarm",
+                "arXiv:2605.04036 OpenSeeker-v2 — search agent trajectory optimization; no direct applicability to prediction market agents",
+                "arXiv:2605.03986 From Intent to Execution — agentic workflow composition; no novel technique vs existing reference library OMC coverage",
+                "arXiv:2605.03409 Robust Agent Compensation — error handling framework; our immune system already handles this pattern",
+                "arXiv:2605.02801 RL Multi-Agent Orchestration Traces — survey taxonomy of orchestration RL approaches; not directly implementable; architecture insights already covered by ADEMA and OMC in reference library",
+                "arXiv:2605.03195 Terminus-4B — specialized Qwen3-4B terminal execution subagent; 30% token reduction for terminal tasks; backlog item — not actionable until Phase 3+ subagent specialization phase",
+                "arXiv q-fin batch (2026-05-06) — 2605.00493/2605.00459/2605.02287/2605.02286 all previously filed or discarded; 2605.04004 OHLCV intraday signals in MNQ futures (auto-discard: equity/futures, current phase); 2604.27041 SCI re-appeared (discarded 4 times previously)",
+                "HN: Train Your Own LLM from Scratch (442 pts) — educational, not operationally applicable",
+                "Karpathy autoresearch — GitHub API error (third consecutive failure); flagging for Phase 2 source audit"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Ninth scout cycle (Wednesday). 3 findings surfaced from ~22 evaluated items. Highest priority: Gemma 4 MTP drafters — up to 3x speedup on Tier 1/2, available in Ollama 0.23.1-rc0 TODAY, AMD hardware confirmed 2.5x on MI50s (Vulkan/Radeon 780M unconfirmed). Low effort to test. 'Now' urgency. Second finding: Qwen3.6-35B-A3B matches Haiku 4.5 on SWE-bench (73.4%), runs locally free — backlog of model evaluations is growing (MiniMax M2.7 first, then Qwen3.6). Third finding: MEMTIER tiered memory for long-running agents, OpenClaw connection, directly maps to our brain/ consolidation problem. Karpathy autoresearch GitHub API error 3rd consecutive cycle — will note in self-assessment (scheduled after cycle 14)."
+        },
+        {
             "cycle_date": "2026-05-03",
             "cycle_id": "scout-20260503",
             "sources_checked": [
