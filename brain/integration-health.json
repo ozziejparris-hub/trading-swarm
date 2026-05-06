@@ -1,12 +1,10 @@
 {
-  "generated_at": "2026-05-05T20:26:17.960178+00:00",
-  "clean_pool": 665,
-  "clean_markets": 11801,
+  "generated_at": "2026-05-06T18:54:59.601971+00:00",
+  "clean_pool": 493,
+  "clean_markets": 11908,
   "wal_mode": "wal",
-  "last_maintenance": "2026-05-05T20:15:37.399483+00:00",
+  "last_maintenance": "2026-05-06T18:54:48.814496+00:00",
   "schema_version": "2026-04-30",
-  "contract_valid": false,
-  "alerts": [
-    "clean_pool=665 is below 800 \u2014 research pool shrank unexpectedly"
-  ]
+  "contract_valid": true,
+  "alerts": []
 }
