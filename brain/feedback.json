@@ -304,6 +304,38 @@
             "notes": "Ninth scout cycle (Wednesday). 3 findings surfaced from ~22 evaluated items. Highest priority: Gemma 4 MTP drafters — up to 3x speedup on Tier 1/2, available in Ollama 0.23.1-rc0 TODAY, AMD hardware confirmed 2.5x on MI50s (Vulkan/Radeon 780M unconfirmed). Low effort to test. 'Now' urgency. Second finding: Qwen3.6-35B-A3B matches Haiku 4.5 on SWE-bench (73.4%), runs locally free — backlog of model evaluations is growing (MiniMax M2.7 first, then Qwen3.6). Third finding: MEMTIER tiered memory for long-running agents, OpenClaw connection, directly maps to our brain/ consolidation problem. Karpathy autoresearch GitHub API error 3rd consecutive cycle — will note in self-assessment (scheduled after cycle 14)."
         },
         {
+            "cycle_date": "2026-05-07",
+            "cycle_id": "scout-20260507",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "anthropic-news",
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "karpathy-autoresearch",
+                "hackernews-best",
+                "polymarket-news"
+            ],
+            "findings_surfaced": 4,
+            "findings_discarded": 6,
+            "pending_review_items": [
+                "2026-05-07-08-polybench-llm-forecasting-polymarket-benchmark.md",
+                "2026-05-07-08-predictionmarketbench-lob-backtesting-framework.md",
+                "2026-05-07-08-forecasting-economy-polymarket-dataset-2020-2026.md",
+                "2026-05-07-08-claude-agent-sdk-native-subagents-hooks.md"
+            ],
+            "discarded": [
+                "arXiv:2605.02801 RL Multi-Agent Orchestration Traces — duplicate; already discarded cycle 9; caught via feedback.json history check before finalising",
+                "HuggingFace daily papers (May 7) — MedSkillAudit (515 upvotes, medical domain auto-discard), retrieval in agentic search (4 upvotes, below threshold), multimodal search agents (4 upvotes, below threshold); no relevant high-signal papers today",
+                "Polymarket market activity — US midterms, US-Iran, Ohio primary; no structural/API changes; market content only, not surfaced per protocol",
+                "AgentStocks (HN, 1 upvote) — AI agents trading prediction markets with capital; below 100-upvote threshold; no novel technique vs existing competitive intelligence",
+                "Karpathy autoresearch — no new commits since March 26, 2026; SETI@home-style tweet surfaced but too early/conceptual for a finding (no implementation)",
+                "Claude SpaceX compute deal / usage limits increase — business/capacity news, no model capability or API changes"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Tenth scout cycle (Thursday). 4 findings from ~15 evaluated items. Self-improvement catch: arXiv:2605.02801 was re-evaluated and discarded again (same paper discarded cycle 9) — caught before filing via feedback.json history check. Key findings: (1) PolyBench — first rigorous LLM benchmark on live Polymarket, only 2/7 models profitable, overconfidence is the failure mode; (2) PredictionMarketBench — execution-realistic LOB backtesting from Feb 2026, Kalshi-based but directly portable, validates limit-orders-only rule; (3) Forecasting Economy dataset — comprehensive Polymarket 2020-2026 data at polymonitor.club, 943M fill records vs our position-level tracking; (4) Claude Agent SDK native features — subagents/hooks/checkpoints shipped, validates our architecture independently. HuggingFace very low signal today. Karpathy autoresearch has been inactive for 6+ weeks — deprioritise from daily checks; recheck monthly per self-assessment protocol."
+        },
+        {
             "cycle_date": "2026-05-03",
             "cycle_id": "scout-20260503",
             "sources_checked": [
