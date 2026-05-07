@@ -67,7 +67,7 @@ Output: microstructure_model.py + informed ratio estimates.
 3. Read brain/research-standards.md before any database query — apply all mandatory
    filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
    future-timestamp exclusion, and resolution filters. The clean research
-   pool is 857 traders (research_excluded=0). ELO-ELITE and ELO-QUALIFIED
+   pool is 493 traders as of 2026-05-07 (verify live via integration-health.json). ELO-ELITE and ELO-QUALIFIED
    findings were invalidated 2026-04-30 and require revalidation before use
 4. Every model must be written so backtest-agent can run it
    independently without your involvement

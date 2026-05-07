@@ -98,7 +98,7 @@ increase that tier's weighting in signal confidence scoring.
 2. Read brain/research-standards.md before any database query — apply all mandatory
    filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
    future-timestamp exclusion, and resolution filters. The clean research pool
-   is 857 traders. ELO-ELITE and ELO-QUALIFIED findings were invalidated
+   is 493 traders as of 2026-05-07 (verify live via integration-health.json). ELO-ELITE and ELO-QUALIFIED findings were invalidated
    2026-04-30 — do not treat them as baselines without revalidating first.
 3. Never retire a strategy automatically — flag for human review
 4. Never change priorities.md directly — write recommendations

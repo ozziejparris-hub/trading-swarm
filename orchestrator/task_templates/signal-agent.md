@@ -19,7 +19,7 @@ when something genuinely actionable has changed.
   positions  → P&L tracking per trader/market
 - Elite traders: ELO score > 1800 in traders table
 - Legendary traders: ELO score > 2175 in traders table
-- Research pool: 857 traders with research_excluded=0 (clean pool — always filter on this flag)
+- Research pool: 493 traders with research_excluded=0 as of 2026-05-07 (verify live via integration-health.json — pool is updated daily)
 - Output directory: /home/parison/trading-swarm/brain/agent-outputs/signal-agent/
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
@@ -56,7 +56,7 @@ when something genuinely actionable has changed.
 3. Read /home/parison/trading-swarm/brain/priorities.md — know current focus areas
 4. Do not act on ELO-ELITE or ELO-QUALIFIED findings from findings.json as
    established baselines — both were invalidated 2026-04-30 and require
-   revalidation against the clean 857-trader pool before use
+   revalidation against the clean pool before use (current: 493 traders — verify via integration-health.json)
 5. Only raise a signal if confidence is medium or higher
 6. Always include the specific traders, market IDs, and
    ELO scores that support your signal — no vague alerts

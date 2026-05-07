@@ -663,7 +663,9 @@ def test_integration_contract(db_path):
         'detail': f"journal_mode={wal_mode} (expected: wal)"
     })
 
-    # Check 7.2: Clean pool >= 800
+    # Check 7.2: Clean pool >= 450
+    # Threshold updated 2026-05-07: pool reduced from 857 to 493 after
+    # LP_ARTIFACT (~257) and ARB_BOT (111) exclusions applied in first-repo.
     try:
         row = conn.execute(
             "SELECT COUNT(*) FROM traders WHERE research_excluded = 0"
@@ -681,9 +683,9 @@ def test_integration_contract(db_path):
 
     results.append({
         'test': 'contract_clean_pool',
-        'passed': clean_pool >= 800,
+        'passed': clean_pool >= 450,
         'detail': (
-            f"clean_pool={clean_pool} (expected >=800)"
+            f"clean_pool={clean_pool} (expected >=450)"
         )
     })
 

@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.0 — 2026-05-05
+**Version:** 1.1 — 2026-05-07
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -68,7 +68,7 @@ WHERE tr.research_excluded = 0
 
 ## Section 3 — Research Pool
 
-**Current clean pool: 857 traders** (as of 2026-04-30)
+**Current clean pool: 493 traders** (as of 2026-05-07 — after LP_ARTIFACT and ARB_BOT exclusions; verify live via `brain/integration-health.json` which is updated daily at 06:00 UTC)
 
 A trader is included in the research pool (`research_excluded = 0`) if ALL
 criteria are met:
@@ -108,9 +108,14 @@ WHERE comprehensive_elo > 1800
   AND research_excluded = 0
 ```
 
-**Never use** traders tagged with `bot_type IN ('LP_ARTIFACT', 'THIN_SAMPLE_ARTIFACT')`.
-These are artefacts of liquidity provision and data sparsity — their ELO
-scores are not predictive.
+**Never use** traders tagged with `bot_type IN ('LP_ARTIFACT', 'THIN_SAMPLE_ARTIFACT', 'ARB_BOT')`.
+These are measurement artefacts — their ELO scores are not predictive:
+
+| bot_type | Count | Description |
+|----------|-------|-------------|
+| `LP_ARTIFACT` | ~257 | Liquidity provision artefacts — thousands of positions on a single market, massive negative PnL from LP interactions |
+| `THIN_SAMPLE_ARTIFACT` | — | Data sparsity artefacts — too few resolved trades for meaningful ELO |
+| `ARB_BOT` | 111 | Coordinated arbitrage wallets (single-market, Nov 2025 geopolitics). ELO 3308–3315 cluster — measurement artefact, not skill. Excluded 2026-05-06. |
 
 ---
 
@@ -154,48 +159,18 @@ they are handled by the query filters in Section 2.
 
 ## Section 6c — Open Data Quality Issues (known, no fix yet applied)
 
-### LP Artifact Contamination in Research Pool (⚠ action needed)
+No open data quality issues at this time.
 
-The research pool (`research_excluded = 0`) contains ~267 LP artifact traders that were
-NOT caught by existing bot detection. These traders have:
+### Bot Exclusion History (resolved — documented for context)
 
-- Thousands of positions (6,000–6,600+) on a single market
-- `bot_suspect = 0`, `bot_type = NULL` — not flagged
-- Massive negative realized_pnl (−$1.2B to −$1.4B per trader) from LP interactions
-- `pnl_modifier = 0.4` (floor), pulling their comprehensive_elo to the floor ~447
+| Date | Bot type | Count | Action |
+|------|----------|-------|--------|
+| 2026-05-05 | `LP_ARTIFACT` | ~257 | Flagged via single-market position heuristic (>1000 positions, <3 distinct markets). `research_excluded=1`, ELO recalculated. |
+| 2026-05-06 | `ARB_BOT` | 111 | Coordinated arbitrage wallets with ELO 3308–3315 cluster (Nov 2025 geopolitics). `research_excluded=1`, ELO recalculated. |
 
-**Affected markets (high-volume LP markets in positions table):**
-- "Will Iran recognize Iran by June 2025?" — 619,196 positions / 182 traders
-- "USA ceasefire agreement before December 2025?" — ~60,000 positions / 30 traders
-- "Will Haley drop out of 2027 race before January?" — ~48,000 positions / 44 traders
+Pool after both exclusions: **493 traders** (down from 857 on 2026-04-30).
 
-**ELO impact:** The bimodal distribution (267 traders at ELO 400–600) is this LP contamination,
-not genuine underperformers. Top ELO traders (3200–3471) are legitimate: 6–15 distinct markets,
-120–187 total positions.
-
-**Fix pending Oscar approval:**
-```sql
--- Flag single-market LP artifact traders (> 1000 positions, < 3 distinct markets)
-UPDATE traders
-SET research_excluded = 1,
-    bot_type = 'LP_ARTIFACT'
-WHERE address IN (
-    SELECT trader_address
-    FROM positions
-    GROUP BY trader_address
-    HAVING COUNT(*) > 1000 AND COUNT(DISTINCT market_id) < 3
-)
-AND research_excluded = 0;
-```
-After applying: re-run `recalculate_comprehensive_elo.py` to clean up the ELO distribution.
-
-### ELO Recalculation Needed Post-Dedup
-
-ELO was last recalculated at 2026-05-05T13:54 UTC. The position dedup fix was applied at
-2026-05-05T19:29 UTC. The current ELO scores reflect the pre-dedup positions table.
-Impact is limited to traders active during April 18–20 migration window, but a full
-recalculation should run before the next Sunday scheduled recalc (or manually via
-`python scripts/recalculate_comprehensive_elo.py`).
+**Legendary tier impact:** 384 → 151 legendary traders (ELO > 2175) after ARB_BOT removal. The 3308–3315 cluster was the primary driver of the previous legendary count. Remaining 151 are legitimate.
 
 ---
 
@@ -229,7 +204,9 @@ Agents should not query the database during the maintenance window
 | 2026-05-05 | This contract created | All agents querying first-repo |
 | 2026-05-05 | Position dedup fix: 38,630 BST/UTC duplicate rows removed. Totals: 73,910 open, 952,900 closed | Position-derived P&L and ELO queries |
 | 2026-05-05 | `traders.total_pnl` now written by monitor.py (was always 0). Use `realized_pnl` for P&L — it is authoritative | Any query on `total_pnl` |
-| 2026-05-05 | LP artifact contamination identified in research pool (~267 traders). ELO bimodal distribution is this artifact, not real underperformers. Pending fix (see Section 6c) | ELO distribution queries |
+| 2026-05-05 | LP artifact contamination identified (~257 traders). `bot_type=LP_ARTIFACT`, `research_excluded=1`, ELO recalculated | ELO distribution queries |
+| 2026-05-06 | ARB_BOT exclusion: 111 coordinated arb wallets (ELO 3308–3315 cluster) excluded. Pool 857 → 493. Legendary tier 384 → 151 | All ELO-tier queries; legendary signal thresholds |
+| 2026-05-07 | Contract updated to v1.1: pool size, alert threshold, bot_type list, Section 6c resolved | All agents |
 
 ---
 
@@ -258,7 +235,7 @@ SELECT
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
-| `clean_pool` | 857–1100 | < 800 (pool shrank unexpectedly) |
+| `clean_pool` | 450–600 | < 450 (pool shrank unexpectedly — check for new bot exclusions in first-repo) |
 | `clean_markets` | ≥ 11,491 | < 11000 (markets missing) |
 | `wal_mode` | `wal` | ≠ `wal` (WAL disabled — risk of read contention) |
 
