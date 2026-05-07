@@ -38,7 +38,16 @@
       "timestamp": "2026-04-21T19:00:00Z",
       "status": "processed",
       "cycle": "signal-001-first-run",
-      "processed_at": "2026-04-21T19:45:24.417273"
+      "processed_at": "2026-04-21T19:45:24.417273",
+      "rescan_at": "2026-05-07",
+      "rescan_note": "Clean pool validation: 0x1fad remains research_excluded=0, bot_type=NULL, ELO 3456 confirmed. 5 position entries total (May 10 + May 14 are new entries from SAME trader). Upgrade condition NOT MET — only the original trader holds 100% directional NO; 2+ additional legendary traders required. Positions-query capital: $64,917 NO (vs $129,834 original — methodology difference: positions vs trades table). No new legendary traders on this market.",
+      "upgrade_status": "NOT_MET",
+      "category_flag": {
+        "category": "Elections",
+        "category_accuracy": 0.467,
+        "apply_skepticism": true,
+        "flag_source": "2026-05-07-CATEGORY-ELECTIONS-001"
+      }
     },
     {
       "from": "feedback-loop-agent",
@@ -252,7 +261,16 @@
       "cycle": "signal-002",
       "migrated_from": "pending",
       "migrated_at": "2026-05-07",
-      "processed_at": "2026-05-07T16:50:54.836684"
+      "processed_at": "2026-05-07T16:50:54.836684",
+      "rescan_at": "2026-05-07",
+      "rescan_note": "Clean pool validation: both traders remain valid. ELO recalc on clean pool: 0x72a1 2741→3154, 0x7dd4 2398→2798 — both still LEGENDARY (>2175). Positions confirmed: 0x72a1 $30,616 NO / $0 YES; 0x7dd4 $3,475 NO / $0 YES. Upgrade condition NOT MET — need 1+ additional legendary trader entering NO; only original 2 traders present. Elections skepticism flag applied.",
+      "upgrade_status": "NOT_MET",
+      "category_flag": {
+        "category": "Elections",
+        "category_accuracy": 0.467,
+        "apply_skepticism": true,
+        "flag_source": "2026-05-07-CATEGORY-ELECTIONS-001"
+      }
     },
     {
       "from": "signal-agent",
@@ -287,7 +305,16 @@
       "cycle": "signal-002",
       "migrated_from": "pending",
       "migrated_at": "2026-05-07",
-      "processed_at": "2026-05-07T16:50:54.836687"
+      "processed_at": "2026-05-07T16:50:54.836687",
+      "rescan_at": "2026-05-07",
+      "rescan_note": "Clean pool validation: 0xef1d remains valid, ELO 3150, research_excluded=0, bot_type=NULL. Position confirmed: $40,581 NO / $0 YES. Upgrade condition NOT MET — need 2+ fully directional legendary traders; only original 1 trader. Two additional ELO 3308/3307 traders hold mixed YES+NO positions on this market but excluded by 95% directional threshold. Geopolitics confidence boost applied (92.3% category accuracy).",
+      "upgrade_status": "NOT_MET",
+      "category_flag": {
+        "category": "Geopolitics",
+        "category_accuracy": 0.923,
+        "confidence_boost": true,
+        "flag_source": "2026-05-07-CATEGORY-GEOPOLITICS-001"
+      }
     },
     {
       "from": "signal-agent",
@@ -321,7 +348,16 @@
       "cycle": "signal-002",
       "migrated_from": "pending",
       "migrated_at": "2026-05-07",
-      "processed_at": "2026-05-07T16:50:54.836690"
+      "processed_at": "2026-05-07T16:50:54.836690",
+      "rescan_at": "2026-05-07",
+      "rescan_note": "Clean pool validation: 0x9fb0 remains valid, ELO 2923, research_excluded=0, bot_type=NULL. Position confirmed: $33,390 NO / $0 YES. Upgrade condition NOT MET. Context: 3 additional ELO 3308-3307 traders present on this market but all hold mixed YES+NO (LP/hedged, excluded by 95% threshold). Trader 0x69cd is net YES ($73K YES vs $29K NO) — leans opposite direction. No new 100% directional legendary entrants.",
+      "upgrade_status": "NOT_MET",
+      "category_flag": {
+        "category": "Economics",
+        "category_accuracy": "unknown",
+        "apply_skepticism": false,
+        "flag_source": "run5-no-economics-finding-yet-n4"
+      }
     },
     {
       "from": "signal-agent",
@@ -355,7 +391,16 @@
       "cycle": "signal-002",
       "migrated_from": "pending",
       "migrated_at": "2026-05-07",
-      "processed_at": "2026-05-07T16:50:54.836692"
+      "processed_at": "2026-05-07T16:50:54.836692",
+      "rescan_at": "2026-05-07",
+      "rescan_note": "Clean pool validation: 0xdffc remains valid, ELO 3323, research_excluded=0, bot_type=NULL. Position confirmed: $7,191 NO / $0 YES. Upgrade condition NOT MET — need 1+ additional legendary trader entering NO; only original trader present. NEAR-TERM WATCH: resolves June 2026 (~6 weeks from May 7). Geopolitics confidence boost applied (92.3% category accuracy).",
+      "upgrade_status": "NOT_MET",
+      "category_flag": {
+        "category": "Geopolitics",
+        "category_accuracy": 0.923,
+        "confidence_boost": true,
+        "flag_source": "2026-05-07-CATEGORY-GEOPOLITICS-001"
+      }
     },
     {
       "from": "feedback-loop-agent",
