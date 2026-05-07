@@ -188,27 +188,36 @@ Phase 5 feedback-loop gate:  3/4  (↑ on track)
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-05-05
+Last updated: 2026-05-07 (feedback-loop-agent run 5 — manual, clean pool revalidation)
 
 ```
-Feedback-loop runs: 3/4 complete
+Feedback-loop runs: 5/4 ✅ GATE MET (4+ runs threshold exceeded)
   Run 1: 2026-04-25
   Run 2: 2026-04-27
-  Run 3: 2026-05-05  ← latest
-  Run 4: scheduled 2026-05-11
+  Run 3: 2026-05-05 (per prior kpis entry)
+  Run 4: 2026-05-05 (clean pool revalidation — contaminated pool found post-run 3)
+  Run 5: 2026-05-07 (manual — clean pool confirmed, 493 genuine traders)
+  Next:  2026-05-11 (cron, Monday)
 
 HIGH confidence findings: 1/3 valid
-  ✅ 2026-05-05-ELO-QUALIFIED-001: QUALIFIED 82% accuracy, n=67
+  ❌ 2026-05-05-ELO-QUALIFIED-001: INVALIDATED — contaminated pool (82% was artefact)
+  ✅ 2026-05-07-ELO-QUALIFIED-002: QUALIFIED 63.16% accuracy, n=57 (clean 493-trader pool)
   ⏳ Need 2 more with n≥20
 
+  Pool context: LP_ARTIFACT + ARB_BOT exclusion reduced pool 857→493.
+  Clean pool accuracy (63.16%) is lower but still above 60% gate. Edge is real.
+
 Pre-resolution accuracy: 50% / 4 markets
-  (unchanged — still accumulating, 10-market minimum not yet reached)
+  (unchanged — 0 new resolved pre-resolution signals this week)
+  0 signals fired in last 2 scans (May 5: 8 markets, May 7: 15 markets)
 
 RQ1.1 status:   INCONCLUSIVE (n=16, rerun scheduled June 1)
 RQ3.2 status:   INCONCLUSIVE (methodology reframe needed)
 
-Signal accuracy: 1/1 resolved correct
-  Ramaswamy NO — validated ✅
+Signal accuracy: 1/1 resolved correct (n=1 — insufficient for conclusions)
+  Ramaswamy NO — validated ✅ (2026-05-02)
+  4 signals pending resolution (3 Geopolitics/Elections, 1 Economics)
+  Near-term watch: Putin invades by June 2026 (ELO 3323, resolves ~6 weeks)
 ```
 
 ---

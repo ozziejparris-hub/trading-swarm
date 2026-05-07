@@ -139,10 +139,11 @@
         "upgrade_condition": "Time-sensitive: check current Polymarket YES price immediately"
       },
       "timestamp": "2026-04-27T20:00:00Z",
-      "status": "resolved",
+      "status": "processed",
       "resolved_at": "2026-05-02",
       "resolution": "NO \u2014 Ramaswamy running for Ohio Governor (primary May 5 2026, 99.6% favourite), not announcing presidential run. ELO 3150 trader's NO bet validated correct.",
-      "cycle": "signal-002"
+      "cycle": "signal-002",
+      "processed_at": "2026-05-07T16:50:54.836675"
     },
     {
       "from": "research-scout-agent",
@@ -247,10 +248,11 @@
         "upgrade_condition": "1+ additional legendary trader (ELO > 2175) entering NO -> upgrade to HIGH"
       },
       "timestamp": "2026-04-27T20:00:00Z",
-      "status": "pending",
+      "status": "processed",
       "cycle": "signal-002",
       "migrated_from": "pending",
-      "migrated_at": "2026-05-07"
+      "migrated_at": "2026-05-07",
+      "processed_at": "2026-05-07T16:50:54.836684"
     },
     {
       "from": "signal-agent",
@@ -281,10 +283,11 @@
         "upgrade_condition": "2+ fully directional legendary traders on NO -> upgrade to HIGH"
       },
       "timestamp": "2026-04-27T20:00:00Z",
-      "status": "pending",
+      "status": "processed",
       "cycle": "signal-002",
       "migrated_from": "pending",
-      "migrated_at": "2026-05-07"
+      "migrated_at": "2026-05-07",
+      "processed_at": "2026-05-07T16:50:54.836687"
     },
     {
       "from": "signal-agent",
@@ -314,10 +317,11 @@
         "upgrade_condition": "Additional legendary trader (ELO > 2175) entering NO -> upgrade confidence"
       },
       "timestamp": "2026-04-27T20:00:00Z",
-      "status": "pending",
+      "status": "processed",
       "cycle": "signal-002",
       "migrated_from": "pending",
-      "migrated_at": "2026-05-07"
+      "migrated_at": "2026-05-07",
+      "processed_at": "2026-05-07T16:50:54.836690"
     },
     {
       "from": "signal-agent",
@@ -347,10 +351,43 @@
         "upgrade_condition": "Additional legendary trader entering NO -> upgrade confidence; near-term watch"
       },
       "timestamp": "2026-04-27T20:00:00Z",
-      "status": "pending",
+      "status": "processed",
       "cycle": "signal-002",
       "migrated_from": "pending",
-      "migrated_at": "2026-05-07"
+      "migrated_at": "2026-05-07",
+      "processed_at": "2026-05-07T16:50:54.836692"
+    },
+    {
+      "from": "feedback-loop-agent",
+      "to": "orchestrator",
+      "type": "revalidation_requested",
+      "payload": {
+        "strategy_name": "RQ0.1 — Wash Trading Contamination Audit",
+        "strategy_path": "first-repo/scripts/wash_trade_audit.py",
+        "last_validated": "2026-03-29",
+        "days_since_validation": 39,
+        "original_dsr": null,
+        "original_sharpe": null,
+        "reason": "Monthly data integrity gate — 39 days since last run (threshold: 30 days). Total traders grew from 53,140 to 93,331 since last audit. New traders may include wash patterns not yet flagged. Pool integrity depends on this gate passing."
+      },
+      "timestamp": "2026-05-07T12:00:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "feedback-loop-agent",
+      "to": "orchestrator",
+      "type": "revalidation_requested",
+      "payload": {
+        "strategy_name": "RQ0.2 — Bot and Automated Trader Detection",
+        "strategy_path": "first-repo/scripts/bot_detection.py",
+        "last_validated": "2026-03-29",
+        "days_since_validation": 39,
+        "original_dsr": null,
+        "original_sharpe": null,
+        "reason": "Monthly data integrity gate — 39 days since last run (threshold: 30 days). Total traders grew from 53,140 to 93,331. Pool discrepancy (746 vs 493 research_excluded=0 vs full-criteria) may indicate new bot patterns not yet captured by bot_detection.py. Rerun before next ELO recalculation."
+      },
+      "timestamp": "2026-05-07T12:00:00Z",
+      "status": "pending"
     }
   ],
   "pending": []

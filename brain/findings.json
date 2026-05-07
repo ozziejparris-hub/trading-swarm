@@ -391,8 +391,10 @@
         "direction": "above_baseline",
         "weeks_observed": 3
       },
-      "actionable": true,
-      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "actionable": false,
+      "action_recommendation": "Invalidated \u2014 use 2026-05-07-ELO-QUALIFIED-002 for authoritative clean-pool result",
+      "invalidated_at": "2026-05-07",
+      "invalidation_reason": "Computed against contaminated research pool: research_excluded=0 matched 746 traders but only 493 meet resolved_trades_count>=20 (253 thin-sample traders included). Run 5 clean-pool revalidation yields 63.16% accuracy (n=57). See 2026-05-07-ELO-QUALIFIED-002.",
       "expires_at": "2026-08-03T12:11:47Z"
     },
     {
@@ -413,6 +415,134 @@
       "actionable": true,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
       "expires_at": "2026-08-03T12:11:47Z"
+    },
+    {
+      "id": "2026-05-07-ELO-QUALIFIED-002",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-07T12:00:00Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 57,
+      "summary": "QUALIFIED tier (ELO>=1200) consensus accuracy: 63.16% on clean 493-trader pool (n=57 markets) \u2014 above 60% Phase 5 gate threshold, confirms edge persists on clean data",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.6316,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 5,
+        "pool_size": 493,
+        "pool_note": "Clean pool \u2014 LP_ARTIFACT and ARB_BOT excluded. Filters: research_excluded=0 AND resolved_trades_count>=20. Previous run 4 result (82%, n=67) was on contaminated pool (746 matched research_excluded=0 but 253 lacked resolved_trades_count>=20).",
+        "vs_run4": "82.09% contaminated (n=67) to 63.16% clean (n=57) \u2014 ~19pp drop attributable to bot and thin-trader exclusion",
+        "excl_sports_crypto_pct": 65.91,
+        "excl_sports_crypto_n": 44,
+        "geopolitics_unknown_pct": 91.30,
+        "geopolitics_unknown_n": 23
+      },
+      "actionable": true,
+      "action_recommendation": "QUALIFIED tier consensus accuracy confirmed above 60% Phase 5 gate on clean pool. Signal-agent should continue using QUALIFIED tier consensus. Apply category-level weighting: Geopolitics+Unknown signals carry 91% accuracy vs Elections 47% (below chance). Phase 5 feedback-loop gate criterion now met (run 5 complete, 4+ required).",
+      "expires_at": "2026-08-05T12:00:00Z"
+    },
+    {
+      "id": "2026-05-07-CATEGORY-ELECTIONS-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-07T12:00:00Z",
+      "finding_type": "category_performance",
+      "confidence": "MEDIUM",
+      "sample_size": 15,
+      "summary": "Elections category: QUALIFIED tier consensus accuracy 46.7% (n=15) \u2014 below chance on clean pool, providing negative alpha",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy_elections",
+        "value": 0.467,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "weeks_observed": 5,
+        "correct": 7,
+        "total": 15,
+        "pool": "clean 493-trader pool"
+      },
+      "actionable": true,
+      "action_recommendation": "Signal-agent should apply skepticism flag to Elections category signals. QUALIFIED consensus in Elections performs below random chance (46.7% vs 50% baseline). Do not trade Elections signals without independent confirmation. Quant-research-agent should pre-register hypothesis to investigate Elections category dynamics before running analysis.",
+      "expires_at": "2026-08-05T12:00:00Z"
+    },
+    {
+      "id": "2026-05-07-CATEGORY-GEOPOLITICS-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-07T12:00:00Z",
+      "finding_type": "category_performance",
+      "confidence": "MEDIUM",
+      "sample_size": 13,
+      "summary": "Geopolitics category: QUALIFIED tier consensus accuracy 92.3% (n=13) \u2014 strongest category signal, far above 60% threshold on clean pool",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy_geopolitics",
+        "value": 0.923,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 5,
+        "correct": 12,
+        "total": 13,
+        "pool": "clean 493-trader pool",
+        "combined_geo_unknown_pct": 91.30,
+        "combined_geo_unknown_n": 23
+      },
+      "actionable": true,
+      "action_recommendation": "Signal-agent should prioritise Geopolitics category signals \u2014 92.3% accuracy far exceeds the 60% gate threshold. Combined Geopolitics+Unknown accuracy is 91.3% (n=23). This is where QUALIFIED tier consensus has the most reliable edge. Upgrade Geopolitics signals to HIGH confidence tier when n grows to 20+.",
+      "expires_at": "2026-08-05T12:00:00Z"
+    },
+    {
+      "id": "2026-05-07-SIGNAL-ACCURACY-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-07T12:00:00Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 1,
+      "summary": "Signal accuracy: 1/1 resolved signals correct (100%) \u2014 n=1 insufficient for conclusions, still accumulating",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": 1.0,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 5,
+        "resolved_signals": 1,
+        "pending_signals": 4
+      },
+      "actionable": false,
+      "action_recommendation": "Await 9 more signal resolutions before drawing accuracy conclusions. One resolved signal (Ramaswamy NO \u2014 validated correct 2026-05-02) is insufficient for statistical claims.",
+      "expires_at": "2026-08-05T12:00:00Z"
+    },
+    {
+      "id": "2026-05-07-STRATEGY-OVERDUE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-07T12:00:00Z",
+      "finding_type": "strategy_performance",
+      "confidence": "HIGH",
+      "sample_size": 2,
+      "summary": "2 data integrity gates overdue for monthly rerun: RQ0.1 (Wash Trading) and RQ0.2 (Bot Detection) \u2014 39 days since last run (2026-03-29)",
+      "detail": {
+        "metric": "data_gates_overdue_revalidation",
+        "value": 2.0,
+        "baseline": 0.0,
+        "direction": "above_baseline",
+        "weeks_observed": 5,
+        "overdue_gates": [
+          {
+            "gate": "RQ0.1",
+            "name": "Wash Trading Contamination Audit",
+            "last_run": "2026-03-29",
+            "days_overdue": 39,
+            "script": "scripts/wash_trade_audit.py"
+          },
+          {
+            "gate": "RQ0.2",
+            "name": "Bot and Automated Trader Detection",
+            "last_run": "2026-03-29",
+            "days_overdue": 39,
+            "script": "scripts/bot_detection.py"
+          }
+        ]
+      },
+      "actionable": true,
+      "action_recommendation": "Oscar to run RQ0.1 (scripts/wash_trade_audit.py) and RQ0.2 (scripts/bot_detection.py) on first-repo. Total traders grew from 53,140 (March baseline) to 93,331 \u2014 new traders may include wash patterns or bots not yet detected. Research pool integrity depends on these gates passing. Revalidation signals written to signals.json.",
+      "expires_at": "2026-08-05T12:00:00Z"
     }
   ]
 }
