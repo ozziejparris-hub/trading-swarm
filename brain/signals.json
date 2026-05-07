@@ -362,32 +362,34 @@
       "to": "orchestrator",
       "type": "revalidation_requested",
       "payload": {
-        "strategy_name": "RQ0.1 — Wash Trading Contamination Audit",
+        "strategy_name": "RQ0.1 \u2014 Wash Trading Contamination Audit",
         "strategy_path": "first-repo/scripts/wash_trade_audit.py",
         "last_validated": "2026-03-29",
         "days_since_validation": 39,
         "original_dsr": null,
         "original_sharpe": null,
-        "reason": "Monthly data integrity gate — 39 days since last run (threshold: 30 days). Total traders grew from 53,140 to 93,331 since last audit. New traders may include wash patterns not yet flagged. Pool integrity depends on this gate passing."
+        "reason": "Monthly data integrity gate \u2014 39 days since last run (threshold: 30 days). Total traders grew from 53,140 to 93,331 since last audit. New traders may include wash patterns not yet flagged. Pool integrity depends on this gate passing."
       },
       "timestamp": "2026-05-07T12:00:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-05-07T17:00:54.840788"
     },
     {
       "from": "feedback-loop-agent",
       "to": "orchestrator",
       "type": "revalidation_requested",
       "payload": {
-        "strategy_name": "RQ0.2 — Bot and Automated Trader Detection",
+        "strategy_name": "RQ0.2 \u2014 Bot and Automated Trader Detection",
         "strategy_path": "first-repo/scripts/bot_detection.py",
         "last_validated": "2026-03-29",
         "days_since_validation": 39,
         "original_dsr": null,
         "original_sharpe": null,
-        "reason": "Monthly data integrity gate — 39 days since last run (threshold: 30 days). Total traders grew from 53,140 to 93,331. Pool discrepancy (746 vs 493 research_excluded=0 vs full-criteria) may indicate new bot patterns not yet captured by bot_detection.py. Rerun before next ELO recalculation."
+        "reason": "Monthly data integrity gate \u2014 39 days since last run (threshold: 30 days). Total traders grew from 53,140 to 93,331. Pool discrepancy (746 vs 493 research_excluded=0 vs full-criteria) may indicate new bot patterns not yet captured by bot_detection.py. Rerun before next ELO recalculation."
       },
       "timestamp": "2026-05-07T12:00:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-05-07T17:00:54.840796"
     }
   ],
   "pending": []
