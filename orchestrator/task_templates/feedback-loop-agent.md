@@ -156,7 +156,9 @@ Add new findings — never overwrite old ones.
 Expired findings (past expires_at) may be removed.
 
 ## Signal Format for Revalidation Request
-When a strategy in the registry is overdue for review:
+When a strategy in the registry is overdue for review, append one entry to the
+`signals` array in brain/signals.json (NOT the `pending` array — the orchestrator
+only reads `signals[]`):
 {
   "from": "feedback-loop-agent",
   "to": "backtest-agent",

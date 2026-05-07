@@ -195,9 +195,7 @@
       "status": "deferred",
       "deferred_reason": "Insufficient resolved signals (4/10 minimum). STR-002 needs 10+ resolved pre-resolution signals before backtest is meaningful. Requeue after June 1 when more signals have resolved.",
       "processed_at": "2026-05-05T12:21:10.241241"
-    }
-  ],
-  "pending": [
+    },
     {
       "from": "research-scout-agent",
       "to": "orchestrator",
@@ -210,8 +208,11 @@
         "finding_file": "brain/research-scout/pending-review/2026-05-04-08-deepseek-v4-released-open-weights.md"
       },
       "timestamp": "2026-05-04T08:00:00Z",
-      "status": "pending",
-      "cycle": "scout-20260504"
+      "status": "deferred",
+      "deferred_note": "Deferred pending RAM headroom check and benchmark. Local inference path approved in principle \u2014 data sovereignty concern does not apply to local weights. Action: check RAM after existing models, attempt V4-Flash Q2 GGUF pull when convenient.",
+      "cycle": "scout-20260504",
+      "migrated_from": "pending",
+      "migrated_at": "2026-05-07"
     },
     {
       "from": "signal-agent",
@@ -247,7 +248,9 @@
       },
       "timestamp": "2026-04-27T20:00:00Z",
       "status": "pending",
-      "cycle": "signal-002"
+      "cycle": "signal-002",
+      "migrated_from": "pending",
+      "migrated_at": "2026-05-07"
     },
     {
       "from": "signal-agent",
@@ -279,7 +282,9 @@
       },
       "timestamp": "2026-04-27T20:00:00Z",
       "status": "pending",
-      "cycle": "signal-002"
+      "cycle": "signal-002",
+      "migrated_from": "pending",
+      "migrated_at": "2026-05-07"
     },
     {
       "from": "signal-agent",
@@ -310,7 +315,9 @@
       },
       "timestamp": "2026-04-27T20:00:00Z",
       "status": "pending",
-      "cycle": "signal-002"
+      "cycle": "signal-002",
+      "migrated_from": "pending",
+      "migrated_at": "2026-05-07"
     },
     {
       "from": "signal-agent",
@@ -341,7 +348,10 @@
       },
       "timestamp": "2026-04-27T20:00:00Z",
       "status": "pending",
-      "cycle": "signal-002"
+      "cycle": "signal-002",
+      "migrated_from": "pending",
+      "migrated_at": "2026-05-07"
     }
-  ]
+  ],
+  "pending": []
 }

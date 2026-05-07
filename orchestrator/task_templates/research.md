@@ -118,7 +118,8 @@ HIGH / MEDIUM / LOW
 ```
 
 ## Signal Format
-When the finding file is written, append to signals.json:
+When the finding file is written, append one entry to the `signals` array in
+signals.json (NOT the `pending` array — the orchestrator only reads `signals[]`):
 ```json
 {
   "from": "research-agent",

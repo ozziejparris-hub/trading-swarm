@@ -241,6 +241,12 @@ Weekly digest format:
 
 ## Escalation Protocol
 
+### Signal bus write rule
+When writing any signal to brain/signals.json, append to the top-level `signals`
+array — NOT the `pending` array. The orchestrator only reads `signals[]`.
+Example: `data["signals"].append({...})` when editing the file programmatically,
+or insert as an element of the `signals` JSON array when editing manually.
+
 ### Escalate immediately to orchestrator bot (Telegram) when:
 - A new Claude model is released that changes your cost model
 - Polymarket announces API changes that affect live data pipeline

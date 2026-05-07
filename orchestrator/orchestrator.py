@@ -292,11 +292,17 @@ def select_tier(agent_type, override=None):
 # ─────────────────────────────────────────────
 
 def read_signals():
-    """Read all pending signals from the signal bus."""
+    """Read all pending signals from the signal bus.
+
+    Unions signals[] and pending[] so no signal is orphaned if an agent
+    writes to the wrong top-level array.  The canonical write path is
+    signals[], but this acts as a safety net.
+    """
     data = load_json(SIGNALS_FILE)
     if data is None:
         return []
-    return [s for s in data.get("signals", []) if s.get("status") == "pending"]
+    signals_list = data.get("signals", []) + data.get("pending", [])
+    return [s for s in signals_list if s.get("status") == "pending"]
 
 
 def mark_signal_processed(signal_timestamp):

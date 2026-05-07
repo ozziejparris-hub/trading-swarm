@@ -98,7 +98,9 @@ Containing:
 - Any anomalies worth noting
 - Recommended actions if any
 
-2. For any HIGH or MEDIUM signal, add to /home/parison/trading-swarm/brain/signals.json:
+2. For any HIGH or MEDIUM signal, append one entry to the `signals` array in
+/home/parison/trading-swarm/brain/signals.json (NOT the `pending` array — the
+orchestrator only reads `signals[]`):
 {
   "from": "signal-agent",
   "to": "orchestrator",
