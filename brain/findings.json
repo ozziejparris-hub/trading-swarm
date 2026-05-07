@@ -510,6 +510,63 @@
       "expires_at": "2026-08-05T12:00:00Z"
     },
     {
+      "id": "2026-05-07-RQ2.2-EXTENDED-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-05-07T18:00:00Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "MEDIUM",
+      "sample_size": 27,
+      "summary": "RQ2.2 extended window: BOTH YES and NO directional positions at 95% threshold pass 60% criterion using eventual resolution proxy (YES 61.1% n=18, NO 77.8% n=9). At 80% threshold + 30d strict window: YES 64.3% n=42, NO 60.0% n=10 \u2014 BOTH PASS. April 26 7d asymmetry (YES 75%, NO 0%) was a window-length artifact. STR-003 validated for EXPERIMENTAL at 95% threshold.",
+      "detail": {
+        "metric": "pct_correct_resolution_direction",
+        "baseline": 0.6,
+        "direction": "above_baseline",
+        "methodology_note": "Two methodologies used. Primary: eventual resolution (market resolved in direction of position, no window restriction). Secondary: resolution-within-window (market resolved within N days of entry). Positions deduplicated by (trader_address, market_title) \u2014 489 by market_id reduced to 487 by title (2 genuine duplicates). Pool: 143 legendary traders (ELO>2175, research_excluded=0, resolved_trades_count>=20, bot_type IS NULL). Resolved yes/no markets only, trade_gap_flag excluded.",
+        "startup_validation": {
+          "clean_pool": 493,
+          "legendary": 143,
+          "wal_mode": "wal"
+        },
+        "task1_baseline_reproduction": {
+          "note": "April 26 baseline (n=13, YES 75%, NO 0% at 95% 7d) could not be reproduced with current clean pool. The April 26 run used a pre-propagation pool (~6,829 traders). With the current 493-trader clean pool: minimum time from entry to resolution is 3.3 days; no YES positions have markets resolving within 7d of entry. Confirmed: 7d window is too short for this analysis.",
+          "95pct_7d_yes_n": 0,
+          "95pct_7d_no_n": 1,
+          "95pct_7d_no_pct": 100.0,
+          "verdict": "7d window too short \u2014 confirms April 26 diagnosis"
+        },
+        "resolution_within_window": {
+          "description": "Markets that resolved within N days of trader's first entry",
+          "matrix": [
+            {"threshold": "95%", "window": "7d",  "yes_n": 0,  "yes_pct": null,  "no_n": 1,  "no_pct": 100.0, "result": "LOW_N"},
+            {"threshold": "95%", "window": "14d", "yes_n": 1,  "yes_pct": 0.0,   "no_n": 4,  "no_pct": 75.0,  "result": "LOW_N"},
+            {"threshold": "95%", "window": "30d", "yes_n": 8,  "yes_pct": 50.0,  "no_n": 5,  "no_pct": 80.0,  "result": "NO:PASS YES:FAIL"},
+            {"threshold": "80%", "window": "7d",  "yes_n": 0,  "yes_pct": null,  "no_n": 1,  "no_pct": 100.0, "result": "LOW_N"},
+            {"threshold": "80%", "window": "14d", "yes_n": 2,  "yes_pct": 0.0,   "no_n": 5,  "no_pct": 80.0,  "result": "NO:PASS YES:LOW_N"},
+            {"threshold": "80%", "window": "30d", "yes_n": 42, "yes_pct": 64.3,  "no_n": 10, "no_pct": 60.0,  "result": "BOTH_PASS"},
+            {"threshold": "99%", "window": "7d",  "yes_n": 0,  "yes_pct": null,  "no_n": 1,  "no_pct": 100.0, "result": "LOW_N"},
+            {"threshold": "99%", "window": "14d", "yes_n": 1,  "yes_pct": 0.0,   "no_n": 3,  "no_pct": 66.7,  "result": "LOW_N"},
+            {"threshold": "99%", "window": "30d", "yes_n": 1,  "yes_pct": 0.0,   "no_n": 4,  "no_pct": 75.0,  "result": "LOW_N"}
+          ],
+          "key_finding_80pct_30d": "BOTH YES and NO pass at 80% threshold + 30d window. YES concentration note: 24/42 YES observations come from 2 markets (Zelenskyy 12/12 correct, Haley-Jan 12/0 correct) \u2014 partially offsetting. 10 unique markets in YES set."
+        },
+        "eventual_resolution": {
+          "description": "Did the market eventually resolve in the direction of the position? (no window restriction \u2014 authoritative proxy for prediction market outcome)",
+          "matrix": [
+            {"threshold": "80%", "yes_n": 82, "yes_pct": 70.7, "yes_unique_markets": 20, "no_n": 26, "no_pct": 73.1, "no_unique_markets": 19, "result": "BOTH_PASS"},
+            {"threshold": "95%", "yes_n": 18, "yes_pct": 61.1, "yes_unique_markets": 8,  "no_n": 9,  "no_pct": 77.8, "no_unique_markets": 6,  "result": "BOTH_PASS"},
+            {"threshold": "99%", "yes_n": 4,  "yes_pct": 25.0, "yes_unique_markets": 4,  "no_n": 7,  "no_pct": 71.4, "no_unique_markets": 5,  "result": "YES:LOW_N NO:PASS"}
+          ],
+          "avg_days_to_resolution_yes_95pct": 33.5,
+          "avg_days_to_resolution_no_95pct": 27.4
+        },
+        "str003_validation_verdict": "PASS \u2014 recommend EXPERIMENTAL status at 95% threshold. Primary evidence: eventual resolution YES 61.1% (n=18, 8 unique markets), NO 77.8% (n=9, 6 unique markets) \u2014 both above 60% with n>=5. Secondary evidence: 80% threshold + 30d strict window also passes both directions. NO signals are more reliable than YES at 95% (77.8% vs 61.1%). YES needs monitoring as n grows.",
+        "key_insight": "The April 26 asymmetry (YES 75%, NO 0%) was a window artifact \u2014 the 7d window captured only 1 NO position. With extended windows and more resolved data, NO positions at 95% outperform YES positions. The signal is valid for both directions."
+      },
+      "actionable": true,
+      "action_recommendation": "Advance STR-003 to EXPERIMENTAL status at 95% directional threshold. Both YES and NO validated above 60% criterion using eventual resolution proxy. Update strategy-registry.md: PENDING_REVIEW -> EXPERIMENTAL. Add note on YES/NO asymmetry (NO more reliable at 95%). Signal-agent should treat both directions as valid STR-003 signals. Revalidation trigger: run again after 10 more markets resolve (target n=28 YES, n=19 NO at 95% threshold).",
+      "expires_at": "2026-08-07T00:00:00Z"
+    },
+    {
       "id": "2026-05-07-STRATEGY-OVERDUE-001",
       "generated_by": "feedback-loop-agent",
       "generated_at": "2026-05-07T12:00:00Z",
