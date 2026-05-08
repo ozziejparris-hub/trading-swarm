@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-05-07
+Last updated: 2026-05-08
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -246,6 +246,98 @@ Notes:
     USA UN Security Council NO (Geopolitics, 2026)
     Fed rate cut NO (Economics, March 2027)
     Putin invasion NO (Geopolitics, June 2026)
+```
+
+### STR-004 — Capital-Weighted Legendary Aggregate Signal
+```
+Status:                 HYPOTHESIS
+Description:            When the capital-weighted aggregate position of
+                        legendary traders (ELO > 2175,
+                        research_excluded=0,
+                        resolved_trades_count >= 20,
+                        bot_type IS NULL) on an unresolved market
+                        diverges from the crowd market price by
+                        >= 20 percentage points, this constitutes a
+                        signal that legendary smart money disagrees
+                        with the crowd.
+
+                        Unlike STR-003 (which requires a single 95%+
+                        directional trader), STR-004 aggregates ALL
+                        legendary capital on a market — including
+                        traders with mixed positions — into a single
+                        capital-weighted directional view.
+
+                        Formula:
+                          legendary_yes_pct = yes_capital /
+                            (yes_capital + no_capital)
+                          divergence = legendary_yes_pct - market_price_yes
+                          Signal fires if abs(divergence) >= 0.20
+                            AND total_legendary_capital >= $10,000
+                            AND legendary_trader_count >= 3
+
+                        Direction:
+                          legendary_yes_pct > market_price_yes → YES signal
+                          legendary_yes_pct < market_price_yes → NO  signal
+
+Category:               Signal detection — aggregate capital divergence
+Pre-registered:         2026-05-08
+Pre-registration file:  brain/strategy-notes/str004-preregistration-2026-05-08.md
+Signal scan query:      brain/strategy-notes/str004-signal-scan-query.sql
+Approved by:            Oscar (2026-05-08)
+
+Key distinction from prior strategies:
+  STR-001 counted traders (convergence of directional positions).
+    → SUSPENDED: 78% of markets triggered both Yes+No simultaneously.
+  STR-003 requires 95%+ single-trader conviction.
+    → Misses markets where no individual trader is 95%+ directional.
+  STR-004 uses capital weighting across ALL legendary positions —
+    including LPs and mixed holders — treating aggregate capital
+    allocation as a price signal. LPs holding both sides at equal
+    weight contribute neutrally; only net imbalances produce a signal.
+    This directly addresses the STR-001 structural flaw.
+
+Evidence basis:         Russia/Ukraine ceasefire Q2 2026 (May 2026):
+                        8 legendary traders, $1.74M total, 55.7% YES
+                        capital-weighted vs market price 7% YES = 48pp
+                        divergence. None of these traders are 95%+
+                        directional, so STR-003 misses them entirely.
+                        Resolution: June 30 2026 (founding case).
+
+Category accuracy:
+  Geopolitics:          92.3% (HIGH confidence — apply confidence boost)
+  Elections:            46.7% (below chance — apply skepticism flag)
+  Source:               findings 2026-05-07-CATEGORY-GEOPOLITICS-001
+                        and 2026-05-07-CATEGORY-ELECTIONS-001
+
+Validation criteria:
+  Minimum 10 resolved markets with STR-004 signals
+  Accuracy > 60% on outcome prediction
+  Separate YES/NO accuracy tracking required
+  Separate Geopolitics/Elections accuracy tracking required
+
+Pass criterion:         Founding case resolves YES (ceasefire happens)
+                        AND accuracy >= 60% on first 10 markets;
+                        OR: directionally correct in 6/10 first markets
+Stop criterion:         Accuracy < 50% on 10+ resolved markets → abandon
+
+Next revalidation:      After June 30 2026 (founding case resolves).
+                        Formal backtest when n=10 resolved signals.
+
+First validated:        Pending
+Last revalidation:      —
+Validated by:           —
+Validation metrics:
+  YES accuracy:         pending (n=0)
+  NO accuracy:          pending (n=0)
+  Total sample:         0 resolved markets (1 active signal — founding case)
+  Active signals:       Russia/Ukraine ceasefire YES (2026-06-30)
+Notes:
+  Founding case signal filed in signals.json 2026-05-08.
+  Market price must be fetched from Polymarket Gamma API at scan
+  time — not stored in DB. See signal scan query for protocol.
+  DB may mislabel the founding-case market as "Will Russia invade
+  Ukraine by Q2 2026?" — actual market is about ceasefire,
+  confirmed via Polymarket API. Direction=YES means ceasefire occurs.
 ```
 
 ### STR-002 — Pre-Resolution Intelligence

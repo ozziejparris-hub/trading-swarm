@@ -40,7 +40,7 @@
       "cycle": "signal-001-first-run",
       "processed_at": "2026-04-21T19:45:24.417273",
       "rescan_at": "2026-05-07",
-      "rescan_note": "Clean pool validation: 0x1fad remains research_excluded=0, bot_type=NULL, ELO 3456 confirmed. 5 position entries total (May 10 + May 14 are new entries from SAME trader). Upgrade condition NOT MET — only the original trader holds 100% directional NO; 2+ additional legendary traders required. Positions-query capital: $64,917 NO (vs $129,834 original — methodology difference: positions vs trades table). No new legendary traders on this market.",
+      "rescan_note": "Clean pool validation: 0x1fad remains research_excluded=0, bot_type=NULL, ELO 3456 confirmed. 5 position entries total (May 10 + May 14 are new entries from SAME trader). Upgrade condition NOT MET \u2014 only the original trader holds 100% directional NO; 2+ additional legendary traders required. Positions-query capital: $64,917 NO (vs $129,834 original \u2014 methodology difference: positions vs trades table). No new legendary traders on this market.",
       "upgrade_status": "NOT_MET",
       "category_flag": {
         "category": "Elections",
@@ -263,9 +263,9 @@
       "migrated_at": "2026-05-07",
       "processed_at": "2026-05-07T16:50:54.836684",
       "str003_approved_at": "2026-05-07",
-      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution — both pass 60% criterion. Signal is actionable at 95% directional threshold.",
+      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution \u2014 both pass 60% criterion. Signal is actionable at 95% directional threshold.",
       "rescan_at": "2026-05-07",
-      "rescan_note": "Clean pool validation: both traders remain valid. ELO recalc on clean pool: 0x72a1 2741→3154, 0x7dd4 2398→2798 — both still LEGENDARY (>2175). Positions confirmed: 0x72a1 $30,616 NO / $0 YES; 0x7dd4 $3,475 NO / $0 YES. Upgrade condition NOT MET — need 1+ additional legendary trader entering NO; only original 2 traders present. Elections skepticism flag applied.",
+      "rescan_note": "Clean pool validation: both traders remain valid. ELO recalc on clean pool: 0x72a1 2741\u21923154, 0x7dd4 2398\u21922798 \u2014 both still LEGENDARY (>2175). Positions confirmed: 0x72a1 $30,616 NO / $0 YES; 0x7dd4 $3,475 NO / $0 YES. Upgrade condition NOT MET \u2014 need 1+ additional legendary trader entering NO; only original 2 traders present. Elections skepticism flag applied.",
       "upgrade_status": "NOT_MET",
       "category_flag": {
         "category": "Elections",
@@ -309,9 +309,9 @@
       "migrated_at": "2026-05-07",
       "processed_at": "2026-05-07T16:50:54.836687",
       "str003_approved_at": "2026-05-07",
-      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution — both pass 60% criterion. Signal is actionable at 95% directional threshold.",
+      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution \u2014 both pass 60% criterion. Signal is actionable at 95% directional threshold.",
       "rescan_at": "2026-05-07",
-      "rescan_note": "Clean pool validation: 0xef1d remains valid, ELO 3150, research_excluded=0, bot_type=NULL. Position confirmed: $40,581 NO / $0 YES. Upgrade condition NOT MET — need 2+ fully directional legendary traders; only original 1 trader. Two additional ELO 3308/3307 traders hold mixed YES+NO positions on this market but excluded by 95% directional threshold. Geopolitics confidence boost applied (92.3% category accuracy).",
+      "rescan_note": "Clean pool validation: 0xef1d remains valid, ELO 3150, research_excluded=0, bot_type=NULL. Position confirmed: $40,581 NO / $0 YES. Upgrade condition NOT MET \u2014 need 2+ fully directional legendary traders; only original 1 trader. Two additional ELO 3308/3307 traders hold mixed YES+NO positions on this market but excluded by 95% directional threshold. Geopolitics confidence boost applied (92.3% category accuracy).",
       "upgrade_status": "NOT_MET",
       "category_flag": {
         "category": "Geopolitics",
@@ -354,9 +354,9 @@
       "migrated_at": "2026-05-07",
       "processed_at": "2026-05-07T16:50:54.836690",
       "str003_approved_at": "2026-05-07",
-      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution — both pass 60% criterion. Signal is actionable at 95% directional threshold.",
+      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution \u2014 both pass 60% criterion. Signal is actionable at 95% directional threshold.",
       "rescan_at": "2026-05-07",
-      "rescan_note": "Clean pool validation: 0x9fb0 remains valid, ELO 2923, research_excluded=0, bot_type=NULL. Position confirmed: $33,390 NO / $0 YES. Upgrade condition NOT MET. Context: 3 additional ELO 3308-3307 traders present on this market but all hold mixed YES+NO (LP/hedged, excluded by 95% threshold). Trader 0x69cd is net YES ($73K YES vs $29K NO) — leans opposite direction. No new 100% directional legendary entrants.",
+      "rescan_note": "Clean pool validation: 0x9fb0 remains valid, ELO 2923, research_excluded=0, bot_type=NULL. Position confirmed: $33,390 NO / $0 YES. Upgrade condition NOT MET. Context: 3 additional ELO 3308-3307 traders present on this market but all hold mixed YES+NO (LP/hedged, excluded by 95% threshold). Trader 0x69cd is net YES ($73K YES vs $29K NO) \u2014 leans opposite direction. No new 100% directional legendary entrants.",
       "upgrade_status": "NOT_MET",
       "category_flag": {
         "category": "Economics",
@@ -399,9 +399,9 @@
       "migrated_at": "2026-05-07",
       "processed_at": "2026-05-07T16:50:54.836692",
       "str003_approved_at": "2026-05-07",
-      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution — both pass 60% criterion. Signal is actionable at 95% directional threshold.",
+      "str003_approval_note": "STR-003 advanced to EXPERIMENTAL 2026-05-07. YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution \u2014 both pass 60% criterion. Signal is actionable at 95% directional threshold.",
       "rescan_at": "2026-05-07",
-      "rescan_note": "Clean pool validation: 0xdffc remains valid, ELO 3323, research_excluded=0, bot_type=NULL. Position confirmed: $7,191 NO / $0 YES. Upgrade condition NOT MET — need 1+ additional legendary trader entering NO; only original trader present. NEAR-TERM WATCH: resolves June 2026 (~6 weeks from May 7). Geopolitics confidence boost applied (92.3% category accuracy).",
+      "rescan_note": "Clean pool validation: 0xdffc remains valid, ELO 3323, research_excluded=0, bot_type=NULL. Position confirmed: $7,191 NO / $0 YES. Upgrade condition NOT MET \u2014 need 1+ additional legendary trader entering NO; only original trader present. NEAR-TERM WATCH: resolves June 2026 (~6 weeks from May 7). Geopolitics confidence boost applied (92.3% category accuracy).",
       "upgrade_status": "NOT_MET",
       "category_flag": {
         "category": "Geopolitics",
@@ -443,6 +443,36 @@
       "timestamp": "2026-05-07T12:00:00Z",
       "status": "processed",
       "processed_at": "2026-05-07T17:00:54.840796"
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "str004_aggregate_divergence",
+      "confidence": "MEDIUM",
+      "strategy": "STR-004",
+      "payload": {
+        "market_id": "0x7b629fc0b14bece5d568e748f7a8c7c472f90833e9a00c3d4cc3c49e267f194c",
+        "market_title": "Will Russia invade Ukraine by Q2 2026?",
+        "market_title_note": "DB title may be mislabelled \u2014 actual market is Russia x Ukraine ceasefire by June 30 2026. Direction=YES means ceasefire occurs. Confirmed via Polymarket API.",
+        "direction": "YES",
+        "category": "Geopolitics",
+        "resolution_date": "2026-06-30",
+        "legendary_trader_count": 8,
+        "legendary_yes_pct": 55.7,
+        "legendary_no_pct": 44.3,
+        "total_legendary_capital": 1745257.28,
+        "yes_capital": 972565.59,
+        "no_capital": 772691.7,
+        "market_price_yes": 0.07,
+        "divergence_pp": 48.7,
+        "category_accuracy": "92.3% (Geopolitics \u2014 HIGH confidence)",
+        "reasoning": "8 legendary traders hold $1.74M on this market with 55.7% capital-weighted YES vs market price of 7% YES. 48.7pp divergence far exceeds the 20pp STR-004 threshold. Market title in DB may be mislabelled \u2014 actual market is Russia x Ukraine ceasefire by June 30 2026 (confirmed via Polymarket API). Legendary smart money is contrarian to crowd: betting ceasefire happens when market prices it at 7%. None of the 8 traders are 95%+ directional, so STR-003 misses them entirely. Near-term resolution June 30 2026 makes this the founding validation case for STR-004.",
+        "upgrade_condition": "Additional legendary traders entering YES OR market price moves toward 55% (crowd converges with smart money) -> upgrade to HIGH",
+        "founding_case": true,
+        "validation_date": "2026-06-30"
+      },
+      "timestamp": "2026-05-08T12:00:00Z",
+      "status": "active"
     }
   ],
   "pending": []

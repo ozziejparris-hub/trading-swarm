@@ -153,13 +153,21 @@ Upgrade conditions met (MEDIUM→HIGH):  0
 
 #### Strategy Pipeline
 ```
-Strategies submitted (30d):            0  (STR-003 pre-registered April 27)
+Strategies submitted (30d):            1  (STR-004 pre-registered 2026-05-08)
 Strategies validated (30d):            1  (STR-001 — FAILED)
 Pass rate:                            0%  (1/1 failed)
 Most common failure reason:   LP contamination (legendary traders hold both sides)
 RQ1.1 status:             INCONCLUSIVE (n=16, rerun June 1)
 RQ3.2 status:             INCONCLUSIVE (n=4, methodology reframe needed)
-RQ2.2 status:             INCONCLUSIVE (YES 75% n=13, NO 0% — extend window)
+RQ2.2 status:             EXPERIMENTAL — YES 61.1% (n=18), NO 77.8% (n=9)
+
+STR-004 — Capital-Weighted Legendary Aggregate Signal
+  Status:   HYPOTHESIS → EXPERIMENTAL pending June 30 2026 validation
+  Founding: Russia/Ukraine ceasefire market — 8 traders, $1.74M, 55.7%
+            YES vs 7% market price (48.7pp divergence). Resolves June 30.
+  Gate:     Founding case + 9 more markets needed for formal backtest (n=10)
+  Note:     This signal type is invisible to STR-003 — none of the 8
+            legendary traders hold >= 95% directional conviction.
 ```
 
 #### System Resources
@@ -188,7 +196,7 @@ Phase 5 feedback-loop gate:  3/4  (↑ on track)
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-05-07 (feedback-loop-agent run 5 — manual, clean pool revalidation)
+Last updated: 2026-05-08 (STR-004 pre-registration — founding case signal added)
 
 ```
 Feedback-loop runs: 5/4 ✅ GATE MET (4+ runs threshold exceeded)
@@ -216,8 +224,9 @@ RQ3.2 status:   INCONCLUSIVE (methodology reframe needed)
 
 Signal accuracy: 1/1 resolved correct (n=1 — insufficient for conclusions)
   Ramaswamy NO — validated ✅ (2026-05-02)
-  4 signals pending resolution (3 Geopolitics/Elections, 1 Economics)
+  5 signals pending resolution (4 STR-003 + 1 STR-004 founding case)
   Near-term watch: Putin invades by June 2026 (ELO 3323, resolves ~6 weeks)
+  STR-004 founding case: Russia/Ukraine ceasefire YES (resolves 2026-06-30)
 ```
 
 ---
