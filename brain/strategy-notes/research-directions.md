@@ -430,15 +430,83 @@ automated filter is built.
 ## What Has Already Been Investigated
 (Update this section as research completes)
 
-- Nothing completed yet. Phase 1 (Brier score calibration)
-  is the starting point.
+### Data Integrity Gates (both PASSED)
+
+**RQ0.1 — Wash Trading Contamination Audit (PASSED, 2026-03-29)**
+Result: 36 wash trade suspects identified; 0 in top-50 leaderboard;
+0.1% of ELO ≥1500 traders affected. ELO leaderboard is clean.
+Next run: monthly, especially before any ELO recalculation.
+
+**RQ0.2 — Bot and Automated Trader Detection (PASSED, 2026-03-29)**
+Result: 0 traders meet multi-signal bot threshold; 9 flagged heavy
+in short-duration crypto (below threshold). Three bot types classified:
+SPEED_ARBITRAGE (exclude), NEWS_PROCESSING (caution), SYSTEMATIC_RESEARCH
+(keep). NEAR_RESOLUTION bot type added separately (do not follow).
+Next run: monthly.
+
+### Foundational Research Questions
+
+**RQ1.1 — ELO Persistence (INCONCLUSIVE, 2026-04-26)**
+r=+0.175, p=0.52, n=16. Sample size failure — Period 2 had only 25 days
+of resolved markets. Rerun pre-registered for June 1 2026 with full
+60-day Period 2 window. Do not treat as evidence of no signal.
+
+**RQ2.2 — Entry Timing Advantage (INCONCLUSIVE, 2026-04-26)**
+YES positions (n=18): 61.1% resolved in signal direction — PASSES 60%.
+NO positions (n=9): 77.8% resolved — PASSES 60%.
+Both tested at 95% directional threshold (STR-003 compatible).
+Extended window (14-day, 30-day outcome) pre-registered for June 2026.
+
+**RQ3.2 — Crowd vs Elite Divergence (INCONCLUSIVE, 2026-04-26)**
+Only 4 qualifying markets after filters (need 50+). Methodology needs
+reframing toward single 95%-directional legendary traders vs market price.
+Extended approach pre-registered for June 2026.
+
+### Strategy Validation Results
+
+**STR-001 — Elite Convergence Signal (FAILED, 2026-04-27)**
+56.1% accuracy (threshold: 60%). Structural flaw: LP contamination.
+78% of markets triggered both YES and NO signals — legendary traders
+hold mixed positions as LPs. Exclusive convergence definition (STR-001b)
+requires pre-registration before retest.
+See: brain/failed-experiments/STR-001-as-defined-2026-04-27.md
+
+**STR-003 — Single Legendary Directional Signal (EXPERIMENTAL, 2026-05-07)**
+YES 61.1% (n=18), NO 77.8% (n=9). Both pass 60% threshold at 95%
+directional filter. 1/1 resolved signal correct (Ramaswamy NO, 2026-05-02).
+Not yet validated to ACTIVE — needs ≥20 resolved signals.
+Key insight: 95% directional threshold effectively filters LP positions.
+
+**STR-004 — Capital-Weighted Legendary Aggregate Signal (PRE-REGISTERED, 2026-05-08)**
+Founding case: Russia/Ukraine ceasefire market. 48.7pp divergence between
+legendary capital weighting (55.7% YES) and market price (7% YES).
+8 legendary traders, $1.74M combined. Resolves June 30 2026.
+Extends STR-003 to cover mixed-position legendary traders.
+
+### Category Calibration (from feedback-loop-agent)
+
+Geopolitics: 92.3% accuracy (n=13) — HIGH confidence, confidence boost applied
+Elections: 46.7% accuracy (n=15) — below 50%, active skepticism applied
+Economics: Unknown at n=4 — insufficient data
+(Source: feedback-loop-agent run #4, signal-agent category flags 2026-05-07)
 
 ---
 
 ## What Has Failed or Been Ruled Out
 (Update this section as experiments conclude)
 
-- Nothing ruled out yet.
+- **STR-001 as-defined (RULED OUT, 2026-04-27):** Elite convergence
+  without exclusivity filter has no predictive value over market price.
+  Root cause: LP structure of legendary traders means convergence
+  without exclusivity is noise, not signal. Retry only as STR-001b
+  with exclusive convergence filter, pre-registered.
+
+- **Pure ELO-ensemble vs market price (RQ3.2 first framing):** Testing
+  ELO-weighted consensus across ALL legendary traders (including mixed-LP
+  positions) against market price — produces only 4 qualifying markets
+  after appropriate filters. The framing may be wrong. Single highly-
+  directional traders (95% threshold) vs market price is the more
+  meaningful test. Reframed for June 2026.
 
 ---
 
@@ -447,9 +515,16 @@ As the quant-research-agent completes phases, add key findings
 here as one-line summaries so future research sessions start
 with accumulated knowledge rather than from zero.
 
-Example format:
-- 2026-03-01: ELO >2175 traders show 340ms average entry
-  advantage over market price movement. See phase-1-results.md
+- 2026-04-27: RQ0.1 PASSED — ELO leaderboard clean. 0.1% contamination by wash traders.
+- 2026-04-27: RQ0.2 PASSED — No bot distortion at top of leaderboard. Three bot types defined.
+- 2026-04-27: STR-001 FAILED — LP contamination structural flaw. 78% markets split. Paired = 50%.
+- 2026-04-27: STR-001 sub-signal: exclusive 1-sided legendary convergence = 100% accuracy (n=5 small).
+- 2026-04-26: RQ2.2 YES positions (n=18): 61.1% resolve in signal direction. NO (n=9): 77.8%.
+- 2026-05-05: QUALIFIED ELO consensus accuracy: 82% (n=67, HIGH confidence). +32pp above random.
+- 2026-05-07: STR-003 EXPERIMENTAL: 95% directional filter works — YES 61.1%, NO 77.8% at resolution.
+- 2026-05-07: Category calibration: Geopolitics 92.3% (HIGH), Elections 46.7% (CAUTION).
+- 2026-05-08: STR-004 pre-registered: 48.7pp legendary/market divergence in founding case (Russia/Ukraine).
+- 2026-05-09: ELO calibration drift — legendary count 28x since March baseline. Investigate before June 1 rerun.
 
 
 ## Formal Research Questions

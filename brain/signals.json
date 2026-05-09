@@ -475,5 +475,22 @@
       "status": "active"
     }
   ],
-  "pending": []
+  "pending": [
+    {
+      "from": "training-librarian-agent",
+      "to": "orchestrator",
+      "type": "knowledge_gap_critical",
+      "urgency": "before_next_signal_strategy",
+      "payload": {
+        "gap": "LP mechanics not documented in reference library",
+        "detail": "Polymarket legendary traders are predominantly LP-structured (hold both YES and NO positions as market makers). This is the root cause of STR-001's failure and the defining constraint for all future signal strategies. No reference library file documents this structural fact. Any quant-research-agent or signal-agent building new strategies without knowing this will rediscover the LP contamination failure independently.",
+        "action_required": "Oscar to approve training-librarian-agent drafting a polymarket-market-structure.md reference file covering: LP mechanics, 95% directional threshold as LP filter, implications for signal design. Alternatively: expand prediction-market-coordination.md stub (currently 141 words).",
+        "effort": "Low — 300-400 word reference file",
+        "priority": "HIGH — before any new signal strategy design"
+      },
+      "timestamp": "2026-05-09T09:30:00Z",
+      "status": "pending",
+      "cycle": "librarian-20260509"
+    }
+  ]
 }
