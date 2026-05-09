@@ -336,6 +336,44 @@
             "notes": "Tenth scout cycle (Thursday). 4 findings from ~15 evaluated items. Self-improvement catch: arXiv:2605.02801 was re-evaluated and discarded again (same paper discarded cycle 9) — caught before filing via feedback.json history check. Key findings: (1) PolyBench — first rigorous LLM benchmark on live Polymarket, only 2/7 models profitable, overconfidence is the failure mode; (2) PredictionMarketBench — execution-realistic LOB backtesting from Feb 2026, Kalshi-based but directly portable, validates limit-orders-only rule; (3) Forecasting Economy dataset — comprehensive Polymarket 2020-2026 data at polymonitor.club, 943M fill records vs our position-level tracking; (4) Claude Agent SDK native features — subagents/hooks/checkpoints shipped, validates our architecture independently. HuggingFace very low signal today. Karpathy autoresearch has been inactive for 6+ weeks — deprioritise from daily checks; recheck monthly per self-assessment protocol."
         },
         {
+            "cycle_date": "2026-05-09",
+            "cycle_id": "scout-20260509",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "latent-space",
+                "huggingface-daily-papers",
+                "hackernews-best",
+                "polymarket-changelog"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 13,
+            "pending_review_items": [
+                "2026-05-09-08-coordination-architectural-layer-multi-agent.md",
+                "2026-05-09-08-claude-dreaming-outcomes-agent-autonomy.md",
+                "2026-05-09-08-agentic-ai-finance-comprehensive-survey.md"
+            ],
+            "discarded": [
+                "arXiv:2605.00493 ForesightFlow — filed in error (overlooked prior cycle 8 consolidation note); companion findings already in 2026-05-04 info-leakage file; removed before commit",
+                "arXiv:2604.22818 Representation Homogeneity — filed in error (overlooked 3x prior discard history, cycles 2/3/4); prior judgment was equity-markets-only scope; removed before commit",
+                "arXiv:2605.00420 Foresight Arena — already discarded cycle 8 (similar to Prediction Arena pending-review)",
+                "arXiv:2605.04004 OHLCV structural limits MNQ futures — already auto-discarded cycle 9 (equity/futures, current phase)",
+                "Anthropic/SpaceX 300MW compute deal (Latent Space May 7) — already discarded cycle 10 (business/capacity news, no model or API changes)",
+                "OpenAI GPT Realtime-2 voice APIs (Latent Space May 8) — not relevant to trading swarm domains; voice API for interaction tasks, not prediction market agents",
+                "Claude Opus 4.7 full release details — already in pending-review from cycle 1 (2026-04-27)",
+                "Claude Mythos Preview — gated, not publicly available; no change from model-routing.md watch list entry",
+                "JamesANZ Prediction Markets MCP Server — October 2025 release, 34 stars; below quality threshold; 6+ months old without meaningful adoption signal",
+                "Qwen3.6-27B dense model — already covered by 2026-05-06 Qwen3.6-35B pending-review file",
+                "DeepSeek V4 Pro/Flash local inference — already in pending-review from cycle 8 (2026-05-04)",
+                "Prediction Arena live trading results — results already captured in 2026-05-03 pending-review item for that paper",
+                "Polymarket V2 exchange upgrade — already in approved/ from cycle 1 (2026-04-27)"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Eleventh scout cycle (Saturday). 3 findings from ~20+ evaluated items — quality over quantity, lighter cycle day. Self-improvement catch: filed ForesightFlow and Representation Homogeneity before checking feedback.json history; both removed before commit (ForesightFlow consolidated cycle 8, Representation Homogeneity discarded 3x cycles 2/3/4). Key findings: (1) Coordination as Architectural Layer (2605.03310) — 41-87% production failure rate empirical data, tested on 100 Polymarket markets, code released; direct relevance to Phase 3 orchestrator design; (2) Claude Dreaming + Outcomes — new async self-improvement primitives from Code w/ Claude May 6, not in existing SDK pending-review; convergence validation of feedback-loop-agent design; (3) Agentic AI Finance Comprehensive Survey (2604.21672) — April 2026, reference library addition for Phase 3+ context. Latent Space had no relevant technical content this week. Karpathy autoresearch: no new commits since March 26 (6 weeks idle) — consistent with cycle 10 observation. HuggingFace and HN had no high-signal items today."
+        },
+        {
             "cycle_date": "2026-05-03",
             "cycle_id": "scout-20260503",
             "sources_checked": [
