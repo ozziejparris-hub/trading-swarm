@@ -374,6 +374,36 @@
             "notes": "Eleventh scout cycle (Saturday). 3 findings from ~20+ evaluated items — quality over quantity, lighter cycle day. Self-improvement catch: filed ForesightFlow and Representation Homogeneity before checking feedback.json history; both removed before commit (ForesightFlow consolidated cycle 8, Representation Homogeneity discarded 3x cycles 2/3/4). Key findings: (1) Coordination as Architectural Layer (2605.03310) — 41-87% production failure rate empirical data, tested on 100 Polymarket markets, code released; direct relevance to Phase 3 orchestrator design; (2) Claude Dreaming + Outcomes — new async self-improvement primitives from Code w/ Claude May 6, not in existing SDK pending-review; convergence validation of feedback-loop-agent design; (3) Agentic AI Finance Comprehensive Survey (2604.21672) — April 2026, reference library addition for Phase 3+ context. Latent Space had no relevant technical content this week. Karpathy autoresearch: no new commits since March 26 (6 weeks idle) — consistent with cycle 10 observation. HuggingFace and HN had no high-signal items today."
         },
         {
+            "cycle_date": "2026-05-10",
+            "cycle_id": "scout-20260510",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "anthropic-news",
+                "karpathy-autoresearch",
+                "polymarket-blog"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 6,
+            "pending_review_items": [
+                "2026-05-10-08-specialist-agents-lineage-feedback-autoresearch.md",
+                "2026-05-10-08-llm-stock-forecasting-hedge-fund-pitfalls.md",
+                "2026-05-10-08-skillOS-external-skill-repository-self-evolving-agents.md"
+            ],
+            "discarded": [
+                "Polymarket V2 pUSD / py-clob-client SDK — already approved cycle 1 (2026-04-27); cycle 11 also discarded V2 revisit; system still read-only, action deferred until market-builder-agent build",
+                "arXiv:2605.04004 OHLCV structural limits MNQ futures — discarded cycles 9 and 11 already; filed in error before checking feedback.json; removed before commit",
+                "Anthropic Wall Street expansion (Moody's, SpaceX) — business/capacity news, no model capability or API changes; same discard rationale as cycles 10 and 11",
+                "arXiv:2605.04690 Time-Inhomogeneous Markov Dynamics — no code released, equity markets only, no practical implementation path at current phase",
+                "HuggingFace (May 8): A2TGPO, Can RL Teach Long-Horizon Reasoning — RL training papers, not applicable to API-based system",
+                "Karpathy autoresearch — no new commits since March 26 (7 weeks idle); will check monthly per cycle 10 protocol"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Twelfth scout cycle (Sunday). 3 findings from ~15 evaluated items. Self-improvement catch: arXiv:2605.04004 OHLCV and Polymarket V2 pUSD filed initially — both removed after checking feedback.json (OHLCV discarded cycles 9 and 11; V2 approved cycle 1 + discarded cycle 11). Three strong findings: (1) CMU Specialist Agents lineage feedback (2605.05724) — autonomous ML research loop with structured failure labels feeding next agent proposals; directly improves feedback.json schema design; (2) LLM Stock Forecasting Hedge Fund Pitfalls (2605.05211) — six practical pitfalls from practitioner review, three not in current 7-sins checklist; (3) SkillOS (2605.06614) — self-evolving agents via frozen executor + trainable skill curator; architectural insight applicable to training-librarian-agent Phase 3 design. HuggingFace heavy on RL training papers this week. Karpathy autoresearch idle 7 weeks — deferred to monthly checks. Convergent theme: three independent self-evolving agent papers this week (CMU 2605.05724, SkillOS 2605.06614, Claude Dreaming filed cycle 11) — Phase 3 self-improvement layer is validated by the broader research community."
+        },
+        {
             "cycle_date": "2026-05-03",
             "cycle_id": "scout-20260503",
             "sources_checked": [
