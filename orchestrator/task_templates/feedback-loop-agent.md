@@ -39,6 +39,22 @@ performance is worse than useless.
 ## What You Do Each Weekly Run
 
 ### Step 1 — Signal accuracy audit
+
+> **CRITICAL: Always resolve signals using market_id (condition_id)
+> from the signal payload, NOT by title matching. Title matching
+> causes false positives when multiple markets have similar names
+> (e.g. rolling monthly ceasefire markets — "by Q2 2026", "by May 31",
+> "by June 30" are all distinct markets with different condition_ids).
+> The condition_id is the authoritative market identifier.**
+>
+> Correct pattern:
+>   SELECT resolved, winning_outcome FROM markets
+>   WHERE condition_id = {signal.payload.market_id}
+>
+> NEVER use:
+>   SELECT resolved, winning_outcome FROM markets
+>   WHERE title LIKE '%{signal.payload.market_title}%'
+
 Read all signal-agent outputs from the past 7 days.
 For every HIGH or MEDIUM signal that referenced a market
 that has since resolved:
