@@ -320,21 +320,30 @@ Pass criterion:         Founding case resolves YES (ceasefire happens)
                         OR: directionally correct in 6/10 first markets
 Stop criterion:         Accuracy < 50% on 10+ resolved markets → abandon
 
-Next revalidation:      After June 30 2026 (founding case resolves).
+Next revalidation:      After 9 more resolved STR-004 signals (n=10 total).
                         Formal backtest when n=10 resolved signals.
 
 First validated:        Pending
 Last revalidation:      —
 Validated by:           —
 Validation metrics:
-  YES accuracy:         pending (n=0)
+  YES accuracy:         0% (n=1, founding case failed)
   NO accuracy:          pending (n=0)
-  Total sample:         0 resolved markets (1 active signal — founding case)
-  Active signals:       Russia/Ukraine ceasefire YES (2026-06-30)
+  Total sample:         1 resolved market (founding case — resolved NO)
+  Active signals:       founding case resolved NO
 Notes:
   Founding case signal filed in signals.json 2026-05-08.
+  Founding case (Russia/Ukraine ceasefire Q2 2026) resolved NO —
+  legendary aggregate (55.7% YES) incorrect vs crowd (7% YES).
+  Stop criterion not triggered (requires n=10). Strategy remains
+  HYPOTHESIS. Need 9 more resolved signals before drawing conclusions.
   Market price must be fetched from Polymarket Gamma API at scan
   time — not stored in DB. See signal scan query for protocol.
+  Discrepancy: A separate market 'Russia x Ukraine ceasefire by
+  June 30, 2026?' may have resolved YES but has no condition_id in
+  DB and cannot be verified via Gamma API (search currently broken).
+  This signal tracked condition_id 0x7b629fc0... which resolved NO.
+  Pending Gamma API fix to fully investigate.
   DB may mislabel the founding-case market as "Will Russia invade
   Ukraine by Q2 2026?" — actual market is about ceasefire,
   confirmed via Polymarket API. Direction=YES means ceasefire occurs.

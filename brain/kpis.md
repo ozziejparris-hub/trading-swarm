@@ -162,12 +162,16 @@ RQ3.2 status:             INCONCLUSIVE (n=4, methodology reframe needed)
 RQ2.2 status:             EXPERIMENTAL — YES 61.1% (n=18), NO 77.8% (n=9)
 
 STR-004 — Capital-Weighted Legendary Aggregate Signal
-  Status:   HYPOTHESIS → EXPERIMENTAL pending June 30 2026 validation
-  Founding: Russia/Ukraine ceasefire market — 8 traders, $1.74M, 55.7%
-            YES vs 7% market price (48.7pp divergence). Resolves June 30.
-  Gate:     Founding case + 9 more markets needed for formal backtest (n=10)
-  Note:     This signal type is invisible to STR-003 — none of the 8
-            legendary traders hold >= 95% directional conviction.
+  Status:   HYPOTHESIS — accumulating signals (founding case failed)
+  Founding: Russia/Ukraine ceasefire Q2 2026 — RESOLVED NO (legendary
+            aggregate incorrect). 8 traders, $1.74M, 55.7% YES vs 7%
+            crowd price. Crowd was correct.
+  Accuracy: 0/1 (0%) — stop criterion not triggered (requires n=10)
+  Gate:     Need 9 more resolved STR-004 signals for formal backtest
+  Note:     Discrepancy: separate 'ceasefire by June 30' market may have
+            resolved YES but has no condition_id in DB. Pending Gamma API
+            fix to verify. Recorded against condition_id 0x7b629fc0...
+            which definitively resolved NO.
 ```
 
 #### System Resources

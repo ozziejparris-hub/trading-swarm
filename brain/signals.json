@@ -472,7 +472,12 @@
         "validation_date": "2026-06-30"
       },
       "timestamp": "2026-05-08T12:00:00Z",
-      "status": "active"
+      "status": "resolved",
+      "resolved_at": "2026-05-11",
+      "resolution": "NO — market resolved against legendary aggregate direction. Condition_id 0x7b629fc0... (Russia x Ukraine ceasefire by Q2 2026?) resolved NO. Legendary traders held 55.7% YES vs 7% crowd price — crowd was correct on this founding case.",
+      "founding_case_outcome": "FAIL",
+      "discrepancy_note": "A separate market 'Russia x Ukraine ceasefire by June 30, 2026?' may have resolved YES but has no condition_id in DB and cannot be verified via Gamma API (search currently broken). This signal tracked condition_id 0x7b629fc0... which resolved NO. Pending Gamma API fix to fully investigate.",
+      "str004_accuracy": "0/1 resolved (0%). Stop criterion requires <50% on 10+ markets. Single data point — strategy remains HYPOTHESIS, not abandoned."
     },
     {
       "from": "training-librarian-agent",
