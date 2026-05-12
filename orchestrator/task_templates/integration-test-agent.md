@@ -107,9 +107,9 @@ def test_signal_bus_integrity(signals_file):
             pass
     
     expected_types = {
-        'elite_convergence_detected',
-        'validation_requested',
-        'validation_completed'
+        'revalidation_requested',
+        'validation_complete',
+        'str003_directional_single',
     }
     missing_types = expected_types - recent_types
     
@@ -209,8 +209,8 @@ def test_agent_output_integrity(base_dir):
             continue
         
         # Find most recent output file
-        all_files = list(output_dir.glob('*.md')) + \
-                   list(output_dir.glob('*.json'))
+        all_files = list(output_dir.rglob('*.md')) + \
+                   list(output_dir.rglob('*.json'))
         
         if not all_files:
             results.append({
@@ -283,6 +283,7 @@ def test_feedback_loop_integrity(feedback_file):
         return results
     
     # Check 3.2: Recent entries exist (updated in last 7 days)
+    # Includes approved/rejected entries and scout_cycles
     now = datetime.utcnow()
     recent_entries = []
     for entry in all_entries:
@@ -294,7 +295,18 @@ def test_feedback_loop_integrity(feedback_file):
                 recent_entries.append(entry)
         except Exception:
             pass
-    
+
+    scout_cycles = feedback.get('scout_cycles', [])
+    for cycle in scout_cycles:
+        try:
+            date = datetime.fromisoformat(
+                cycle.get('cycle_date', '')
+            )
+            if (now - date).days <= 7:
+                recent_entries.append(cycle)
+        except Exception:
+            pass
+
     results.append({
         'test': 'feedback_updated_recently',
         'passed': len(recent_entries) > 0,
