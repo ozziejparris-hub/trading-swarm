@@ -19,6 +19,10 @@ CHANGELOG_URL = "https://docs.polymarket.com/changelog"
 STATE_FILE = Path(__file__).parent.parent / "brain" / "polymarket_changelog_state.json"
 ENV_FILE = Path.home() / ".env_trading"
 
+GAMMA_API_BASE = "https://gamma-api.polymarket.com"
+# Russia x Ukraine ceasefire by Jan 31, 2026 — resolved, stable, known to exist in DB.
+GAMMA_FILTER_CHECK_CID = "0xb8c1bd306a8a4cedfb280e114e655c5092b3f37edccae05cd877d7f21a5774ce"
+
 # ---------------------------------------------------------------------------
 # Environment
 # ---------------------------------------------------------------------------
@@ -147,12 +151,15 @@ def send_telegram(token: str, chat_id: str, text: str) -> None:
         print(f"Telegram HTTP {e.code}: {e.read().decode()}", file=sys.stderr)
 
 
-def build_no_change_message(last_seen_date: str | None, checked_at: str) -> str:
+def build_no_change_message(
+    last_seen_date: str | None, checked_at: str, gamma_filter: str = "UNKNOWN"
+) -> str:
     date_checked = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    gamma_icon = {"OK": "✅", "BROKEN": "⚠️", "ERROR": "❓"}.get(gamma_filter, "❓")
     return (
         f"🔍 Polymarket Changelog — {date_checked}\n"
         f"No new entries since {last_seen_date or 'unknown'}\n"
-        f"Endpoints: Data API ✅ Gamma API ✅ CLOB ✅\n"
+        f"Endpoints: Data API ✅ Gamma filter {gamma_icon} ({gamma_filter}) CLOB ✅\n"
         f"Next check: {next_monday_str()}"
     )
 
@@ -169,6 +176,49 @@ def build_new_entry_message(date_str: str, title: str | None) -> str:
         f"- CLOB endpoint structure\n"
         f"- Timestamp formats"
     )
+
+
+# ---------------------------------------------------------------------------
+# Gamma API filter health check
+# ---------------------------------------------------------------------------
+
+def check_gamma_filter() -> str:
+    """
+    Probe whether the Gamma API conditionId filter is working.
+
+    Returns "OK" if the filter returns the expected market, "BROKEN" if the
+    filter is silently ignored (wrong market returned), or "ERROR" on network
+    or parse failure.
+    """
+    url = (
+        f"{GAMMA_API_BASE}/markets"
+        f"?conditionId={GAMMA_FILTER_CHECK_CID}&limit=1"
+    )
+    try:
+        req = urllib.request.Request(
+            url, headers={"User-Agent": "trading-swarm-monitor/1.0"}
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8", errors="replace"))
+    except Exception as e:
+        print(f"Gamma filter check ERROR: {e}", file=sys.stderr)
+        return "ERROR"
+
+    markets = data if isinstance(data, list) else data.get("markets", [])
+    if not markets:
+        print("Gamma filter check: empty response — treating as BROKEN")
+        return "BROKEN"
+
+    returned_cid = markets[0].get("conditionId", "")
+    if returned_cid.lower() == GAMMA_FILTER_CHECK_CID.lower():
+        print("Gamma API filter OK — conditionId parameter honoured.")
+        return "OK"
+    else:
+        print(
+            f"Gamma API filter BROKEN — requested {GAMMA_FILTER_CHECK_CID[:10]}…"
+            f" but got {returned_cid[:10] if returned_cid else '(none)'}…"
+        )
+        return "BROKEN"
 
 
 # ---------------------------------------------------------------------------
@@ -197,6 +247,24 @@ def main() -> None:
 
     is_new = latest_date and (latest_date not in (state.get("entries_seen") or []))
 
+    # --- Gamma API filter health check ---
+    gamma_status = check_gamma_filter()
+    prev_gamma_status = state.get("gamma_filter_status", "BROKEN")
+    state["gamma_filter_status"] = gamma_status
+
+    # Alert immediately if the filter has recovered (BROKEN → OK).
+    if gamma_status == "OK" and prev_gamma_status != "OK":
+        recovery_msg = (
+            "✅ Gamma API filter RECOVERED\n\n"
+            "The conditionId filter on GET /markets is now working.\n"
+            "conditionId queries can be used for search again.\n"
+            "Update brain/reference-library/polymarket-market-structure.md "
+            "Gamma API Known Limitations section accordingly."
+        )
+        print("Gamma filter recovered — sending recovery alert.")
+        send_telegram(token, chat_id, recovery_msg)
+
+    # --- Changelog check ---
     if is_new:
         print(f"New entry detected: {latest_date}")
         msg = build_new_entry_message(latest_date, latest_title)
@@ -211,7 +279,7 @@ def main() -> None:
         })
     else:
         print("No new entries.")
-        msg = build_no_change_message(last_seen_date or latest_date, now_iso)
+        msg = build_no_change_message(last_seen_date or latest_date, now_iso, gamma_status)
         state["last_checked"] = now_iso
 
     send_telegram(token, chat_id, msg)

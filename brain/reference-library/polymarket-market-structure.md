@@ -51,3 +51,35 @@ ARB_BOTs are not expressing views either — they are extracting mechanical inef
 2. Any directional filter below 95% requires explicit justification — LP contamination risk is real below that threshold.
 3. Capital-weighted aggregates (STR-004) are more robust than trader-count aggregates (STR-001) because LP positions self-cancel.
 4. When in doubt: check whether the top capital holders on a market are LP-structured before interpreting position data.
+
+---
+
+## Gamma API Known Limitations (as of 2026-05-11)
+
+### Search and filter endpoints broken
+The following Gamma API patterns do NOT work and should not be used:
+
+  GET /markets?conditionId={cid}    — filter silently ignored
+  GET /markets?condition_id={cid}   — filter silently ignored
+  GET /markets?search={query}       — returns default popular markets
+  GET /events?search={query}        — returns default popular markets
+  GET /public-search?query={query}  — returns 422 error
+
+All of the above return the same 20 default high-volume markets
+regardless of parameters.
+
+### What DOES work
+  GET /markets/{api_id}    — direct lookup by numeric api_id ✅
+  GET /markets/{api_id}    — used by verify_market_titles.py ✅
+
+### Implication for manual investigation
+When investigating a specific market by condition_id or title,
+the Gamma API cannot be used for search. Alternatives:
+  1. Query the local DB by condition_id directly
+  2. Use the Polymarket website URL pattern:
+     https://polymarket.com/event/{event-slug}
+  3. Use the Data API for on-chain resolution data
+
+### Implication for production scripts
+No production scripts are affected — all scripts use
+/markets/{api_id} direct lookup which continues to work.
