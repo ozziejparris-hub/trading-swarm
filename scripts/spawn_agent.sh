@@ -257,12 +257,12 @@ tmux new-session -d \
 if [ "$NEEDS_WORKTREE" = true ]; then
     # Paid Claude models: read prompt from file to avoid tmux character limit
     tmux send-keys -t "$SESSION_NAME" \
-        "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE" \
+        "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
 else
     # Local Ollama models: read prompt from file to avoid tmux character limit
     tmux send-keys -t "$SESSION_NAME" \
-        "cat $PROMPT_FILE | $MODEL_CMD 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE" \
+        "cat $PROMPT_FILE | $MODEL_CMD 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
 fi
 
