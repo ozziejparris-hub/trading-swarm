@@ -17,7 +17,7 @@ cd "$SWARM"
 bash scripts/spawn_agent.sh \
     "librarian-$(date +%Y%m%d)" \
     "training-librarian-agent" \
-    "3" \
+    "2" \
     "Run weekly brain maintenance. Audit reference library, update failure taxonomy, check agent templates, identify knowledge gaps, update lessons learned." >> "$LOG" 2>&1
 EXIT_CODE=$?
 
