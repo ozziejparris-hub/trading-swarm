@@ -17,6 +17,36 @@
             "report": "brain/agent-outputs/backtest-agent/STR-001-validation-2026-04-27.json"
         }
     ],
+    "data_integrity_gates": [
+        {
+            "gate": "RQ0.1 + RQ0.2",
+            "task_id": "backtest-20260513",
+            "run_date": "2026-05-13",
+            "last_run_before": "2026-03-29",
+            "days_overdue": 45,
+            "rq0_1_wash_trade": {
+                "verdict": "PASS",
+                "suspects_flagged": 57,
+                "suspects_in_top50": 0,
+                "suspects_pending_pool_exclusion": 16,
+                "notes": "16 wash suspects currently in research pool; removed by daily maintenance 2026-05-14 06:00 UTC. Highest ELO wash suspect: 1896 (Elite tier). No penny traders detected."
+            },
+            "rq0_2_bot_detection": {
+                "verdict": "PASS",
+                "new_bots_flagged": 0,
+                "borderline_s1_only": 6,
+                "notes": "6 single-signal Crypto traders to watch next cycle. No new bot types since ARB_BOT exclusion 2026-05-06. Prior bot counts: 111 ARB_BOT + 17 THIN_SAMPLE + 4 LP_ARTIFACT."
+            },
+            "pool_state": {
+                "total_traders": 96051,
+                "clean_pool_current": 604,
+                "clean_pool_post_maintenance": 588,
+                "legendary_in_pool": 142
+            },
+            "next_run_due": "2026-06-13",
+            "report": "brain/agent-outputs/backtest-agent/2026-05-13-RQ0-data-integrity-gates.json"
+        }
+    ],
     "approved": [
         {
             "task_id": "scout-20260428-info-aggregation",

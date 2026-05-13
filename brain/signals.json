@@ -496,6 +496,30 @@
       "approved_at": "2026-05-11T00:00:00Z",
       "approval_note": "Oscar approved. Reference file created: brain/reference-library/polymarket-market-structure.md. Covers LP mechanics, 95% directional threshold, ARB_BOT pattern, signal design implications, and clean pool stats (257 LP_ARTIFACTs + 111 ARB_BOTs excluded from 493-trader pool).",
       "cycle": "librarian-20260509"
+    },
+    {
+      "from": "backtest-agent",
+      "to": "orchestrator",
+      "type": "data_integrity_gates_complete",
+      "timestamp": "2026-05-13T11:09:00Z",
+      "status": "completed",
+      "task_id": "backtest-20260513",
+      "payload": {
+        "gates_run": ["RQ0.1", "RQ0.2"],
+        "rq0_1_verdict": "PASS",
+        "rq0_1_wash_suspects_flagged": 57,
+        "rq0_1_suspects_in_top50": 0,
+        "rq0_1_suspects_pending_pool_exclusion": 16,
+        "rq0_2_verdict": "PASS",
+        "rq0_2_new_bots_flagged": 0,
+        "rq0_2_borderline_watch": 6,
+        "clean_pool_current": 604,
+        "clean_pool_post_maintenance_estimate": 588,
+        "overall_verdict": "PASS",
+        "days_overdue_cleared": 45,
+        "report": "brain/agent-outputs/backtest-agent/2026-05-13-RQ0-data-integrity-gates.json",
+        "action_required": "Verify 2026-05-14 06:00 UTC maintenance run excludes 16 wash suspects from pool. Update integration-contract.md Section 3 pool size to ~588 after maintenance confirms."
+      }
     }
   ],
   "pending": []
