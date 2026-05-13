@@ -46,7 +46,12 @@
 # Git history is NEVER read or interpolated into agent prompts by this script.
 # No git log, git show, or git diff calls are made.
 #
-# Claude CLI tiers (2.5/3/4) are invoked with -p (print/one-shot mode),
+# Execution model by tier:
+#   Tier 1         — stdin pipe to ollama (text classification, no tools)
+#   Tier 2 / 2.5   — orchestrator/ollama_agent_loop.py (agentic loop, tool-calling)
+#   Tier 3 / 4     — Claude CLI -p (one-shot, no interactive injection)
+#
+# Claude CLI tiers (3/4) are invoked with -p (print/one-shot mode),
 # which processes a single prompt and exits — no interactive git-status
 # injection occurs in this mode.
 #
@@ -97,26 +102,31 @@ case $TIER in
     1)
         MODEL_CMD="ollama run gemma4:e2b --think=false"
         MODEL_NAME="gemma4:e2b (local, Tier 1)"
+        OLLAMA_MODEL_NAME="gemma4:e2b"
         NEEDS_WORKTREE=false
         ;;
     2)
         MODEL_CMD="ollama run gemma4:e4b --think=false"
         MODEL_NAME="gemma4:e4b (local, Tier 2)"
+        OLLAMA_MODEL_NAME="gemma4:e4b"
         NEEDS_WORKTREE=false
         ;;
     2.5)
         MODEL_CMD="ollama run qwen3-coder:30b-a3b-q4_K_M --think=false"
         MODEL_NAME="qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)"
+        OLLAMA_MODEL_NAME="qwen3-coder:30b-a3b-q4_K_M"
         NEEDS_WORKTREE=false
         ;;
     3)
         MODEL_CMD="claude --model claude-sonnet-4-6 --dangerously-skip-permissions -p"
         MODEL_NAME="claude-sonnet-4-6 (Tier 3)"
+        OLLAMA_MODEL_NAME=""
         NEEDS_WORKTREE=true
         ;;
     4)
         MODEL_CMD="claude --model claude-opus-4-7 --dangerously-skip-permissions -p"
         MODEL_NAME="claude-opus-4-7 (Tier 4, escalation)"
+        OLLAMA_MODEL_NAME=""
         NEEDS_WORKTREE=true
         ;;
     *)
@@ -255,14 +265,20 @@ tmux new-session -d \
 
 # ── Run the agent inside the session ─────────
 if [ "$NEEDS_WORKTREE" = true ]; then
-    # Paid Claude models: read prompt from file to avoid tmux character limit
+    # Tiers 3/4 — paid Claude CLI, one-shot -p mode
     tmux send-keys -t "$SESSION_NAME" \
         "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
-else
-    # Local Ollama models: read prompt from file to avoid tmux character limit
+elif [ "$TIER" = "1" ]; then
+    # Tier 1 — stdin pipe; health checks / log watching are text classification only
     tmux send-keys -t "$SESSION_NAME" \
         "cat $PROMPT_FILE | $MODEL_CMD 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
+        Enter
+else
+    # Tiers 2 and 2.5 — agentic loop wrapper with tool-calling support
+    # Prompt file cleanup is handled by the wrapper's finally block, not here
+    tmux send-keys -t "$SESSION_NAME" \
+        "python3 $BASE_DIR/orchestrator/ollama_agent_loop.py --model $OLLAMA_MODEL_NAME --prompt-file $PROMPT_FILE --task-id $TASK_ID --agent-type $AGENT_TYPE --log-file $LOG_FILE 2>&1; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
 fi
 
