@@ -17,7 +17,7 @@ echo "════════════════════════�
 # E501 = line too long (ignored, agents write long lines)
 # W503 = line break before binary operator (style preference)
 flake8 "$BASE_DIR" \
-    --exclude="$BASE_DIR/worktrees,$BASE_DIR/.git" \
+    --exclude="$BASE_DIR/worktrees,$BASE_DIR/.git,$BRAIN_OUTPUTS" \
     --ignore=E501,W503,E302,E226,F401 \
     --max-line-length=120 \
     --count \
