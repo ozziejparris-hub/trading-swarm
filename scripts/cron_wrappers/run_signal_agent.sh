@@ -17,7 +17,7 @@ cd "$SWARM"
 bash scripts/spawn_agent.sh \
     "signal-$(date +%Y%m%d)" \
     "signal-agent" \
-    "2.5" \
+    "3" \
     "Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes." >> "$LOG" 2>&1
 EXIT_CODE=$?
 

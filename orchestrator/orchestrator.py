@@ -253,13 +253,13 @@ AGENT_TIER_DEFAULTS = {
     "training-librarian":    2,   # File audits, consistency checks
 
     # Tier 2.5 — Qwen3-Coder 30B-A3B (local, free, 1.08s)
-    # Local model — replaced Haiku 4.5 on 2026-05-13; passes signal-agent benchmark
-    "signal-agent":          2.5, # SQLite queries, JSON output — Gemma E4B failed prompt complexity 2026-05-12
+    # Text-output reasoning only — no tool execution, file I/O, or SQL
     "integration-test":      2.5, # 6 test suites, structured output
     "research-scout":        2.5, # Daily scan, filtering, filing
 
     # Tier 3 — Claude Sonnet 4.6 ($3/$15 per MTok)
     # Complex multi-file reasoning, statistical validity required
+    "signal-agent":          3,   # Tool execution required (SQLite, file I/O, Telegram)
     "quant-research":        3,   # Phase 1-5 research questions
     "backtest-agent":        3,   # DSR, PBO, 7-sins validation
     "market-builder":        3,   # Multi-file API work, error design

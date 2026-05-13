@@ -1,7 +1,7 @@
 # Model Routing Strategy
 
 Last updated: 2026-05-13
-Updated by: Oscar (Qwen3-Coder Tier 2.5 promotion)
+Updated by: Oscar (signal-agent reverted to Tier 3 — Ollama stdin cannot execute tools)
 Next review: when server has been live 4 weeks
 
 ---
@@ -125,10 +125,11 @@ The 80B MoE version is deferred until larger hardware is available.
 
 ### Tier 2.5 — Qwen3-Coder 30B-A3B (Ollama, local, free)
 
+> **WARNING: Ollama stdin models (Tiers 1, 2, 2.5) receive a prompt and produce text output only. They cannot execute tools, write files, run SQL, or interact with the filesystem. Any agent that must perform real actions (not just reason about them) requires Tier 3+ (Claude CLI with tool use). Do not assign action-taking agents to Tier 2.5 or below without first implementing an Ollama tool-calling wrapper.**
+
 **Assigned to:**
 - integration-test-agent (6 structured test suites, every Sunday)
 - research-scout-agent (daily scan, filter, file pattern)
-- signal-agent (SQLite queries, JSON output — Gemma E4B failed on 2026-05-12 due to prompt complexity)
 
 **Model details:**
 - Ollama tag: `qwen3-coder:30b-a3b-q4_K_M`
@@ -182,6 +183,7 @@ with `--model claude-haiku-4-5-20251001`.
 ### Tier 3 — Claude Sonnet 4.6
 
 **Assigned to:**
+- signal-agent (SQLite queries, file writes, Telegram sends — requires tool execution)
 - quant-research-agent (Phase 1-5 research questions)
 - backtest-agent (DSR, PBO, 7-sins validation)
 - market-builder-agent (multi-file API connectors, error design)
@@ -283,11 +285,11 @@ Agent                    Tier   Model                    Reason
 ─────────────────────────────────────────────────────────────────────
 Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
 Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
-signal-agent             2.5    Qwen3-Coder 30B-A3B      Prompt complexity
 code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
 training-librarian       2      Gemma 4 E4B (Ollama)     Structured
 integration-test         2.5    Qwen3-Coder 30B-A3B      Structured output
 research-scout           2.5    Qwen3-Coder 30B-A3B      Daily cadence
+signal-agent             3      Claude Sonnet 4.6        Tool execution required (file I/O, SQLite, Telegram)
 quant-research           3      Claude Sonnet 4.6        Stats reasoning
 backtest-agent           3      Claude Sonnet 4.6        Multi-file valid
 market-builder           3      Claude Sonnet 4.6        API multi-file
