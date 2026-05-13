@@ -94,7 +94,7 @@ def main():
 
     _write(health)
 
-    print(f"integration-health.json written:")
+    print("integration-health.json written:")
     print(f"  clean_pool    = {health['clean_pool']}")
     print(f"  clean_markets = {health['clean_markets']}")
     print(f"  wal_mode      = {health['wal_mode']}")

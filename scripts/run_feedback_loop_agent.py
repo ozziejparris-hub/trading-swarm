@@ -790,9 +790,9 @@ def write_report(s1, s2, s3, s4, new_findings, reval_written, run_count: int = 1
 
     if not s2["directory_exists"]:
         lines += [
-            f"> **Not yet available:** `brain/agent-outputs/pre-resolution/` does not exist. "
-            f"Signal-agent has not produced pre-resolution scans. "
-            f"This step will populate once that directory is present.",
+            "> **Not yet available:** `brain/agent-outputs/pre-resolution/` does not exist. "
+            "Signal-agent has not produced pre-resolution scans. "
+            "This step will populate once that directory is present.",
             "",
             "**Known baseline batch (4 signals, recorded in findings.json):**",
             "",
