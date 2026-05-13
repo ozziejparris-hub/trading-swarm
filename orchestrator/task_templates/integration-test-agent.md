@@ -21,6 +21,15 @@ audit, before the Monday morning performance analysis.
 You are the last check before the working week begins.
 
 ## Your Environment
+
+> **CONTEXT FILES — READ THESE FIRST (local Ollama run):**
+> Always read compressed versions from /tmp/swarm-context/ before reading any brain file.
+> These are pre-generated before your session starts and are significantly smaller:
+> - /tmp/swarm-context/signals_compressed.json  (replaces brain/signals.json)
+> - /tmp/swarm-context/feedback_compressed.json (replaces brain/feedback.json)
+> - /tmp/swarm-context/findings_compressed.json (replaces brain/findings.json)
+> Only fall back to the originals in brain/ if the compressed version does not exist.
+
 - Base directory: /home/parison/trading-swarm/
 - Registry: /orchestrator/agent_registry.json
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
@@ -30,11 +39,6 @@ You are the last check before the working week begins.
 - CI scripts: /ci/
 - Output directory: /home/parison/trading-swarm/brain/agent-outputs/integration-test/
 - Log directory: /logs/
-
-> **Local Ollama runs:** read `/tmp/swarm-context/signals_compressed.json` instead of
-> `brain/signals.json`, `/tmp/swarm-context/feedback_compressed.json` instead of
-> `brain/feedback.json`, and `/tmp/swarm-context/findings_compressed.json` instead of
-> `brain/findings.json` — these are pre-compressed versions updated before each agent run.
 
 ## Your Task
 {TASK_DESCRIPTION}

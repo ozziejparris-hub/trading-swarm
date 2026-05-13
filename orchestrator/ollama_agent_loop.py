@@ -17,6 +17,7 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import ast
 import fcntl
 import json
 import logging
@@ -305,12 +306,30 @@ def tool_send_telegram(message: str, bot: str) -> dict:
 _SHELL_WHITELIST: list[list[str]] = [
     ["tmux", "ls", "-F", "#{session_name}"],
     ["bash", "/home/parison/trading-swarm/ci/run_ci.sh"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/agent-outputs/"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/agent-outputs/signal-agent/"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/agent-outputs/integration-test/"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/agent-outputs/feedback-loop/"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/agent-outputs/performance-analyst/"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/agent-outputs/quant-research/"],
+    ["ls", "-la", "/home/parison/trading-swarm/brain/"],
 ]
 
 
-def tool_run_shell(command: list) -> dict:
+def tool_run_shell(command) -> dict:
+    # Models sometimes pass the command as a Python-list string; coerce it
+    if isinstance(command, str) and command.strip().startswith("["):
+        try:
+            command = ast.literal_eval(command)
+        except Exception:
+            pass
     if command not in _SHELL_WHITELIST:
-        return {"error": f"command not in whitelist: {command!r}"}
+        return {
+            "error": (
+                f"Command not in whitelist. Allowed commands: {_SHELL_WHITELIST}. "
+                "Note: pass command as a list, not a string."
+            )
+        }
     try:
         result = subprocess.run(
             command,
@@ -475,9 +494,14 @@ TOOL_DEFINITIONS: list[dict] = [
             "name": "run_shell",
             "description": (
                 "Run a whitelisted shell command. "
-                "Only two commands are permitted: "
-                "['tmux', 'ls', '-F', '#{session_name}'] and "
-                "['bash', '/home/parison/trading-swarm/ci/run_ci.sh']."
+                "Pass command as a list of strings, not a string. "
+                "Permitted commands: "
+                "['tmux', 'ls', '-F', '#{session_name}'], "
+                "['bash', '/home/parison/trading-swarm/ci/run_ci.sh'], "
+                "['ls', '-la', '/home/parison/trading-swarm/brain/'], "
+                "['ls', '-la', '/home/parison/trading-swarm/brain/agent-outputs/'], "
+                "and ['ls', '-la', '...'] for each agent-outputs subdirectory "
+                "(signal-agent, integration-test, feedback-loop, performance-analyst, quant-research)."
             ),
             "parameters": {
                 "type": "object",

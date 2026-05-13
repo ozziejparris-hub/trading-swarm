@@ -27,6 +27,15 @@ time to complete your work before the Sunday integration
 test and Monday performance analysis.
 
 ## Your Environment
+
+> **CONTEXT FILES — READ THESE FIRST (local Ollama run):**
+> Always read compressed versions from /tmp/swarm-context/ before reading any brain file.
+> These are pre-generated before your session starts and are significantly smaller:
+> - /tmp/swarm-context/signals_compressed.json  (replaces brain/signals.json)
+> - /tmp/swarm-context/feedback_compressed.json (replaces brain/feedback.json)
+> - /tmp/swarm-context/findings_compressed.json (replaces brain/findings.json)
+> Only fall back to the originals in brain/ if the compressed version does not exist.
+
 - Brain directory: /home/parison/trading-swarm/brain/ (primary workspace, read/write)
 - Reference library: /home/parison/trading-swarm/brain/reference-library/
 - Strategy notes: /home/parison/trading-swarm/brain/strategy-notes/
