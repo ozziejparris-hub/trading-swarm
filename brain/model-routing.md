@@ -92,7 +92,6 @@ check would be absurd cost for zero benefit.
 ### Tier 2 — Gemma 4 E4B (Ollama)
 
 **Assigned to:**
-- signal-agent (database queries, pattern matching, signals.json writes)
 - code-hygiene-agent (dead code scan, duplicate detection, security scan)
 - training-librarian-agent (file audits, consistency checks, taxonomy)
 
@@ -129,6 +128,7 @@ The 80B MoE version is deferred until larger hardware is available.
 **Assigned to:**
 - integration-test-agent (6 structured test suites, every Sunday)
 - research-scout-agent (daily scan, filter, file pattern)
+- signal-agent (SQLite queries, JSON output — Gemma E4B failed on 2026-05-12 due to prompt complexity)
 
 **Model details:**
 - Ollama tag: `qwen3-coder:30b-a3b-q4_K_M`
@@ -283,7 +283,7 @@ Agent                    Tier   Model                    Reason
 ─────────────────────────────────────────────────────────────────────
 Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
 Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
-signal-agent             2      Gemma 4 E4B (Ollama)     Well-defined
+signal-agent             2.5    Qwen3-Coder 30B-A3B      Prompt complexity
 code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
 training-librarian       2      Gemma 4 E4B (Ollama)     Structured
 integration-test         2.5    Qwen3-Coder 30B-A3B      Structured output

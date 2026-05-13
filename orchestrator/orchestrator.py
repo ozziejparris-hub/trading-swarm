@@ -249,12 +249,12 @@ AGENT_TIER_DEFAULTS = {
 
     # Tier 2 — Qwen3-Coder-Next (local, free)
     # Well-defined tasks, clear inputs/outputs
-    "signal-agent":          2,   # DB queries, signals.json writes
     "code-hygiene-agent":    2,   # Dead code scan, duplicate detection
     "training-librarian":    2,   # File audits, consistency checks
 
     # Tier 2.5 — Qwen3-Coder 30B-A3B (local, free, 1.08s)
     # Local model — replaced Haiku 4.5 on 2026-05-13; passes signal-agent benchmark
+    "signal-agent":          2.5, # SQLite queries, JSON output — Gemma E4B failed prompt complexity 2026-05-12
     "integration-test":      2.5, # 6 test suites, structured output
     "research-scout":        2.5, # Daily scan, filtering, filing
 
