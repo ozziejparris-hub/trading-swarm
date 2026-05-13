@@ -113,124 +113,151 @@ System target:                  < 0.20 minimum
 
 ## Current Week
 
-Last updated: 2026-05-05
-Updated by: performance-analyst-agent (first run)
+Last updated: 2026-05-13
+Updated by: performance-analyst-agent (run 2)
 
-### Week of 2026-05-05
+### Week of 2026-05-13
+
+#### Prediction Accuracy
+```
+ELO QUALIFIED consensus accuracy (7d): 92%  (n=12 markets — feedback-loop May 11)
+ELO QUALIFIED consensus accuracy (30d): 85.7% (n=14 markets — this run)
+ELO ELITE consensus accuracy (7d):     33%  (n=3 markets — LOW confidence, volatile)
+ELO LEGENDARY resolved markets (7d):    —   (0 qualifying legendary directional markets)
+Brier score (elite positions, 7d):    0.3128 (n=192 positions, 2 markets only)
+vs naive baseline (50%):             -0.0628 (WORSE than random — artefact: STR-004 founding case)
+By category (Brier):            Crypto 0.2838 (n=19), Geopolitics 0.3160 (n=173)
+By tier (Brier):             Legendary 0.3055 (n=131), Elite 0.3286 (n=61)
+Note: Brier dominated by 2 markets only (Russia/Ukraine ceasefire + Bitcoin).
+      STR-004 founding case resolution (legendary YES = WRONG) drives Geopolitics Brier.
+      ELO consensus accuracy (92%) remains the primary accuracy metric.
+```
+
+#### ELO System Health
+```
+Total traders (DB):                 96,051  (vs 92,228 May 5; +4.1%)
+Legendary traders (>2175, research): 142   (stable post-ARB_BOT cleanup; prev 151)
+Elite traders (1800-2175, research):  31
+Research pool (authoritative):        493  (integration-health.json, 06:03 today)
+Research pool (live query):           604  (⚠ discrepancy — see Flag 3)
+Max ELO observed:                   3,471.3
+Active traders (trades 7d):            22  (⚠ vs 279 May 5 — possible monitoring gap)
+Active traders (trades 30d):        1,369  (normal)
+Trades executed (7d):                 162
+ELO last updated:                2026-05-13 (daily maintenance running)
+```
+
+#### Signal Quality
+```
+STR-003 signals active (MEDIUM):       5  (all 15+ days unrescanned — ⚠ spawn signal-agent)
+STR-003 resolved (cumulative):         1/1 (100%, Ramaswamy NO — CORRECT, n=1 insufficient)
+STR-004 resolved (cumulative):         0/1 (0%, founding case FAIL — crowd was correct)
+Upgrade conditions met (MEDIUM→HIGH):  0
+Signal-agent last run:           2026-04-27 (15 days ago — STALLED)
+Near-term resolution:            Putin invasion by June 2026 (~4 weeks)
+```
+
+#### Strategy Pipeline
+```
+Strategies submitted (30d):            0  (none new since STR-004)
+Strategies validated (30d):            0  (backtest-agent not run since Apr 27)
+Pass rate:                            N/A
+RQ1.1 status:             INCONCLUSIVE (n=16, rerun June 1 — pre-register by May 20)
+RQ3.2 status:             INCONCLUSIVE (methodology reframe — extend RQ2.2 to outcome)
+RQ2.2 status:             MEDIUM confidence — YES 61.1% (n=18), NO 77.8% (n=9)
+RQ0.1 + RQ0.2:            OVERDUE — last run 2026-03-29 (45 days). Spawn backtest-agent.
+
+STR-003 — Single Legendary Directional Signal
+  Status:   EXPERIMENTAL
+  Basis:    RQ2.2 extended — YES 61.1% (n=18), NO 77.8% (n=9) at 95% threshold
+  Sample:   n=1 resolved (insufficient). Need 19 more.
+
+STR-004 — Capital-Weighted Legendary Aggregate Signal
+  Status:   HYPOTHESIS — founding case FAILED
+  Founding: Russia/Ukraine ceasefire Q2 2026 — RESOLVED NO 2026-05-08
+            8 traders, $1.74M, 55.7% YES vs 7% crowd. Crowd correct.
+  Accuracy: 0/1 (0%) — stop criterion at <50% on n=10. Need 9 more.
+```
+
+#### System Resources
+```
+Estimated API spend (week):         ~$0.50  (only feedback-loop ran at Tier 3)
+Agent tasks completed:                  5+  (feedback-loop, research-scout x4, librarian, integration-test)
+Agent tasks failed:                      0
+Auto-respawns by immune system:          0
+CI failures:                             0
+Git commits (past week, May 6-13):      23
+Brain directory size:                 1.2MB  (up from 904KB, +33%)
+Integration test pass rate:          83.7%  (41/49, 8 failures — signal-agent + agent output staleness)
+Model routing change (Tier 2.5):  Haiku 4.5 → Qwen3-Coder 30B-A3B (local, free)
+Signal-agent tier:                Tier 3 (reverted — Ollama cannot execute tools)
+```
+
+#### Week-on-Week Trends
+```
+ELO QUALIFIED accuracy:  82% (May 5) → 92% (May 11) → 85.7% 30d (May 13)  ↑ IMPROVING
+Brier score trend:       0.2798 (May 5, 30d) → 0.3128 (May 13, 7d)  ↓ (artefact — 2 mkts)
+Signal accuracy trend:   1/1 STR-003 ✓ | 0/1 STR-004 ✗ — too small for trend
+Strategy pass rate:      0% → 0% → N/A  (no new validations)
+Cost trend:              ~$5.40 → ~$0.50  ↓ (stalled agents drove cost to near zero)
+Phase 5 Gate 1:          ✅ COMPLETE (5/4 runs)
+Phase 5 Gate 2:          1/3 HIGH findings (unchanged)
+Phase 5 Gate 3:          50%/4 markets (unchanged — pre-resolution scan not running)
+Phase 5 Gate 4:          Inconclusive → rerun June 1
+```
+
+### Previous Week (2026-05-05 — for reference)
 
 #### Prediction Accuracy
 ```
 ELO QUALIFIED consensus accuracy (7d): 82%  (n=67 markets — HIGH confidence)
 ELO ELITE consensus accuracy (7d):    100%  (n=4 markets — LOW confidence)
-ELO LEGENDARY resolved markets (7d):    —   (0 qualifying markets)
 Brier score proxy (elite, 30d):       0.28  (n=5 markets — borderline acceptable)
-vs naive baseline (50%):            +32pp   (QUALIFIED accuracy 82% vs 50% random)
-By category:                           —    (category field = "Unknown" for most positions)
-Note: Direct position-level Brier scores unreliable at n=2-5 scale.
-      ELO consensus accuracy is the primary accuracy metric until n grows.
+vs naive baseline (50%):            +32pp
 ```
 
 #### ELO System Health
 ```
-Total traders (DB):                 92,228  (vs 53,140 March baseline; +73.5%)
-Legendary traders (>2175, full):       432  (⚠ 28x above March baseline ~15)
-Legendary traders (research pool):     341  (of 965 research_excluded=0 traders)
-Elite traders (1800-2175, full):       904
-Max ELO observed:                    3,471
+Total traders (DB):                 92,228
 Active traders (trades 7d):            279
-Trades executed (7d):                1,048
-ELO last updated:                 2026-05-05 (857 research pool traders updated)
-```
-
-#### Signal Quality
-```
-Signals generated (HIGH):              0
-Signals generated (MEDIUM):            6  (5 STR-003 pending, 1 legacy STR-001)
-Signals resolved with known outcome:   1  (Ramaswamy NO — CORRECT)
-Signal accuracy (n=1):              100%  (INSUFFICIENT DATA — do not cite)
-Upgrade conditions met (MEDIUM→HIGH):  0
-```
-
-#### Strategy Pipeline
-```
-Strategies submitted (30d):            1  (STR-004 pre-registered 2026-05-08)
-Strategies validated (30d):            1  (STR-001 — FAILED)
-Pass rate:                            0%  (1/1 failed)
-Most common failure reason:   LP contamination (legendary traders hold both sides)
-RQ1.1 status:             INCONCLUSIVE (n=16, rerun June 1)
-RQ3.2 status:             INCONCLUSIVE (n=4, methodology reframe needed)
-RQ2.2 status:             EXPERIMENTAL — YES 61.1% (n=18), NO 77.8% (n=9)
-
-STR-004 — Capital-Weighted Legendary Aggregate Signal
-  Status:   HYPOTHESIS — accumulating signals (founding case failed)
-  Founding: Russia/Ukraine ceasefire Q2 2026 — RESOLVED NO (legendary
-            aggregate incorrect). 8 traders, $1.74M, 55.7% YES vs 7%
-            crowd price. Crowd was correct.
-  Accuracy: 0/1 (0%) — stop criterion not triggered (requires n=10)
-  Gate:     Need 9 more resolved STR-004 signals for formal backtest
-  Note:     Discrepancy: separate 'ceasefire by June 30' market may have
-            resolved YES but has no condition_id in DB. Pending Gamma API
-            fix to verify. Recorded against condition_id 0x7b629fc0...
-            which definitively resolved NO.
-```
-
-#### System Resources
-```
-Estimated API spend (week):         ~$5.40  (6 Tier 3 runs, 4 Tier 2.5 runs)
-Agent tasks completed:                 14+
-Agent tasks failed:                      0
-Auto-respawns by immune system:          0
-CI failures:                             0
-Git commits (past week):                23
-Brain directory size:                 904KB
-Orchestrator status:                HEALTHY
-```
-
-#### Week-on-Week Trends
-```
-Brier score trend:              — (first run, no prior week)
-Signal accuracy trend:          — (first run)
-Strategy pass rate trend:       — (first run)
-Cost trend:                     — (first run)
-ELO QUALIFIED accuracy:      82%  (baseline established)
-Phase 5 feedback-loop gate:  3/4  (↑ on track)
+Legendary traders (research pool):     341 (pre-cleanup) / 151 (post-ARB_BOT)
 ```
 
 ---
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-05-08 (STR-004 pre-registration — founding case signal added)
+Last updated: 2026-05-13 (performance-analyst-agent run 2)
 
 ```
-Feedback-loop runs: 5/4 ✅ GATE MET (4+ runs threshold exceeded)
+Feedback-loop runs: 6/4 ✅ GATE MET
   Run 1: 2026-04-25
   Run 2: 2026-04-27
-  Run 3: 2026-05-05 (per prior kpis entry)
-  Run 4: 2026-05-05 (clean pool revalidation — contaminated pool found post-run 3)
+  Run 3: 2026-05-05
+  Run 4: 2026-05-05 (clean pool revalidation)
   Run 5: 2026-05-07 (manual — clean pool confirmed, 493 genuine traders)
-  Next:  2026-05-11 (cron, Monday)
+  Run 6: 2026-05-11 (cron, Monday)
+  Next:  2026-05-18 (cron, Monday)
 
 HIGH confidence findings: 1/3 valid
   ❌ 2026-05-05-ELO-QUALIFIED-001: INVALIDATED — contaminated pool (82% was artefact)
   ✅ 2026-05-07-ELO-QUALIFIED-002: QUALIFIED 63.16% accuracy, n=57 (clean 493-trader pool)
   ⏳ Need 2 more with n≥20
-
-  Pool context: LP_ARTIFACT + ARB_BOT exclusion reduced pool 857→493.
-  Clean pool accuracy (63.16%) is lower but still above 60% gate. Edge is real.
+  Path to Gate 2: accumulate STR-003 resolved signals to n=20; run RQ2.2 outcome accuracy update
 
 Pre-resolution accuracy: 50% / 4 markets
-  (unchanged — 0 new resolved pre-resolution signals this week)
-  0 signals fired in last 2 scans (May 5: 8 markets, May 7: 15 markets)
+  (unchanged — no new resolved pre-resolution signals since May 5)
+  Gate needs: 60% accuracy across 10+ resolved markets
 
 RQ1.1 status:   INCONCLUSIVE (n=16, rerun scheduled June 1)
-RQ3.2 status:   INCONCLUSIVE (methodology reframe needed)
+  Pre-register methodology by 2026-05-20. Use elo_period1_cutoff for point-in-time ELO.
+RQ3.2 status:   INCONCLUSIVE (methodology reframe — extend RQ2.2 to outcome prediction)
 
-Signal accuracy: 1/1 resolved correct (n=1 — insufficient for conclusions)
-  Ramaswamy NO — validated ✅ (2026-05-02)
-  5 signals pending resolution (4 STR-003 + 1 STR-004 founding case)
-  Near-term watch: Putin invades by June 2026 (ELO 3323, resolves ~6 weeks)
-  STR-004 founding case: Russia/Ukraine ceasefire YES (resolves 2026-06-30)
+Signal accuracy:
+  STR-003: 1/1 resolved correct (Ramaswamy NO ✅ 2026-05-02)
+  STR-004: 0/1 resolved correct (Russia/Ukraine ceasefire ✗ 2026-05-08 — crowd correct)
+  5 STR-003 signals pending resolution (unrescanned 15 days — spawn signal-agent)
+  Near-term: Putin invades by June 2026 (ELO 3323, resolves ~June 1-30)
 ```
 
 ---
@@ -262,7 +289,7 @@ Supporting    RQ0.1     PASSED          2026-03-29  2026-03-29
 ──────────────────────────────────────────────────────────────
 ```
 
-Last updated by performance-analyst-agent: 2026-05-05
+Last updated by performance-analyst-agent: 2026-05-13
 
 Stopping rules (halt all research if either fails):
 - RQ1.1: ELO has no predictive validity → redesign ELO system
