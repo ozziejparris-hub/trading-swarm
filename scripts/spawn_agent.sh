@@ -276,6 +276,8 @@ elif [ "$TIER" = "1" ]; then
         Enter
 else
     # Tiers 2 and 2.5 — agentic loop wrapper with tool-calling support
+    # Compress brain files to /tmp/swarm-context/ before the agent starts
+    python3 $BASE_DIR/orchestrator/context_compressor.py
     # Prompt file cleanup is handled by the wrapper's finally block, not here
     tmux send-keys -t "$SESSION_NAME" \
         "python3 $BASE_DIR/orchestrator/ollama_agent_loop.py --model $OLLAMA_MODEL_NAME --prompt-file $PROMPT_FILE --task-id $TASK_ID --agent-type $AGENT_TYPE --log-file $LOG_FILE 2>&1; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \

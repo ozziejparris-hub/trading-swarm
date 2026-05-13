@@ -7,26 +7,39 @@
       "run_sql",
       "send_telegram"
     ],
-    "note": "signal-agent uses Tier 3 Sonnet in production — wrapper available for lightweight subtasks only"
+    "note": "signal-agent uses Tier 3 Sonnet in production — wrapper available for lightweight subtasks only",
+    "compressed_context": "For local Ollama runs (Tier 2 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
   },
-  "integration-test-agent": [
-    "read_file",
-    "write_file",
-    "run_sql",
-    "run_shell",
-    "send_telegram"
-  ],
-  "code-hygiene-agent": [
-    "read_file",
-    "write_file",
-    "run_shell"
-  ],
-  "training-librarian-agent": [
-    "read_file",
-    "write_file"
-  ],
-  "research-scout-agent": [
-    "read_file",
-    "write_file"
-  ]
+  "integration-test-agent": {
+    "tools": [
+      "read_file",
+      "write_file",
+      "run_sql",
+      "run_shell",
+      "send_telegram"
+    ],
+    "compressed_context": "For local Ollama runs (Tier 2.5 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
+  },
+  "code-hygiene-agent": {
+    "tools": [
+      "read_file",
+      "write_file",
+      "run_shell"
+    ],
+    "compressed_context": "For local Ollama runs (Tier 2 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
+  },
+  "training-librarian-agent": {
+    "tools": [
+      "read_file",
+      "write_file"
+    ],
+    "compressed_context": "For local Ollama runs (Tier 2 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
+  },
+  "research-scout-agent": {
+    "tools": [
+      "read_file",
+      "write_file"
+    ],
+    "compressed_context": "For local Ollama runs (Tier 2.5 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
+  }
 }
