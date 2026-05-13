@@ -15,9 +15,9 @@
 #         Signal agent, code hygiene, training librarian
 #         Simple well-defined coding tasks
 #
-#   2.5 = Claude Haiku 4.5 ($1/$5 per MTok)
-#         Integration-test, bounded sub-agent tasks
-#         Tasks needing Anthropic reliability without Sonnet cost
+#   2.5 = Ollama/Qwen3-Coder 30B-A3B (local, free, 1.08s)
+#         Integration-test, research-scout
+#         Local model replacing Haiku 4.5 — passes signal-agent benchmark
 #
 #   3   = Claude Sonnet 4.6 ($3/$15 per MTok)
 #         Quant research, backtest validation, market builder
@@ -71,7 +71,7 @@ if [ -z "$TASK_ID" ] || [ -z "$AGENT_TYPE" ] || [ -z "$TASK_DESC" ]; then
     echo "Tiers:"
     echo "  1   = Ollama/Gemma4:e2b (local, free, 0.79s)"
     echo "  2   = Ollama/Gemma4:e4b (local, free, 5.86s)"
-    echo "  2.5 = Claude Haiku 4.5 (\$1/\$5 per MTok)"
+    echo "  2.5 = Ollama/Qwen3-Coder 30B-A3B (local, free, 1.08s)"
     echo "  3   = Claude Sonnet 4.6 (\$3/\$15 per MTok)"
     echo "  4   = Claude Opus 4.6 (\$5/\$25 per MTok, escalation only)"
     echo ""
@@ -105,9 +105,9 @@ case $TIER in
         NEEDS_WORKTREE=false
         ;;
     2.5)
-        MODEL_CMD="claude --model claude-haiku-4-5-20251001 --dangerously-skip-permissions -p"
-        MODEL_NAME="claude-haiku-4-5 (Tier 2.5)"
-        NEEDS_WORKTREE=true
+        MODEL_CMD="ollama run qwen3-coder:30b-a3b-q4_K_M --think=false"
+        MODEL_NAME="qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)"
+        NEEDS_WORKTREE=false
         ;;
     3)
         MODEL_CMD="claude --model claude-sonnet-4-6 --dangerously-skip-permissions -p"

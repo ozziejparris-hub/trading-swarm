@@ -253,8 +253,8 @@ AGENT_TIER_DEFAULTS = {
     "code-hygiene-agent":    2,   # Dead code scan, duplicate detection
     "training-librarian":    2,   # File audits, consistency checks
 
-    # Tier 2.5 — Claude Haiku 4.5 ($1/$5 per MTok)
-    # Bounded tasks needing Anthropic reliability < Sonnet cost
+    # Tier 2.5 — Qwen3-Coder 30B-A3B (local, free, 1.08s)
+    # Local model — replaced Haiku 4.5 on 2026-05-13; passes signal-agent benchmark
     "integration-test":      2.5, # 6 test suites, structured output
     "research-scout":        2.5, # Daily scan, filtering, filing
 

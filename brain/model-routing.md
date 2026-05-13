@@ -1,7 +1,7 @@
 # Model Routing Strategy
 
-Last updated: 2026-05-02
-Updated by: Oscar (Vulkan GPU benchmark session)
+Last updated: 2026-05-13
+Updated by: Oscar (Qwen3-Coder Tier 2.5 promotion)
 Next review: when server has been live 4 weeks
 
 ---
@@ -28,11 +28,11 @@ into every agent prompt via the spawn script.
 ## The Four-Tier Architecture
 
 ```
-Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 38 tok/s eval hot — Vulkan iGPU)
-Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 15 tok/s eval hot — Vulkan iGPU)
-Tier 2.5 — Claude Haiku 4.5      ($1/$5 per MTok)
-Tier 3 — Claude Sonnet 4.6       ($3/$15 per MTok)
-Tier 4 — Claude Opus 4.7         ($5/$25 per MTok, escalation only)
+Tier 1   — Gemma 4 E2B (Ollama)              (local, free, 38 tok/s eval hot — Vulkan iGPU)
+Tier 2   — Gemma 4 E4B (Ollama)              (local, free, 15 tok/s eval hot — Vulkan iGPU)
+Tier 2.5 — Qwen3-Coder 30B-A3B (Ollama)     (local, free, 1.08s first token, Q4_K_M, 19GB RAM)
+Tier 3   — Claude Sonnet 4.6                 ($3/$15 per MTok)
+Tier 4   — Claude Opus 4.7                   ($5/$25 per MTok, escalation only)
 ```
 
 The routing logic is simple: use the lowest tier that
@@ -44,14 +44,14 @@ anything ambiguous. Never use Tier 4 as a first attempt.
 ## Confirmed Pricing (March 2026)
 
 ```
-Model                    Input           Output
-────────────────────────────────────────────────
-Gemma 4 E2B (Ollama)     Free            Free
-Gemma 4 E4B (Ollama)     Free (local)    Free (local)
-Claude Haiku 4.5         $1.00/MTok      $5.00/MTok
-Claude Sonnet 4.6        $3.00/MTok      $15.00/MTok
-Claude Opus 4.7          $5.00/MTok      $25.00/MTok
-────────────────────────────────────────────────
+Model                              Input           Output
+──────────────────────────────────────────────────────────
+Gemma 4 E2B (Ollama)               Free            Free
+Gemma 4 E4B (Ollama)               Free (local)    Free (local)
+Qwen3-Coder 30B-A3B (Ollama)       Free (local)    Free (local)
+Claude Sonnet 4.6                  $3.00/MTok      $15.00/MTok
+Claude Opus 4.7                    $5.00/MTok      $25.00/MTok
+──────────────────────────────────────────────────────────
 
 MTok = million tokens
 
@@ -124,40 +124,53 @@ The 80B MoE version is deferred until larger hardware is available.
 
 ---
 
-### Tier 2.5 — Claude Haiku 4.5
+### Tier 2.5 — Qwen3-Coder 30B-A3B (Ollama, local, free)
 
 **Assigned to:**
 - integration-test-agent (6 structured test suites, every Sunday)
 - research-scout-agent (daily scan, filter, file pattern)
 
-**Why Tier 2.5 for these:**
+**Model details:**
+- Ollama tag: `qwen3-coder:30b-a3b-q4_K_M`
+- Invoke: `ollama run qwen3-coder:30b-a3b-q4_K_M --think=false`
+- First-token latency: **1.08s** (benchmark 2026-05-12)
+- Quantisation: Q4_K_M
+- RAM footprint: **19GB** (comfortably within UM890 Pro 96GB DDR5)
+- Cost: **free** (local Ollama inference)
+
+**Why Qwen3-Coder at Tier 2.5:**
 
 *Integration-test-agent:* runs 6 structured test suites
 with fixed logic — signal bus checks, file existence,
 JSON validity, registry consistency, CI pipeline,
 brain directory integrity. The task is bounded and
-well-defined, but it needs reliable tool use and
-clean structured output. Anthropic's reliability
-guarantees matter here because a silently wrong
-integration test report is worse than no report.
-At $1/$5 per MTok it costs a fraction of Sonnet.
+well-defined and requires clean structured JSON output.
+Qwen3-Coder passed the identical signal-agent benchmark
+with correct reasoning and clean JSON at 1.08s. Local
+inference removes the cost concern entirely.
 
 *Research-scout-agent:* daily scanning, filtering,
 and filing from fixed Tier 1 sources. The task
 requires judgment about relevance but operates
 on a fixed template with defined output format.
-Sonnet is overkill for reading arXiv abstracts
-and deciding whether they match 6 domain criteria.
-Haiku 4.5 achieves 73.3% on SWE-bench Verified —
-sufficient for structured filtering work.
+Qwen3-Coder's coding-focused training handles
+structured filtering and JSON output reliably.
 
-**Why not Tier 2 (local) for these:**
-Integration-test output is safety-critical — a missed
-failure cascades silently. The Anthropic model guarantee
-and tool-use reliability of Haiku is worth the small
-cost here. Research-scout runs daily; at Haiku pricing
-the daily cost is negligible while the consistency
-improvement over a local model is meaningful.
+**Why promoted from Tier 2 (Gemma E4B):**
+Gemma E4B failed the signal-agent task on 2026-05-12
+due to prompt complexity — it could not maintain
+correct JSON structure under a multi-section prompt.
+Qwen3-Coder 30B-A3B passed the identical test with
+clean JSON output and correct reasoning at 1.08s.
+The 30B parameter count at Q4_K_M gives significantly
+more reasoning depth than E4B at 9.6GB.
+
+**Previous Tier 2.5 model:**
+Claude Haiku 4.5 (`claude-haiku-4-5-20251001`, $1/$5 per MTok)
+was replaced on 2026-05-13. Haiku remains available as
+a fallback if Qwen3-Coder produces unreliable output
+for a specific task — escalate manually via `spawn_agent.sh`
+with `--model claude-haiku-4-5-20251001`.
 
 **Spawn command:**
 ```bash
@@ -273,8 +286,8 @@ Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
 signal-agent             2      Gemma 4 E4B (Ollama)     Well-defined
 code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
 training-librarian       2      Gemma 4 E4B (Ollama)     Structured
-integration-test         2.5    Claude Haiku 4.5         Reliability
-research-scout           2.5    Claude Haiku 4.5         Daily cadence
+integration-test         2.5    Qwen3-Coder 30B-A3B      Structured output
+research-scout           2.5    Qwen3-Coder 30B-A3B      Daily cadence
 quant-research           3      Claude Sonnet 4.6        Stats reasoning
 backtest-agent           3      Claude Sonnet 4.6        Multi-file valid
 market-builder           3      Claude Sonnet 4.6        API multi-file
@@ -292,11 +305,11 @@ escalation (any)         4      Claude Opus 4.7          3x Sonnet fail
 Based on system design and agent cadences:
 
 ```
-Tier 1 (Gemma 4 E2B):         ~40-50% of requests, $0 cost
-Tier 2 (Gemma 4 E4B):         ~30-40% of requests, $0 cost
-Tier 2.5 (Haiku 4.5):         ~5-10% of requests, ~$1/$5 per MTok
-Tier 3 (Sonnet 4.6):          ~15-20% of requests, ~$3/$15 per MTok
-Tier 4 (Opus 4.7):            ~1-5% of requests, ~$5/$25 per MTok
+Tier 1   (Gemma 4 E2B):              ~40-50% of requests, $0 cost
+Tier 2   (Gemma 4 E4B):              ~30-40% of requests, $0 cost
+Tier 2.5 (Qwen3-Coder 30B-A3B):     ~5-10% of requests, $0 cost (local)
+Tier 3   (Sonnet 4.6):               ~15-20% of requests, ~$3/$15 per MTok
+Tier 4   (Opus 4.7):                 ~1-5% of requests, ~$5/$25 per MTok
 ```
 
 The majority of token spend flows from Tier 3. Quant-research
@@ -312,7 +325,8 @@ first when reviewing weekly costs.
 The orchestrator injects priorities.md, model-routing.md,
 and the agent template into every prompt. These are
 identical across runs. Enable prompt caching on all
-Tier 2.5, 3, and 4 calls once the server is live.
+Tier 3 and 4 calls once the server is live (Tier 2.5
+is now local — caching not applicable).
 The reference library sections injected by quant-research
 are large and stable — caching them reduces cost dramatically.
 
@@ -325,22 +339,26 @@ latency-sensitive.
 
 ---
 
-## Model Strings for Claude Code
+## Model Strings / Invoke Commands
 
 For use in `scripts/spawn_agent.sh` and any code that
-calls Claude directly:
+calls models directly:
 
 ```
-claude-haiku-4-5-20251001   ← Tier 2.5
-claude-sonnet-4-6            ← Tier 3
-claude-opus-4-7              ← Tier 4
+Tier 2.5:  ollama run qwen3-coder:30b-a3b-q4_K_M --think=false
+Tier 3:    claude-sonnet-4-6      (Claude CLI / API)
+Tier 4:    claude-opus-4-7        (Claude CLI / API)
 ```
 
-The Haiku string includes a date suffix (`20251001`) because
-Haiku 4.5 was versioned differently from the Sonnet 4.6 /
-Opus 4.7 family. Use these exact strings. Do not use older
-strings (claude-sonnet-4-5, claude-opus-4-5) — those
-refer to the previous generation.
+Tier 2.5 is now local Ollama — no API key or model string needed.
+
+Haiku fallback (use only if Qwen3-Coder fails a specific task):
+```
+claude-haiku-4-5-20251001   ← Haiku 4.5 fallback (not default Tier 2.5)
+```
+
+Do not use older strings (claude-sonnet-4-5, claude-opus-4-5) —
+those refer to the previous generation.
 
 ---
 
@@ -457,9 +475,9 @@ Task is well-defined with clear inputs and outputs,
 runs frequently, mechanical in nature?
 → Tier 2 (Gemma 4 E4B, free)
 
-Task needs Anthropic reliability, runs on a schedule,
-bounded scope but judgment required?
-→ Tier 2.5 (Claude Haiku 4.5, $1/$5 per MTok)
+Task needs structured JSON output, runs on a schedule,
+bounded scope but more reasoning depth than E4B?
+→ Tier 2.5 (Qwen3-Coder 30B-A3B, local/free, 1.08s)
 
 Task requires complex multi-file reasoning, statistical
 validity, reading across reference library simultaneously?
@@ -508,12 +526,27 @@ OLLAMA_VULKAN=1, UMA Frame Buffer = 4G
 | Gemma 4 E2B   | 6.9s      | 211ms    | 37.97        | 216                 | Fully VRAM-resident at 4G      |
 | Gemma 4 E4B   | 12.1s     | 223ms    | 14.79        | 388                 | Partially VRAM-bound at 4G; upgrade BIOS to 8G for ~20-25 tok/s |
 
+### May 12 2026 — Qwen3-Coder 30B-A3B benchmark
+UM890 Pro (Vulkan iGPU active), Ollama tag: qwen3-coder:30b-a3b-q4_K_M
+
+| Model                    | Size  | Time (first tok) | Decision                |
+|--------------------------|-------|------------------|-------------------------|
+| Qwen3-Coder 30B-A3B Q4  | 19GB  | 1.08s            | TIER 2.5 PRIMARY        |
+
+Test: signal-agent task (multi-section prompt, JSON output required).
+Gemma E4B failed this test on 2026-05-12 — could not maintain
+correct JSON structure. Qwen3-Coder passed with clean JSON output
+and correct reasoning. Promoted to Tier 2.5; Gemma E4B remains Tier 2.
+
+---
+
 Key finding: thinking mode must be disabled for Tier 1/2 tasks.
 Gemma 4 E2B with --think=false is 12x faster than with thinking on.
 All Ollama calls must pass --think=false for classification/routing tasks.
 Thinking mode only appropriate for complex reasoning at Tier 2+.
 
 Invoke commands:
-  Tier 1: ollama run gemma4:e2b --think=false
-  Tier 2: ollama run gemma4:e4b --think=false
+  Tier 1:     ollama run gemma4:e2b --think=false
+  Tier 2:     ollama run gemma4:e4b --think=false
+  Tier 2.5:   ollama run qwen3-coder:30b-a3b-q4_K_M --think=false
   Tier 1 fallback: ollama run mistral
