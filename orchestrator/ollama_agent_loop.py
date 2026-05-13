@@ -516,13 +516,26 @@ def _dispatch(name: str, args: dict, allowed: list[str]) -> str:
 
 
 # ─────────────────────────────────────────────
-# FALLBACK JSON TOOL-CALL PARSER
+# FALLBACK TOOL-CALL PARSERS
 # ─────────────────────────────────────────────
 
-# Patterns for models that embed tool calls in text content rather than using
-# the structured tool_calls field (e.g., some Ollama models in reasoning mode).
+# Some Ollama models embed tool calls in text content rather than using the
+# structured tool_calls field. Two fallback parsers handle this:
+#
+# 1. JSON fallback (_fallback_parse): fenced code blocks or inline JSON objects
+#    containing {"name": "...", "arguments": {...}}. Tried first.
+#
+# 2. XML fallback (_xml_fallback_parse): Qwen3-Coder XML-style format:
+#      <function=name>
+#        <parameter=key>value</parameter>
+#      </function>
+#    Tried second, only when JSON fallback finds nothing.
+
 _FENCE_RE = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
 _INLINE_RE = re.compile(r'\{[^{}]*"name"\s*:\s*"[^"]+"\s*,\s*"arguments"\s*:\s*\{', re.DOTALL)
+
+_XML_FUNC_RE = re.compile(r"<function=(\w+)>(.*?)</function>", re.DOTALL)
+_XML_PARAM_RE = re.compile(r"<parameter=(\w+)>(.*?)</parameter>", re.DOTALL)
 
 
 def _fallback_parse(content: str) -> dict | None:
@@ -569,6 +582,23 @@ def _fallback_parse(content: str) -> dict | None:
             return {"name": fn["name"], "arguments": fn.get("arguments", {})}
 
     return None
+
+
+def _xml_fallback_parse(content: str) -> list[dict]:
+    """
+    Extract tool calls from Qwen3-Coder XML-style format:
+      <function=name><parameter=key>value</parameter></function>
+    Returns a list of {"name": str, "arguments": dict}.
+    """
+    results = []
+    for m in _XML_FUNC_RE.finditer(content):
+        func_name = m.group(1)
+        body = m.group(2)
+        arguments = {}
+        for pm in _XML_PARAM_RE.finditer(body):
+            arguments[pm.group(1).strip()] = pm.group(2).strip()
+        results.append({"name": func_name, "arguments": arguments})
+    return results
 
 
 # ─────────────────────────────────────────────
@@ -667,6 +697,13 @@ def run_loop(
                     f"{parsed['name']}"
                 )
                 raw_tool_calls = [{"function": parsed}]
+            else:
+                xml_parsed = _xml_fallback_parse(content)
+                if xml_parsed:
+                    log.info(
+                        f"[{task_id}] xml_fallback_parser: detected {len(xml_parsed)} tool calls"
+                    )
+                    raw_tool_calls = [{"function": tc} for tc in xml_parsed]
 
         # ── no tool calls → model is done ──
         if not raw_tool_calls:
