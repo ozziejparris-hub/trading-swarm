@@ -259,7 +259,7 @@ AGENT_TIER_DEFAULTS = {
 
     # Tier 3 — Claude Sonnet 4.6 ($3/$15 per MTok)
     # Complex multi-file reasoning, statistical validity required
-    "signal-agent":          3,   # Tool execution required (SQLite, file I/O, Telegram)
+    "signal-agent":          3,   # Tier 3 — weekly run, large context (signals.json + feedback.json), Sonnet required
     "quant-research":        3,   # Phase 1-5 research questions
     "backtest-agent":        3,   # DSR, PBO, 7-sins validation
     "market-builder":        3,   # Multi-file API work, error design

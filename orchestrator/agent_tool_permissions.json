@@ -1,11 +1,14 @@
 {
-  "signal-agent": [
-    "read_file",
-    "write_file",
-    "append_to_json_array",
-    "run_sql",
-    "send_telegram"
-  ],
+  "signal-agent": {
+    "tools": [
+      "read_file",
+      "write_file",
+      "append_to_json_array",
+      "run_sql",
+      "send_telegram"
+    ],
+    "note": "signal-agent uses Tier 3 Sonnet in production — wrapper available for lightweight subtasks only"
+  },
   "integration-test-agent": [
     "read_file",
     "write_file",

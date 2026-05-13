@@ -490,6 +490,41 @@ architectural in scope?
 → Tier 4 (Claude Opus 4.7, $5/$25 per MTok)
 ```
 
+---
+
+## Sonnet/Local Split Pattern
+
+The agentic loop wrapper (orchestrator/ollama_agent_loop.py) enables local Ollama
+models to execute real actions (file I/O, SQL, Telegram) rather than just producing
+text. However, context window size is the binding constraint — agents that accumulate
+large tool results across many iterations will exceed Qwen3-Coder 30B-A3B's practical
+context limit (~20-25K tokens with history).
+
+The correct architecture is therefore:
+
+SONNET (Tier 3) for agents where:
+- Context grows large across iterations (signals.json 30KB + feedback.json 44KB + prompt)
+- Task requires reading multiple large brain files simultaneously
+- Statistical reasoning across reference library is needed
+- Runs infrequently (weekly or on-demand) — cost is not a concern
+- Examples: signal-agent, quant-research, backtest-agent, performance-analyst
+
+LOCAL AGENTIC LOOP (Tier 2/2.5 via ollama_agent_loop.py) for agents where:
+- Context stays small and bounded (< 15K tokens total across all iterations)
+- Task is structured with clear inputs and outputs
+- Runs frequently (daily or multiple times per day) — cost matters
+- Tool calls are few (< 10) and results are compact
+- Examples: integration-test-agent, code-hygiene-agent, training-librarian-agent,
+  research-scout-agent
+
+SONNET ORCHESTRATING LOCAL for future architecture:
+- Sonnet handles high-level reasoning and decision-making
+- Local models handle bounded subtasks within a Sonnet-orchestrated workflow
+- Sonnet spawns local agents for specific data retrieval or classification tasks
+- Results returned to Sonnet for final synthesis
+- This pattern reduces Sonnet token cost while preserving reasoning quality
+
+---
 
 ## GPU Acceleration Setup
 

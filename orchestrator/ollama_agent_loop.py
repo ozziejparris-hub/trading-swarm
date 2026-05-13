@@ -796,7 +796,8 @@ def _load_permissions(permissions_file: str, agent_type: str) -> list[str]:
     except Exception as e:
         log.error(f"failed to parse permissions file: {e}")
         return []
-    tools: list[str] = data.get(agent_type, [])
+    entry = data.get(agent_type, [])
+    tools: list[str] = entry.get("tools", []) if isinstance(entry, dict) else entry
     if not tools:
         log.warning(f"no tool permissions defined for agent type: {agent_type!r}")
     return tools
