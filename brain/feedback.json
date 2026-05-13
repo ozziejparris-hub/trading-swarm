@@ -45,6 +45,40 @@
     ],
     "scout_cycles": [
         {
+            "cycle_date": "2026-05-13",
+            "cycle_id": "scout-20260513",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "polymarket-api-docs",
+                "prediction-market-research"
+            ],
+            "findings_surfaced": 1,
+            "findings_discarded": 12,
+            "pending_review_items": [
+                "2026-05-13-08-agentic-harness-engineering-observability-driven.md"
+            ],
+            "discarded": [
+                "Continual Harness (2605.09998) — arxiv ID could not be verified; likely hallucination by fetch tool",
+                "ToolCUA (2605.12481) — GUI orchestration, not trading-domain relevant",
+                "MCP-Cosmos (2605.09131) — low signal for Phase 2 priorities",
+                "Executable Agentic Memory (2605.12294) — duplicate signal with pending DeMem paper",
+                "Information Leakage at Population Scale (2605.00459) — already in pending-review from 2026-05-04",
+                "ForesightFlow (2605.00493) — already in pending-review from 2026-05-04 as companion finding",
+                "DeepSeek V4 open weights — already in pending-review from 2026-05-04; benchmarks verified but no new information since last cycle",
+                "Polymarket API updates — April 28 exchange upgrade (USDC.e → pUSD, nonce fixes) already known; no new updates in last 7 days",
+                "ELO rating prediction research — search returned mostly older papers (2021-2024), no new May 2026 empirical studies found",
+                "Crowd vs elite forecasters — relevant but covered in pending Information Leakage papers; no new findings beyond what cycle 4 surfaced",
+                "Anthropic news — no announcements in last 48 hours",
+                "HackerNews — no items above 100 points in target domains today"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Sixth scout cycle (Wednesday). Pending queue is already substantial (25 items as of start of cycle). Conservative filtering applied: 1 finding surfaced vs 5 available slots. Agentic Harness Engineering (2604.25850) is new and directly relevant to Priority 2 (signal-agent stability). Primary discards: (1) information leakage research already thoroughly covered in pending queue from cycles 4-5, (2) major model releases (DeepSeek V4) already pending, (3) arxiv IDs from HuggingFace fetch could not be verified independently (risk of hallucination). Polymarket API status quo — no new breaking changes. Request: Oscar should prioritize pending-review processing, especially polymarket-info-leakage items, before next scout cycle adds more to queue. Twitter/X still inaccessible for source monitoring."
+        },
+        {
             "cycle_date": "2026-05-01",
             "cycle_id": "scout-20260501",
             "sources_checked": [
@@ -402,6 +436,43 @@
             "escalations_sent": [],
             "weekly_digest_written": false,
             "notes": "Twelfth scout cycle (Sunday). 3 findings from ~15 evaluated items. Self-improvement catch: arXiv:2605.04004 OHLCV and Polymarket V2 pUSD filed initially — both removed after checking feedback.json (OHLCV discarded cycles 9 and 11; V2 approved cycle 1 + discarded cycle 11). Three strong findings: (1) CMU Specialist Agents lineage feedback (2605.05724) — autonomous ML research loop with structured failure labels feeding next agent proposals; directly improves feedback.json schema design; (2) LLM Stock Forecasting Hedge Fund Pitfalls (2605.05211) — six practical pitfalls from practitioner review, three not in current 7-sins checklist; (3) SkillOS (2605.06614) — self-evolving agents via frozen executor + trainable skill curator; architectural insight applicable to training-librarian-agent Phase 3 design. HuggingFace heavy on RL training papers this week. Karpathy autoresearch idle 7 weeks — deferred to monthly checks. Convergent theme: three independent self-evolving agent papers this week (CMU 2605.05724, SkillOS 2605.06614, Claude Dreaming filed cycle 11) — Phase 3 self-improvement layer is validated by the broader research community."
+        },
+        {
+            "cycle_date": "2026-05-12",
+            "cycle_id": "scout-20260512",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "anthropic-news",
+                "hackernews-best",
+                "latent-space",
+                "polymarket-blog"
+            ],
+            "findings_surfaced": 5,
+            "findings_discarded": 10,
+            "pending_review_items": [
+                "2026-05-12-08-pmxt-unified-prediction-market-sdk-free-data-archive.md",
+                "2026-05-12-08-agentforesight-online-failure-prediction-multi-agent.md",
+                "2026-05-12-08-demem-decision-centric-agent-memory-rate-distortion.md",
+                "2026-05-12-08-slim-dynamic-skill-lifecycle-strategy-retirement.md",
+                "2026-05-12-08-polymarket-resolution-zone-price-dynamics.md"
+            ],
+            "discarded": [
+                "Shepherd (2605.10913) — runtime substrate for meta-agents with execution tracing; 56 pages, complementary to AgentForesight but read-together recommendation sufficient; no standalone actionable insight beyond what AgentForesight covers",
+                "TMAS multi-agent synergy (2605.10344) — test-time compute scaling via agent collaboration; inference optimization not applicable to our API-based system",
+                "FlashEvolve (2605.08520) — asynchronous stage orchestration for agent self-evolution; 2 upvotes, too low; similar concept to SkillOS already in pending-review (cycle 12)",
+                "SEIF self-evolving instruction following (2605.07465) — RL training paper; not applicable to API-based system; 3 upvotes",
+                "PRISM secret leakage detection (2605.10614) — security framework for multi-agent pipelines; interesting but no secrets in our inter-agent signals by design; current phase priority is signal quality not security audit",
+                "Manipulation/Insider/Leverage paper (2605.10486) — only abstract available; theoretical framework on leveraged event-linked markets; no Polymarket-specific empirical findings in accessible content; core microstructure insight consolidated into resolution-zone finding",
+                "Resolution-aware perpetual futures paper (2605.10400) — design paper rated 'non-deployable'; microstructure empirical findings extracted into resolution-zone finding (filed separately)",
+                "Anthropic financial services agents (May 5) — already discarded cycle 9; enterprise finance templates, no model capability or API changes",
+                "Latent Space: Anthropic 10x/year growth story (May 9) — business context only; no technical insight for trading swarm",
+                "HackerNews top items — no items in target domains above 100 points today; 'Local AI needs to be the norm' (1798 pts) too generic; 'Running local models on M4' (552 pts) Apple Silicon not our hardware target"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Thirteenth scout cycle (Tuesday). All 5 slots used — highest quality cycle since cycle 7. Key finding: PMXT (pmxt-dev/pmxt, MIT, 1.7k stars, v2.40.5) is the 'CCXT for prediction markets' — unified SDK for Polymarket/Kalshi/10+ exchanges with free historical Parquet archive. Directly matches the MCP/Market Data Watch List in task template. Three arXiv papers filed (AgentForesight online failure detection, DeMem decision-centric memory, SLIM skill lifecycle, Polymarket resolution-zone microstructure). Polymarket blog unreachable. Karpathy autoresearch deferred to monthly per cycle 10 decision. No model routing escalations triggered. Self-improvement note: zero duplicate errors this cycle — feedback.json history check performed before all file writes."
         },
         {
             "cycle_date": "2026-05-03",
