@@ -1,0 +1,29 @@
+{
+  "signal-agent": [
+    "read_file",
+    "write_file",
+    "append_to_json_array",
+    "run_sql",
+    "send_telegram"
+  ],
+  "integration-test-agent": [
+    "read_file",
+    "write_file",
+    "run_sql",
+    "run_shell",
+    "send_telegram"
+  ],
+  "code-hygiene-agent": [
+    "read_file",
+    "write_file",
+    "run_shell"
+  ],
+  "training-librarian-agent": [
+    "read_file",
+    "write_file"
+  ],
+  "research-scout-agent": [
+    "read_file",
+    "write_file"
+  ]
+}
