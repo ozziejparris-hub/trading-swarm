@@ -99,9 +99,12 @@ def _load_env_file(path: Path) -> dict[str, str]:
 # TOOL: read_file
 # ─────────────────────────────────────────────
 
+READ_CONTEXT_PREFIX = "/tmp/swarm-context/"
+
+
 def tool_read_file(path: str) -> str | dict:
-    if not path.startswith(READ_PREFIX):
-        return {"error": f"path must start with {READ_PREFIX!r}"}
+    if not path.startswith(READ_PREFIX) and not path.startswith(READ_CONTEXT_PREFIX):
+        return {"error": f"path must start with {READ_PREFIX!r} or {READ_CONTEXT_PREFIX!r}"}
     p = Path(path)
     if not p.exists():
         return {"error": f"file not found: {path}"}
@@ -366,7 +369,7 @@ TOOL_DEFINITIONS: list[dict] = [
             "description": (
                 "Read a file from disk and return its text content. "
                 "Files larger than 50 KB are truncated with a notice. "
-                "Path must start with /home/parison/."
+                "Path must start with /home/parison/ or /tmp/swarm-context/."
             ),
             "parameters": {
                 "type": "object",
