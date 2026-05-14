@@ -36,7 +36,7 @@ It is $(date +%A) — if Monday, write weekly digest too."
 
 bash scripts/spawn_agent.sh \
   "$TASK_ID" \
-  "research-scout" \
+  "research-scout-agent" \
   "2.5" \
   "$TASK_DESC" >> logs/research_scout.log 2>&1
 

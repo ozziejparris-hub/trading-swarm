@@ -254,7 +254,7 @@ AGENT_TIER_DEFAULTS = {
 
     # Tier 2.5 — Qwen3-Coder 30B-A3B (local, free, 1.08s)
     # Text-output reasoning only — no tool execution, file I/O, or SQL
-    "research-scout":        2.5, # Daily scan, filtering, filing
+    "research-scout-agent":  2.5, # Daily scan, filtering, filing
 
     # Tier 3 — Claude Sonnet 4.6 ($3/$15 per MTok)
     # Complex multi-file reasoning, statistical validity required
