@@ -247,10 +247,10 @@ AGENT_TIER_DEFAULTS = {
     # Pattern matching on text, near-zero reasoning needed
     "orchestrator-immune":   1,   # 10-min health loop
 
-    # Tier 2 — Qwen3-Coder-Next (local, free)
-    # Well-defined tasks, clear inputs/outputs
-    "code-hygiene-agent":    2,   # Dead code scan, duplicate detection
-    "training-librarian":    2,   # File audits, consistency checks
+    # Tier 3 promotions — quality-critical agents
+    # Local models fabricated findings due to shell whitelist restrictions
+    "code-hygiene-agent":    3,   # Quality-critical — local model fabricated security vulns (2026-05-14)
+    "training-librarian":    3,   # Quality-critical — local model fabricated findings (2026-05-14)
 
     # Tier 2.5 — Qwen3-Coder 30B-A3B (local, free, 1.08s)
     # Text-output reasoning only — no tool execution, file I/O, or SQL

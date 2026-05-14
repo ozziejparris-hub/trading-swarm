@@ -17,7 +17,7 @@ cd "$SWARM"
 bash scripts/spawn_agent.sh \
     "hygiene-$(date +%Y%m%d)" \
     "code-hygiene-agent" \
-    "2" \
+    "3" \
     "Run weekly code hygiene audit. Check both repos: /home/parison/projects/first-repo and /home/parison/trading-swarm. Full audit per template." >> "$LOG" 2>&1
 EXIT_CODE=$?
 

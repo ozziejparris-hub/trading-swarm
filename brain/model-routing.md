@@ -92,29 +92,7 @@ check would be absurd cost for zero benefit.
 ### Tier 2 — Gemma 4 E4B (Ollama)
 
 **Assigned to:**
-- code-hygiene-agent (dead code scan, duplicate detection, security scan)
-- training-librarian-agent (file audits, consistency checks, taxonomy)
-
-**Why Tier 2 for these:**
-All three have well-defined tasks with clear inputs and
-outputs. Signal-agent queries SQLite and writes JSON —
-the task structure is fixed and repeatable. Code-hygiene
-runs regex patterns across files. Training-librarian
-compares file contents against templates. None require
-multi-step statistical reasoning or reading across
-large, ambiguous codebases simultaneously.
-
-Qwen3-Coder-Next runs locally on the server's hardware
-(128GB RAM), making these tasks completely free after
-the server arrives. It has a 256K context window and
-achieves >70% on SWE-bench Verified — sufficient for
-these well-scoped tasks.
-
-**Hardware requirement:**
-Qwen3-Coder-Next target: 14B or 32B parameter version at Q4
-quantisation (~10-20GB RAM). The UM890 Pro (96GB DDR5) handles
-this comfortably with RAM to spare for concurrent processes.
-The 80B MoE version is deferred until larger hardware is available.
+*(code-hygiene-agent and training-librarian-agent were moved to Tier 3 on 2026-05-14 — see Tier 3 section)*
 
 **Spawn command:**
 ```bash
@@ -175,6 +153,8 @@ with `--model claude-haiku-4-5-20251001`.
 **Assigned to:**
 - integration-test-agent (6 structured test suites, every Sunday — reverted 2026-05-14)
 - signal-agent (SQLite queries, file writes, Telegram sends — requires tool execution)
+- code-hygiene-agent (dead code scan, duplicate detection, security scan — promoted 2026-05-14)
+- training-librarian-agent (file audits, consistency checks, taxonomy — promoted 2026-05-14)
 - quant-research-agent (Phase 1-5 research questions)
 - backtest-agent (DSR, PBO, 7-sins validation)
 - market-builder-agent (multi-file API connectors, error design)
@@ -183,6 +163,8 @@ with `--model claude-haiku-4-5-20251001`.
 - orchestrator main loop (context window, routing, agent spawning)
 
 **Why Tier 3 for these:**
+
+*Code-hygiene-agent and training-librarian-agent:* Quality-critical agents — local models fabricated findings due to shell whitelist restrictions preventing actual codebase access. Tier 3 required for reliable output. Code-hygiene fabricated security vulnerabilities; training-librarian feeds the reference library which feeds research decisions. False outputs from either are worse than no output.
 
 *Integration-test-agent:* Reverted 2026-05-14 — agentic loop produced 10 fabricated CRITICAL failures due to worktree permission issues and compressed file misinterpretation. Safety-critical agent requires Tier 3 reliability.
 
@@ -278,8 +260,8 @@ Agent                    Tier   Model                    Reason
 ─────────────────────────────────────────────────────────────────────
 Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
 Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
-code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
-training-librarian       2      Gemma 4 E4B (Ollama)     Structured
+code-hygiene-agent       3      Claude Sonnet 4.6        Quality-critical (promoted 2026-05-14 — local model fabricated security vulns)
+training-librarian       3      Claude Sonnet 4.6        Quality-critical (promoted 2026-05-14 — local model fabricated findings)
 research-scout           2.5    Qwen3-Coder 30B-A3B      Daily cadence
 integration-test         3      Claude Sonnet 4.6        Safety-critical (reverted 2026-05-14 — local model fabricated CRITICAL alerts)
 signal-agent             3      Claude Sonnet 4.6        Tool execution required (file I/O, SQLite, Telegram)
@@ -501,15 +483,15 @@ SONNET (Tier 3) for agents where:
 - Statistical reasoning across reference library is needed
 - Runs infrequently (weekly or on-demand) — cost is not a concern
 - Safety-critical: false positives from local model would cause fabricated CRITICAL alerts
-- Examples: signal-agent, quant-research, backtest-agent, performance-analyst, integration-test-agent (safety-critical — false positives from local model caused fabricated CRITICAL alerts)
+- Quality-critical: fabricated findings from local model are worse than no output (codebase access blocked by shell whitelist)
+- Examples: signal-agent, quant-research, backtest-agent, performance-analyst, integration-test-agent (safety-critical), code-hygiene-agent (quality-critical — fabricated security vulns), training-librarian-agent (quality-critical — fabricated findings)
 
 LOCAL AGENTIC LOOP (Tier 2/2.5 via ollama_agent_loop.py) for agents where:
 - Context stays small and bounded (< 15K tokens total across all iterations)
 - Task is structured with clear inputs and outputs
 - Runs frequently (daily or multiple times per day) — cost matters
 - Tool calls are few (< 10) and results are compact
-- Examples: integration-test-agent, code-hygiene-agent, training-librarian-agent,
-  research-scout-agent
+- Examples: research-scout-agent
 
 SONNET ORCHESTRATING LOCAL for future architecture:
 - Sonnet handles high-level reasoning and decision-making
