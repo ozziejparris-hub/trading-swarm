@@ -254,11 +254,11 @@ AGENT_TIER_DEFAULTS = {
 
     # Tier 2.5 — Qwen3-Coder 30B-A3B (local, free, 1.08s)
     # Text-output reasoning only — no tool execution, file I/O, or SQL
-    "integration-test":      2.5, # 6 test suites, structured output
     "research-scout":        2.5, # Daily scan, filtering, filing
 
     # Tier 3 — Claude Sonnet 4.6 ($3/$15 per MTok)
     # Complex multi-file reasoning, statistical validity required
+    "integration-test":      3,   # Safety-critical — reverted 2026-05-14 (local model produced fabricated CRITICAL alerts)
     "signal-agent":          3,   # Tier 3 — weekly run, large context (signals.json + feedback.json), Sonnet required
     "quant-research":        3,   # Phase 1-5 research questions
     "backtest-agent":        3,   # DSR, PBO, 7-sins validation

@@ -17,7 +17,7 @@ cd "$SWARM"
 bash scripts/spawn_agent.sh \
     "integration-$(date +%Y%m%d)" \
     "integration-test-agent" \
-    "2.5" \
+    "3" \
     "Run full integration test suite. Check all 6 suites: signal bus, agent cadence, feedback loop, registry consistency, CI pipeline, brain completeness." >> "$LOG" 2>&1
 EXIT_CODE=$?
 

@@ -128,7 +128,6 @@ The 80B MoE version is deferred until larger hardware is available.
 > **WARNING: Ollama stdin models (Tiers 1, 2, 2.5) receive a prompt and produce text output only. They cannot execute tools, write files, run SQL, or interact with the filesystem. Any agent that must perform real actions (not just reason about them) requires Tier 3+ (Claude CLI with tool use). Do not assign action-taking agents to Tier 2.5 or below without first implementing an Ollama tool-calling wrapper.**
 
 **Assigned to:**
-- integration-test-agent (6 structured test suites, every Sunday)
 - research-scout-agent (daily scan, filter, file pattern)
 
 **Model details:**
@@ -140,15 +139,6 @@ The 80B MoE version is deferred until larger hardware is available.
 - Cost: **free** (local Ollama inference)
 
 **Why Qwen3-Coder at Tier 2.5:**
-
-*Integration-test-agent:* runs 6 structured test suites
-with fixed logic — signal bus checks, file existence,
-JSON validity, registry consistency, CI pipeline,
-brain directory integrity. The task is bounded and
-well-defined and requires clean structured JSON output.
-Qwen3-Coder passed the identical signal-agent benchmark
-with correct reasoning and clean JSON at 1.08s. Local
-inference removes the cost concern entirely.
 
 *Research-scout-agent:* daily scanning, filtering,
 and filing from fixed Tier 1 sources. The task
@@ -183,6 +173,7 @@ with `--model claude-haiku-4-5-20251001`.
 ### Tier 3 — Claude Sonnet 4.6
 
 **Assigned to:**
+- integration-test-agent (6 structured test suites, every Sunday — reverted 2026-05-14)
 - signal-agent (SQLite queries, file writes, Telegram sends — requires tool execution)
 - quant-research-agent (Phase 1-5 research questions)
 - backtest-agent (DSR, PBO, 7-sins validation)
@@ -192,6 +183,8 @@ with `--model claude-haiku-4-5-20251001`.
 - orchestrator main loop (context window, routing, agent spawning)
 
 **Why Tier 3 for these:**
+
+*Integration-test-agent:* Reverted 2026-05-14 — agentic loop produced 10 fabricated CRITICAL failures due to worktree permission issues and compressed file misinterpretation. Safety-critical agent requires Tier 3 reliability.
 
 *Quant-research-agent:* Statistical reasoning on subtle
 points fails with weaker models. RQ1.1 (ELO persistence),
@@ -287,8 +280,8 @@ Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
 Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
 code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
 training-librarian       2      Gemma 4 E4B (Ollama)     Structured
-integration-test         2.5    Qwen3-Coder 30B-A3B      Structured output
 research-scout           2.5    Qwen3-Coder 30B-A3B      Daily cadence
+integration-test         3      Claude Sonnet 4.6        Safety-critical (reverted 2026-05-14 — local model fabricated CRITICAL alerts)
 signal-agent             3      Claude Sonnet 4.6        Tool execution required (file I/O, SQLite, Telegram)
 quant-research           3      Claude Sonnet 4.6        Stats reasoning
 backtest-agent           3      Claude Sonnet 4.6        Multi-file valid
@@ -507,7 +500,8 @@ SONNET (Tier 3) for agents where:
 - Task requires reading multiple large brain files simultaneously
 - Statistical reasoning across reference library is needed
 - Runs infrequently (weekly or on-demand) — cost is not a concern
-- Examples: signal-agent, quant-research, backtest-agent, performance-analyst
+- Safety-critical: false positives from local model would cause fabricated CRITICAL alerts
+- Examples: signal-agent, quant-research, backtest-agent, performance-analyst, integration-test-agent (safety-critical — false positives from local model caused fabricated CRITICAL alerts)
 
 LOCAL AGENTIC LOOP (Tier 2/2.5 via ollama_agent_loop.py) for agents where:
 - Context stays small and bounded (< 15K tokens total across all iterations)
