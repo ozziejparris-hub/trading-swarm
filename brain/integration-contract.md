@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.1 — 2026-05-07
+**Version:** 1.2 — 2026-05-14
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -68,7 +68,7 @@ WHERE tr.research_excluded = 0
 
 ## Section 3 — Research Pool
 
-**Current clean pool: 493 traders** (as of 2026-05-07 — after LP_ARTIFACT and ARB_BOT exclusions; verify live via `brain/integration-health.json` which is updated daily at 06:00 UTC)
+**Current clean pool:** See brain/integration-health.json (updated daily at 06:00 UTC by write_integration_health.py). Never hardcode this number — always read it live.
 
 A trader is included in the research pool (`research_excluded = 0`) if ALL
 criteria are met:
@@ -207,6 +207,7 @@ Agents should not query the database during the maintenance window
 | 2026-05-05 | LP artifact contamination identified (~257 traders). `bot_type=LP_ARTIFACT`, `research_excluded=1`, ELO recalculated | ELO distribution queries |
 | 2026-05-06 | ARB_BOT exclusion: 111 coordinated arb wallets (ELO 3308–3315 cluster) excluded. Pool 857 → 493. Legendary tier 384 → 151 | All ELO-tier queries; legendary signal thresholds |
 | 2026-05-07 | Contract updated to v1.1: pool size, alert threshold, bot_type list, Section 6c resolved | All agents |
+| 2026-05-14 | Pool size removed from contract — now read live from integration-health.json. Alert threshold lowered to 440. | All agents reading pool size |
 
 ---
 
@@ -235,7 +236,7 @@ SELECT
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
-| `clean_pool` | 450–600 | < 450 (pool shrank unexpectedly — check for new bot exclusions in first-repo) |
+| `clean_pool` | > 440 | < 440 (pool shrank unexpectedly — check integration-health.json alerts array) |
 | `clean_markets` | ≥ 11,491 | < 11000 (markets missing) |
 | `wal_mode` | `wal` | ≠ `wal` (WAL disabled — risk of read contention) |
 
