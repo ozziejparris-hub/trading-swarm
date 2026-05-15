@@ -18,6 +18,7 @@
       "run_shell",
       "send_telegram"
     ],
+    "note": "Tier 3 Sonnet — reverted 2026-05-14, fabricated CRITICAL failures at Tier 2.5",
     "compressed_context": "For local Ollama runs (Tier 2.5 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
   },
   "code-hygiene-agent": {
@@ -26,6 +27,7 @@
       "write_file",
       "run_shell"
     ],
+    "note": "Tier 3 Sonnet — reverted 2026-05-14, fabricated security vulnerabilities at Tier 2.5",
     "compressed_context": "For local Ollama runs (Tier 2 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
   },
   "training-librarian-agent": {
@@ -33,6 +35,7 @@
       "read_file",
       "write_file"
     ],
+    "note": "Tier 3 Sonnet — reverted 2026-05-14, similar profile to code-hygiene",
     "compressed_context": "For local Ollama runs (Tier 2 agentic loop): read /tmp/swarm-context/signals_compressed.json instead of brain/signals.json, /tmp/swarm-context/feedback_compressed.json instead of brain/feedback.json, /tmp/swarm-context/findings_compressed.json instead of brain/findings.json — pre-compressed versions updated before each agent run"
   },
   "research-scout-agent": {
