@@ -22,6 +22,23 @@ Why 95% and not 80% or 70%: our DB contains legendary traders (ELO > 2175) who h
 
 ---
 
+## ⚠ CRITICAL: Authoritative Research Pool Filter
+
+**Identified 2026-05-13 (performance-analyst Flag 3):** The simple `WHERE research_excluded=0` query returns 604 traders. The authoritative clean pool is 493. Always use the full explicit filter:
+
+```sql
+-- AUTHORITATIVE CLEAN POOL FILTER — always use this:
+WHERE research_excluded = 0
+  AND resolved_trades >= 20
+  AND bot_suspect = 0
+  AND wash_trade_suspect = 0
+-- Returns 493 as of 2026-05-13. research_excluded=0 alone returns 604 — do NOT use alone.
+```
+
+Root cause: update_research_exclusions.py's set-eligible logic is inconsistent with its reverse-exclusion logic. Until code-hygiene fixes this, the explicit filter is the authoritative query.
+
+---
+
 ## ARB_BOT Pattern
 
 Distinct from LPs, ARB_BOTs are coordinated wallet clusters that exploit price inefficiencies across markets or platforms. They are characterised by: rapid entry/exit within seconds, near-simultaneous trades across related markets, and wallet clustering (same controller, multiple addresses).

@@ -477,11 +477,12 @@ directional filter. 1/1 resolved signal correct (Ramaswamy NO, 2026-05-02).
 Not yet validated to ACTIVE — needs ≥20 resolved signals.
 Key insight: 95% directional threshold effectively filters LP positions.
 
-**STR-004 — Capital-Weighted Legendary Aggregate Signal (PRE-REGISTERED, 2026-05-08)**
-Founding case: Russia/Ukraine ceasefire market. 48.7pp divergence between
-legendary capital weighting (55.7% YES) and market price (7% YES).
-8 legendary traders, $1.74M combined. Resolves June 30 2026.
-Extends STR-003 to cover mixed-position legendary traders.
+**STR-004 — Capital-Weighted Legendary Aggregate Signal (EXPERIMENTAL, 0/1)**
+Founding case: Russia/Ukraine ceasefire market resolved NO on 2026-05-08.
+8 legendary traders, $1.74M, 55.7% YES vs market 7% YES — crowd was correct.
+n=1 failure, stop criterion <50% over 10 markets. Strategy continues.
+Open question: does capital weighting fail in asymmetric markets (<10% crowd)
+where legendary YES may be hedges rather than conviction bets?
 
 ### Category Calibration (from feedback-loop-agent)
 
@@ -525,6 +526,9 @@ with accumulated knowledge rather than from zero.
 - 2026-05-07: Category calibration: Geopolitics 92.3% (HIGH), Elections 46.7% (CAUTION).
 - 2026-05-08: STR-004 pre-registered: 48.7pp legendary/market divergence in founding case (Russia/Ukraine).
 - 2026-05-09: ELO calibration drift — legendary count 28x since March baseline. Investigate before June 1 rerun.
+- 2026-05-13: RQ0.1 and RQ0.2 re-run (May 13) — BOTH PASSED again. Clean pool 493 post-maintenance (588 pre-maintenance, 16 wash suspects removed by daily maintenance 2026-05-14). Next run due 2026-06-13.
+- 2026-05-08: STR-004 FIRST DATA POINT — founding case (Russia/Ukraine ceasefire) FAILED. Crowd at 7% YES was correct; 8 legendary traders at $1.74M 55.7% YES were wrong. n=1, stop criterion is <50% over 10 markets. Continue validation.
+- 2026-05-16: Research pool discrepancy — live `WHERE research_excluded=0` returns 604 traders vs 493 authoritative. Use explicit criteria: `research_excluded=0 AND resolved_trades≥20 AND bot_suspect=0 AND wash_trade_suspect=0` until code-hygiene fixes update_research_exclusions.py.
 
 
 ## Formal Research Questions
@@ -1220,6 +1224,48 @@ the edge exists — exactly the category this system targets. The position
 sizing ($10K-$95K range) and the odds range (2¢-18¢) are the empirical
 benchmarks for what informed geopolitics trading looks like in practice.
 Cross-reference against ELO system when geopolitics wallet data is pulled.
+
+---
+
+## Resolution-Zone Orderbook Thinning — New Pre-Resolution Signal Candidate
+
+**Identified:** 2026-05-12 (research-scout pending-review)
+**Source:** arXiv:2605.10400 — Polymarket resolution-zone microstructure analysis, 13,115 markets
+
+**The finding:** Polymarket orderbooks show "boundary depth asymmetry" — one side of the book
+thins predictably before resolution. In the final 24 hours, the thinning side correlates with
+the eventual resolution direction. This is independent of ELO signals.
+
+**Proposed RQ (pre-registration required before test):**
+In the 24 hours before resolution, does the YES/NO depth ratio predict the resolution direction?
+Test on PMXT v2 archive (archive.pmxt.dev, Parquet snapshots from 2026-04-13, 13,115 markets).
+
+**Backtest rule addition:** Any strategy that holds positions into the final 24h before resolution
+must be flagged for terminal-jump slippage risk (non-continuous price jumps documented).
+
+**Phase:** 4-5. Do not build before signal-layer validation is complete.
+**Data requirement:** Orderbook depth data — not available in local DB. Requires PMXT v2 archive.
+
+---
+
+## PMXT — Unified Prediction Market SDK + Free Historical Data Archive
+
+**Identified:** 2026-05-12 (research-scout pending-review)
+**Source:** github.com/pmxt-dev/pmxt — v2.40.5, MIT license, 1.7k stars
+
+**What it provides:**
+- Unified API across 10+ prediction markets (Polymarket, Kalshi, Limitless, Metaculus, etc.)
+- Free Parquet data archive at archive.pmxt.dev: hourly snapshots from 2026-04-13, millisecond
+  timestamps, 110,828+ markets
+- Potential Phase 6 execution layer: supports both Polymarket and Kalshi limit orders
+
+**Relevance to current research:**
+- quant-research-agent can use Parquet archive for resolution-zone research (above) and
+  any tick-level analysis not available in local DB
+- Cross-platform signals: Kalshi vs Polymarket price divergence on same event = potential alpha
+- Pending Oscar review before any integration (check vs integration-contract.md)
+
+**Reference:** brain/research-scout/pending-review/2026-05-12-08-pmxt-unified-prediction-market-sdk-free-data-archive.md
 
 ---
 

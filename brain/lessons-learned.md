@@ -41,6 +41,26 @@ This document grows more valuable every week.
   10-minute window. Secondary: price target at ~85% of estimated gap.
   Add volume spike monitoring to pre-resolution signals.
 
+- 2026-05-13: QUALIFIED ELO consensus (≥1200 ELO, clean 493-trader pool)
+  directional accuracy improved to 92% (n=12, 7-day window) from 82%
+  at n=67 (30-day window May 5). Edge is real and strengthening.
+  The 92.3% Geopolitics figure is corroborated by this broader metric.
+  (Source: performance-analyst 2026-05-13)
+
+- 2026-05-13: Directional accuracy ≠ probabilistic calibration. The system
+  can be 92% directionally correct while showing Brier 0.3128 (worse than
+  random) in the same period. These measure different things. Directional
+  accuracy is the right metric for binary prediction signals. Brier score
+  is the right metric for probability calibration. Do not conflate them —
+  especially when Brier is computed on LP-contaminated positions.
+  (Source: performance-analyst 2026-05-13, Flag 2)
+
+- 2026-05-13: ELITE tier accuracy (ELO≥1800) is unreliable at low sample
+  count. This week: 33% (n=3). Two weeks ago: 100% (n=4). Small n produces
+  wild swings that carry no statistical signal. Do not report or act on
+  ELITE tier accuracy when n < 10. QUALIFIED tier (n≥12) is the minimum
+  reliable floor. (Source: performance-analyst 2026-05-13)
+
 ---
 
 ## Strategy Insights
@@ -75,6 +95,17 @@ This document grows more valuable every week.
   (55.7% YES) and market price (7% YES). Resolves June 30 2026.
   Complements STR-003: fires on mixed-position legendary traders
   where STR-003 would miss them (no single 95%+ directional trader).
+
+- 2026-05-08 FOUNDING CASE FAILED: STR-004 Russia/Ukraine ceasefire
+  market resolved NO on 2026-05-08. 8 legendary traders, $1.74M,
+  55.7% YES — crowd at 7% was correct. STR-004 accuracy: 0/1. This
+  is the first data point, not a stop criterion (stop at <50% over
+  10 markets). Key investigation question: do geopolitics markets
+  with very low crowd prices (<10%) attract LP-structured yes bets
+  as hedges rather than genuine directional conviction? The capital-
+  weighting may not neutralise mixed positions in asymmetric markets.
+  Status: EXPERIMENTAL, one data point, continue to next validation.
+  (Source: performance-analyst 2026-05-13, Flag 4)
 
 - 2026-05-05: Sports markets at 52% accuracy for systematic approaches.
   Geopolitics and macro are where edge exists. Category filter must
@@ -136,6 +167,25 @@ This document grows more valuable every week.
   native SDK subagent features can replace hand-rolled orchestrator
   components.
 
+- 2026-05-13: Research pool discrepancy uncovered — live DB query
+  `WHERE research_excluded=0` returns 604 traders, but integration-
+  health.json authoritative pool is 493. 111 traders have the flag
+  set to 0 without meeting the explicit criteria (resolved_trades≥20,
+  bot_suspect=0, wash_trade_suspect=0). Root cause: set-eligible
+  logic in update_research_exclusions.py differs from reverse-
+  exclusion logic. Until code-hygiene fixes this, agents must add
+  explicit criteria to research queries alongside research_excluded=0.
+  (Source: performance-analyst 2026-05-13, Flag 3)
+
+- 2026-05-15: MiniMax M2.7 open-weight release confirmed (MIT license).
+  GGUF (UD-Q2_K_XL, 75.3GB) fits UM890 Pro's 96GB DDR5. Claims
+  Anthropic-compatible API (zero integration cost), native tool use,
+  95% cheaper than Opus. Sovereignty blocker removed — open weights
+  mean no Chinese-hosted API required. Pending Oscar benchmark
+  decision per priorities.md May 2026 action items. Do not deploy
+  without benchmarking 3 Tier 2.5 tasks first.
+  (Source: pending-review 2026-05-15-01)
+
 - 2026-03-16: Behavioral scores (kelly_alignment_score,
   patience_score, timing_score) were silently failing
   due to Windows encoding bug (non-ASCII market titles
@@ -189,6 +239,16 @@ This document grows more valuable every week.
   vs market price, extending RQ2.2 methodology to outcome prediction.
   Pre-registered for June 2026 follow-up.
 
+- 2026-05-08: STR-004 founding case (Russia/Ukraine ceasefire) —
+  capital-weighted legendary aggregate (55.7% YES, 8 traders, $1.74M)
+  predicted YES. Crowd at 7% was correct. Market resolved NO.
+  n=1 — stop criterion is <50% over 10 markets, so strategy continues.
+  But this failure raises a specific question: does capital weighting
+  fail in very asymmetric markets where crowd price is very low (<10%)
+  because legendary YES holders may be hedging or expressing
+  asymmetric conviction rather than prediction? To investigate before
+  next STR-004 signal is acted on. (Source: performance-analyst May 13)
+
 ---
 
 ## Open Questions
@@ -220,3 +280,18 @@ This document grows more valuable every week.
   (e.g. ELO 3347, 2273 trades, $9.7M profit)?
   Test in RQ1.1 — stratify by trade count.
   (Observed: 0xb442 vs 0xbf79, March 16 2026)
+
+- Does capital-weighting in STR-004 fail in asymmetric markets
+  (crowd price <10%) where legendary YES positions may be hedges
+  rather than directional conviction? Investigate before STR-004
+  second validation case. (Raised by STR-004 founding case failure
+  May 2026)
+
+- Does PMXT's Parquet archive (tick-level data, 13K+ resolved markets)
+  materially improve backtest quality over local DB position data?
+  (Pending Oscar review of 2026-05-12-08-pmxt-unified-prediction-market-sdk)
+
+- Does resolution-zone orderbook thinning (YES/NO depth ratio in
+  final 24h) predict resolution direction? New RQ candidate from
+  polymarket-resolution-zone-price-dynamics paper (May 12). Needs
+  pre-registration before any test.
