@@ -474,10 +474,10 @@
       "timestamp": "2026-05-08T12:00:00Z",
       "status": "resolved",
       "resolved_at": "2026-05-11",
-      "resolution": "NO — market resolved against legendary aggregate direction. Condition_id 0x7b629fc0... (Russia x Ukraine ceasefire by Q2 2026?) resolved NO. Legendary traders held 55.7% YES vs 7% crowd price — crowd was correct on this founding case.",
+      "resolution": "NO \u2014 market resolved against legendary aggregate direction. Condition_id 0x7b629fc0... (Russia x Ukraine ceasefire by Q2 2026?) resolved NO. Legendary traders held 55.7% YES vs 7% crowd price \u2014 crowd was correct on this founding case.",
       "founding_case_outcome": "FAIL",
       "discrepancy_note": "A separate market 'Russia x Ukraine ceasefire by June 30, 2026?' may have resolved YES but has no condition_id in DB and cannot be verified via Gamma API (search currently broken). This signal tracked condition_id 0x7b629fc0... which resolved NO. Pending Gamma API fix to fully investigate.",
-      "str004_accuracy": "0/1 resolved (0%). Stop criterion requires <50% on 10+ markets. Single data point — strategy remains HYPOTHESIS, not abandoned."
+      "str004_accuracy": "0/1 resolved (0%). Stop criterion requires <50% on 10+ markets. Single data point \u2014 strategy remains HYPOTHESIS, not abandoned."
     },
     {
       "from": "training-librarian-agent",
@@ -488,8 +488,8 @@
         "gap": "LP mechanics not documented in reference library",
         "detail": "Polymarket legendary traders are predominantly LP-structured (hold both YES and NO positions as market makers). This is the root cause of STR-001's failure and the defining constraint for all future signal strategies. No reference library file documents this structural fact. Any quant-research-agent or signal-agent building new strategies without knowing this will rediscover the LP contamination failure independently.",
         "action_required": "Oscar to approve training-librarian-agent drafting a polymarket-market-structure.md reference file covering: LP mechanics, 95% directional threshold as LP filter, implications for signal design. Alternatively: expand prediction-market-coordination.md stub (currently 141 words).",
-        "effort": "Low — 300-400 word reference file",
-        "priority": "HIGH — before any new signal strategy design"
+        "effort": "Low \u2014 300-400 word reference file",
+        "priority": "HIGH \u2014 before any new signal strategy design"
       },
       "timestamp": "2026-05-09T09:30:00Z",
       "status": "approved",
@@ -505,7 +505,10 @@
       "status": "completed",
       "task_id": "backtest-20260513",
       "payload": {
-        "gates_run": ["RQ0.1", "RQ0.2"],
+        "gates_run": [
+          "RQ0.1",
+          "RQ0.2"
+        ],
         "rq0_1_verdict": "PASS",
         "rq0_1_wash_suspects_flagged": 57,
         "rq0_1_suspects_in_top50": 0,
@@ -520,6 +523,34 @@
         "report": "brain/agent-outputs/backtest-agent/2026-05-13-RQ0-data-integrity-gates.json",
         "action_required": "Verify 2026-05-14 06:00 UTC maintenance run excludes 16 wash suspects from pool. Update integration-contract.md Section 3 pool size to ~588 after maintenance confirms."
       }
+    },
+    {
+      "type": "integration_test_escalation",
+      "from": "integration-test-agent",
+      "status": "processed",
+      "priority": "CRITICAL",
+      "timestamp": "2026-05-17T23:06:19.471195Z",
+      "payload": {
+        "report": "brain/agent-outputs/integration-test/2026-05-17-sunday-report.md",
+        "pass_rate": 0.867,
+        "failed": 6,
+        "critical_failures": [
+          "feedback_file_has_entries: brain/feedback.json overwritten by research-scout-agent with scout cycle data \u2014 all strategy memory destroyed",
+          "feedback_updated_recently: consequence of corruption",
+          "signal-agent_output_recent: 105.7h since last output (max 4h)"
+        ],
+        "high_failures": [
+          "quant-research-agent_output_recent: 512.2h stalled (21 days)",
+          "ci_pipeline_passes: test_feedback_file_structure fails due to feedback.json corruption"
+        ],
+        "recommended_actions": [
+          "URGENT: git log --oneline brain/feedback.json | head -5 to find last valid version, then restore",
+          "Respawn signal-agent: ./scripts/spawn_agent.sh signal-202605172306 signal-agent 3 cadence-recovery",
+          "Spawn quant-research for RQ1.1: ./scripts/spawn_agent.sh quant-20260517 quant-research-agent 3 RQ1.1-ELO-persistence"
+        ],
+        "telegram_note": "Telegram tokens not available in integration-test session \u2014 escalation via signal bus"
+      },
+      "processed_at": "2026-05-17T23:14:25.645970"
     }
   ],
   "pending": []

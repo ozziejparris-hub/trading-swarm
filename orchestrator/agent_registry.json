@@ -1,3 +1,20 @@
 {
-  "active_tasks": []
+  "active_tasks": [
+    {
+      "id": "analyst-20260518",
+      "agent": "performance-analyst-agent",
+      "description": "Run weekly performance analysis. Brier scores, ELO health, signal quality, strategy pipeline, resource usage. Update brain/kpis.md.",
+      "branch": "feat/analyst-20260518",
+      "tmux_session": "performance-analyst-agent-analyst-20260518",
+      "model": "claude-sonnet-4-6 (Tier 3)",
+      "tier": "3",
+      "worktree": "/tmp/trading-swarm-worktrees/analyst-20260518",
+      "log": "/home/parison/trading-swarm/logs/agent_logs/analyst-20260518.log",
+      "started_at": "2026-05-18T06:00:01.596288",
+      "status": "running",
+      "retries": 0,
+      "pr": null,
+      "verified": false
+    }
+  ]
 }

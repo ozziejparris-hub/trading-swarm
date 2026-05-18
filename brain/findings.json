@@ -759,6 +759,44 @@
       "actionable": false,
       "action_recommendation": "Continue accumulating STR-004 signals. Do not abandon on n=1. Investigate Gamma API to resolve market identity discrepancy before next founding case assessment.",
       "expires_at": "2026-08-11T00:00:00Z"
+    },
+    {
+      "id": "2026-05-13-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-13T12:04:48Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 1,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 1 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 6
+      },
+      "actionable": false,
+      "action_recommendation": "Await 9 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-08-11T12:04:48Z"
+    },
+    {
+      "id": "2026-05-13-ELO-VALIDITY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-13T12:04:48Z",
+      "finding_type": "elo_validity",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "Insufficient non-sports resolved markets with elite positions \u2014 4 found, 10 required",
+      "detail": {
+        "metric": "elo_consensus_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 6
+      },
+      "actionable": false,
+      "action_recommendation": "Continue collecting non-sports market resolutions with elite trader positions",
+      "expires_at": "2026-08-11T12:04:48Z"
     }
   ]
 }
