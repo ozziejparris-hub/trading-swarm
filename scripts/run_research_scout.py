@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Research scout — fetches real findings via Anthropic API web_search tool.
-Replaces the local Qwen3-Coder agent that fabricated sources from training memory.
+Research scout — fetches real findings via Claude CLI (Pro subscription with web search).
+Replaces direct Anthropic API calls that require paid credits.
 """
 import json
 import os
@@ -13,62 +13,32 @@ from pathlib import Path
 
 SWARM = Path(__file__).parent.parent
 PENDING_REVIEW = SWARM / "brain/research-scout/pending-review"
+PROMPT_FILE = Path("/tmp/scout_prompt.txt")
 _NOW = datetime.now(timezone.utc)
 TODAY = _NOW.strftime("%Y-%m-%d")
 HOUR = _NOW.strftime("%H")
 
 
-def load_api_key() -> str:
-    key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if key:
-        return key
-    result = subprocess.run(
-        ["bash", "-c", "source ~/.env_trading && echo $ANTHROPIC_API_KEY"],
-        capture_output=True, text=True,
-    )
-    key = result.stdout.strip()
-    if not key:
-        print("ERROR: ANTHROPIC_API_KEY not found in environment or ~/.env_trading", file=sys.stderr)
-        sys.exit(1)
-    return key
-
-
-def read_context() -> str:
-    parts = []
-
+def read_priorities() -> str:
     priorities_path = SWARM / "brain/priorities.md"
-    if priorities_path.exists():
-        parts.append(f"=== brain/priorities.md ===\n{priorities_path.read_text()[:3000]}")
-
-    directions_path = SWARM / "brain/strategy-notes/research-directions.md"
-    if directions_path.exists():
-        lines = directions_path.read_text().splitlines()[:100]
-        parts.append(
-            "=== brain/strategy-notes/research-directions.md (first 100 lines) ===\n"
-            + "\n".join(lines)
-        )
-
-    ref_lib = SWARM / "brain/reference-library"
-    if ref_lib.is_dir():
-        names = sorted(p.name for p in ref_lib.iterdir() if p.is_file())
-        parts.append("=== brain/reference-library/ filenames ===\n" + "\n".join(names))
-
-    return "\n\n".join(parts)
+    if not priorities_path.exists():
+        return ""
+    lines = priorities_path.read_text().splitlines()[:50]
+    return "\n".join(lines)
 
 
-def call_api(api_key: str) -> list[dict]:
-    import anthropic
+def build_prompt() -> str:
+    priorities = read_priorities()
+    context_block = ""
+    if priorities:
+        context_block = f"\n\n=== brain/priorities.md (first 50 lines) ===\n{priorities}\n"
 
-    client = anthropic.Anthropic(api_key=api_key)
-
-    system = (
+    return (
         "You are a research scout for a Polymarket trading intelligence system. "
         "Your job is to find REAL, VERIFIABLE information from actual web sources. "
         "Only report things you actually read from web search results. "
-        "Never invent papers, commits, or announcements from memory."
-    )
-
-    user = (
+        "Never invent papers, commits, or announcements from memory.\n"
+        f"{context_block}\n"
         "Search for and report on ONLY these specific topics today:\n"
         "1. Any new Polymarket announcements or API changes "
         '(search: "Polymarket" site:polymarket.com OR site:twitter.com/Polymarket)\n'
@@ -79,49 +49,33 @@ def call_api(api_key: str) -> list[dict]:
         '{"title": str, "source_url": str, "domain": str, "relevance": "HIGH|MEDIUM|LOW", '
         '"summary": str (2-3 sentences max), "action": str, "verified": true}\n\n'
         "Only include findings where verified=true (you actually read the source).\n"
-        "Output findings as a JSON array. Nothing else."
+        "Output findings as a JSON array. Nothing else — no preamble, no explanation."
     )
 
-    messages = [{"role": "user", "content": user}]
-    tools = [{"type": "web_search_20250305", "name": "web_search"}]
 
-    # Handle multi-turn tool_use loop (server-side search resolves in one turn,
-    # but guard against unexpected client-side tool_use stop_reason).
-    for _ in range(5):
-        response = client.messages.create(
-            model="claude-sonnet-4-5-20251022",
-            max_tokens=4000,
-            system=system,
-            tools=tools,
-            messages=messages,
+def call_claude_cli(prompt_text: str) -> list[dict]:
+    PROMPT_FILE.write_text(prompt_text)
+    # Strip ANTHROPIC_API_KEY so the CLI authenticates via OAuth (Pro subscription)
+    # rather than the depleted API key account.
+    env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
+    try:
+        result = subprocess.run(
+            ["claude", "--print", "--allowed-tools", "WebSearch", "--", prompt_text],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            env=env,
         )
+    finally:
+        PROMPT_FILE.unlink(missing_ok=True)
 
-        if response.stop_reason == "end_turn":
-            for block in response.content:
-                if hasattr(block, "text") and block.text.strip():
-                    return parse_findings(block.text)
-            return []
+    if result.returncode != 0:
+        print(f"ERROR: claude CLI exited {result.returncode}", file=sys.stderr)
+        if result.stderr:
+            print(result.stderr.strip(), file=sys.stderr)
+        sys.exit(1)
 
-        if response.stop_reason == "tool_use":
-            # Shouldn't occur with server-side web_search; handle gracefully.
-            messages.append({"role": "assistant", "content": response.content})
-            tool_results = [
-                {
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": "Search not available client-side.",
-                }
-                for block in response.content
-                if hasattr(block, "type") and block.type == "tool_use"
-            ]
-            if tool_results:
-                messages.append({"role": "user", "content": tool_results})
-            else:
-                break
-        else:
-            break
-
-    return []
+    return parse_findings(result.stdout)
 
 
 def parse_findings(text: str) -> list[dict]:
@@ -169,21 +123,23 @@ def write_finding(finding: dict) -> Path:
         f"## Domain\n{domain}\n"
         f"## Summary\n{summary}\n"
         f"## Action\n{action}\n"
-        f"## Verified\nYes — fetched via web search\n"
+        f"## Verified\nYes — fetched via Claude CLI web search\n"
     )
     return filepath
 
 
 def main():
-    api_key = load_api_key()
-    # Read context (available to scout but not passed to API in this minimal version;
-    # priorities and directions are loaded so future prompts can reference them).
-    read_context()
+    prompt_text = build_prompt()
 
     try:
-        findings = call_api(api_key)
+        findings = call_claude_cli(prompt_text)
+    except subprocess.TimeoutExpired:
+        print("ERROR: claude CLI timed out after 120s", file=sys.stderr)
+        PROMPT_FILE.unlink(missing_ok=True)
+        sys.exit(1)
     except Exception as exc:
-        print(f"ERROR: API call failed — {exc}", file=sys.stderr)
+        print(f"ERROR: {exc}", file=sys.stderr)
+        PROMPT_FILE.unlink(missing_ok=True)
         sys.exit(1)
 
     high = medium = low = written = 0
