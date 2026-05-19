@@ -149,6 +149,7 @@ this file at startup — malformed entries break their logic.
     {
       "id": "YYYY-MM-DD-TOPIC-001",
       "generated_by": "feedback-loop-agent",
+      "source": "feedback-loop-agent",
       "generated_at": "ISO8601",
       "finding_type": "signal_accuracy | elo_validity | category_performance | tier_performance",
       "confidence": "HIGH | MEDIUM | LOW",

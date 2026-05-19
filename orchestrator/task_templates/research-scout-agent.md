@@ -492,3 +492,5 @@ at implementation time, not the best tool as of March 2026.
 Flag findings to brain/findings.json with type:
 "tool_discovery" and include: tool name, data available,
 cost, MCP compatibility, and which phase it's relevant to.
+Every entry must include `"source": "research-scout-agent"` and
+`"generated_by": "research-scout-agent"` for attribution tracking.

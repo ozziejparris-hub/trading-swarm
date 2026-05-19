@@ -703,6 +703,11 @@ New lessons added this week: [N]
 - New knowledge gaps identified
 - Failure taxonomy patterns worth noting
 
+## Findings Attribution
+If you write any finding to brain/findings.json, include `"source": "training-librarian-agent"`
+alongside `"generated_by": "training-librarian-agent"` in every entry. The `source` field
+is required for attribution tracking across agents.
+
 ## Rules
 
 1. Never rewrite agent templates directly without explicit

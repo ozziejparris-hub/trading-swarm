@@ -510,6 +510,11 @@ Top flag: [one line if any]
 Full report: /home/parison/trading-swarm/brain/agent-outputs/performance-analyst/
 ```
 
+## Findings Attribution
+If you write any finding to brain/findings.json, include `"source": "performance-analyst-agent"`
+alongside `"generated_by": "performance-analyst-agent"` in every entry. The `source` field
+is required for attribution tracking across agents.
+
 ## Rules
 
 1. Read /home/parison/trading-swarm/brain/priorities.md first — weight analysis toward

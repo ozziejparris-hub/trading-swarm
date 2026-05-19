@@ -80,6 +80,11 @@ Rationale: an existing signal may have been generated under earlier (looser) cri
 and the underlying position is real. The flag surfaces the data-quality concern without
 discarding potentially valid conviction signals.
 
+## Findings Attribution
+If you ever write a finding to brain/findings.json, include `"source": "signal-agent"`
+alongside `"generated_by": "signal-agent"` in every entry. The `source` field is
+required for attribution tracking across agents.
+
 ## Rules
 1. Never write to polymarket_tracker.db — read only, always
 2. Read /home/parison/trading-swarm/brain/feedback.json before starting — understand what

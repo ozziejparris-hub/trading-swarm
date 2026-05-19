@@ -593,6 +593,75 @@ def process_signals():
                 bot="orchestrator"
             )
 
+        # Knowledge gap identified by training-librarian — human review required
+        # Do NOT auto-spawn a research agent; gaps need Oscar's approval first
+        elif signal_type == "knowledge_gap_critical":
+            gap_description = payload.get("gap_description", "No description provided")
+            affected_agents = payload.get("affected_agents", [])
+            recommended_action = payload.get("recommended_action", "Manual review required")
+            log.warning(
+                f"Knowledge gap critical: from={from_agent}, "
+                f"gap='{gap_description}', affected={affected_agents}"
+            )
+            agents_str = ", ".join(affected_agents) if affected_agents else "unknown"
+            message = (
+                f"⚠️ *Knowledge Gap — Human Review Required*\n"
+                f"From: `{from_agent}`\n"
+                f"Gap: {gap_description}\n"
+                f"Affected agents: {agents_str}\n"
+                f"Recommended action: {recommended_action}\n"
+                f"_No agent auto-spawned — research requires your approval_"
+            )
+            send_telegram(message, bot="orchestrator")
+
+        # Strategy revalidation request from feedback-loop-agent → backtest-agent
+        elif signal_type == "revalidation_requested":
+            strategy_name = payload.get("strategy_name", "unknown")
+            days_since = payload.get("days_since_validation", "?")
+            log.warning(
+                f"Revalidation requested: strategy='{strategy_name}', "
+                f"days_since_validation={days_since}, from={from_agent}"
+            )
+            send_telegram(
+                f"🔄 *Strategy revalidation requested*\n"
+                f"Strategy: `{strategy_name}`\n"
+                f"Days since last validation: {days_since}\n"
+                f"backtest-agent will pick this up next cycle",
+                bot="agents"
+            )
+
+        # Hypothesis ready for registration before experiment runs
+        elif signal_type == "hypothesis_ready":
+            hypothesis = payload.get("hypothesis", "No hypothesis text provided")
+            strategy_path = payload.get("strategy_path", "unknown")
+            log.warning(
+                f"Hypothesis ready for pre-registration: from={from_agent}, "
+                f"path={strategy_path}"
+            )
+            send_telegram(
+                f"🔬 *Hypothesis ready for pre-registration*\n"
+                f"From: `{from_agent}`\n"
+                f"Path: `{strategy_path}`\n"
+                f"Hypothesis: {hypothesis[:200]}\n"
+                f"_Review and approve in strategy-notes/ before experiment runs_",
+                bot="orchestrator"
+            )
+
+        # Unknown signal type — log and alert rather than silently drop
+        else:
+            log.warning(
+                f"Unhandled signal type '{signal_type}' from {from_agent} — "
+                f"add a handler to orchestrator.py:process_signals()"
+            )
+            send_telegram(
+                f"⚠️ *Unhandled signal type*\n"
+                f"Type: `{signal_type}`\n"
+                f"From: `{from_agent}`\n"
+                f"Payload: {str(payload)[:200]}\n"
+                f"Add a handler to orchestrator.py:process_signals()",
+                bot="orchestrator"
+            )
+
         # Mark signal as processed
         mark_signal_processed(timestamp)
 
