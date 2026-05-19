@@ -266,8 +266,10 @@ tmux new-session -d \
 # ── Run the agent inside the session ─────────
 if [ "$NEEDS_WORKTREE" = true ]; then
     # Tiers 3/4 — paid Claude CLI, one-shot -p mode
+    # unset ANTHROPIC_API_KEY so the CLI falls back to OAuth Pro subscription
+    # instead of trying to charge the API key (which has zero credit balance)
     tmux send-keys -t "$SESSION_NAME" \
-        "$MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
+        "unset ANTHROPIC_API_KEY && $MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
 elif [ "$TIER" = "1" ]; then
     # Tier 1 — stdin pipe; health checks / log watching are text classification only
