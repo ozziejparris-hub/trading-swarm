@@ -14,7 +14,7 @@ source "$ENV" 2>/dev/null || {
 
 cd "$SWARM"
 
-bash scripts/run_research_scout.sh >> "$LOG" 2>&1
+python3 "$SWARM/scripts/run_research_scout.py" >> "$LOG" 2>&1
 EXIT_CODE=$?
 
 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Finished research-scout (exit: $EXIT_CODE)" >> "$LOG"
