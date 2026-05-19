@@ -89,7 +89,7 @@ def call_api(api_key: str) -> list[dict]:
     # but guard against unexpected client-side tool_use stop_reason).
     for _ in range(5):
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-4-5-20251022",
             max_tokens=4000,
             system=system,
             tools=tools,
