@@ -45,6 +45,13 @@ when something genuinely actionable has changed.
    - Minimum position: $2,000
    - Maximum markets traded simultaneously: 2 (focus signal)
    - Bidirectional holders (both YES and NO in same market) do NOT qualify
+   - Minimum resolved trades: traders with `resolved_trades_count < 10` do NOT
+     qualify for new STR-003 signals. Include `AND resolved_trades_count >= 10`
+     in all qualifying trader SQL queries alongside the existing filters.
+     > **Why:** ELO scores for traders with <10 resolved trades are P&L-weighted
+     > rather than accuracy-validated. As of May 2026, 324/333 legendary traders
+     > have <10 resolved trades due to the recent backfill expansion. This filter
+     > ensures signals are only generated from traders with demonstrated track records.
    - YES signals: apply 95% directional threshold, 7-day activity window
    - NO signals: same 95% threshold but prefer 14–30 day validation window
      (7-day is too short to confirm NO conviction)
@@ -57,6 +64,21 @@ when something genuinely actionable has changed.
    switching to NO (or vice versa) on the same market
 5. New market opportunity — high-liquidity market with low
    elite trader participation (potential mispricing)
+
+## Rescan Behaviour
+
+When rescanning existing active signals (signals already written to signals.json),
+check `resolved_trades_count` for every trader named in the signal:
+
+- If a trader has `resolved_trades_count >= 10`: no change — signal remains valid.
+- If a trader has `resolved_trades_count < 10`: do **not** immediately disqualify the
+  signal. Instead, add a note to the rescan entry:
+  `"thin sample — ELO unvalidated (resolved_trades_count < 10)"`
+  This flags the signal for closer human review without silently removing it.
+
+Rationale: an existing signal may have been generated under earlier (looser) criteria,
+and the underlying position is real. The flag surfaces the data-quality concern without
+discarding potentially valid conviction signals.
 
 ## Rules
 1. Never write to polymarket_tracker.db — read only, always
