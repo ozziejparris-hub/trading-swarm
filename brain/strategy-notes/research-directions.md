@@ -529,6 +529,8 @@ with accumulated knowledge rather than from zero.
 - 2026-05-13: RQ0.1 and RQ0.2 re-run (May 13) — BOTH PASSED again. Clean pool 493 post-maintenance (588 pre-maintenance, 16 wash suspects removed by daily maintenance 2026-05-14). Next run due 2026-06-13.
 - 2026-05-08: STR-004 FIRST DATA POINT — founding case (Russia/Ukraine ceasefire) FAILED. Crowd at 7% YES was correct; 8 legendary traders at $1.74M 55.7% YES were wrong. n=1, stop criterion is <50% over 10 markets. Continue validation.
 - 2026-05-16: Research pool discrepancy — live `WHERE research_excluded=0` returns 604 traders vs 493 authoritative. Use explicit criteria: `research_excluded=0 AND resolved_trades≥20 AND bot_suspect=0 AND wash_trade_suspect=0` until code-hygiene fixes update_research_exclusions.py.
+- 2026-05-20: LH-001 PARTIALLY VALIDATED — lifecycle heuristic (single-geo-market, 0-30 days before resolution) shows p=0.0067 profit advantage over control (clean, n=69 vs 160), but win rate only 47.7% (target 70%). 2 events only. CRITICAL: integration-contract.md condition_id join is WRONG — use m.market_id = t.market_id (3.5M vs 2.2M trades). Backtest validation pending.
+- 2026-05-20: Research pool now 7,908 traders (integration-health.json 2026-05-20). Previous figure of 493 was from May 7 — pool grows daily as traders reach resolved_trades >= 20 threshold.
 
 
 ## Formal Research Questions

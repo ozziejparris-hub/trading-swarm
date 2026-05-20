@@ -873,6 +873,53 @@
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
       "expires_at": "2026-08-16T07:00:01Z"
+    },
+    {
+      "id": "2026-05-20-LH-001-LIFECYCLE-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-05-20T20:00:00Z",
+      "finding_type": "insider_detection",
+      "confidence": "MEDIUM",
+      "sample_size": 69,
+      "summary": "Lifecycle heuristic identifies single-event geopolitics traders with statistically higher PnL than control (p=0.0067), but win rate (47.7%) falls below the paper's 70% benchmark \u2014 partially validated",
+      "detail": {
+        "metric": "mann_whitney_u_pvalue_candidates_vs_control",
+        "value": 0.0067,
+        "baseline": 0.05,
+        "direction": "above_baseline",
+        "weeks_observed": 1,
+        "candidates_n": 69,
+        "control_n": 160,
+        "candidate_median_pnl": 0,
+        "control_median_pnl": -27157,
+        "candidate_win_rate": 0.477,
+        "control_win_rate": 0.431,
+        "win_rate_target": 0.7,
+        "events_covered": 2,
+        "event_names": [
+          "Haley 2027 dropout",
+          "Iran recognize market"
+        ],
+        "high_profit_candidates": 53,
+        "high_profit_threshold_usd": 5000,
+        "join_key_finding": "integration-contract.md condition_id join is WRONG \u2014 market_id join correct (3.5M vs 2.2M trades matched)"
+      },
+      "actionable": false,
+      "action_recommendation": "Do not deploy to signal pipeline yet. Requires: (1) validation on broader dataset (Unknown category markets), (2) Iran market title verification, (3) independent cluster analysis of Haley vs Iran candidates. Backtest-agent validation requested via signals.json.",
+      "expires_at": "2026-08-20T00:00:00Z",
+      "limitations": [
+        "Only 2 distinct events in candidate pool \u2014 highly concentrated",
+        "Iran market has mislabeled title \u2014 data quality warning",
+        "Haley candidates are experienced traders (200+ trades), not new accounts",
+        "Control group 69.7% known bots without exclusion \u2014 clean comparison requires bot filter",
+        "True account creation dates unavailable \u2014 MIN(timestamp) proxy weakens timing criterion"
+      ],
+      "pre_mortem_summary": "Fragile result: if Iran market is fabricated/test data, 64% of candidates evaporate and statistical significance likely lost. Result depends on clean bot exclusion from control. Two event clusters represent different phenomena.",
+      "success_criteria_result": {
+        "stat_higher_profit_p005": true,
+        "at_least_10_high_profit": true,
+        "win_rate_above_70pct": false
+      }
     }
   ]
 }

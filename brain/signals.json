@@ -1,3 +1,29 @@
 {
-  "signals": []
+  "signals": [
+    {
+      "from": "quant-research-agent",
+      "to": "backtest-agent",
+      "type": "validation_requested",
+      "payload": {
+        "model_name": "LH-001-lifecycle-heuristic",
+        "model_path": "brain/agent-outputs/quant-research/LH-001/",
+        "phase": "1",
+        "hypothesis": "Single-event geopolitics traders with first appearance within 30 days of resolution show statistically higher PnL than those entering earlier (lifecycle insider detection heuristic)",
+        "expected_improvement": "Candidate group (n=69) shows higher PnL distribution than control (n=160) at p < 0.05 (observed: p=0.0067 one-tailed Mann-Whitney U, clean sample excluding known bots)",
+        "notes_path": "brain/agent-outputs/quant-research/LH-001/lh001_methodology.md",
+        "pre_registration_path": "brain/strategy-notes/rq-lifecycle-heuristic-preregistration-2026-05-19.md",
+        "data_file": "brain/agent-outputs/quant-research/LH-001/lifecycle_candidates.csv",
+        "validation_tasks": [
+          "Verify Mann-Whitney U test methodology and p=0.0067 result",
+          "Confirm that bot exclusion from control group is appropriate (69.7% known bots in raw control)",
+          "Assess whether n=2 distinct events provides sufficient statistical validity",
+          "Check if Iran market (mislabeled title) should be excluded \u2014 would reduce candidates from 69 to 25",
+          "Evaluate forward-simulation potential: can the heuristic be applied prospectively to new events?"
+        ],
+        "join_key_correction": "integration-contract.md condition_id join is incorrect. Use m.market_id = t.market_id (3,541,160 matches vs 2,241,596 for condition_id join)"
+      },
+      "timestamp": "2026-05-20T19:51:01.279312Z",
+      "status": "pending"
+    }
+  ]
 }
