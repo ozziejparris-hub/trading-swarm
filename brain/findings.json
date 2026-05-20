@@ -797,6 +797,82 @@
       "actionable": false,
       "action_recommendation": "Continue collecting non-sports market resolutions with elite trader positions",
       "expires_at": "2026-08-11T12:04:48Z"
+    },
+    {
+      "id": "2026-05-18-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-18T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 1,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 1 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 7
+      },
+      "actionable": false,
+      "action_recommendation": "Await 9 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-08-16T07:00:01Z"
+    },
+    {
+      "id": "2026-05-18-ELO-LEGENDARY-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-18T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 54,
+      "summary": "LEGENDARY tier consensus accuracy: 57% over 54 non-sports markets",
+      "detail": {
+        "metric": "elo_legendary_consensus_accuracy",
+        "value": 0.5741,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 7
+      },
+      "actionable": false,
+      "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-08-16T07:00:01Z"
+    },
+    {
+      "id": "2026-05-18-ELO-ELITE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-18T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "MEDIUM",
+      "sample_size": 19,
+      "summary": "ELITE tier consensus accuracy: 53% over 19 non-sports markets",
+      "detail": {
+        "metric": "elo_elite_consensus_accuracy",
+        "value": 0.5263,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 7
+      },
+      "actionable": false,
+      "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-08-16T07:00:01Z"
+    },
+    {
+      "id": "2026-05-18-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-05-18T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 86,
+      "summary": "QUALIFIED tier consensus accuracy: 92% over 86 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.9186,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 7
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-08-16T07:00:01Z"
     }
   ]
 }
