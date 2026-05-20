@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-05-08
+Last updated: 2026-05-20
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -38,12 +38,14 @@ Oscar decides.
 ## Status Definitions
 
 ```
-ACTIVE          — validated, currently in use by signal-agent
-PENDING_REVIEW  — revalidation requested, awaiting backtest-agent
-UNDER_REVIEW    — backtest-agent currently revalidating
-SUSPENDED       — failed revalidation, awaiting Oscar decision
-RETIRED         — Oscar approved retirement, kept for reference
-EXPERIMENTAL    — in development, not yet validated
+ACTIVE              — validated, currently in use by signal-agent
+PENDING_VALIDATION  — research complete, statistical signal found, awaiting
+                      backtest-agent formal validation before deployment
+PENDING_REVIEW      — revalidation requested, awaiting backtest-agent
+UNDER_REVIEW        — backtest-agent currently revalidating
+SUSPENDED           — failed revalidation, awaiting Oscar decision
+RETIRED             — Oscar approved retirement, kept for reference
+EXPERIMENTAL        — in development, not yet validated
 ```
 
 ---
@@ -86,6 +88,46 @@ Upgrade note:           2026-03-29 — upgraded to three-type
 ---
 
 ## Active Strategies
+
+### LH-001 — Lifecycle Heuristic Insider Detection
+```
+Status:                 PENDING_VALIDATION
+Description:            Pre-filter for signal-agent. Detects new single-event
+                        high-volume accounts appearing within 30 days of a
+                        geopolitics market's resolution date. These accounts
+                        exhibit lifecycle patterns consistent with insider or
+                        informed-money activity — created close to resolution,
+                        concentrated in one market, high volume.
+Category:               Pre-filter / Insider detection
+Finding:                brain/agent-outputs/quant-research/LH-001/
+                        lh001_methodology.md
+Statistical signal:     p=0.0067 (Mann-Whitney U, two-tailed, clean sample)
+                        Candidate pool: n=69 | Control pool: n=160
+Confidence:             MEDIUM
+Added:                  2026-05-20
+Intended use:           Flag new single-event high-volume accounts appearing
+                        within 30 days of geopolitics market resolution, then
+                        pass those accounts to signal-agent as a watch list.
+                        This is a pre-filter only — not a trading signal.
+Blocking items (ALL must resolve before deployment):
+  1. Expand Unknown-category markets (currently only 2 events in sample —
+     insufficient for generalisation)
+  2. Verify Iran market title via Gamma API (title ambiguity may affect
+     candidate classification)
+  3. Backtest-agent formal statistical validation
+Deployment gate:        Do NOT deploy to signal pipeline until all 3 blocking
+                        items are resolved and backtest-agent signs off.
+Validation criteria:
+  - Minimum 20 candidate accounts across 5+ markets
+  - Unknown-category coverage >= 5 events
+  - Backtest-agent confirms p < 0.05 on expanded clean sample
+  - Oscar approves promotion to EXPERIMENTAL
+Notes:
+  3-phase analysis complete (quant-research-agent, 2026-05-20).
+  Unknown-category gap is the primary gap — geopolitics coverage is
+  solid but Unknown markets need inclusion before the heuristic can
+  be considered general-purpose.
+```
 
 ### STR-001 — Elite Convergence Signal
 ```
