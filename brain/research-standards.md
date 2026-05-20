@@ -2,6 +2,19 @@
 Last updated: 2026-04-30
 Source: Data integrity audit findings
 
+## Database Join Key — Critical Rule
+
+The correct JOIN key between trades and markets is:
+  trades.market_id = markets.market_id
+
+Do NOT use markets.condition_id as a join key. Empirical validation (2026-05-20) confirms
+condition_id only matches 63% of trades. condition_id is a Polymarket API identifier used
+for external resolution lookups only.
+
+This is documented in brain/integration-contract.md v1.3.
+
+---
+
 ## Mandatory Filters for All Research Queries
 
 Every query joining traders to trades to markets must include:
