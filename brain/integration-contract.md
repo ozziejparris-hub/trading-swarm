@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.2 — 2026-05-14
+**Version:** 1.3 — 2026-05-20
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -43,7 +43,7 @@ Every research query MUST include ALL of the following filters. Omitting
 any one of them introduces contaminated data into research results.
 
 ```sql
-JOIN markets m ON m.condition_id = t.market_id   -- NOT m.market_id
+JOIN markets m ON m.market_id = t.market_id   -- NOT m.condition_id (see warning below)
 WHERE tr.research_excluded = 0
   AND t.timestamp <= datetime('now')
   AND m.resolved = 1
@@ -54,9 +54,11 @@ WHERE tr.research_excluded = 0
 
 **Why each filter exists:**
 
+> **WARNING: `condition_id` must NEVER be used as a JOIN key to trades.** Empirical validation on 2026-05-20 confirmed `m.market_id = t.market_id` matches 3,541,160/3,541,160 trades (99.999%), while `m.condition_id = t.market_id` matches only 2,241,596 (63%). `condition_id` is a separate Polymarket identifier used for external API resolution lookups only.
+
 | Filter | Reason |
 |--------|--------|
-| `m.condition_id = t.market_id` | `trades.market_id` stores the condition_id, NOT the market's primary key. Using `m.market_id` returns wrong or no rows — this is the single most common silent bug. |
+| `m.market_id = t.market_id` | Empirically validated join key — matches 99.999% of trades. `condition_id` is a distinct Polymarket field for external API resolution lookups; it is NOT a join key to trades and silently drops 37% of rows if used. |
 | `tr.research_excluded = 0` | Excludes bots, wash traders, and thin-sample traders. Including them inflates signal counts and corrupts ELO accuracy metrics. |
 | `t.timestamp <= datetime('now')` | 37 future-dated trades exist in the DB from a data import error. They have not resolved yet and pollute forward-looking calculations. |
 | `m.resolved = 1` | Only resolved markets have ground truth outcomes. Unresolved markets have no winning_outcome to validate against. |
@@ -144,7 +146,7 @@ they are handled by the query filters in Section 2.
 | `trade_gap_flag = 1` markets | 166 | April 7-18 server migration — trades missing | Filter: `trade_gap_flag = 0 OR NULL` |
 | `winning_outcome = 'unknown'` markets | 497 | Markets resolved without a clear outcome | Filter: `NOT IN ('unknown', '')` |
 | Future-dated trades | 37 | Data import error | Filter: `timestamp <= datetime('now')` |
-| `trades.market_id` stores condition_id | All rows | Schema design | Join: `m.condition_id = t.market_id` |
+| ~~`trades.market_id` stores condition_id~~ | — | **Assumption was wrong** — corrected 2026-05-20. `trades.market_id` joins to `markets.market_id` (99.999% match). See Section 2 warning. |
 
 ---
 
@@ -208,6 +210,7 @@ Agents should not query the database during the maintenance window
 | 2026-05-06 | ARB_BOT exclusion: 111 coordinated arb wallets (ELO 3308–3315 cluster) excluded. Pool 857 → 493. Legendary tier 384 → 151 | All ELO-tier queries; legendary signal thresholds |
 | 2026-05-07 | Contract updated to v1.1: pool size, alert threshold, bot_type list, Section 6c resolved | All agents |
 | 2026-05-14 | Pool size removed from contract — now read live from integration-health.json. Alert threshold lowered to 440. | All agents reading pool size |
+| 2026-05-20 | **Critical JOIN key correction (v1.3):** `m.market_id = t.market_id` is the correct join (99.999% match, 3,541,160/3,541,160 trades). Previous contract specified `m.condition_id = t.market_id` — this only matches 63% of trades. `condition_id` is a Polymarket external API identifier, NOT a join key. Warning added to Section 2; Section 6 row corrected. | All agents — update any query using the old join immediately |
 
 ---
 
