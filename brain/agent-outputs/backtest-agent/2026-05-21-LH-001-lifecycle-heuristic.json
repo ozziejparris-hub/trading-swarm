@@ -1,0 +1,88 @@
+{
+  "strategy": "LH-001 Lifecycle Heuristic — Single-Event Geopolitics Insider Detection",
+  "tested_by": "backtest-agent",
+  "test_date": "2026-05-21",
+  "data_range": "2025-08-03 to 2026-05-21",
+  "total_trades": 128,
+  "sharpe_ratio": null,
+  "brier_score": null,
+  "win_rate": 0.555,
+  "max_drawdown": null,
+  "vs_baseline": 0.078,
+  "transaction_costs_assumed": null,
+  "verdict": "conditional_pass",
+  "reason": "Statistical signal confirmed but fragile. Haley market: p=0.0000 (highly significant, n=36 clean candidates). Iran market: p=0.1829 (not independently significant). Combined: p=0.0180 (one-tailed Mann-Whitney), not matching claimed p=0.0067. Effect size small (rank-biserial r=0.14). N=2 events is insufficient for cross-event generalisation. Appropriate as watchlist trigger, not standalone trading signal.",
+  "recommended_next_step": "refine",
+  "validation_tasks": {
+    "task1_mann_whitney": {
+      "claimed_p_one_tailed": 0.0067,
+      "reproduced_p_one_tailed": 0.0180,
+      "reproduced_p_two_tailed": 0.0361,
+      "direction_confirmed": true,
+      "exact_match": false,
+      "candidate_n": 128,
+      "control_n": 184,
+      "candidate_median_pnl": 17818,
+      "control_median_pnl": -18165,
+      "rank_biserial_r": 0.14
+    },
+    "task2_bot_exclusion": {
+      "valid": true,
+      "raw_control_n": 552,
+      "bot_count_in_raw_control": 368,
+      "bot_fraction": 0.667,
+      "clean_control_n": 184,
+      "caveats": [
+        "Inconsistent exclusion criteria (bot_type vs research_excluded)",
+        "Control group lacks profit filter creating asymmetric comparison vs pre-registration",
+        "Fair comparison (both groups profit>=1000) gives p=0.0117 — still significant"
+      ]
+    },
+    "task3_power_analysis": {
+      "events_tested": 2,
+      "minimum_required_for_generalisation": 7,
+      "events_temporally_independent": false,
+      "days_between_events": 12,
+      "cohens_d": 0.114,
+      "effect_size_category": "very small",
+      "bootstrap_haley_stability": "100% of 1000 resamples p<0.05 (within-sample only)",
+      "verdict": "INSUFFICIENT — cannot estimate cross-event variance"
+    },
+    "task4_iran_market": {
+      "include_recommendation": "EXCLUDE from primary analysis",
+      "iran_only_p_one_tailed": 0.1829,
+      "iran_only_significant": false,
+      "haley_only_p_one_tailed": 0.0000,
+      "haley_only_significant": true,
+      "combined_p_without_iran_change": "Signal is STRONGER without Iran (0.0000 vs 0.0180)",
+      "title_anomaly": "Will Iran recognize Iran by June 2025 — self-referential, impossible title",
+      "condition_id_for_resolution": "0xdf31a15ee2f55b675d44882cbb2053a72b83ad40eef5d60b11762517f695f4ba",
+      "elo_clustering_concern": "Multiple Iran candidates at ELO 3000.0, 2700.0, 2000.0 — round-number clustering"
+    },
+    "task5_prospective_applicability": {
+      "applicable": "conditional",
+      "insider_signals_infrastructure_exists": true,
+      "existing_pattern_label": "New wallet, large high-price bet, single market focus (Iran-strike pattern)",
+      "existing_signals_matching_pattern": 3,
+      "account_creation_date_available": false,
+      "false_positive_rate_concern": "44.5% of lifecycle-pattern accounts lose",
+      "deployment_recommendation": "watchlist trigger only, not position-sizing signal",
+      "active_geo_markets": 55
+    }
+  },
+  "integration_contract_issue": {
+    "correct_join": "trades.market_id = markets.market_id",
+    "incorrect_join_in_contract": "m.condition_id = t.market_id",
+    "match_count_correct": 3541160,
+    "match_count_incorrect": 2241596,
+    "data_loss_if_wrong": "37%"
+  },
+  "conditions_for_full_pass": [
+    "5 additional independent geopolitics events validated",
+    "Iran market title resolved via API",
+    "integration-contract.md corrected to use market_id join",
+    "Pre-registration updated to clarify n=128 vs n=69 output tiers",
+    "Cross-event variance estimated from 7+ events total",
+    "Oscar approves promotion to EXPERIMENTAL"
+  ]
+}

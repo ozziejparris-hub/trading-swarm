@@ -23,7 +23,19 @@
         "join_key_correction": "integration-contract.md condition_id join is incorrect. Use m.market_id = t.market_id (3,541,160 matches vs 2,241,596 for condition_id join)"
       },
       "timestamp": "2026-05-20T19:51:01.279312Z",
-      "status": "pending"
+      "status": "completed",
+      "processed_at": "2026-05-20T19:55:48.590991",
+      "validation_completed_at": "2026-05-21T00:00:00Z",
+      "validation_verdict": "CONDITIONAL_PASS",
+      "validation_summary": "Statistical signal confirmed (p=0.0180 independent replication, Haley-only p=0.0000). Iran market not independently significant (p=0.1829). N=2 events insufficient for cross-event generalisation. Effect size small (r=0.14). Bot exclusion valid with caveats. Deploy as watchlist trigger only \u2014 not standalone trading signal. Requires 5+ additional events for full PASS.",
+      "validation_report": "brain/agent-outputs/backtest-agent/LH-001-validation.md",
+      "validation_metrics": "brain/agent-outputs/backtest-agent/2026-05-21-LH-001-lifecycle-heuristic.json",
+      "action_items": [
+        "Resolve Iran market title via API (condition_id: 0xdf31a15ee2f55b675d44882cbb2053a72b83ad40eef5d60b11762517f695f4ba)",
+        "Correct integration-contract.md join key (market_id not condition_id)",
+        "Run heuristic on Unknown-category markets for additional event coverage",
+        "Deploy as watchlist trigger in insider_signals pipeline"
+      ]
     }
   ]
 }

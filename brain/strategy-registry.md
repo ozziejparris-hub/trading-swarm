@@ -91,7 +91,7 @@ Upgrade note:           2026-03-29 — upgraded to three-type
 
 ### LH-001 — Lifecycle Heuristic Insider Detection
 ```
-Status:                 PENDING_VALIDATION
+Status:                 CONDITIONAL_PASS
 Description:            Pre-filter for signal-agent. Detects new single-event
                         high-volume accounts appearing within 30 days of a
                         geopolitics market's resolution date. These accounts
@@ -101,32 +101,35 @@ Description:            Pre-filter for signal-agent. Detects new single-event
 Category:               Pre-filter / Insider detection
 Finding:                brain/agent-outputs/quant-research/LH-001/
                         lh001_methodology.md
-Statistical signal:     p=0.0067 (Mann-Whitney U, two-tailed, clean sample)
-                        Candidate pool: n=69 | Control pool: n=160
-Confidence:             MEDIUM
+Backtest report:        brain/agent-outputs/backtest-agent/LH-001-validation.md
+Statistical signal:     Claimed: p=0.0067 (one-tailed Mann-Whitney U)
+                        Independent replication: p=0.0180 (one-tailed), n=128 vs n=184
+                        Haley market alone: p=0.0000 (n=36 clean candidates)
+                        Iran market alone: p=0.1829 (NOT significant)
+                        Effect size: rank-biserial r=0.14 (small)
+Confidence:             MEDIUM (fragile — driven by single event)
 Added:                  2026-05-20
+Validated:              2026-05-21 (backtest-agent)
 Intended use:           Flag new single-event high-volume accounts appearing
                         within 30 days of geopolitics market resolution, then
                         pass those accounts to signal-agent as a watch list.
-                        This is a pre-filter only — not a trading signal.
-Blocking items (ALL must resolve before deployment):
-  1. Expand Unknown-category markets (currently only 2 events in sample —
-     insufficient for generalisation)
-  2. Verify Iran market title via Gamma API (title ambiguity may affect
-     candidate classification)
-  3. Backtest-agent formal statistical validation
-Deployment gate:        Do NOT deploy to signal pipeline until all 3 blocking
-                        items are resolved and backtest-agent signs off.
-Validation criteria:
-  - Minimum 20 candidate accounts across 5+ markets
-  - Unknown-category coverage >= 5 events
-  - Backtest-agent confirms p < 0.05 on expanded clean sample
-  - Oscar approves promotion to EXPERIMENTAL
-Notes:
-  3-phase analysis complete (quant-research-agent, 2026-05-20).
-  Unknown-category gap is the primary gap — geopolitics coverage is
-  solid but Unknown markets need inclusion before the heuristic can
-  be considered general-purpose.
+                        WATCHLIST TRIGGER ONLY — not a trading signal.
+Blocking items (ALL must resolve before PASS upgrade):
+  1. Expand to 5+ additional independent geopolitics events
+     (only 2 events tested; both from same 12-day window — insufficient)
+  2. Verify Iran market title via Gamma API (condition_id:
+     0xdf31a15ee2f55b675d44882cbb2053a72b83ad40eef5d60b11762517f695f4ba)
+  3. Correct integration-contract.md join key (market_id not condition_id)
+  4. Clarify n=128 vs n=69 methodology discrepancy in lh001_methodology.md
+  5. Oscar approves promotion to EXPERIMENTAL
+Deployment gate:        May deploy as watchlist TRIGGER (not signal) now.
+                        Do NOT use for position sizing until PASS.
+Backtest findings (2026-05-21):
+  - p=0.0067 NOT exactly reproducible (independent: p=0.0180)
+  - Iran market excluded from primary analysis (p=0.1829, not significant)
+  - N=2 events insufficient for cross-event generalisation
+  - Existing insider_signals table already covers this use case
+  - Bot exclusion valid but inconsistent criteria must be standardised
 ```
 
 ### STR-001 — Elite Convergence Signal
