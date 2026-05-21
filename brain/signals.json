@@ -27,14 +27,14 @@
       "processed_at": "2026-05-20T19:55:48.590991",
       "validation_completed_at": "2026-05-21T00:00:00Z",
       "validation_verdict": "CONDITIONAL_PASS",
-      "validation_summary": "Statistical signal confirmed (p=0.0180 independent replication, Haley-only p=0.0000). Iran market not independently significant (p=0.1829). N=2 events insufficient for cross-event generalisation. Effect size small (r=0.14). Bot exclusion valid with caveats. Deploy as watchlist trigger only \u2014 not standalone trading signal. Requires 5+ additional events for full PASS.",
+      "validation_summary": "V2 correction: pooled p=0.0160 (one-tailed MWU, n=59 candidates vs n=90 control). V1 Haley p=0.0000 was a market-scale confound \u2014 corrected. Neither event individually significant (Haley p=0.1087, Iran p=0.4818). Claimed p=0.0067 not reproducible. N=2 events insufficient. Effect size r=0.208 (small-medium). Bot exclusion valid. insider_signals table already implements this pattern with 7 detections. Deploy as watchlist trigger via existing infrastructure only.",
       "validation_report": "brain/agent-outputs/backtest-agent/LH-001-validation.md",
       "validation_metrics": "brain/agent-outputs/backtest-agent/2026-05-21-LH-001-lifecycle-heuristic.json",
       "action_items": [
-        "Resolve Iran market title via API (condition_id: 0xdf31a15ee2f55b675d44882cbb2053a72b83ad40eef5d60b11762517f695f4ba)",
-        "Correct integration-contract.md join key (market_id not condition_id)",
-        "Run heuristic on Unknown-category markets for additional event coverage",
-        "Deploy as watchlist trigger in insider_signals pipeline"
+        "Validate 7 existing insider_signals records as markets resolve (primary validation path)",
+        "Resolve Iran market title via Gamma API (condition_id: 0xdf31a15ee2f55b675d44882cbb2053a72b83ad40eef5d60b11762517f695f4ba)",
+        "Confirm insider_signals uses Gamma API wallet creation date vs first-trade proxy",
+        "Run heuristic on Unknown-category markets for additional validation events"
       ]
     }
   ]

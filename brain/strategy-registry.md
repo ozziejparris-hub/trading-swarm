@@ -102,34 +102,49 @@ Category:               Pre-filter / Insider detection
 Finding:                brain/agent-outputs/quant-research/LH-001/
                         lh001_methodology.md
 Backtest report:        brain/agent-outputs/backtest-agent/LH-001-validation.md
+                        (v2 corrected 2026-05-21)
 Statistical signal:     Claimed: p=0.0067 (one-tailed Mann-Whitney U)
-                        Independent replication: p=0.0180 (one-tailed), n=128 vs n=184
-                        Haley market alone: p=0.0000 (n=36 clean candidates)
-                        Iran market alone: p=0.1829 (NOT significant)
-                        Effect size: rank-biserial r=0.14 (small)
-Confidence:             MEDIUM (fragile — driven by single event)
+                        v2 replication: p=0.0160 (pooled, n=59 candidates vs
+                        n=90 control, clean: research_excluded=0 AND
+                        bot_type IS NULL)
+                        Haley vs Haley-control: p=0.1087 (NOT significant)
+                        Iran vs Iran-control: p=0.4818 (NOT significant)
+                        V1 "Haley p=0.0000" was CORRECTED — it was a market-
+                        scale confound (Haley candidates vs mixed Haley+Iran
+                        control, not event-specific comparison)
+                        Effect size: rank-biserial r=0.208 (small-medium)
+Confidence:             LOW-MEDIUM (pooled signal real; event-level validation
+                        fails; n=2 events in same 12-day window insufficient)
 Added:                  2026-05-20
-Validated:              2026-05-21 (backtest-agent)
+Validated:              2026-05-21 v1 (backtest-agent); v2 correction same date
 Intended use:           Flag new single-event high-volume accounts appearing
                         within 30 days of geopolitics market resolution, then
                         pass those accounts to signal-agent as a watch list.
                         WATCHLIST TRIGGER ONLY — not a trading signal.
+                        NOTE: insider_signals table already implements this
+                        pattern with 7 real-world detections. Primary
+                        validation path is those 7 records, not new runs.
 Blocking items (ALL must resolve before PASS upgrade):
-  1. Expand to 5+ additional independent geopolitics events
-     (only 2 events tested; both from same 12-day window — insufficient)
-  2. Verify Iran market title via Gamma API (condition_id:
+  1. Expand to 5+ additional independent geopolitics events across different
+     time periods; need at least 3/5 to show p<0.05 event-level significance
+  2. Validate 7 existing insider_signals records as markets resolve
+     (need >=60% accuracy on resolved records)
+  3. Confirm insider_signals uses Gamma API wallet creation date vs first-
+     trade proxy (critical for signal precision)
+  4. Verify Iran market title via Gamma API (condition_id:
      0xdf31a15ee2f55b675d44882cbb2053a72b83ad40eef5d60b11762517f695f4ba)
-  3. Correct integration-contract.md join key (market_id not condition_id)
-  4. Clarify n=128 vs n=69 methodology discrepancy in lh001_methodology.md
   5. Oscar approves promotion to EXPERIMENTAL
-Deployment gate:        May deploy as watchlist TRIGGER (not signal) now.
+Deployment gate:        May deploy as watchlist TRIGGER (not signal) now via
+                        existing insider_signals infrastructure.
                         Do NOT use for position sizing until PASS.
-Backtest findings (2026-05-21):
-  - p=0.0067 NOT exactly reproducible (independent: p=0.0180)
-  - Iran market excluded from primary analysis (p=0.1829, not significant)
-  - N=2 events insufficient for cross-event generalisation
-  - Existing insider_signals table already covers this use case
-  - Bot exclusion valid but inconsistent criteria must be standardised
+Backtest findings (2026-05-21 v2):
+  - p=0.0067 NOT reproducible; v2 independent replication: p=0.0160
+  - V1 Haley p=0.0000 was a confound artifact — corrected in v2
+  - Haley vs Haley-control: p=0.1087 (not significant)
+  - Iran vs Iran-control: p=0.4818 (not significant)
+  - N=2 events in 12-day window insufficient; power ~69% combined, ~30% per event
+  - insider_signals table (7 records) is the primary validation path
+  - Bot exclusion valid; research_excluded=0 filter appropriate
 ```
 
 ### STR-001 — Elite Convergence Signal
@@ -445,6 +460,7 @@ for validation. Quant-research-agent manages that directory.
 | 2026-03-29 | RQ0.2 Bot Detection | Initial run | PASSED — 0 flagged, dataset growing | Oscar |
 | 2026-04-27 | STR-001 Elite Convergence Signal | First validation (never previously run) | FAILED — 56.1% accuracy (min 60%), structural flaw: 78% of markets trigger both Yes+No signals simultaneously | backtest-agent |
 | 2026-05-07 | STR-003 Single Legendary Directional | RQ2.2 extended window analysis | EXPERIMENTAL — YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution. Both above 60% threshold. April 26 NO=0% was 7d window artifact. | quant-research-agent |
+| 2026-05-21 | LH-001 Lifecycle Heuristic | First validation | CONDITIONAL_PASS — pooled p=0.0160, r=0.208. Neither event individually significant (Haley p=0.1087, Iran p=0.4818). V1 Haley p=0.0000 corrected — was market-scale confound. N=2 events insufficient. Watchlist trigger only via insider_signals. | backtest-agent (v2) |
 
 ---
 
