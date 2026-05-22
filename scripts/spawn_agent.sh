@@ -167,7 +167,7 @@ FULL_PROMPT="${TEMPLATE/\{TASK_DESCRIPTION\}/$TASK_DESC}"
 
 # ── Read current brain context ────────────────
 PRIORITIES=$(cat "$BRAIN_DIR/priorities.md" 2>/dev/null || echo "No priorities set")
-ROUTING=$(cat "$BRAIN_DIR/model-routing.md" 2>/dev/null || echo "No routing doc found")
+ROUTING="This agent is running as Tier $TIER — $MODEL_NAME. Full routing decisions are in brain/model-routing.md if needed."
 
 # ── Integration contract — injected for DB-querying agents only ──
 # Agents that read first-repo must follow brain/integration-contract.md.
