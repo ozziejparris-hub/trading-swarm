@@ -63,6 +63,15 @@ This document grows more valuable every week.
 
 ---
 
+- 2026-05-23: Research pool SQL filter in reference files should document the methodology,
+  not embed a specific trader count. Counts age quickly — the 493 figure written to
+  polymarket-market-structure.md on May 16 was already stale by May 18 (pool at 104 due
+  to script regression). Reference files should say "run explicit filter to get current
+  authoritative count" not "returns 493 as of May 13."
+  (Source: performance-analyst 2026-05-18, training-librarian 2026-05-23)
+
+---
+
 ## Strategy Insights
 *(what worked, what failed, and why)*
 
@@ -88,6 +97,16 @@ This document grows more valuable every week.
   capital in one direction on a market) filters LPs effectively,
   selecting only traders with genuine conviction rather than hedged
   market-making positions. 1/1 resolved signal correct (Ramaswamy NO).
+
+- 2026-05-21 CONDITIONAL_PASS: LH-001 — Lifecycle Heuristic Insider Detection.
+  Pooled p=0.0160 (one-tailed MWU, n=59 candidates vs n=90 control). Neither
+  event individually significant (Haley p=0.1087, Iran p=0.4818). V1 "Haley
+  p=0.0000" was a market-scale confound — Haley profits are ~10× Iran profits,
+  so comparing Haley lifecycle traders against a mixed Haley+Iran control inflated
+  the apparent p-value. Effect size r=0.208 (small-medium). N=2 events is
+  insufficient for deployment as a trading signal. DEPLOY AS WATCHLIST TRIGGER ONLY
+  via insider_signals table (7 existing detections). Do not promote until 5+ distinct
+  events validated. (Source: backtest-agent v2 2026-05-21)
 
 - 2026-05-08 PRE-REGISTERED: STR-004 — Capital-Weighted Legendary
   Aggregate Signal. Founding validation case: Russia/Ukraine ceasefire
@@ -129,6 +148,36 @@ This document grows more valuable every week.
 
 ## System Architecture Lessons
 *(what we learned about how the system itself works)*
+
+- 2026-05-23: CLOB V2 went live April 28 2026 — V1 SDKs and V1-signed orders are no longer
+  supported. Polymarket is migrating collateral from USDC.e to pUSD (ERC-20, Polygon, backed
+  1:1 by USDC). GET /markets/keyset max limit is now 100 (was higher). POST /submit no longer
+  returns transactionHash. Any agent using the Polymarket CLOB API must use V2 signing.
+  market-builder-agent template needs updating before any deployment.
+  (Source: research-scout pending-review 2026-05-19-17-polymarket-exchange-upgrade-clob-v2)
+
+- 2026-05-23: feedback.json corruption: research-scout-agent overwrote brain/feedback.json
+  with a scout cycle summary object (full overwrite: {"scout_cycles_completed": 15, ...}).
+  All approved, rejected, data_integrity_gates keys were destroyed. Restored from git d529c0a.
+  Root cause: template DoD item "feedback.json updated with cycle summary" does not specify
+  append-only semantics. The scout wrote its summary as a top-level overwrite rather than
+  appending to the scout_cycles array. Second consecutive corruption incident (May 12: empty,
+  May 17: full overwrite). Template fix is required — see template audit flags this week.
+  (Source: performance-analyst 2026-05-18, Flag 3)
+
+- 2026-05-23: Clean pool collapse: update_research_exclusions.py set research_excluded=0 for
+  7,748 traders who lack the ≥20 resolved trades criterion, collapsing the explicit clean pool
+  from 493 to 104 in 5 days (May 13 → May 18). The flag inflation was not gradual (604→7852)
+  — it happened in one script run. All agent research queries must use the FULL explicit filter:
+  `research_excluded=0 AND resolved_trades>=20 AND bot_suspect=0 AND wash_trade_suspect=0`.
+  Do not spawn quant-research-agent, feedback-loop-agent, or signal-agent without briefing on
+  this discrepancy. (Source: performance-analyst 2026-05-18, Flag 1)
+
+- 2026-05-23: New ELO cluster: 39 traders above ELO 3500 appeared by May 18 (max ELO 4305
+  vs 3471 May 13). Same structural signature as ARB_BOT cluster excluded May 6 (111 traders,
+  ELO 3308–3315). RQ0 gate due June 13 should be brought forward. If any of the 39 traders
+  are in the 104-trader explicit clean pool, they could contaminate signal generation.
+  (Source: performance-analyst 2026-05-18, Flag 2)
 
 - Pre-registration protocol prevents compute waste on
   weak hypotheses. Established during build phase.
@@ -295,3 +344,17 @@ This document grows more valuable every week.
   final 24h) predict resolution direction? New RQ candidate from
   polymarket-resolution-zone-price-dynamics paper (May 12). Needs
   pre-registration before any test.
+
+- Can the ForesightFlow Information Leakage Score (arXiv 2605.00493) be used
+  by market-builder-agent to filter for high-signal markets? Pending Oscar review
+  of research-scout pending-review item (May 19). Would complement ELO ranking
+  with a market-level quality signal.
+
+- Does the insider detection methodology from arXiv 2605.02287 (3.14% skilled winners,
+  69.9% win rate) improve ELO pool construction? Could sharpen signal generation by
+  selecting confirmed skilled insiders or filtering adversarial actors. Directly relevant
+  to RQ3.2. Pending Oscar review of research-scout pending-review item (May 19).
+
+- Are the 39 new traders above ELO 3,500 (May 18) coordinated ARB_BOTs or legitimate
+  new entrants? Must answer before any signal generation from the ELO 3,500+ range.
+  Bring RQ0 forward from June 13. (Performance-analyst Flag 2, May 18)

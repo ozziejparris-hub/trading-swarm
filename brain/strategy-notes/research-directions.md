@@ -530,6 +530,11 @@ with accumulated knowledge rather than from zero.
 - 2026-05-08: STR-004 FIRST DATA POINT — founding case (Russia/Ukraine ceasefire) FAILED. Crowd at 7% YES was correct; 8 legendary traders at $1.74M 55.7% YES were wrong. n=1, stop criterion is <50% over 10 markets. Continue validation.
 - 2026-05-16: Research pool discrepancy — live `WHERE research_excluded=0` returns 604 traders vs 493 authoritative. Use explicit criteria: `research_excluded=0 AND resolved_trades≥20 AND bot_suspect=0 AND wash_trade_suspect=0` until code-hygiene fixes update_research_exclusions.py.
 - 2026-05-20: LH-001 PARTIALLY VALIDATED — lifecycle heuristic (single-geo-market, 0-30 days before resolution) shows p=0.0067 profit advantage over control (clean, n=69 vs 160), but win rate only 47.7% (target 70%). 2 events only. CRITICAL: integration-contract.md condition_id join is WRONG — use m.market_id = t.market_id (3.5M vs 2.2M trades). Backtest validation pending.
+- 2026-05-21: LH-001 CONDITIONAL_PASS (backtest-agent v2) — original p=0.0067 not reproducible.
+  Corrected: pooled p=0.0160 (n=59 vs n=90 clean). V1 Haley p=0.0000 was a market-scale confound.
+  Neither event independently significant. Effect size r=0.208 (small-medium). N=2 events
+  insufficient for trading signal deployment. DEPLOY AS WATCHLIST TRIGGER ONLY via existing
+  insider_signals table (7 detections already). Validate on 5+ distinct events before promotion.
 - 2026-05-20: Research pool now 7,908 traders (integration-health.json 2026-05-20). Previous figure of 493 was from May 7 — pool grows daily as traders reach resolved_trades >= 20 threshold.
 
 
@@ -1268,6 +1273,57 @@ must be flagged for terminal-jump slippage risk (non-continuous price jumps docu
 - Pending Oscar review before any integration (check vs integration-contract.md)
 
 **Reference:** brain/research-scout/pending-review/2026-05-12-08-pmxt-unified-prediction-market-sdk-free-data-archive.md
+
+---
+
+## Insider Trading Methodology — ELO Pool Sharpening (arXiv 2605.02287)
+
+**Identified:** 2026-05-19 (research-scout pending-review)
+**Source:** arXiv:2605.02287 — "Per-Market Information Leakage and Order-Flow Skill"
+
+**The finding:** Applied to Polymarket across 93,000+ markets and 210,000 wallet-market pairs:
+- 3.14% of accounts classified as "skilled winners" (systematic positive edge)
+- 1,950 accounts flagged as likely insiders
+- Composite insider screen: 69.9% win rate on flagged trades
+- Methodology uses per-market information leakage score + order flow skill decomposition
+
+**Relevance to current system:**
+- Directly relevant to RQ3.2 (elite consensus signal quality) — the 69.9% insider win rate
+  independently validates the ELO-based approach and provides a competing methodology for
+  benchmarking
+- ELO pool construction: could sharpen pool by selecting skilled insiders as confirmed signal
+  sources, or filtering adversarial actors to avoid being on the wrong side of their trades
+- Lifecycle heuristic (LH-001) complements this: new accounts within 30d of resolution + this
+  paper's skilled-winner screen = compound insider detection layer
+- Must read before RQ3.2 June 2026 follow-up to incorporate relevant methodology upgrades
+
+**Pre-registration required** before any empirical test comparing this methodology to ELO.
+
+**Reference:** brain/research-scout/pending-review/2026-05-19-17-per-market-information-leakage-and-order-flow-skil.md  
+**Priority:** HIGH — pending Oscar review
+
+---
+
+## ForesightFlow — Per-Market Information Leakage Score (arXiv 2605.00493)
+
+**Identified:** 2026-05-19 (research-scout pending-review)
+**Source:** arXiv:2605.00493 — "ForesightFlow: Information Leakage Score Framework"
+
+**The finding:** Introduces a per-market Information Leakage Score (ILS) quantifying how much
+early order flow predicts resolution outcomes. Markets with high ILS have detectable pre-
+resolution information asymmetry.
+
+**Relevance to current system:**
+- market-builder-agent market selection: filter for high-ILS markets to improve signal quality
+- Signal weighting: downweight signals from low-ILS markets where noise dominates
+- Complements ELO ranking — ELO identifies WHO has edge, ILS identifies WHICH MARKETS have
+  detectable information flow. Combining both creates a two-axis quality filter.
+- Directly applicable to STR-003 and STR-004 signal confidence scoring
+
+**Pre-registration required** before any empirical ILS calculation on local DB.
+
+**Reference:** brain/research-scout/pending-review/2026-05-19-17-foresightflow-information-leakage-score-framework-.md  
+**Priority:** HIGH — pending Oscar review
 
 ---
 

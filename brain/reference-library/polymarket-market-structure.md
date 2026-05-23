@@ -24,7 +24,9 @@ Why 95% and not 80% or 70%: our DB contains legendary traders (ELO > 2175) who h
 
 ## ⚠ CRITICAL: Authoritative Research Pool Filter
 
-**Identified 2026-05-13 (performance-analyst Flag 3):** The simple `WHERE research_excluded=0` query returns 604 traders. The authoritative clean pool is 493. Always use the full explicit filter:
+**Do not rely on any embedded trader count in this file — run the explicit filter to get the current authoritative pool size.** Pool counts change as new traders are added and as script regressions occur (see warning below).
+
+Always use the full explicit filter:
 
 ```sql
 -- AUTHORITATIVE CLEAN POOL FILTER — always use this:
@@ -32,10 +34,16 @@ WHERE research_excluded = 0
   AND resolved_trades >= 20
   AND bot_suspect = 0
   AND wash_trade_suspect = 0
--- Returns 493 as of 2026-05-13. research_excluded=0 alone returns 604 — do NOT use alone.
+-- Do NOT use research_excluded=0 alone — it massively overstates the pool.
 ```
 
 Root cause: update_research_exclusions.py's set-eligible logic is inconsistent with its reverse-exclusion logic. Until code-hygiene fixes this, the explicit filter is the authoritative query.
+
+**History of pool count instability:**
+- 2026-05-13: `research_excluded=0` returned 604; explicit filter returned 493 (111-trader gap)
+- 2026-05-18: `research_excluded=0` returned 7,852; explicit filter returned **104** (7,748-trader regression)
+
+The script set research_excluded=0 for thousands of traders lacking ≥20 resolved trades in a single run on or before May 18. The explicit filter is the ONLY reliable method. Any count embedded in this file or any other file is a historical snapshot only — do not act on it without re-running the query.
 
 ---
 
@@ -45,10 +53,12 @@ Distinct from LPs, ARB_BOTs are coordinated wallet clusters that exploit price i
 
 ARB_BOTs are not expressing views either — they are extracting mechanical inefficiencies. Including them contaminates ELO scores and inflates apparent "legendary" counts.
 
-**Our DB exclusions (493-trader clean pool):**
+**Our DB exclusions (493-trader clean pool as of 2026-05-13):**
 - 257 wallets flagged as `LP_ARTIFACT` — excluded
 - 111 wallets flagged as `ARB_BOT` — excluded
-- Clean pool: 493 traders with `research_excluded=0, bot_type=NULL`
+- Clean pool: 493 traders with `research_excluded=0, bot_type=NULL` (as of May 13)
+
+**WARNING 2026-05-18:** 39 new traders have appeared above ELO 3,500 (max ELO now 4,305 vs 3,471 May 13). Same structural signature as the ARB_BOT cluster excluded May 6. Run RQ0.2 bot detection before trusting any signals from traders above ELO 3,500 — the cluster may be coordinated arbitrage wallets not yet flagged. Bring RQ0 gate forward from June 13 if these traders appear in signal generation paths.
 
 ---
 
