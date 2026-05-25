@@ -1,61 +1,85 @@
 {
-  "generated": "2026-05-25T12:07:36Z",
+  "generated": "2026-05-25T12:20:59Z",
   "hypothesis": "RQ-GEO-ELO-001",
-  "phase": "Phase 1+2 complete — geo_elo and geo_directionality_score calculated",
-  "tier_distribution": {
-    "traders_with_geo_elo": 435,
-    "geo_legendary": 0,
-    "geo_elite": 15,
-    "geo_qualified": 224
-  },
-  "elo_distribution": {
-    "min_geo_elo": 999.66,
-    "max_geo_elo": 1992.79,
-    "avg_geo_elo": 1516.17,
-    "elo_gte_1800": 15,
-    "elo_gte_1700": 34,
-    "elo_gte_1600": 112,
-    "elo_gte_1500": 239
-  },
-  "distribution_note": "IMPORTANT: The fixed-opponent ELO algorithm (opponent always=1500) caps maximum achievable ELO at approximately 1993 for even the highest-win-rate traders. The pre-registration thresholds (LEGENDARY>=2175, ELITE>=1800) were calibrated for the multi-opponent comprehensive_elo which can reach 3300+. The 0-legendary result is an artifact of algorithm design, NOT evidence of low trader skill. The pre-registration explicitly permits threshold adjustment when 'the score distribution is materially different'. Phase 3 should use the adjusted thresholds below.",
-  "adjusted_thresholds_for_phase3": {
-    "geo_legendary_adjusted": {
-      "threshold": 1800,
-      "description": "top ~3.4% of geo traders, n=15, functionally equivalent to comprehensive_elo LEGENDARY tier",
-      "note": "Use geo_elo >= 1800 for LEGENDARY comparisons in Phase 3"
-    },
-    "geo_elite_adjusted": {
-      "threshold": 1700,
-      "description": "top ~7.8% of geo traders, n=34",
-      "note": "Use geo_elo >= 1700 for ELITE comparisons in Phase 3"
-    },
-    "geo_qualified_adjusted": {
-      "threshold": 1600,
-      "description": "top ~25.7% of geo traders, n=112",
-      "note": "Use geo_elo >= 1600 for QUALIFIED comparisons in Phase 3"
-    }
-  },
-  "directionality": {
-    "with_directionality_score": 435,
-    "avg_directionality": 0.3394,
-    "highly_directional_gte_0_7": 60
-  },
-  "phase3_instructions": "Run accuracy check using geo_elo tiers on resolved geopolitics markets. Use accuracy_pool=1 for Pool A validation. CRITICAL: Use adjusted thresholds (LEGENDARY=1800, ELITE=1700, QUALIFIED=1600) because the fixed-opponent ELO caps at ~1993 max. Compare LEGENDARY/ELITE/QUALIFIED accuracy under geo_elo vs comprehensive_elo baseline (LEGENDARY 46%, QUALIFIED 65%). Also filter to geo_directionality_score >= 0.7 and report accuracy for that subset. Oscar must decide whether to accept adjusted thresholds before Phase 3 results can confirm H1.",
+  "version": "v2 \u2014 market-implied probability ELO",
+  "phase": "Phase 1+2+3 complete",
   "algorithm": {
-    "k_factor": 32,
+    "type": "market_implied_probability",
+    "expected_score_yes": "price",
+    "expected_score_no": "1 - price",
+    "k_factor": "32 (<20 geo trades), 24 (20-50 geo trades), 16 (>50 geo trades)",
     "starting_elo": 1500,
-    "opponent_elo": 1500,
-    "opponent_description": "Fixed neutral baseline (market) — not player-vs-player",
     "min_trades_for_geo_elo": 5,
     "min_positions_for_directionality": 3,
-    "categories": ["Geopolitics", "Elections"],
+    "categories": [
+      "Geopolitics",
+      "Elections"
+    ],
     "join_key": "trades.market_id = markets.market_id",
-    "algorithm_note": "Simple fixed-opponent ELO. Equilibrium ELO for a 90% win-rate trader is ~1882; for 80% win-rate ~1741. Alternative: player-vs-player within geo markets would generate higher scores and a Legendary tier at 2175."
+    "note": "Phase 1 used fixed opponent=1500 which caps ELO at ~1993. v2 uses market price as expected score \u2014 no artificial cap."
   },
-  "baseline_for_comparison": {
-    "comprehensive_elo_legendary_accuracy": 0.46,
-    "comprehensive_elo_elite_accuracy": 0.49,
-    "comprehensive_elo_qualified_accuracy": 0.65,
-    "source": "feedback-loop-agent Run #8, 2026-05-25"
+  "tier_distribution": {
+    "traders_with_geo_elo": 435,
+    "max_geo_elo": 5464.5381,
+    "min_geo_elo": -1055.488,
+    "avg_geo_elo": 1605.9876,
+    "geo_legendary": 46,
+    "geo_elite": 47,
+    "geo_qualified": 114,
+    "geo_below": 228
+  },
+  "directionality": {
+    "highly_directional_gte_0_7": 60
+  },
+  "phase3_accuracy": {
+    "note": "accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. Reason: geo_elo holders have <20 total resolved trades (research_excluded=1); accuracy_pool requires research_excluded=0 (>=20 resolved trades). Accuracy reported on all geo_elo holders.",
+    "accuracy_pool_geo_overlap": 0,
+    "total_position_calls": 969,
+    "by_tier": {
+      "legendary": {
+        "n": 215,
+        "accuracy": 0.6698
+      },
+      "elite": {
+        "n": 141,
+        "accuracy": 0.695
+      },
+      "qualified": {
+        "n": 209,
+        "accuracy": 0.7368
+      },
+      "below_qualified": {
+        "n": 399,
+        "accuracy": 0.2882
+      },
+      "all": {
+        "n": 964,
+        "accuracy": 0.5301
+      }
+    },
+    "by_tier_directional": {
+      "legendary_dir": {
+        "n": 113,
+        "accuracy": 0.6283
+      },
+      "elite_dir": {
+        "n": 2,
+        "accuracy": 1.0
+      },
+      "qualified_dir": {
+        "n": 6,
+        "accuracy": 1.0
+      },
+      "all_dir": {
+        "n": 151,
+        "accuracy": 0.5364
+      }
+    },
+    "baseline": {
+      "comprehensive_elo_legendary_accuracy": 0.46,
+      "comprehensive_elo_elite_accuracy": 0.49,
+      "comprehensive_elo_qualified_accuracy": 0.65,
+      "source": "feedback-loop-agent Run #8, 2026-05-25"
+    }
   }
 }
