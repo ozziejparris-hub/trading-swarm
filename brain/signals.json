@@ -38,6 +38,43 @@
       ]
     }
   ],
+  "pending": [
+    {
+      "from": "quant-research-agent",
+      "to": "orchestrator",
+      "type": "hypothesis_ready",
+      "timestamp": "2026-05-25T00:00:00Z",
+      "status": "pending",
+      "payload": {
+        "hypothesis_id": "RQ-GEO-ELO-001",
+        "title": "Geopolitics-Conditioned ELO for Geopolitics Market Prediction",
+        "pre_registration_path": "brain/strategy-notes/rq-geo-elo-preregistration-2026-05-25.md",
+        "motivation": "LEGENDARY tier accuracy 46% (n=80, HIGH confidence) — below baseline as of Run #8 2026-05-25. Root cause: comprehensive_elo pools all categories including sports/crypto. QUALIFIED geopolitics accuracy 92.3% vs LEGENDARY 46% confirms category-pollution hypothesis.",
+        "hypothesis": "geo_elo (Geopolitics + Elections trades only) will show LEGENDARY tier accuracy >= 60% for geopolitics markets, vs current 46% under comprehensive_elo",
+        "expected_improvement": "LEGENDARY geo_elo accuracy >= 60% (vs 46% platform-wide), closing gap with QUALIFIED",
+        "data_summary": {
+          "traders_with_geo_trades": 5520,
+          "geopolitics_trades_resolved": 898411,
+          "elections_trades_resolved": 113929
+        },
+        "failure_condition": "geo_elo LEGENDARY accuracy < 55% across 50+ geopolitics markets",
+        "estimated_compute_hours": 3.5,
+        "phases": [
+          "Phase 1: Calculate geo_elo for all traders using Geopolitics + Elections trades only (~2h)",
+          "Phase 2: Re-run accuracy check using geo_elo tiers on geopolitics markets (~1h)",
+          "Phase 3: If passes, propose STR-003 update to use geo_elo as qualifier (~30min)"
+        ],
+        "schema_note": "JOIN key: trades.market_id = markets.market_id (NOT condition_id). New column: traders.geo_elo REAL DEFAULT NULL.",
+        "awaiting": "Oscar approval before Phase 1 begins — no geo_elo calculation has been run yet",
+        "strategies_affected": ["STR-003"],
+        "related_findings": [
+          "2026-05-25-ELO-LEGENDARY-001",
+          "2026-05-25-ELO-ELITE-001",
+          "2026-05-25-ELO-QUALIFIED-001"
+        ]
+      }
+    }
+  ],
   "rescan_log": [
     {
       "from": "signal-agent",
