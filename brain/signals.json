@@ -37,5 +37,45 @@
         "Run heuristic on Unknown-category markets for additional validation events"
       ]
     }
+  ],
+  "rescan_log": [
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "rescan_complete",
+      "timestamp": "2026-05-25T08:00:01Z",
+      "payload": {
+        "cycle_id": "signal-20260525",
+        "signals_rescanned": 4,
+        "signals_confirmed": 2,
+        "signals_flagged": 2,
+        "signals_upgraded": 0,
+        "new_signals_found": 0,
+        "pool_size": 11970,
+        "legendary_count": 599,
+        "legendary_verified_10plus": 21,
+        "signal_statuses": {
+          "newsom_2026_dropout": "MEDIUM_CONFIRMED",
+          "usa_un_security_council": "MEDIUM_FLAGGED_concurrent_markets",
+          "fed_march_2027": "MEDIUM_CONFIRMED",
+          "putin_june_2026": "MEDIUM_FLAGGED_counter_signal"
+        },
+        "thin_sample_flags": [
+          "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302 (ELO 2797.7, resolved: 3) — Signal 1",
+          "0x72a1ac129a75877887d31c847508ffef7baf466b (ELO 3153.9, resolved: 4) — Signal 1",
+          "0xef1dd16257bd9cde80d30fa9197417b1b6711c96 (ELO 3150.3, resolved: 4) — Signal 2",
+          "0x9fb0f92a17531afe232b7f2cdd0e48d157068b61 (ELO 2923.2, resolved: 1) — Signal 3",
+          "0xdffc6760f9b8e760ee248ea8509c6502cf838302 (ELO 3323.0, resolved: 1) — Signal 4",
+          "0x0a956f4e2c0e2f675be10535b0c78e4bb563e2f8 (ELO 2549.7, resolved: 1) — Signal 4 counter"
+        ],
+        "anomalies": [
+          "Pool grew 7951→11970 since 2026-05-18 (7 days). Recommend Oscar review of daily_maintenance.py logs.",
+          "All 21 verified legendary traders (≥10 resolved trades) disqualified by excessive concurrent markets (15–1626). STR-003 focus criterion structurally incompatible with validated traders.",
+          "Stale market inflation ongoing — 5 of 7 concurrent markets for Signal 3 key trader are 2025/template. Stale cleanup still outstanding."
+        ],
+        "action_required": "Signal 2 (UN Security Council) awaiting Oscar decision on stale-market exclusion policy (open since 2026-05-18). Signal 4 (Putin) approaching resolution ~June 2026 — record outcome in strategy-registry.md.",
+        "report_path": "brain/agent-outputs/signal-agent/2026-05-25-08-signal-report.md"
+      }
+    }
   ]
 }
