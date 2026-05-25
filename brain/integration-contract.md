@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.3 — 2026-05-20
+**Version:** 1.5 — 2026-05-25
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -91,6 +91,24 @@ The pool is refreshed daily at 06:00 UTC by `update_research_exclusions.py`
 accumulate enough resolved trades to qualify, or as bot detection flags
 new accounts.
 
+### Traders Table — Key Columns
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `address` | TEXT | Wallet address (primary key) |
+| `research_excluded` | INTEGER | 0 = Pool B (clean); 1 = excluded |
+| `resolved_trades_count` | INTEGER | Total resolved trades across all markets |
+| `bot_suspect` | INTEGER | 1 = suspected automated trader |
+| `wash_trade_suspect` | INTEGER | 1 = suspected wash trader |
+| `bot_type` | TEXT | `LP_ARTIFACT`, `THIN_SAMPLE_ARTIFACT`, `ARB_BOT`, or NULL |
+| `accuracy_pool` | BOOLEAN | 1 = Pool A (accuracy/validation) |
+| `comprehensive_elo` | REAL | ELO across all markets |
+| `realized_pnl` | REAL | Realized P&L in USD (authoritative — see Section 6b) |
+| `geo_elo` | REAL | Market-implied probability ELO for geopolitics+elections trades only |
+| `geo_resolved_trades_count` | INTEGER | Resolved trades in geo/elections markets |
+| `geo_directionality_score` | REAL | Fraction of geo capital on dominant side (0=pure LP, 1=fully directional) |
+| `geo_accuracy_pool` | BOOLEAN | 1 = Pool C (geopolitics accuracy) |
+
 ---
 
 ## Section 4 — ELO Tiers
@@ -157,6 +175,37 @@ they are handled by the query filters in Section 2.
 | Position duplication — BST/UTC timezone mismatch | 2026-05-05 | April 18-20 server migration imported positions twice due to 1-hour BST/UTC offset. 38,630 duplicate rows removed. Post-cleanup totals: 1,026,810 positions total, 73,910 open, 952,900 closed. Dedup guard now in place. |
 | `traders.total_pnl` never written | 2026-05-05 | Column existed but the monitor.py UPDATE only wrote `realized_pnl`. Fixed: `total_pnl` now set to `realized_pnl` in every P&L update (unrealized_pnl is a permanent placeholder at 0.0). **Use `realized_pnl` for all P&L queries — it is the authoritative column.** |
 
+### Research Pools (maintained by update_research_exclusions.py)
+
+#### Pool A — Accuracy/Validation Pool
+Filter: `accuracy_pool = 1`
+Requirements: `research_excluded = 0`, `resolved_trades_count >= 10`, `realized_pnl > 1000`, `bot_type IS NULL`, `wash/bot suspect = 0`
+Used for: ELO calibration, feedback-loop accuracy scoring, Phase 5 gates
+Updated by: `update_research_exclusions.py`
+
+#### Pool B — General Research Pool
+Filter: `research_excluded = 0`
+Requirements: `resolved_trades_count >= 20`, `bot_type IS NULL`, `wash/bot suspect = 0`
+Used for: All ELO queries, signal generation, quant-research queries
+Current size: Read live from `brain/integration-health.json`
+Updated by: `update_research_exclusions.py`
+
+#### Pool C — Geopolitics Accuracy Pool
+Filter: `geo_accuracy_pool = 1`
+Subset of traders with:
+- `geo_elo IS NOT NULL` (market-implied probability ELO on geo/elections trades)
+- `geo_resolved_trades_count >= 5`
+- `geo_directionality_score IS NOT NULL`
+- `bot_type IS NULL`, wash/bot suspect = 0
+
+Used for:
+- geo_elo tier accuracy validation
+- STR-003 signal qualification
+- Out-of-sample geopolitics prediction validation
+
+Current size: 435 traders (2026-05-25)
+Updated by: `update_research_exclusions.py`
+
 ---
 
 ## Section 6c — Open Data Quality Issues (known, no fix yet applied)
@@ -211,6 +260,7 @@ Agents should not query the database during the maintenance window
 | 2026-05-07 | Contract updated to v1.1: pool size, alert threshold, bot_type list, Section 6c resolved | All agents |
 | 2026-05-14 | Pool size removed from contract — now read live from integration-health.json. Alert threshold lowered to 440. | All agents reading pool size |
 | 2026-05-20 | **Critical JOIN key correction (v1.3):** `m.market_id = t.market_id` is the correct join (99.999% match, 3,541,160/3,541,160 trades). Previous contract specified `m.condition_id = t.market_id` — this only matches 63% of trades. `condition_id` is a Polymarket external API identifier, NOT a join key. Warning added to Section 2; Section 6 row corrected. | All agents — update any query using the old join immediately |
+| 2026-05-25 | Contract updated to v1.5: Pool A/B/C documented in Section 6b; traders column table added to Section 3 (includes geo_elo, geo_resolved_trades_count, geo_directionality_score, geo_accuracy_pool); geo_accuracy_pool column added to first-repo DB; STR-003 updated to use geo_elo >= 2175 + geo_directionality_score >= 0.7. Pool C size: 435 traders. | All agents querying geo ELO or geopolitics markets |
 
 ---
 

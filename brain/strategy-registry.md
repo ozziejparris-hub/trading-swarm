@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-05-20
+Last updated: 2026-05-25
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -252,12 +252,22 @@ Notes:
 ### STR-003 — Single Legendary Directional Signal (PROPOSED)
 ```
 Status:                 EXPERIMENTAL
-Description:            A legendary trader (ELO > 2175,
+Description:            A legendary geo trader (geo_elo >= 2175,
+                        geo_directionality_score >= 0.7,
                         research_excluded = 0) with >= 95% of
                         their capital on one side of a market
                         (zero or near-zero opposing hedge).
                         Fires on individual conviction not group
                         consensus.
+Qualification note:     geo_elo uses market-implied probability ELO
+                        on Geopolitics+Elections trades only.
+                        Validated: 67% accuracy for geo_elo LEGENDARY
+                        vs 46% for comprehensive_elo LEGENDARY
+                        (in-sample, 2026-05-25). Out-of-sample
+                        validation required before live deployment —
+                        see RQ-GEO-ELO-003.
+                        geo_directionality_score >= 0.7 filters out
+                        LP/market-makers who hold both sides.
 
 Category:               Signal detection
 Pre-registered:         2026-04-27
