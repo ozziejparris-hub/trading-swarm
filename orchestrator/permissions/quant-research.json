@@ -1,0 +1,13 @@
+{
+  "allow": [
+    "read_file",
+    "write_file",
+    "run_sql",
+    "run_sql_write",
+    "run_shell",
+    "append_to_json_array",
+    "send_telegram",
+    "write_handoff"
+  ],
+  "note": "Tier 2.5 Qwen3-Coder — data processing layer for quant research. run_sql_write permitted for geo_elo and related column writes."
+}

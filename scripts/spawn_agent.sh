@@ -62,16 +62,54 @@
 
 set -e  # Exit on any error
 
-# ── Arguments ──────────────────────────────
-TASK_ID=$1
-AGENT_TYPE=$2
-TIER=${3:-3}          # Default to Sonnet if not specified
-TASK_DESC=$4
+# ── Parse arguments (positional + optional flags) ──
+HANDOFF_FILE=""
+_pos_args=()
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --handoff)
+            HANDOFF_FILE="$2"
+            shift 2
+            ;;
+        --help|-h)
+            echo "Usage: $0 <task_id> <agent_type> <tier> <description> [--handoff <path>]"
+            echo ""
+            echo "Tiers:"
+            echo "  1   = Ollama/Gemma4:e2b (local, free, 0.79s)"
+            echo "  2   = Ollama/Gemma4:e4b (local, free, 5.86s)"
+            echo "  2.5 = Ollama/Qwen3-Coder 30B-A3B (local, free, 1.08s)"
+            echo "  3   = Claude Sonnet 4.6 (\$3/\$15 per MTok)"
+            echo "  4   = Claude Opus 4.6 (\$5/\$25 per MTok, escalation only)"
+            echo ""
+            echo "Options:"
+            echo "  --handoff <path>   Inject a Tier 2.5 handoff file instead of full brain/ context."
+            echo "                     Tier 3 reads only the handoff; brain/ files are not injected."
+            echo ""
+            echo "See /brain/model-routing.md for per-agent routing decisions."
+            exit 0
+            ;;
+        -*)
+            echo "ERROR: Unknown option: $1"
+            echo "Run '$0 --help' for usage."
+            exit 1
+            ;;
+        *)
+            _pos_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+TASK_ID="${_pos_args[0]:-}"
+AGENT_TYPE="${_pos_args[1]:-}"
+TIER="${_pos_args[2]:-3}"
+TASK_DESC="${_pos_args[3]:-}"
 
 # ── Validate arguments ──────────────────────
 if [ -z "$TASK_ID" ] || [ -z "$AGENT_TYPE" ] || [ -z "$TASK_DESC" ]; then
     echo "ERROR: Missing required arguments"
-    echo "Usage: $0 <task_id> <agent_type> <tier> <description>"
+    echo "Usage: $0 <task_id> <agent_type> <tier> <description> [--handoff <path>]"
     echo ""
     echo "Tiers:"
     echo "  1   = Ollama/Gemma4:e2b (local, free, 0.79s)"
@@ -188,7 +226,33 @@ $CONTRACT"
 fi
 
 # ── Build complete agent prompt ───────────────
-AGENT_PROMPT="$FULL_PROMPT
+if [ -n "$HANDOFF_FILE" ] && [ -f "$HANDOFF_FILE" ]; then
+    # Handoff mode: Tier 2.5 pre-processed the data — inject only the handoff file.
+    # brain/ files (priorities, integration-contract) are intentionally omitted to
+    # save tokens; the handoff already contains all relevant context.
+    echo "[HANDOFF MODE] Using handoff file: $HANDOFF_FILE"
+    HANDOFF_CONTENT=$(cat "$HANDOFF_FILE")
+    AGENT_PROMPT="$FULL_PROMPT
+
+## Context Note
+Context pre-processed by Tier 2.5 agent. Read the handoff file below as your
+primary context. Do not re-read brain/ files unless the handoff explicitly instructs you to.
+
+## Handoff File
+$HANDOFF_CONTENT
+
+## Task ID
+$TASK_ID
+
+## Model Tier
+Tier $TIER — $MODEL_NAME
+
+## Started At
+$(date -u +%Y-%m-%dT%H:%M:%SZ)
+"
+elif [ -n "$HANDOFF_FILE" ]; then
+    echo "WARNING: --handoff path not found: $HANDOFF_FILE — falling back to standard context"
+    AGENT_PROMPT="$FULL_PROMPT
 
 ## Current System Priorities
 $PRIORITIES
@@ -206,6 +270,26 @@ Tier $TIER — $MODEL_NAME
 ## Started At
 $(date -u +%Y-%m-%dT%H:%M:%SZ)
 "
+else
+    AGENT_PROMPT="$FULL_PROMPT
+
+## Current System Priorities
+$PRIORITIES
+
+## Model Routing Reference
+$ROUTING
+$CONTRACT_SECTION
+
+## Task ID
+$TASK_ID
+
+## Model Tier
+Tier $TIER — $MODEL_NAME
+
+## Started At
+$(date -u +%Y-%m-%dT%H:%M:%SZ)
+"
+fi
 
 # ── Save prompt to log and temp file ─────────
 mkdir -p "$(dirname $LOG_FILE)"

@@ -1,0 +1,11 @@
+{
+  "allow": [
+    "read_file",
+    "write_file",
+    "run_sql",
+    "append_to_json_array",
+    "send_telegram",
+    "write_handoff"
+  ],
+  "note": "Read-only agent — no run_sql_write. signal-agent reads DB to generate signals but must not modify trader records."
+}

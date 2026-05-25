@@ -1,0 +1,11 @@
+{
+  "allow": [
+    "read_file",
+    "write_file",
+    "run_sql",
+    "append_to_json_array",
+    "send_telegram",
+    "write_handoff"
+  ],
+  "note": "Read-only agent — no run_sql_write. performance-analyst-agent reads DB for KPI calculations only."
+}

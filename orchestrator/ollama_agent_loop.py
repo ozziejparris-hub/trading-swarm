@@ -30,6 +30,7 @@ import time
 import urllib.error
 import urllib.request
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 # ─────────────────────────────────────────────
@@ -45,6 +46,31 @@ OLLAMA_TIMEOUT_S = 600  # per-call socket timeout
 READ_PREFIX = "/home/parison/"
 WRITE_PREFIX = "/home/parison/trading-swarm/"
 SIZE_CAP = 50 * 1024  # 50KB
+
+PROD_DB_PATH = "/home/parison/projects/first-repo/data/polymarket_tracker.db"
+HANDOFF_DIR = "/home/parison/trading-swarm/brain/agent-outputs/handoffs"
+
+# Allowlist for write tool: (human-readable name, compiled regex)
+_WRITE_ALLOWLIST: list[tuple[str, re.Pattern]] = [
+    ("UPDATE traders SET geo_elo",
+     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+geo_elo\b", re.IGNORECASE)),
+    ("UPDATE traders SET geo_directionality_score",
+     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+geo_directionality_score\b", re.IGNORECASE)),
+    ("UPDATE traders SET accuracy_pool",
+     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+accuracy_pool\b", re.IGNORECASE)),
+    ("UPDATE traders SET geo_resolved_trades_count",
+     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+geo_resolved_trades_count\b", re.IGNORECASE)),
+    ("ALTER TABLE traders ADD COLUMN",
+     re.compile(r"^\s*ALTER\s+TABLE\s+traders\s+ADD\s+COLUMN\b", re.IGNORECASE)),
+    ("INSERT INTO trader_notes",
+     re.compile(r"^\s*INSERT\s+INTO\s+trader_notes\b", re.IGNORECASE)),
+    ("UPDATE traders SET bot_type",
+     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+bot_type\b", re.IGNORECASE)),
+    ("UPDATE traders SET research_excluded",
+     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+research_excluded\b", re.IGNORECASE)),
+]
+MAX_WRITE_ROWS = 50_000
+_DDL_RE = re.compile(r"^\s*ALTER\b", re.IGNORECASE)
 
 ENV_FILE = Path.home() / ".env_trading"
 
@@ -242,6 +268,156 @@ def tool_run_sql(db_path: str, query: str, params: list | None = None) -> dict:
 
 
 # ─────────────────────────────────────────────
+# TOOL: run_sql_write
+# ─────────────────────────────────────────────
+
+def tool_run_sql_write(db_path: str, query: str, params: list | None = None) -> dict:
+    if params is None:
+        params = []
+
+    ts = datetime.now(timezone.utc).isoformat()
+
+    if db_path != PROD_DB_PATH:
+        return {
+            "status": "rejected",
+            "rows_affected": 0,
+            "query_pattern_matched": "",
+            "message": (
+                f"db_path must be exactly {PROD_DB_PATH!r}. "
+                "No other database is permitted for writes."
+            ),
+            "timestamp": ts,
+        }
+
+    matched_pattern = ""
+    for pattern_name, pattern_re in _WRITE_ALLOWLIST:
+        if pattern_re.match(query):
+            matched_pattern = pattern_name
+            break
+
+    if not matched_pattern:
+        allowed = "\n  - ".join(name for name, _ in _WRITE_ALLOWLIST)
+        return {
+            "status": "rejected",
+            "rows_affected": 0,
+            "query_pattern_matched": "",
+            "message": (
+                "Query does not match any permitted write pattern. Allowed patterns:\n"
+                f"  - {allowed}"
+            ),
+            "timestamp": ts,
+        }
+
+    conn = None
+    try:
+        conn = sqlite3.connect(db_path, timeout=30)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA busy_timeout=30000")
+
+        cur = conn.execute(query, params)
+        rows_affected = max(0, cur.rowcount)
+
+        # Skip row-count guard for DDL (ALTER TABLE never affects data rows)
+        is_ddl = bool(_DDL_RE.match(query))
+        if not is_ddl and rows_affected > MAX_WRITE_ROWS:
+            conn.rollback()
+            return {
+                "status": "rejected",
+                "rows_affected": rows_affected,
+                "query_pattern_matched": matched_pattern,
+                "message": (
+                    f"Write would affect {rows_affected:,} rows (limit: {MAX_WRITE_ROWS:,}). "
+                    "Add a WHERE clause to target a smaller batch, or ask Oscar to confirm "
+                    "before running at this scale."
+                ),
+                "timestamp": ts,
+            }
+
+        conn.commit()
+        log.info(
+            "run_sql_write: pattern=%r rows_affected=%d ts=%s",
+            matched_pattern, rows_affected, ts,
+        )
+        return {
+            "status": "ok",
+            "rows_affected": rows_affected,
+            "query_pattern_matched": matched_pattern,
+            "message": f"Write committed — {rows_affected} row(s) affected.",
+            "timestamp": ts,
+        }
+
+    except sqlite3.OperationalError as e:
+        if conn:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return {
+            "status": "error",
+            "rows_affected": 0,
+            "query_pattern_matched": matched_pattern,
+            "message": f"SQLite error: {e}",
+            "timestamp": ts,
+        }
+    except Exception as e:
+        if conn:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return {
+            "status": "error",
+            "rows_affected": 0,
+            "query_pattern_matched": matched_pattern,
+            "message": str(e),
+            "timestamp": ts,
+        }
+    finally:
+        if conn:
+            conn.close()
+
+
+# ─────────────────────────────────────────────
+# TOOL: write_handoff
+# ─────────────────────────────────────────────
+
+def tool_write_handoff(
+    handoff_path: str,
+    task_summary: str,
+    results: dict,
+    files_written: list,
+    next_agent_instructions: str,
+    token_estimate: int,
+) -> dict:
+    if not handoff_path.startswith(WRITE_PREFIX):
+        return {"error": f"handoff_path must start with {WRITE_PREFIX!r}"}
+    if not isinstance(results, dict):
+        return {"error": "results must be a dict"}
+    if not isinstance(files_written, list):
+        return {"error": "files_written must be a list"}
+
+    handoff = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_by": "tier_2.5",
+        "handoff_version": "1.0",
+        "task_summary": task_summary,
+        "results": results,
+        "files_written": files_written,
+        "next_agent_instructions": next_agent_instructions,
+        "token_estimate": token_estimate,
+    }
+
+    p = Path(handoff_path)
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(handoff, indent=2))
+        log.info("write_handoff: wrote %s (token_estimate=%d)", handoff_path, token_estimate)
+        return {"ok": True, "path": handoff_path, "token_estimate": token_estimate}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+# ─────────────────────────────────────────────
 # TOOL: send_telegram
 # ─────────────────────────────────────────────
 
@@ -357,6 +533,8 @@ TOOL_FUNCTIONS: dict[str, object] = {
     "write_file": tool_write_file,
     "append_to_json_array": tool_append_to_json_array,
     "run_sql": tool_run_sql,
+    "run_sql_write": tool_run_sql_write,
+    "write_handoff": tool_write_handoff,
     "send_telegram": tool_send_telegram,
     "run_shell": tool_run_shell,
 }
@@ -463,6 +641,114 @@ TOOL_DEFINITIONS: list[dict] = [
                     },
                 },
                 "required": ["db_path", "query"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_sql_write",
+            "description": (
+                "Execute an approved write query against the production SQLite database. "
+                "Only whitelisted query patterns are permitted — the query must begin with "
+                "one of: 'UPDATE traders SET geo_elo', "
+                "'UPDATE traders SET geo_directionality_score', "
+                "'UPDATE traders SET accuracy_pool', "
+                "'UPDATE traders SET geo_resolved_trades_count', "
+                "'ALTER TABLE traders ADD COLUMN', "
+                "'INSERT INTO trader_notes', "
+                "'UPDATE traders SET bot_type', "
+                "'UPDATE traders SET research_excluded'. "
+                "db_path must be exactly /home/parison/projects/first-repo/data/polymarket_tracker.db. "
+                "Writes affecting more than 50,000 rows are rejected — use a WHERE clause to batch. "
+                "Returns {status, rows_affected, query_pattern_matched, message, timestamp}."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "db_path": {
+                        "type": "string",
+                        "description": (
+                            "Must be exactly: "
+                            "/home/parison/projects/first-repo/data/polymarket_tracker.db"
+                        ),
+                    },
+                    "query": {
+                        "type": "string",
+                        "description": (
+                            "SQL write query matching one of the permitted patterns. "
+                            "Use ? placeholders with params to avoid SQL injection."
+                        ),
+                    },
+                    "params": {
+                        "type": "array",
+                        "items": {},
+                        "description": "Positional parameters for parameterised queries (optional).",
+                    },
+                },
+                "required": ["db_path", "query"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "write_handoff",
+            "description": (
+                "Write a structured JSON handoff file for a Tier 3 agent to consume. "
+                "Tier 2.5 agents use this to pass pre-computed results without the Tier 3 "
+                "agent needing to re-read all of brain/. "
+                "handoff_path must start with /home/parison/trading-swarm/ and should be "
+                "under brain/agent-outputs/handoffs/. "
+                "Returns {ok, path, token_estimate} on success."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "handoff_path": {
+                        "type": "string",
+                        "description": (
+                            "Absolute path for the handoff file. "
+                            "Convention: /home/parison/trading-swarm/brain/agent-outputs/"
+                            "handoffs/<task_id>.json"
+                        ),
+                    },
+                    "task_summary": {
+                        "type": "string",
+                        "description": "One paragraph describing what was computed and why.",
+                    },
+                    "results": {
+                        "type": "object",
+                        "description": "Key findings as structured data (any JSON object).",
+                    },
+                    "files_written": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Absolute paths of files written during this run.",
+                    },
+                    "next_agent_instructions": {
+                        "type": "string",
+                        "description": (
+                            "What the Tier 3 agent should do with these results — "
+                            "which files to read, what to reason about, expected output."
+                        ),
+                    },
+                    "token_estimate": {
+                        "type": "integer",
+                        "description": (
+                            "Estimated token count of this handoff. "
+                            "Lets Tier 3 decide whether to use the handoff or re-derive context."
+                        ),
+                    },
+                },
+                "required": [
+                    "handoff_path",
+                    "task_summary",
+                    "results",
+                    "files_written",
+                    "next_agent_instructions",
+                    "token_estimate",
+                ],
             },
         },
     },
@@ -814,6 +1100,22 @@ def _summarise(
 # ─────────────────────────────────────────────
 
 def _load_permissions(permissions_file: str, agent_type: str) -> list[str]:
+    # Per-agent files (orchestrator/permissions/<agent_type>.json) take precedence.
+    # Format: {"allow": ["tool1", "tool2", ...]}
+    per_agent_path = Path(__file__).parent / "permissions" / f"{agent_type}.json"
+    if per_agent_path.exists():
+        try:
+            data = json.loads(per_agent_path.read_text())
+            tools: list[str] = data.get("allow", [])
+            if not tools:
+                log.warning("no tools listed in per-agent permissions: %s", per_agent_path)
+            else:
+                log.info("permissions loaded from per-agent file: %s", per_agent_path)
+            return tools
+        except Exception as e:
+            log.error("failed to parse per-agent permissions %s: %s", per_agent_path, e)
+
+    # Fall back to shared permissions file (legacy format: {agent_type: {tools: [...]}})
     p = Path(permissions_file)
     if not p.exists():
         log.error(f"permissions file not found: {permissions_file}")
@@ -824,7 +1126,7 @@ def _load_permissions(permissions_file: str, agent_type: str) -> list[str]:
         log.error(f"failed to parse permissions file: {e}")
         return []
     entry = data.get(agent_type, [])
-    tools: list[str] = entry.get("tools", []) if isinstance(entry, dict) else entry
+    tools = entry.get("tools", []) if isinstance(entry, dict) else entry
     if not tools:
         log.warning(f"no tool permissions defined for agent type: {agent_type!r}")
     return tools
