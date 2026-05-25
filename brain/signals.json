@@ -44,12 +44,12 @@
       "to": "orchestrator",
       "type": "hypothesis_ready",
       "timestamp": "2026-05-25T00:00:00Z",
-      "status": "pending",
+      "status": "approved",
       "payload": {
         "hypothesis_id": "RQ-GEO-ELO-001",
         "title": "Geopolitics-Conditioned ELO for Geopolitics Market Prediction",
         "pre_registration_path": "brain/strategy-notes/rq-geo-elo-preregistration-2026-05-25.md",
-        "motivation": "LEGENDARY tier accuracy 46% (n=80, HIGH confidence) — below baseline as of Run #8 2026-05-25. Root cause: comprehensive_elo pools all categories including sports/crypto. QUALIFIED geopolitics accuracy 92.3% vs LEGENDARY 46% confirms category-pollution hypothesis.",
+        "motivation": "LEGENDARY tier accuracy 46% (n=80, HIGH confidence) \u2014 below baseline as of Run #8 2026-05-25. Root cause: comprehensive_elo pools all categories including sports/crypto. QUALIFIED geopolitics accuracy 92.3% vs LEGENDARY 46% confirms category-pollution hypothesis.",
         "hypothesis": "geo_elo (Geopolitics + Elections trades only) will show LEGENDARY tier accuracy >= 60% for geopolitics markets, vs current 46% under comprehensive_elo",
         "expected_improvement": "LEGENDARY geo_elo accuracy >= 60% (vs 46% platform-wide), closing gap with QUALIFIED",
         "data_summary": {
@@ -65,14 +65,18 @@
           "Phase 3: If passes, propose STR-003 update to use geo_elo as qualifier (~30min)"
         ],
         "schema_note": "JOIN key: trades.market_id = markets.market_id (NOT condition_id). New column: traders.geo_elo REAL DEFAULT NULL.",
-        "awaiting": "Oscar approval before Phase 1 begins — no geo_elo calculation has been run yet",
-        "strategies_affected": ["STR-003"],
+        "awaiting": "Oscar approval before Phase 1 begins \u2014 no geo_elo calculation has been run yet",
+        "strategies_affected": [
+          "STR-003"
+        ],
         "related_findings": [
           "2026-05-25-ELO-LEGENDARY-001",
           "2026-05-25-ELO-ELITE-001",
           "2026-05-25-ELO-QUALIFIED-001"
         ]
-      }
+      },
+      "approved_by": "Oscar",
+      "approved_at": "2026-05-25T00:00:00Z"
     }
   ],
   "rescan_log": [
@@ -98,19 +102,19 @@
           "putin_june_2026": "MEDIUM_FLAGGED_counter_signal"
         },
         "thin_sample_flags": [
-          "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302 (ELO 2797.7, resolved: 3) — Signal 1",
-          "0x72a1ac129a75877887d31c847508ffef7baf466b (ELO 3153.9, resolved: 4) — Signal 1",
-          "0xef1dd16257bd9cde80d30fa9197417b1b6711c96 (ELO 3150.3, resolved: 4) — Signal 2",
-          "0x9fb0f92a17531afe232b7f2cdd0e48d157068b61 (ELO 2923.2, resolved: 1) — Signal 3",
-          "0xdffc6760f9b8e760ee248ea8509c6502cf838302 (ELO 3323.0, resolved: 1) — Signal 4",
-          "0x0a956f4e2c0e2f675be10535b0c78e4bb563e2f8 (ELO 2549.7, resolved: 1) — Signal 4 counter"
+          "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302 (ELO 2797.7, resolved: 3) \u2014 Signal 1",
+          "0x72a1ac129a75877887d31c847508ffef7baf466b (ELO 3153.9, resolved: 4) \u2014 Signal 1",
+          "0xef1dd16257bd9cde80d30fa9197417b1b6711c96 (ELO 3150.3, resolved: 4) \u2014 Signal 2",
+          "0x9fb0f92a17531afe232b7f2cdd0e48d157068b61 (ELO 2923.2, resolved: 1) \u2014 Signal 3",
+          "0xdffc6760f9b8e760ee248ea8509c6502cf838302 (ELO 3323.0, resolved: 1) \u2014 Signal 4",
+          "0x0a956f4e2c0e2f675be10535b0c78e4bb563e2f8 (ELO 2549.7, resolved: 1) \u2014 Signal 4 counter"
         ],
         "anomalies": [
-          "Pool grew 7951→11970 since 2026-05-18 (7 days). Recommend Oscar review of daily_maintenance.py logs.",
-          "All 21 verified legendary traders (≥10 resolved trades) disqualified by excessive concurrent markets (15–1626). STR-003 focus criterion structurally incompatible with validated traders.",
-          "Stale market inflation ongoing — 5 of 7 concurrent markets for Signal 3 key trader are 2025/template. Stale cleanup still outstanding."
+          "Pool grew 7951\u219211970 since 2026-05-18 (7 days). Recommend Oscar review of daily_maintenance.py logs.",
+          "All 21 verified legendary traders (\u226510 resolved trades) disqualified by excessive concurrent markets (15\u20131626). STR-003 focus criterion structurally incompatible with validated traders.",
+          "Stale market inflation ongoing \u2014 5 of 7 concurrent markets for Signal 3 key trader are 2025/template. Stale cleanup still outstanding."
         ],
-        "action_required": "Signal 2 (UN Security Council) awaiting Oscar decision on stale-market exclusion policy (open since 2026-05-18). Signal 4 (Putin) approaching resolution ~June 2026 — record outcome in strategy-registry.md.",
+        "action_required": "Signal 2 (UN Security Council) awaiting Oscar decision on stale-market exclusion policy (open since 2026-05-18). Signal 4 (Putin) approaching resolution ~June 2026 \u2014 record outcome in strategy-registry.md.",
         "report_path": "brain/agent-outputs/signal-agent/2026-05-25-08-signal-report.md"
       }
     }
