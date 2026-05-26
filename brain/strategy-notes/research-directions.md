@@ -1345,3 +1345,34 @@ Monitoring instruction: check both repos weekly. If a new tool appears
 that overlaps with ELO tracking, wallet clustering, informed trader
 detection, or pre-resolution intelligence — escalate via signals.json
 with signal_type: COMPETITIVE_ALERT before the weekly digest.
+
+---
+
+## Future Agent Concept — Pattern Recognition Agent
+
+Concept: A swarm agent that performs cross-contextual pattern recognition across
+all data sources — not running pre-registered experiments, but surfacing anomalies
+and connections that domain-specific agents working in isolation would miss.
+
+Examples of what it would catch:
+- Trader appearing in geo_elo LEGENDARY tier AND resolution sweep AND insider_signals simultaneously
+- Sudden clustering of new wallets on a specific geopolitics market before resolution
+- Market structure changes (volume spike + directional concentration + new wallet activity)
+- Cross-referencing findings.json entries for emerging patterns across research threads
+
+Distinction from existing agents:
+- quant-research-agent: runs pre-registered experiments
+- signal-agent: applies known strategies to live data
+- pattern-recognition-agent: open-ended anomaly surfacing, no pre-registration required
+
+Risks:
+- High hallucination risk without pre-registration discipline
+- Needs strong immune system integration (feedback.json as primary check)
+- Output must be flagged as HYPOTHESIS not FINDING until validated
+
+Prerequisites before building:
+- geo_elo, Pool C, resolution sweep, insider_signals scoring all stable
+- At least 3 months of pattern data to work with
+- Pre-registration framework adapted for open-ended hypotheses
+
+Status: CONCEPT — do not build until Phase 5 gates passed
