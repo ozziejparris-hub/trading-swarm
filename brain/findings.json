@@ -1075,5 +1075,60 @@
         "Max ELO 5464 is an outlier; verify this trader's geo trade history is legitimate."
       ]
     }
+    ,
+    {
+      "id": "2026-05-26-GEO-ELO-003-OOS-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-05-26T16:00:00Z",
+      "finding_type": "elo_validity",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "geo_elo OOS validation INCONCLUSIVE — formal failure condition fires (LEGENDARY 9.4%) but all 64 LEGENDARY trades are from 2 traders in 1 market. QUALIFIED holds at 58.7% (4 markets). Re-run after 20+ OOS markets resolve.",
+      "detail": {
+        "metric": "geo_elo_oos_tier_accuracy",
+        "value": 0.094,
+        "baseline": 0.67,
+        "direction": "below_baseline",
+        "weeks_observed": 1,
+        "oos_test_markets": 6,
+        "oos_test_period": "2026-01-01 to 2026-05-26",
+        "algorithm": "market_implied_probability v2 (identical to geo_elo in-sample)",
+        "training_cutoff": "2026-01-01",
+        "training_trades": 177564,
+        "pool": "geo_accuracy_pool=1 (Pool C, 435 traders)",
+        "accuracy_by_tier_oos": {
+          "legendary": {"n": 64, "markets": 1, "distinct_traders": 2, "accuracy": 0.094},
+          "elite": {"n": 106, "markets": 2, "accuracy": 0.340},
+          "qualified": {"n": 167, "markets": 4, "accuracy": 0.587},
+          "below_qualified": {"n": 287, "markets": 4, "accuracy": 0.509}
+        },
+        "accuracy_by_tier_insample": {
+          "legendary": {"n": 215, "accuracy": 0.6698},
+          "elite": {"n": 141, "accuracy": 0.695},
+          "qualified": {"n": 209, "accuracy": 0.7368}
+        },
+        "failure_condition_triggered": true,
+        "failure_condition_note": "LEGENDARY OOS 9.4% < 55% threshold. BUT: 2 traders, 1 market. Not statistically meaningful.",
+        "critical_context": "46 LEGENDARY-tier traders exist in Pool C. Only 2 had OOS trades, all in Russia-Ukraine ceasefire Q2 2026. Market resolved NO after trading at 68-74% YES. Single binary geopolitical outcome, not representative tier accuracy.",
+        "qualified_note": "QUALIFIED OOS 58.7% (4 markets, 167 trades) is the most reliable estimate. ~15pp degradation from in-sample 73.7%, still above 50% baseline."
+      },
+      "actionable": false,
+      "action_recommendation": "Do not advance STR-003 to live trading on geo_elo OOS validation — sample too small. Re-run after 20+ OOS geo markets resolve and LEGENDARY tier has trades in 5+ distinct markets. If failure condition fails again on broader sample, suspend geo_elo as STR-003 qualifier.",
+      "expires_at": "2026-08-26T00:00:00Z",
+      "pre_mortem": {
+        "ways_wrong": [
+          "LEGENDARY failure driven by 2 traders in 1 market — if ceasefire had occurred, accuracy would flip to ~90%",
+          "OOS test markets (ceasefire, invasion scenarios) may be harder than in-sample average — inflates apparent degradation",
+          "Tier assignments are identical in-sample vs OOS (pre-2026 data sufficient for all 435 traders) — not a true holdout ELO test"
+        ],
+        "black_swan": "Russia-Ukraine ceasefire announcement before Q2 2026 would invert the finding entirely"
+      },
+      "limitations": [
+        "6 OOS markets is far below the 20-market minimum for HIGH confidence",
+        "LEGENDARY: 2 traders, 1 market — not a representative test of the tier",
+        "Russia-Ukraine ceasefire dominates OOS (57.7% of trades) — single event risk",
+        "5 of 6 OOS markets resolved in a 5-day window in Jan 2026 — not a normal sample"
+      ]
+    }
   ]
 }

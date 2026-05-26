@@ -41,6 +41,30 @@
   "pending": [
     {
       "from": "quant-research-agent",
+      "to": "backtest-agent",
+      "type": "validation_requested",
+      "payload": {
+        "model_name": "geo_elo_oos",
+        "model_path": "brain/agent-outputs/quant-research/GEO-ELO-003/",
+        "phase": "OOS",
+        "hypothesis": "RQ-GEO-ELO-003: geo_elo tier discrimination (67%/69.5%/73.7% LEGENDARY/ELITE/QUALIFIED) holds out-of-sample when trained on pre-2026 trades and tested on 2026 trades",
+        "result_summary": "Formal failure: LEGENDARY OOS 9.4% (n=64, 1 market, 2 traders). QUALIFIED OOS 58.7% (n=167, 4 markets). INCONCLUSIVE due to sample concentration. Failure condition fires but not statistically meaningful.",
+        "notes_path": "brain/agent-outputs/quant-research/GEO-ELO-003/geo_elo_oos_findings.md",
+        "pre_registration_path": "brain/strategy-notes/rq-geo-elo-003-preregistration-2026-05-25.md",
+        "column_written": "traders.geo_elo_oos (435 Pool C traders, pre-2026 training)",
+        "validation_tasks": [
+          "Verify OOS ELO computation: 177,564 pre-2026 geo trades processed correctly, K-factor dynamic",
+          "Confirm LEGENDARY concentration: 64 trades from 2 traders in 1 market (Russia-Ukraine ceasefire Q2)",
+          "Assess whether 6 OOS markets is sufficient to accept/reject the hypothesis",
+          "Review QUALIFIED OOS (58.7%, 4 markets) — is this directional evidence for partial validity?",
+          "Recommend: continue accumulating OOS data or formally suspend geo_elo as STR-003 qualifier"
+        ]
+      },
+      "timestamp": "2026-05-26T16:00:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "quant-research-agent",
       "to": "orchestrator",
       "type": "hypothesis_ready",
       "timestamp": "2026-05-25T00:00:00Z",
