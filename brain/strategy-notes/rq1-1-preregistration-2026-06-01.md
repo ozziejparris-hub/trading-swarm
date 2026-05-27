@@ -164,6 +164,13 @@ Expected ranges:
 | clean_markets | ≥ 11,491 | < 11,000 |
 | wal_mode | wal | ≠ wal |
 
+> **AMENDMENT 2026-05-27:** clean_pool expected range updated from [450, 700]
+> to [10000, 20000]. Pool grew legitimately from ~493 to ~12,223 due to
+> leaderboard discovery expansion (documented in session summaries
+> 2026-05-18 to 2026-05-25). Research pool composition is unchanged —
+> elo_period1_cutoff IS NOT NULL still restricts the analysis to 193
+> traders with frozen Period 1 ELO.
+
 ### Query 2 — Sample Size Gate (n ≥ 30 Required)
 
 Run this before any analysis. If the count is below 30, halt and reschedule.
