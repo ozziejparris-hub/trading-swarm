@@ -22,6 +22,7 @@ BRAIN_DIR = BASE_DIR / "brain"
 REGISTRY_FILE = BASE_DIR / "orchestrator" / "agent_registry.json"
 SIGNALS_FILE = BRAIN_DIR / "signals.json"
 FEEDBACK_FILE = BRAIN_DIR / "feedback.json"
+CONTRACT_VIOLATION_STATE_FILE = BRAIN_DIR / "contract_violation_state.json"
 PRIORITIES_FILE = BRAIN_DIR / "priorities.md"
 MODEL_ROUTING_FILE = BRAIN_DIR / "model-routing.md"
 LOG_FILE = BASE_DIR / "logs" / "orchestrator.log"
@@ -467,6 +468,38 @@ def run_immune_system():
     return issues_found
 
 # ─────────────────────────────────────────────
+# CONTRACT VIOLATION RATE LIMITING
+# ─────────────────────────────────────────────
+
+def _get_violation_key(from_agent, payload):
+    """Stable dedup key so the same violation doesn't spam alerts within 24h."""
+    rule = payload.get("rule", "")
+    resource = payload.get(
+        "resource", payload.get("table", payload.get("endpoint", ""))
+    )
+    return f"{from_agent}:{rule}:{resource}"
+
+
+def _violation_rate_limited(violation_key):
+    """Return True if this violation was already alerted within the last 24 hours."""
+    data = load_json(CONTRACT_VIOLATION_STATE_FILE) or {"alerted": {}}
+    last_str = data.get("alerted", {}).get(violation_key)
+    if not last_str:
+        return False
+    try:
+        return (datetime.utcnow() - datetime.fromisoformat(last_str)) < timedelta(hours=24)
+    except ValueError:
+        return False
+
+
+def _record_violation_alert(violation_key):
+    """Stamp the current UTC time for this violation key (used by rate limiter)."""
+    data = load_json(CONTRACT_VIOLATION_STATE_FILE) or {"alerted": {}}
+    data.setdefault("alerted", {})[violation_key] = datetime.utcnow().isoformat()
+    save_json(CONTRACT_VIOLATION_STATE_FILE, data)
+
+
+# ─────────────────────────────────────────────
 # SIGNAL PROCESSOR
 # ─────────────────────────────────────────────
 
@@ -646,6 +679,39 @@ def process_signals():
                 f"_Review and approve in strategy-notes/ before experiment runs_",
                 bot="orchestrator"
             )
+
+        # Contract violation reported by any agent (e.g. integration-test)
+        elif signal_type == "contract_violation":
+            rule = payload.get("rule", "unknown rule")
+            resource = payload.get(
+                "resource", payload.get("table", payload.get("endpoint", "unknown resource"))
+            )
+            severity = payload.get("severity", "UNKNOWN")
+            details = payload.get("details", "No details provided")
+
+            violation_key = _get_violation_key(from_agent, payload)
+
+            log.warning(
+                f"Contract violation: from={from_agent}, rule='{rule}', "
+                f"resource='{resource}', severity={severity}, details='{details}'"
+            )
+
+            if _violation_rate_limited(violation_key):
+                log.info(
+                    f"Contract violation alert suppressed (already alerted within 24h): "
+                    f"key='{violation_key}'"
+                )
+            else:
+                message = (
+                    f"🚨 *Contract Violation*\n"
+                    f"From: `{from_agent}`\n"
+                    f"Rule: {rule}\n"
+                    f"Resource: {resource}\n"
+                    f"Severity: {severity}\n"
+                    f"Details: {details[:300]}"
+                )
+                send_telegram(message, bot="orchestrator")
+                _record_violation_alert(violation_key)
 
         # Unknown signal type — log and alert rather than silently drop
         else:
