@@ -1376,3 +1376,11 @@ Prerequisites before building:
 - Pre-registration framework adapted for open-ended hypotheses
 
 Status: CONCEPT — do not build until Phase 5 gates passed
+
+## STR-003 Enhancement — Anti-Arb Filter (identified 2026-05-29)
+Problem: geo_elo LEGENDARY traders with high win rates are predominantly 
+arb traders buying near-certainty outcomes ($0.95+), not directional insiders.
+Proposed fix: STR-003 should require the qualifying signal trade to have 
+entry_price between 0.10 and 0.80 — genuine directional conviction range.
+Near-certainty trades ($0.80+) are arb, not signal.
+Pre-register before implementing.
