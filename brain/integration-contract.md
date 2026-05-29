@@ -146,7 +146,7 @@ These are measurement artefacts — their ELO scores are not predictive:
 | STR-001 | SUSPENDED | LP contamination — liquidity provider trades inflate signal counts |
 | STR-001b | SUSPENDED | 0 qualifying signals after STR-001 fix |
 | STR-002 | EXPERIMENTAL | Accumulating pre-resolution accuracy data (n=4 as of 2026-05-05) |
-| STR-003 | PENDING_REVIEW | Primary strategy: single legendary trader ≥95% directional, min $2,000 stake, max 2 concurrent markets, bidirectional holders excluded |
+| STR-003 | EXPERIMENTAL | Primary strategy: single legendary trader ≥95% directional, min $2,000 stake, max 5 concurrent GEOPOLITICS/ELECTIONS markets (not platform-wide), bidirectional holders excluded |
 
 Agents must read `brain/strategy-registry.md` before generating any
 signals — strategies change status frequently and the registry is

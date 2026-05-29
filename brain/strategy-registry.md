@@ -259,6 +259,14 @@ Description:            A legendary geo trader (geo_elo >= 2175,
                         (zero or near-zero opposing hedge).
                         Fires on individual conviction not group
                         consensus.
+                        Portfolio filter: max 5 concurrent
+                        GEOPOLITICS/ELECTIONS markets (not total
+                        platform positions — sports, crypto, etc.
+                        are irrelevant to geo signal quality).
+                        Note: "Concurrent market count now filters on
+                        geo/elections category only. Platform-wide
+                        portfolio size is irrelevant to geopolitics
+                        signal quality."
 Qualification note:     geo_elo uses market-implied probability ELO
                         on Geopolitics+Elections trades only.
                         Validated: 67% accuracy for geo_elo LEGENDARY
