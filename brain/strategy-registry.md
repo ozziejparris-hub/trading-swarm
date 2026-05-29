@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-05-25
+Last updated: 2026-05-29
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -254,6 +254,7 @@ Notes:
 Status:                 EXPERIMENTAL
 Description:            A legendary geo trader (geo_elo >= 2175,
                         geo_directionality_score >= 0.7,
+                        realized_pnl > 500,
                         research_excluded = 0) with >= 95% of
                         their capital on one side of a market
                         (zero or near-zero opposing hedge).
@@ -276,6 +277,18 @@ Qualification note:     geo_elo uses market-implied probability ELO
                         see RQ-GEO-ELO-003.
                         geo_directionality_score >= 0.7 filters out
                         LP/market-makers who hold both sides.
+                        realized_pnl > 500 removes two LP artifact
+                        patterns identified 2026-05-29:
+                          (1) traders with geo_elo >= 2175 but
+                              realized_pnl = $0.00 exactly — these are
+                              LP accounts whose "wins" are redemption
+                              events, not directional calls. Zero P&L
+                              is mathematically impossible for a genuine
+                              directional trader with 900+ resolved trades.
+                          (2) traders with geo_elo >= 2175 but
+                              realized_pnl < -$100,000 — liquidity
+                              providers who lost on spread compression.
+                              High geo_elo from volume, not skill.
 
 Category:               Signal detection
 Pre-registered:         2026-04-27
