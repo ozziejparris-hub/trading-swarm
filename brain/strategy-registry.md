@@ -261,9 +261,10 @@ Description:            A legendary geo trader (geo_elo >= 2175,
                         Fires on individual conviction not group
                         consensus.
                         Portfolio filter: max 5 concurrent
-                        GEOPOLITICS/ELECTIONS markets (not total
-                        platform positions — sports, crypto, etc.
-                        are irrelevant to geo signal quality).
+                        GEOPOLITICS/ELECTIONS markets, excluding stale
+                        unresolved markets (unresolved > 180 days)
+                        (not total platform positions — sports, crypto,
+                        etc. are irrelevant to geo signal quality).
                         Note: "Concurrent market count now filters on
                         geo/elections category only. Platform-wide
                         portfolio size is irrelevant to geopolitics

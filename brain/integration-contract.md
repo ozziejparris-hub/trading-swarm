@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.6 — 2026-05-29
+**Version:** 1.7 — 2026-05-29
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -148,6 +148,17 @@ These are measurement artefacts — their ELO scores are not predictive:
 | STR-002 | EXPERIMENTAL | Accumulating pre-resolution accuracy data (n=4 as of 2026-05-05) |
 | STR-003 | EXPERIMENTAL | Primary strategy: single legendary trader ≥95% directional, min $2,000 stake, max 5 concurrent GEOPOLITICS/ELECTIONS markets (not platform-wide), bidirectional holders excluded. P&L filter: `realized_pnl > 500` — removes LP artifacts (zero-P&L redemption accounts and large-negative spread-compression LPs). Added 2026-05-29. |
 
+**STR-003 — Concurrent Market Count Exclusions (added v1.7, 2026-05-29):**
+
+Concurrent market count excludes:
+- Markets where `resolved = 0 AND resolution_date < datetime('now', '-180 days')`
+  (unresolved for 6+ months — template/stale markets)
+- Markets where `market_category NOT IN ('Geopolitics','Elections')`
+
+Rationale: Stale unresolved markets contain no actionable information.
+A trader holding a 2025 template position is not actively trading that market.
+Decision: Oscar, 2026-05-29.
+
 Agents must read `brain/strategy-registry.md` before generating any
 signals — strategies change status frequently and the registry is
 authoritative.
@@ -262,6 +273,7 @@ Agents should not query the database during the maintenance window
 | 2026-05-20 | **Critical JOIN key correction (v1.3):** `m.market_id = t.market_id` is the correct join (99.999% match, 3,541,160/3,541,160 trades). Previous contract specified `m.condition_id = t.market_id` — this only matches 63% of trades. `condition_id` is a Polymarket external API identifier, NOT a join key. Warning added to Section 2; Section 6 row corrected. | All agents — update any query using the old join immediately |
 | 2026-05-25 | Contract updated to v1.5: Pool A/B/C documented in Section 6b; traders column table added to Section 3 (includes geo_elo, geo_resolved_trades_count, geo_directionality_score, geo_accuracy_pool); geo_accuracy_pool column added to first-repo DB; STR-003 updated to use geo_elo >= 2175 + geo_directionality_score >= 0.7. Pool C size: 435 traders. | All agents querying geo ELO or geopolitics markets |
 | 2026-05-29 | Contract updated to v1.6: STR-003 gains `realized_pnl > 500` filter in Section 5. Two LP artifact patterns identified: (1) geo_elo >= 2175 traders with realized_pnl = $0.00 exactly (redemption accounts, not directional), (2) geo_elo >= 2175 traders with realized_pnl < -$100,000 (spread-compression LPs — high ELO from volume not skill). | All agents generating STR-003 signals |
+| 2026-05-29 | Contract updated to v1.7: STR-003 concurrent market count exclusion policy documented in Section 5 — stale unresolved markets (resolved=0, resolution_date older than 180 days) and non-Geo/Elections markets excluded from portfolio count. Decision: Oscar, 2026-05-29. | All agents generating STR-003 signals |
 
 ---
 
