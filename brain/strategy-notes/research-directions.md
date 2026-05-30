@@ -536,6 +536,11 @@ with accumulated knowledge rather than from zero.
   insufficient for trading signal deployment. DEPLOY AS WATCHLIST TRIGGER ONLY via existing
   insider_signals table (7 detections already). Validate on 5+ distinct events before promotion.
 - 2026-05-20: Research pool now 7,908 traders (integration-health.json 2026-05-20). Previous figure of 493 was from May 7 — pool grows daily as traders reach resolved_trades >= 20 threshold.
+- 2026-05-25: GEO-ELO-001 PASSED in-sample — geo_elo (geopolitics+elections only) shows LEGENDARY 67%, ELITE 69.5%, QUALIFIED 73.7% accuracy. Substantially better than comprehensive_elo (LEGENDARY 46%). STR-003 qualification criteria updated to use geo_elo tiers.
+- 2026-05-26: GEO-ELO-003 OOS INCONCLUSIVE — LEGENDARY OOS accuracy 9.4% (2 traders, 1 market: Russia-Ukraine ceasefire). Failure condition fires but is statistically meaningless at n=2 traders, 1 market. QUALIFIED OOS 58.7% (167 trades, 4 markets) — 15pp degradation from in-sample but above random. Continue accumulating OOS data. STR-003 LEGENDARY qualification requires ≥5 distinct OOS markets before advancing to PENDING_VALIDATION.
+- 2026-05-29: STR-003 anti-arb filter identified — high-ELO geo traders winning at arb ($0.95+ entries) inflate geo_elo but produce no directional signal. Proposed entry_price 0.10–0.80 filter. Pre-registration required before implementing.
+- 2026-05-29: Integration contract v1.7 — stale market exclusion policy formalised. Concurrent market count for STR-003 excludes unresolved markets with 2025-or-earlier context in titles.
+- 2026-05-29: RQ3.2 re-pre-registered — new framing: geo_elo LEGENDARY consensus (3+ traders agreeing, geopolitics) vs market price. Data timeline: July–September 2026.
 
 
 ## Formal Research Questions

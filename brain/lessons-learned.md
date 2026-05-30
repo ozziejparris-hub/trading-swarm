@@ -70,6 +70,30 @@ This document grows more valuable every week.
   authoritative count" not "returns 493 as of May 13."
   (Source: performance-analyst 2026-05-18, training-librarian 2026-05-23)
 
+- 2026-05-30: STR-003 concurrent criterion is structurally incompatible with validated
+  traders. All 21 geo_elo LEGENDARY traders with ≥10 resolved trades have 15–1,626
+  concurrent markets — the max-2 filter captures "focused conviction" as a style, not
+  as a validation-grade trader characteristic. Experienced portfolio traders hold hundreds
+  of simultaneous positions by nature. Fix: change concurrent check from
+  `total_concurrent_markets` to `concurrent_open_geo_markets` (a trader holding 500
+  crypto markets is not disqualified from a focused geopolitics conviction).
+  (Source: signal-agent 2026-05-25, swarm-assessment 2026-05-29)
+
+- 2026-05-30: geo_elo LEGENDARY pool is dormant. All 21 LEGENDARY traders (geo_elo ≥ 2175,
+  ≥10 resolved geo trades) stopped trading 2025-12-31. They are Haley-2027 specialists
+  with no active 2026 market positions. STR-003 cannot fire a LEGENDARY signal until 2026
+  geopolitics markets resolve and new traders score into the LEGENDARY tier via accumulated
+  geo_elo. Expected timeline: Q3 2026 as Putin market (~June), ceasefire variants, and
+  other 2026 geo markets resolve.
+  (Source: signal-agent 2026-05-25, swarm-assessment 2026-05-29)
+
+- 2026-05-30: Phase 5 gate 1 cleared — feedback-loop-agent has completed 8 weekly runs
+  as of 2026-05-25. The ≥4 weekly runs gate is the first of four Phase 5 gates. Of the
+  remaining three, none are met: findings.json has HIGH-confidence ELO findings but no
+  signal_direction_accuracy type; STR-002 has 0 resolved markets; RQ1.1 deferred to
+  July 1 and RQ3.2 data timeline is July–September 2026.
+  (Source: swarm-assessment 2026-05-29)
+
 ---
 
 ## Strategy Insights
@@ -129,6 +153,26 @@ This document grows more valuable every week.
 - 2026-05-05: Sports markets at 52% accuracy for systematic approaches.
   Geopolitics and macro are where edge exists. Category filter must
   exclude sports in Phase 6. (Source: research-directions.md)
+
+- 2026-05-30: STR-003 anti-arb filter identified. geo_elo LEGENDARY
+  traders with the highest win rates are predominantly arb traders
+  buying near-certainty outcomes ($0.95+), not directional insiders.
+  These traders buy YES at 95c-99c before settlement — structural edge,
+  not informational. Entry_price filter 0.10–0.80 is required to
+  distinguish genuine directional conviction from arb/near-resolution
+  harvesting. Pre-registration required before implementing this filter
+  in production signal criteria. (Source: session 2026-05-29, swarm
+  assessment; documented in strategy-registry.md STR-003 notes)
+
+- 2026-05-30: RQ3.2 re-framed and re-pre-registered (2026-05-29).
+  The original RQ3.2 (all ELO-weighted ensemble vs market price) was
+  INCONCLUSIVE — only 4 qualifying markets after filters, sample size
+  failure. New framing: geo_elo LEGENDARY consensus (3+ traders, same
+  direction, geopolitics/elections) vs market price. This tests the
+  wisdom-of-crowd effect within the LEGENDARY tier specifically.
+  Data accumulation timeline: July–September 2026 as 2026 geo markets
+  resolve and new traders earn LEGENDARY geo_elo.
+  (Source: rq3-2-preregistration-2026-05-29.md)
 
 ---
 
