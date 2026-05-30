@@ -1389,3 +1389,30 @@ Proposed fix: STR-003 should require the qualifying signal trade to have
 entry_price between 0.10 and 0.80 — genuine directional conviction range.
 Near-certainty trades ($0.80+) are arb, not signal.
 Pre-register before implementing.
+
+## Maker/Taker Role Detection (identified 2026-05-30)
+
+Research finding: Polymarket Data API returns transactionHash per trade but 
+not maker/taker role. Maker/taker distinction requires on-chain analysis via 
+Polygon RPC — trades sharing a transaction hash can be labelled by determining 
+which order initiated the match (the taker).
+
+Why it matters: Our geo_elo LP contamination problem (discovered 2026-05-29) 
+is caused by treating maker trades (passive limit orders, LP activity) identically 
+to taker trades (directional, initiated orders). If geo_elo only counted taker 
+trades, the LP filtering would be more precise than the current price/directionality 
+score/P&L combination.
+
+Implementation path:
+Step 1 (do now): Add transactionHash column to trades table and store it during 
+ingestion. Zero extra API calls — field already in API response.
+Step 2 (future): Batch-query Polygon RPC for transaction receipts to label 
+maker/taker roles. Use public Polygon RPC (polygon-rpc.com) — free, no key needed.
+Step 3 (future): Add is_taker BOOLEAN column to trades. Filter geo_elo 
+calculation to WHERE is_taker = 1.
+
+## Transaction Hash Storage (implement soon)
+
+The Data API already returns transactionHash on every trade. Storing it costs 
+nothing and enables: maker/taker detection, duplicate trade detection improvement 
+(hash is a better dedup key than our current composite), and on-chain verification.
