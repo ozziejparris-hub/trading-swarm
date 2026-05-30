@@ -34,6 +34,41 @@ when something genuinely actionable has changed.
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
 - Priorities: /home/parison/trading-swarm/brain/priorities.md
 
+## STR-003 Query Filters (Mandatory)
+
+When evaluating STR-003 signals, ALL of these filters must be applied:
+
+### Trader Qualification
+```sql
+WHERE tr.geo_elo >= 2175                    -- NOT comprehensive_elo
+  AND tr.geo_directionality_score >= 0.7
+  AND tr.realized_pnl > 500
+  AND tr.research_excluded = 0
+```
+
+### Concurrent Markets (max 5)
+Count only markets where:
+```sql
+WHERE m.market_category IN ('Geopolitics', 'Elections')
+  AND m.resolved = 0
+  AND (m.resolution_date IS NULL
+       OR m.resolution_date > datetime('now', '-180 days'))
+```
+Do NOT count platform-wide portfolio size. Sports, crypto, and other categories are irrelevant to geo signal quality.
+
+### Join Key
+```sql
+JOIN markets m ON m.market_id = t.market_id   -- NOT condition_id
+```
+`condition_id` is a Polymarket external identifier only — using it as a join key silently drops 37% of trades. See integration-contract.md Section 2.
+
+### Signal Trade Filters (anti-arb — pre-registered, not yet active)
+The `entry_price BETWEEN 0.10 AND 0.80` filter is pre-registered in `research-directions.md` but is **NOT yet enforced**. Do not apply it. Note it as pending in your cycle report if relevant.
+
+### Pool Selection
+- **Validation queries:** `accuracy_pool = 1 OR geo_accuracy_pool = 1`
+- **Signal detection:** `research_excluded = 0` (broader pool — use for live signal generation)
+
 ## Your Task
 {TASK_DESCRIPTION}
 
