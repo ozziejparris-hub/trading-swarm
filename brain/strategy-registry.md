@@ -255,7 +255,8 @@ Status:                 EXPERIMENTAL
 Description:            A legendary geo trader (geo_elo >= 2175,
                         geo_directionality_score >= 0.7,
                         realized_pnl > 500,
-                        research_excluded = 0) with >= 95% of
+                        research_excluded = 0,
+                        signal trade price BETWEEN 0.10 AND 0.80) with >= 95% of
                         their capital on one side of a market
                         (zero or near-zero opposing hedge).
                         Fires on individual conviction not group
@@ -291,6 +292,11 @@ Qualification note:     geo_elo uses market-implied probability ELO
                               providers who lost on spread compression.
                               High geo_elo from volume, not skill.
 
+Anti-arb filter:        Signal trade entry_price BETWEEN 0.10 AND 0.80
+                        Activated: 2026-05-30 per rq-str003-antiarb-
+                        preregistration-2026-05-30.md (Phase 1 confirmed
+                        0.4% contamination, safe to enforce). Also applied
+                        upstream in geo_elo calculation (update_geo_elo.py).
 Category:               Signal detection
 Pre-registered:         2026-04-27
 Approved by:            Oscar (2026-04-27)

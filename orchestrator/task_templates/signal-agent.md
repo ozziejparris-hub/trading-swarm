@@ -62,8 +62,10 @@ JOIN markets m ON m.market_id = t.market_id   -- NOT condition_id
 ```
 `condition_id` is a Polymarket external identifier only — using it as a join key silently drops 37% of trades. See integration-contract.md Section 2.
 
-### Signal Trade Filters (anti-arb — pre-registered, not yet active)
-The `entry_price BETWEEN 0.10 AND 0.80` filter is pre-registered in `research-directions.md` but is **NOT yet enforced**. Do not apply it. Note it as pending in your cycle report if relevant.
+### Signal Trade Filters (anti-arb — ACTIVE 2026-05-30)
+Apply `AND price BETWEEN 0.10 AND 0.80` to all STR-003 signal trade queries (trades table column is `price`, not `entry_price`).
+Phase 1 confirmed safe: 0.4% contamination, single arb trader (0x63d43bbb, 90.6% arb rate) identified and excluded.
+Pre-registration: rq-str003-antiarb-preregistration-2026-05-30.md. Phase 1 report: agent-outputs/str003-antiarb-phase1-2026-05-30.md.
 
 ### Pool Selection
 - **Validation queries:** `accuracy_pool = 1 OR geo_accuracy_pool = 1`
