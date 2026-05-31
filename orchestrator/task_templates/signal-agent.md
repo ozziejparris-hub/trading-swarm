@@ -65,6 +65,18 @@ JOIN markets m ON m.market_id = t.market_id   -- NOT condition_id
 ```
 `condition_id` is a Polymarket external identifier only — using it as a join key silently drops 37% of trades. See integration-contract.md Section 2.
 
+### Resolution Date Awareness
+
+When evaluating signals, always pull resolution_date:
+```sql
+SELECT market_id, title, resolution_date, resolved
+FROM markets WHERE market_id = ?
+```
+
+Include resolution_date in every signal report table.
+If resolution_date < datetime('now', '+30 days'), flag as APPROACHING RESOLUTION.
+If resolution_date < datetime('now'), flag as OVERDUE — check fast_resolution_check logs.
+
 ### Signal Trade Filters (anti-arb — ACTIVE 2026-05-30)
 Apply `AND price BETWEEN 0.10 AND 0.80` to all STR-003 signal trade queries (trades table column is `price`, not `entry_price`).
 Phase 1 confirmed safe: 0.4% contamination, single arb trader (0x63d43bbb, 90.6% arb rate) identified and excluded.
@@ -85,8 +97,68 @@ When no traders qualify under STR-003 criteria, still produce a useful report:
 
 This ensures Monday's run produces actionable intelligence even without STR-003 fires.
 
+## Signal Registration (MANDATORY for every new STR-003 signal)
+
+When a new STR-003 signal qualifies, you MUST register it in signals.json
+under the str003_signals list with these exact fields:
+```json
+{
+  "signal_id": "STR003-NNN",
+  "type": "str003_active",
+  "market_id": "<exact market_id from DB>",
+  "market_title": "<exact title from DB>",
+  "resolution_date": "<resolution_date from markets table or null>",
+  "direction": "YES or NO",
+  "key_trader": "<trader_address>",
+  "trader_geo_elo": <geo_elo value>,
+  "trader_comprehensive_elo": <comprehensive_elo value>,
+  "position_size": <dollars>,
+  "signal_date": "<today ISO date>",
+  "confidence": "HIGH/MEDIUM/LOW",
+  "flags": [],
+  "outcome_correct": null,
+  "resolved_at": null,
+  "scored_at": null
+}
+```
+
+CRITICAL: market_id must be the exact value from the markets table.
+CRITICAL: resolution_date must be populated from markets.resolution_date if available.
+Without these fields, score_str003_signals.py cannot auto-score the signal.
+Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL forever.
+
 ## Your Task
 {TASK_DESCRIPTION}
+
+## Signal Registration (MANDATORY for every new STR-003 signal)
+
+When a new STR-003 signal qualifies, you MUST register it in signals.json
+under the str003_signals list with these exact fields:
+```json
+{
+  "signal_id": "STR003-NNN",
+  "type": "str003_active",
+  "market_id": "<exact market_id from DB>",
+  "market_title": "<exact title from DB>",
+  "resolution_date": "<resolution_date from markets table or null>",
+  "direction": "YES or NO",
+  "key_trader": "<trader_address>",
+  "trader_geo_elo": <geo_elo value>,
+  "trader_comprehensive_elo": <comprehensive_elo value>,
+  "position_size": <dollars>,
+  "signal_date": "<today ISO date>",
+  "confidence": "HIGH/MEDIUM/LOW",
+  "flags": [],
+  "outcome_correct": null,
+  "resolved_at": null,
+  "scored_at": null
+}
+```
+
+CRITICAL: market_id must be the exact value from the markets table.
+CRITICAL: resolution_date must be populated from markets.resolution_date if available.
+Without these fields, score_str003_signals.py cannot auto-score the signal.
+Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL forever.
 
 ## Signal Types You Look For
 1. Single legendary directional (STR-003 — EXPERIMENTAL) — a single
