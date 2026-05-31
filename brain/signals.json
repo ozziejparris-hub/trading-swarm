@@ -103,6 +103,22 @@
       },
       "approved_by": "Oscar",
       "approved_at": "2026-05-25T00:00:00Z"
+    },
+    {
+      "from": "quant-research-agent",
+      "to": "orchestrator",
+      "type": "rq1_1_insufficient_n",
+      "payload": {
+        "qualifying_n": 10,
+        "minimum_required": 30,
+        "period_1_end": "2026-04-01",
+        "period_2_start": "2026-04-01",
+        "period_2_end": "2026-06-01",
+        "reason": "Only 10 traders meet both period \u226520-position requirements. Period 2 has not accumulated enough resolved markets. Reschedule for July 1 2026.",
+        "next_run": "2026-07-01"
+      },
+      "timestamp": "2026-05-27T17:41:38.329744+00:00",
+      "status": "pending"
     }
   ],
   "rescan_log": [
@@ -143,6 +159,92 @@
         "action_required": "Signal 2 (UN Security Council) awaiting Oscar decision on stale-market exclusion policy (open since 2026-05-18). Signal 4 (Putin) approaching resolution ~June 2026 \u2014 record outcome in strategy-registry.md.",
         "report_path": "brain/agent-outputs/signal-agent/2026-05-25-08-signal-report.md"
       }
+    }
+  ],
+  "str003_signals": [
+    {
+      "signal_id": "STR003-001",
+      "type": "str003_active",
+      "market_id": "0xbc60ca287f8f5ab1a910b1cc6ff51fe32c0b8840517f8220554454b9d2d4afac",
+      "market_title": "Will Newsom drop out of 2026 race before September?",
+      "direction": "NO",
+      "key_trader": "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302",
+      "trader_geo_elo": null,
+      "trader_comprehensive_elo": 2797.7,
+      "position_size": 3475,
+      "signal_date": "2026-04-21",
+      "confidence": "MEDIUM",
+      "flags": [
+        "thin_sample"
+      ],
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null
+    },
+    {
+      "signal_id": "STR003-002",
+      "type": "str003_active",
+      "market_id": "0x9c4e86b9eeef8a24d1f91b1b2ca22bf3f49c1f80b7db0e0f694f3d81c1b0ee8c",
+      "market_title": "Will the US veto a UN Security Council resolution on Gaza?",
+      "direction": "NO",
+      "key_trader": "0x72a1ac129a75877887d31c847508ffef7baf466b",
+      "trader_geo_elo": null,
+      "trader_comprehensive_elo": 3153.9,
+      "position_size": 40581,
+      "signal_date": "2026-04-27",
+      "confidence": "MEDIUM",
+      "flags": [
+        "stale_market_question",
+        "thin_sample"
+      ],
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null
+    },
+    {
+      "signal_id": "STR003-003",
+      "type": "str003_active",
+      "market_id": "0x1234",
+      "market_title": "Will Trump nominate a Fed chair before March 2027?",
+      "direction": "NO",
+      "key_trader": "0xdffc6760f9b8e760ee248ea8509c6502cf838302",
+      "trader_geo_elo": null,
+      "trader_comprehensive_elo": 3323.0,
+      "position_size": 7191,
+      "signal_date": "2026-04-27",
+      "confidence": "MEDIUM",
+      "flags": [
+        "thin_sample"
+      ],
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null
+    },
+    {
+      "signal_id": "STR003-004",
+      "type": "str003_active",
+      "market_id": "0x657195fda8c315771fe0cf25a1b60df207a9072688f73b96cf17a890ce7ab753",
+      "market_title": "Putin to invade by June 2026?",
+      "direction": "NO",
+      "key_trader": "0xdffc6760f9b8e760ee248ea8509c6502cf838302",
+      "trader_geo_elo": null,
+      "trader_comprehensive_elo": 3323.0,
+      "position_size": 7191,
+      "signal_date": "2026-05-25",
+      "confidence": "MEDIUM",
+      "flags": [
+        "thin_sample",
+        "counter_signal_present"
+      ],
+      "counter_signal": {
+        "trader": "0x0a956f4e2c0e2f675be10535b0c78e4bb563e2f8",
+        "direction": "YES",
+        "position_size": 12967,
+        "comprehensive_elo": 2549.7
+      },
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null
     }
   ]
 }
