@@ -26,9 +26,12 @@ when something genuinely actionable has changed.
   trades     → individual trade rows from live monitor
   markets    → condition IDs, titles, outcomes
   positions  → P&L tracking per trader/market
-- Elite traders: ELO score > 1800 in traders table
-- Legendary traders: ELO score > 2175 in traders table
-- Research pool: 493 traders with research_excluded=0 as of 2026-05-07 (verify live via integration-health.json — pool is updated daily)
+- Elite traders: geo_elo > 1800 (geopolitics-specific ELO, not comprehensive_elo)
+- Legendary traders: geo_elo >= 2175 AND geo_directionality_score >= 0.7 AND realized_pnl > 500
+- Research pool: ~12,000+ traders with research_excluded=0.
+     Pool C (geo_accuracy_pool=1): 177 traders with geo_elo scores.
+     LEGENDARY (geo_elo >= 2175, directionality >= 0.7, pnl > 500): 47 traders.
+     Verify live counts via integration-health.json before querying.
 - Output directory: /home/parison/trading-swarm/brain/agent-outputs/signal-agent/
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
@@ -71,11 +74,22 @@ Pre-registration: rq-str003-antiarb-preregistration-2026-05-30.md. Phase 1 repor
 - **Validation queries:** `accuracy_pool = 1 OR geo_accuracy_pool = 1`
 - **Signal detection:** `research_excluded = 0` (broader pool — use for live signal generation)
 
+## When STR-003 Finds 0 Qualifying Signals
+
+When no traders qualify under STR-003 criteria, still produce a useful report:
+1. Report the current LEGENDARY pool size (geo_elo >= 2175, directionality >= 0.7, pnl > 500)
+2. Show the top 5 traders closest to LEGENDARY threshold (geo_elo between 1800-2175)
+3. Report any active geopolitics markets with significant position concentration
+4. Check if any of the previous 4 signals (Newsom, UN, Fed, Putin) have resolved
+5. Note how many 2026 geo markets are currently unresolved (feeding future geo_elo scores)
+
+This ensures Monday's run produces actionable intelligence even without STR-003 fires.
+
 ## Your Task
 {TASK_DESCRIPTION}
 
 ## Signal Types You Look For
-1. Single legendary directional (STR-003 — PENDING_REVIEW) — a single
+1. Single legendary directional (STR-003 — EXPERIMENTAL) — a single
    legendary trader (ELO >2175, research_excluded=0) with ≥95% of their
    capital on one side of a market (zero or near-zero opposing position).
    Qualifying criteria:
@@ -93,6 +107,10 @@ Pre-registration: rq-str003-antiarb-preregistration-2026-05-30.md. Phase 1 repor
    - NO signals: same 95% threshold but prefer 14–30 day validation window
      (7-day is too short to confirm NO conviction)
    - Upgrade signal to HIGH if 2+ independent legendary traders on same side
+   > **STR-003 status note (as of 2026-05-30):** STR-003 currently has 0 qualifying signals
+   > under the new geo_elo criteria. All previous signals used comprehensive_elo traders who
+   > fail the geo_elo >= 2175 test. System is accumulating data — first genuine signal
+   > expected when 2026 geo markets resolve and new LEGENDARY traders emerge.
 2. Unusual position size — elite trader placing significantly
    larger position than their historical average
 3. Late market movement — sharp price movement in final 20%
