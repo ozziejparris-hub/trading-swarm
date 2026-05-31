@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-05-26T16:15:21.429635+00:00",
+  "generated_by": "tier_2.5",
+  "handoff_version": "1.0",
+  "task_summary": "Geo ELO pool status check",
+  "results": {
+    "query1_avg_geo_elo": 1605.9876283974845,
+    "query1_count": 435,
+    "query1_max_geo_elo": 5464.538133420385,
+    "query2_count": 21,
+    "query3_count": 435
+  },
+  "files_written": [],
+  "next_agent_instructions": "Interpret these geo_elo pool statistics. Are there enough qualified traders (geo_elo>=2175 AND directionality>=0.7) to make STR-003 viable? What is the minimum concurrent markets threshold that would allow at least 3 legendary traders to qualify for STR-003 signals? Write a 3-paragraph strategic assessment to brain/agent-outputs/str003-viability-2026-05-26.md",
+  "token_estimate": 500
+}
