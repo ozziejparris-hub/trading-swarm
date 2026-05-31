@@ -353,7 +353,7 @@ if [ "$NEEDS_WORKTREE" = true ]; then
     # unset ANTHROPIC_API_KEY so the CLI falls back to OAuth Pro subscription
     # instead of trying to charge the API key (which has zero credit balance)
     tmux send-keys -t "$SESSION_NAME" \
-        "unset ANTHROPIC_API_KEY && $MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
+        "unset ANTHROPIC_API_KEY && $MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; ( git -C $BASE_DIR checkout master && git -C $BASE_DIR merge --no-ff \"$BRANCH_NAME\" -m \"merge: $AGENT_TYPE $TASK_ID output to master\"; _merge_rc=\$?; if [ \$_merge_rc -eq 0 ]; then git -C $BASE_DIR push origin master; else echo \"MERGE FAILED for $BRANCH_NAME — branch preserved, manual merge required\"; git -C $BASE_DIR merge --abort 2>/dev/null || true; fi; git -C $BASE_DIR worktree remove --force \"$WORKTREE_PATH\" 2>/dev/null; git -C $BASE_DIR worktree prune ) >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
 elif [ "$TIER" = "1" ]; then
     # Tier 1 — stdin pipe; health checks / log watching are text classification only
