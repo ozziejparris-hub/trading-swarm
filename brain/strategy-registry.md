@@ -101,8 +101,8 @@ Description:            Pre-filter for signal-agent. Detects new single-event
 Category:               Pre-filter / Insider detection
 Finding:                brain/agent-outputs/quant-research/LH-001/
                         lh001_methodology.md
-Backtest report:        brain/agent-outputs/backtest-agent/LH-001-validation.md
-                        (v2 corrected 2026-05-21)
+Backtest report:        brain/agent-outputs/backtest-agent/LH-001-validation-v2.md
+                        (formal v2 2026-05-22; prior: LH-001-validation.md)
 Statistical signal:     Claimed: p=0.0067 (one-tailed Mann-Whitney U)
                         v2 replication: p=0.0160 (pooled, n=59 candidates vs
                         n=90 control, clean: research_excluded=0 AND
@@ -116,7 +116,7 @@ Statistical signal:     Claimed: p=0.0067 (one-tailed Mann-Whitney U)
 Confidence:             LOW-MEDIUM (pooled signal real; event-level validation
                         fails; n=2 events in same 12-day window insufficient)
 Added:                  2026-05-20
-Validated:              2026-05-21 v1 (backtest-agent); v2 correction same date
+Validated:              2026-05-21 v1+v2 (backtest-agent); formal v2 2026-05-22
 Intended use:           Flag new single-event high-volume accounts appearing
                         within 30 days of geopolitics market resolution, then
                         pass those accounts to signal-agent as a watch list.
@@ -499,6 +499,7 @@ for validation. Quant-research-agent manages that directory.
 | 2026-04-27 | STR-001 Elite Convergence Signal | First validation (never previously run) | FAILED — 56.1% accuracy (min 60%), structural flaw: 78% of markets trigger both Yes+No signals simultaneously | backtest-agent |
 | 2026-05-07 | STR-003 Single Legendary Directional | RQ2.2 extended window analysis | EXPERIMENTAL — YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution. Both above 60% threshold. April 26 NO=0% was 7d window artifact. | quant-research-agent |
 | 2026-05-21 | LH-001 Lifecycle Heuristic | First validation | CONDITIONAL_PASS — pooled p=0.0160, r=0.208. Neither event individually significant (Haley p=0.1087, Iran p=0.4818). V1 Haley p=0.0000 corrected — was market-scale confound. N=2 events insufficient. Watchlist trigger only via insider_signals. | backtest-agent (v2) |
+| 2026-05-22 | LH-001 Lifecycle Heuristic | Formal v2 rerun (task backtest-lh001-v4-20260522) | CONDITIONAL_PASS confirmed — all statistics independently reproduced from DB via positions table. p=0.0160, r=0.2083. Haley p=0.1087, Iran p=0.4818. 7 insider_signals confirmed. Formal report: LH-001-validation-v2.md | backtest-agent |
 
 ---
 

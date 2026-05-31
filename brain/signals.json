@@ -25,10 +25,10 @@
       "timestamp": "2026-05-20T19:51:01.279312Z",
       "status": "completed",
       "processed_at": "2026-05-20T19:55:48.590991",
-      "validation_completed_at": "2026-05-21T00:00:00Z",
+      "validation_completed_at": "2026-05-22T00:00:00Z",
       "validation_verdict": "CONDITIONAL_PASS",
-      "validation_summary": "V2 correction: pooled p=0.0160 (one-tailed MWU, n=59 candidates vs n=90 control). V1 Haley p=0.0000 was a market-scale confound \u2014 corrected. Neither event individually significant (Haley p=0.1087, Iran p=0.4818). Claimed p=0.0067 not reproducible. N=2 events insufficient. Effect size r=0.208 (small-medium). Bot exclusion valid. insider_signals table already implements this pattern with 7 detections. Deploy as watchlist trigger via existing infrastructure only.",
-      "validation_report": "brain/agent-outputs/backtest-agent/LH-001-validation.md",
+      "validation_summary": "V2 formal: pooled p=0.0160 (one-tailed MWU, n=59 candidates vs n=90 control, independently reproduced from DB 2026-05-22). V1 Haley p=0.0000 was a market-scale confound \u2014 corrected. Neither event individually significant (Haley p=0.1087, Iran p=0.4818). Claimed p=0.0067 not reproducible. N=2 events insufficient. Effect size r=0.2083 (small-medium). Bot exclusion valid. insider_signals table (7 records) already implements this pattern. Deploy as watchlist trigger via existing infrastructure only.",
+      "validation_report": "brain/agent-outputs/backtest-agent/LH-001-validation-v2.md",
       "validation_metrics": "brain/agent-outputs/backtest-agent/2026-05-21-LH-001-lifecycle-heuristic.json",
       "action_items": [
         "Validate 7 existing insider_signals records as markets resolve (primary validation path)",
