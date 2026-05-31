@@ -204,8 +204,8 @@
     {
       "signal_id": "STR003-003",
       "type": "str003_active",
-      "market_id": "0x1234",
-      "market_title": "Will Trump nominate a Fed chair before March 2027?",
+      "market_id": "0x61b66d02793b4a68ab0cc25be60d65f517fe18c7d654041281bb130341244fcc",
+      "market_title": "Will Trump nominate Kevin Warsh as the next Fed chair?",
       "direction": "NO",
       "key_trader": "0xdffc6760f9b8e760ee248ea8509c6502cf838302",
       "trader_geo_elo": null,
@@ -216,9 +216,10 @@
       "flags": [
         "thin_sample"
       ],
-      "outcome_correct": null,
-      "resolved_at": null,
-      "scored_at": null
+      "outcome_correct": 0,
+      "resolved_at": "2026-04-04T18:33:50Z",
+      "scored_at": "2026-05-31T12:12:53.855083+00:00",
+      "notes": "Trump nominated Kevin Warsh on April 4 2026. Signal direction NO was WRONG."
     },
     {
       "signal_id": "STR003-004",
