@@ -129,7 +129,7 @@
       "timestamp": "2026-06-01T16:26:18Z",
       "payload": {
         "cycle_id": "signal-202606011626",
-        "correction": "geo_resolved_trades_count filter fix — morning cycle (08:00) incorrectly reported legendary_verified_10plus_geo_elo=0 by checking resolved_trades_count (5-6 global) instead of geo_resolved_trades_count (1559-2028 geo-specific). All 12 LEGENDARY traders correctly pass geo_resolved_trades_count >= 10.",
+        "correction": "geo_resolved_trades_count filter fix \u2014 morning cycle (08:00) incorrectly reported legendary_verified_10plus_geo_elo=0 by checking resolved_trades_count (5-6 global) instead of geo_resolved_trades_count (1559-2028 geo-specific). All 12 LEGENDARY traders correctly pass geo_resolved_trades_count >= 10.",
         "signals_rescanned": 4,
         "signals_confirmed": 0,
         "signals_flagged": 4,
@@ -140,16 +140,16 @@
         "legendary_verified_10plus_geo_elo_CORRECTED": 12,
         "geo_resolved_trades_count_range": "1559-2028",
         "signal_statuses": {
-          "STR003-001_newsom_2026": "MEDIUM_RETAINED — market active, position intact ($3,475 NO), trader fails geo_elo threshold (1461.5 < 2175)",
-          "STR003-002_un_gaza": "MEDIUM_ORPHANED — market not found in DB, trader fails all new criteria",
-          "STR003-003_fed_warsh": "SCORED_WRONG — resolved 2026-04-04, scored 2026-05-31, no action",
-          "STR003-004_putin_june_2026": "MEDIUM_APPROACHING_RESOLUTION — resolves June 30 2026 (29 days), position intact ($7,191 NO), counter-signal present ($12,967 YES), trader fails geo_elo threshold (1554 < 2175)"
+          "STR003-001_newsom_2026": "MEDIUM_RETAINED \u2014 market active, position intact ($3,475 NO), trader fails geo_elo threshold (1461.5 < 2175)",
+          "STR003-002_un_gaza": "MEDIUM_ORPHANED \u2014 market not found in DB, trader fails all new criteria",
+          "STR003-003_fed_warsh": "SCORED_WRONG \u2014 resolved 2026-04-04, scored 2026-05-31, no action",
+          "STR003-004_putin_june_2026": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (29 days), position intact ($7,191 NO), counter-signal present ($12,967 YES), trader fails geo_elo threshold (1554 < 2175)"
         },
-        "legendary_pool_status": "ALL 12 INACTIVE — last geo/elections trade Dec 2025, last any trade Jan 7 2026 (Sports). 147 days inactive.",
+        "legendary_pool_status": "ALL 12 INACTIVE \u2014 last geo/elections trade Dec 2025, last any trade Jan 7 2026 (Sports). 147 days inactive.",
         "new_observation": "LEGENDARY traders have geo_resolved_trades_count 1559-2028 but only 4-5 distinct resolved geo markets each. High trade counts reflect HFT-style batch trading in concentrated markets, not broad coverage. Not a disqualifying factor but relevant context for ELO interpretation.",
         "near_legendary_status": "Top 5 near-LEGENDARY (geo_elo 2024-2134) all fail directionality threshold (highest: 0.379 vs required 0.7). No near-LEGENDARY pipeline for STR-003.",
         "active_market_landscape": "55 active geo/elections markets (31 Elections, 24 Geo). Only 2 have confirmed future resolution dates (Putin June 30, Newsom Sept 1). Most are stale/orphaned.",
-        "action_required": "STR003-002 orphaned — Oscar to determine external resolution and record outcome. STR003-004 resolves June 30 — record outcome in strategy-registry.md. LEGENDARY pool inactivity (147 days) warrants investigation.",
+        "action_required": "STR003-002 orphaned \u2014 Oscar to determine external resolution and record outcome. STR003-004 resolves June 30 \u2014 record outcome in strategy-registry.md. LEGENDARY pool inactivity (147 days) warrants investigation.",
         "report_path": "brain/agent-outputs/signal-agent/2026-06-01-16-signal-report.md"
       }
     },
@@ -252,31 +252,6 @@
       "resolved_at": null,
       "scored_at": null,
       "rescan_2026-06-01": "Market unresolved (resolves Sept 1 2026). Position intact: ~$3,475 NO across two open positions. Trader geo_elo=1461.5 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=3 < 10). Signal retained for outcome tracking."
-    },
-    {
-      "signal_id": "STR003-002",
-      "type": "str003_active",
-      "market_id": "0x9c4e86b9eeef8a24d1f91b1b2ca22bf3f49c1f80b7db0e0f694f3d81c1b0ee8c",
-      "market_title": "Will the US veto a UN Security Council resolution on Gaza?",
-      "resolution_date": null,
-      "direction": "NO",
-      "key_trader": "0x72a1ac129a75877887d31c847508ffef7baf466b",
-      "trader_geo_elo": 1501.4,
-      "trader_comprehensive_elo": 3153.9,
-      "position_size": 40581,
-      "signal_date": "2026-04-27",
-      "confidence": "MEDIUM",
-      "flags": [
-        "stale_market_question",
-        "thin_sample",
-        "market_not_found_in_db",
-        "fails_geo_elo_threshold",
-        "fails_directionality_threshold"
-      ],
-      "outcome_correct": null,
-      "resolved_at": null,
-      "scored_at": null,
-      "rescan_2026-06-01": "Market NOT found in polymarket_tracker.db by market_id. Cannot verify position or resolution status. Trader geo_elo=1501.4 (below 2175 threshold), directionality=0.358 (below 0.7 threshold), resolved_trades_count=4 \u2014 fails all new STR-003 LEGENDARY criteria. Signal effectively orphaned. Oscar to determine if market resolved externally and outcome should be recorded."
     },
     {
       "signal_id": "STR003-003",
