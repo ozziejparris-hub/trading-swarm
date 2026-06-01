@@ -126,6 +126,44 @@
       "from": "signal-agent",
       "to": "orchestrator",
       "type": "rescan_complete",
+      "timestamp": "2026-06-01T08:00:01Z",
+      "payload": {
+        "cycle_id": "signal-20260601",
+        "signals_rescanned": 3,
+        "signals_confirmed": 0,
+        "signals_flagged": 3,
+        "signals_upgraded": 0,
+        "new_signals_found": 0,
+        "pool_size": 15003,
+        "legendary_count_geo_elo": 12,
+        "legendary_verified_10plus_geo_elo": 0,
+        "signal_statuses": {
+          "STR003-001_newsom_2026": "MEDIUM_RETAINED — market active, position intact, trader fails geo_elo threshold",
+          "STR003-002_un_gaza": "MEDIUM_ORPHANED — market not found in DB, trader fails all new criteria",
+          "STR003-003_fed_warsh": "SCORED_WRONG — already resolved 2026-04-04, no action",
+          "STR003-004_putin_june_2026": "MEDIUM_APPROACHING_RESOLUTION — resolves June 30, position intact, counter-signal present"
+        },
+        "thin_sample_flags": [
+          "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302 (geo_elo 1461.5, resolved: 3) — STR003-001",
+          "0x72a1ac129a75877887d31c847508ffef7baf466b (geo_elo 1501.4, resolved: 4) — STR003-002",
+          "0xdffc6760f9b8e760ee248ea8509c6502cf838302 (geo_elo 1554.0, resolved: 1) — STR003-004"
+        ],
+        "anomalies": [
+          "Pool grew 11,970→15,003 since 2026-05-25 (+3,033 traders in 7 days). Ongoing rapid expansion.",
+          "All 12 geo_elo LEGENDARY traders (geo_elo >= 2175) have resolved_trades_count 5-6 — 0 qualify for STR-003 signals. geo_elo range for LEGENDARY: 3481-5469.",
+          "Zero traders in geo_elo 1800-2175 range meeting directionality/pnl criteria — no near-LEGENDARY pool.",
+          "STR003-002 market not found in DB — may have resolved externally. Oscar action needed.",
+          "No LEGENDARY traders have active open positions or recent trades in unresolved geo markets.",
+          "STR003-004 (Putin) APPROACHING RESOLUTION June 30 — record outcome in strategy-registry.md after resolution."
+        ],
+        "action_required": "STR003-002 orphaned — Oscar to determine if UN Gaza market resolved and outcome should be recorded. STR003-004 resolves June 30 — record outcome in strategy-registry.md. No new STR-003 signals expected until 2026 geo markets resolve and LEGENDARY traders accumulate resolved_trades_count >= 10.",
+        "report_path": "brain/agent-outputs/signal-agent/2026-06-01-08-signal-report.md"
+      }
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "rescan_complete",
       "timestamp": "2026-05-25T08:00:01Z",
       "payload": {
         "cycle_id": "signal-20260525",
@@ -167,39 +205,47 @@
       "type": "str003_active",
       "market_id": "0xbc60ca287f8f5ab1a910b1cc6ff51fe32c0b8840517f8220554454b9d2d4afac",
       "market_title": "Will Newsom drop out of 2026 race before September?",
+      "resolution_date": "2026-09-01T00:00:00",
       "direction": "NO",
       "key_trader": "0x7dd47e4cbd8511eb14944dd20eaf4be922de1302",
-      "trader_geo_elo": null,
+      "trader_geo_elo": 1461.5,
       "trader_comprehensive_elo": 2797.7,
       "position_size": 3475,
       "signal_date": "2026-04-21",
       "confidence": "MEDIUM",
       "flags": [
-        "thin_sample"
+        "thin_sample",
+        "fails_geo_elo_threshold"
       ],
       "outcome_correct": null,
       "resolved_at": null,
-      "scored_at": null
+      "scored_at": null,
+      "rescan_2026-06-01": "Market unresolved (resolves Sept 1 2026). Position intact: ~$3,475 NO across two open positions. Trader geo_elo=1461.5 (below 2175 LEGENDARY threshold) — fails new STR-003 criteria. thin sample — ELO unvalidated (resolved_trades_count=3 < 10). Signal retained for outcome tracking."
     },
     {
       "signal_id": "STR003-002",
       "type": "str003_active",
       "market_id": "0x9c4e86b9eeef8a24d1f91b1b2ca22bf3f49c1f80b7db0e0f694f3d81c1b0ee8c",
       "market_title": "Will the US veto a UN Security Council resolution on Gaza?",
+      "resolution_date": null,
       "direction": "NO",
       "key_trader": "0x72a1ac129a75877887d31c847508ffef7baf466b",
-      "trader_geo_elo": null,
+      "trader_geo_elo": 1501.4,
       "trader_comprehensive_elo": 3153.9,
       "position_size": 40581,
       "signal_date": "2026-04-27",
       "confidence": "MEDIUM",
       "flags": [
         "stale_market_question",
-        "thin_sample"
+        "thin_sample",
+        "market_not_found_in_db",
+        "fails_geo_elo_threshold",
+        "fails_directionality_threshold"
       ],
       "outcome_correct": null,
       "resolved_at": null,
-      "scored_at": null
+      "scored_at": null,
+      "rescan_2026-06-01": "Market NOT found in polymarket_tracker.db by market_id. Cannot verify position or resolution status. Trader geo_elo=1501.4 (below 2175 threshold), directionality=0.358 (below 0.7 threshold), resolved_trades_count=4 — fails all new STR-003 LEGENDARY criteria. Signal effectively orphaned. Oscar to determine if market resolved externally and outcome should be recorded."
     },
     {
       "signal_id": "STR003-003",
@@ -226,26 +272,31 @@
       "type": "str003_active",
       "market_id": "0x657195fda8c315771fe0cf25a1b60df207a9072688f73b96cf17a890ce7ab753",
       "market_title": "Putin to invade by June 2026?",
+      "resolution_date": "2026-06-30T23:59:59",
       "direction": "NO",
       "key_trader": "0xdffc6760f9b8e760ee248ea8509c6502cf838302",
-      "trader_geo_elo": null,
+      "trader_geo_elo": 1554.0,
       "trader_comprehensive_elo": 3323.0,
       "position_size": 7191,
       "signal_date": "2026-05-25",
       "confidence": "MEDIUM",
       "flags": [
         "thin_sample",
-        "counter_signal_present"
+        "counter_signal_present",
+        "approaching_resolution",
+        "fails_geo_elo_threshold"
       ],
       "counter_signal": {
         "trader": "0x0a956f4e2c0e2f675be10535b0c78e4bb563e2f8",
         "direction": "YES",
         "position_size": 12967,
-        "comprehensive_elo": 2549.7
+        "comprehensive_elo": 2549.7,
+        "geo_elo": 1413.2
       },
       "outcome_correct": null,
       "resolved_at": null,
-      "scored_at": null
+      "scored_at": null,
+      "rescan_2026-06-01": "APPROACHING RESOLUTION — resolves June 30 2026 (29 days). Position intact: NO 18,472 shares at $7,191. Counter-signal (YES $12,967) also still open. Trader geo_elo=1554.0 (below 2175 LEGENDARY threshold) — fails new STR-003 criteria. thin sample — ELO unvalidated (resolved_trades_count=1 < 10). Priority: record outcome in strategy-registry.md when market resolves."
     }
   ]
 }
