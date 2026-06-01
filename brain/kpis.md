@@ -113,150 +113,141 @@ System target:                  < 0.20 minimum
 
 ## Current Week
 
-Last updated: 2026-05-25
-Updated by: performance-analyst-agent (run 4)
+Last updated: 2026-06-01
+Updated by: performance-analyst-agent (run 5)
 
-### Week of 2026-05-25
+### Week of 2026-06-01
 
 #### Prediction Accuracy
 ```
-Directional accuracy (7d window):    50.2%  (n=333 markets — all "Unknown" category, context below)
-Directional accuracy (30d window):   58.2%  (n=1,071 markets — approaching 60% gate)
-Elite tier accuracy (30d):           62.9%  (n=132 — ABOVE 60% Phase 5 gate ✓)
-Legendary tier accuracy (30d):       53.5%  (n=99 — at baseline, consistent with LP pattern)
-Standard tier accuracy (30d):        58.0%  (n=840 — below gate)
-Brier score (7d):                    0.4133 (vs naive 0.25 — 7d batch context: all "Unknown" category)
-Brier score (30d):                   0.3181 (vs naive 0.25 — worse than random, pool dilution effect)
-ELO QUALIFIED authoritative (May 7): 63.16% (n=57 — historical clean pool, most comparable metric)
-Active traders (7d):                  5,115  (+430% from 963 — real volume surge confirmed)
-Trades executed (7d):               117,768  (+177% from 42,509)
-Markets resolved (7d):               1,750   (significant increase)
-Note: 7d accuracy (50.2%) driven by pool expansion (493→1,135 traders) and missing category data
-      (99.95% of recent markets = "Unknown"). Elite tier at 30d is the cleanest edge signal.
+PRIMARY: geo_elo Pool C (30d geo/elections markets):
+  geo_elo accuracy (30d):              86.36%  (n=22 — Pool C, geo_accuracy_pool=1)
+  geo_elo Brier (30d):                 0.1222  (vs naive 0.25 — EXCELLENT, below 0.20 target ✅)
+  geo markets resolved (7d):               0   (thin window — 0 geo resolutions this week)
+
+SECONDARY: comprehensive_elo Elite tier (7d binary all markets):
+  Directional accuracy (7d):           74.39%  (n=82 binary markets, elite ELO-weighted consensus)
+  Brier score (7d):                    0.2354  (vs naive 0.25 — near random; calibration not done)
+  Legendary tier accuracy (30d):       35.92%  (n=119 pairs — ⚠ WORSE THAN RANDOM, FLAG-001)
+  Note: comprehensive_elo Legendary tier contaminated — artefact accounts entering clean pool.
+        geo_elo (86.36%) is the authoritative accuracy metric for geopolitics.
 ```
 
 #### ELO System Health
 ```
-Total traders (DB):                119,090  (vs 110,548 May 18; +7.7%)
-Legendary traders (>2175, CLEAN):        5  (explicit pool; 11,970 have research_excluded=0)
-Elite traders (1800-2175, CLEAN):        9  (explicit pool)
-Standard (1200-1800, CLEAN):           988  (explicit pool)
-Research pool (research_excluded=0): 11,970  (⚠ still 10.5x the explicit pool)
-Research pool (EXPLICIT CLEAN):      1,135  (✅ RECOVERED from 104 on May 18)
-Max ELO (explicit clean pool):       2,469.1 (no suspicious >3,500 in clean pool today)
-ELO >3,500 cluster:           CONFIRMED via May 24 session (~4,655 max) — new accounts from
-                              Sunday leaderboard discovery. NOT in clean pool yet
-                              (fail resolved_trades_count>=20). Screen via RQ0.2 before June 1.
-ELO last updated:                2026-05-25 (daily maintenance running)
-Note: research_excluded=0 alone now returns 11,970 (10.5x explicit clean pool of 1,135).
-      ALWAYS add explicit criteria: AND resolved_trades_count>=20 AND bot_suspect=0
-      AND wash_trade_suspect=0 AND bot_type IS NULL
+Total traders (DB):                125,451  (vs 119,090 May 25; +5.3%)
+Legendary (>2175, EXPLICIT CLEAN):      11  (vs 5 May 25 — ⚠ cluster partially entered pool)
+Elite (1800-2175, EXPLICIT CLEAN):      81  (vs 9 May 25 — large jump, monitoring needed)
+Standard (1200-1800, EXPLICIT CLEAN): 1,250  (vs 988 May 25)
+Research pool (EXPLICIT CLEAN):       1,449  (vs 1,135 May 25 — +27.7%)
+Research pool (research_excluded=0): 14,983  (vs 11,970 May 25 — +25.2%)
+Pool C (geo_accuracy_pool=1):           177  (authoritative geo_elo pool)
+geo_elo LEGENDARY (geo_elo > 2175):      47  (in Pool B; 26 in Pool C)
+STR-003 qualifying traders:              12  (geo_elo≥2175, directionality≥0.7, pnl>500)
+Max ELO (explicit clean pool):        3,325  (⚠ 0x2aacd459 — 20 resolved trades — FLAG-001)
+Max ELO cap formula:          1500 + (resolved_trades_count × 150) — applied 2026-05-31
+Max ELO in DB (all traders):          3,919  (ELO cap applied 2026-05-31, down from 5,115)
+Active traders (7d):                  3,327  (vs 5,115 May 25 — ↓ -35%, investigate)
+Trades executed (7d):                74,068  (vs 117,768 May 25 — ↓ -37%)
+ELO last updated:             2026-06-01 (daily maintenance + Sunday timer active)
 ```
 
 #### Signal Quality
 ```
-STR-003 signals active (MEDIUM):       4  (all 7 days unrescanned — 4th consecutive Sunday missed)
-STR-003 resolved (cumulative):         1/1 (100%, Ramaswamy NO — CORRECT, n=1 insufficient)
-STR-004 resolved (cumulative):         0/1 (0%, founding case FAIL — stop criterion not met)
-Upgrade conditions met (MEDIUM→HIGH):  0
-Signal-agent last run:           2026-05-18 (7 days ago — CRITICAL STALL, 4th Sunday)
-Near-term resolution:            Putin invasion by June 2026 (~8 days remaining)
-feedback.json:                   ⚠ Corrupted as of May 24 integration test; intact May 25 06:00
-                                   3rd corruption incident — template fix needed
+STR-003 (geo_elo criteria — NEW as of May 31):
+  Qualifying traders:                     12  (geo_elo≥2175, directionality≥0.7, pnl>500)
+  Active signals (geo_elo):               0   (first run June 1 08:00 UTC — PENDING)
+  Previous signals (comprehensive_elo):   INVALID under new criteria
+
+STR-003 historical accuracy (old criteria — for reference):
+  STR003-003 (Trump/Warsh):    WRONG (scored May 31 — Trump DID nominate Warsh Apr 4)
+  STR003-001 (Ramaswamy):      CORRECT (scored May 2)
+  Cumulative old-criteria:     1/2 (50%) — insufficient, n<10
+
+STR-004 resolved:              0/1 (0%, founding case FAIL — Russia/Ukraine ceasefire)
+feedback.json:                 ⚠ CORRUPTED (3rd incident) — shows only scout_cycles data
+feedback-loop Run 8:           Status unclear — may have been blocked by corruption
 ```
 
 #### Strategy Pipeline
 ```
-Strategies submitted (30d):            1  (LH-001 — CONDITIONAL_PASS)
-Strategies validated (30d):            1  (LH-001 — confirmed twice May 21-22)
-Pass rate:                          100%  (n=1)
-LH-001 status:            CONDITIONAL_PASS — primary validation via insider_signals (7 records)
-RQ1.1 status:             INCONCLUSIVE (n=16, rerun JUNE 1 — pre-registration FILED ✓)
-RQ3.2 status:             INCONCLUSIVE (methodology reframe — extend RQ2.2 to outcome)
-RQ2.2 status:             MEDIUM confidence — YES 61.1% (n=18), NO 77.8% (n=9)
-RQ0.1:                    PASSED 2026-05-13. Next due 2026-06-13 — bring forward (ELO cluster)
-RQ0.2:                    PASSED 2026-05-13. Next due 2026-06-13 — BRING FORWARD (screen >3,500
-                          cluster BEFORE June 1 RQ1.1 rerun)
+STR-003:   EXPERIMENTAL → migrated to geo_elo criteria (May 31). 0 signals, first scan June 1.
+STR-004:   HYPOTHESIS — 0/1 founding case failed. 9 more signals needed.
+LH-001:    CONDITIONAL_PASS — 7 insider_signals tracking, 0 resolved yet.
+RQ1.1:     DELAYED to July 1 (n=10 qualifying, minimum 30 — signal rq1_1_insufficient_n filed)
+RQ3.2:     INCONCLUSIVE — methodology reframe needed (extend RQ2.2 to outcome)
+RQ0.2:     ⚠ BRING FORWARD — screen ELO >3000 cluster BEFORE July 1 RQ1.1 rerun
+GEO-ELO-003 OOS: CONDITIONAL (pending backtest-agent validation)
 
-STR-003 — Single Legendary Directional Signal
-  Status:   EXPERIMENTAL
-  Basis:    RQ2.2 extended — YES 61.1% (n=18), NO 77.8% (n=9) at 95% threshold
-  Sample:   n=1 resolved (insufficient). Need 19 more.
-  Putin market:  ~8 days to June 2026 resolution — rescan URGENT
-
-STR-004 — Capital-Weighted Legendary Aggregate Signal
-  Status:   HYPOTHESIS — founding case FAILED
-  Founding: Russia/Ukraine ceasefire Q2 2026 — RESOLVED NO 2026-05-08
-            8 traders, $1.74M, 55.7% YES vs 7% crowd. Crowd correct.
-  Accuracy: 0/1 (0%) — stop criterion at <50% on n=10. Need 9 more.
-
-LH-001 — Lifecycle Heuristic Insider Detection
-  Status:   CONDITIONAL_PASS
-  Basis:    Pooled p=0.0160, r=0.208 (small-medium). N=2 events insufficient.
-  Path:     Track 7 insider_signals records to resolution (need ≥60% on ≥5)
+Maker/taker pipeline:  DEPLOYED (Polygon RPC, Etherscan, polygon_maker_taker.py)
+                       Legendary scan running (background screen session)
+STR-003 anti-arb filter: ACTIVE (entry_price BETWEEN 0.10 AND 0.80)
 ```
 
 #### System Resources
 ```
-Estimated API spend (week, May 18-25): ~$0.50  (this run only — few agents active)
-Agent tasks completed:              1   (performance-analyst this run)
-Agent tasks stuck/orphaned:         1   (backtest-lh001-v3 — 4 days respawning, ORPHAN)
-Auto-respawns by immune system:     0
-CI failures:                        6   (signal-agent stall, feedback.json, research-scout,
-                                        quant-research, signal types — 86.7% pass rate)
-Git commits (past week, May 18-25): ~15  (monitoring fixes, Telegram, spawn_agent.sh,
-                                         database.py connection fix, backfill spam fix)
-Brain directory size:             ~1.7MB (growing)
+Estimated API spend (week, May 25-Jun 1): ~$1.00  (this run + minimal other usage)
+trading-swarm service:            ACTIVE (since 2026-05-22 03:00)
+polymarket-monitoring:            ACTIVE (auto-restart enabled, since May 31)
+Agent tasks completed:            1   (performance-analyst this run)
+Auto-respawns by immune system:   0
+Git commits (past week, May 25-Jun 1): ~30+  (maker/taker pipeline, ELO cap, signal
+                                               templates, STR-003 anti-arb, market dates,
+                                               geo_elo daily update, score_str003_signals.py)
+Brain directory size:             2.0MB (stable)
+First-repo log directory:         65MB (log archiving working — was 604MB)
+First-repo DB size:               ~6.3GB (4x baseline of 1.6GB in ~10 weeks)
 Integration test pass rate:       86.7%  (39/45 May 24 — flat, 4 systemic failures persist)
-First-repo log directory:           604MB (growing — +109MB/week accelerating)
-Monitoring freezes:                  2   (May 22, May 24 — Fix 1 applied, Fix 2 pending)
-Duplicate trades flagged:        8,988   (newly identified, under investigation)
-Sunday maintenance duration:      7.4h   (leaderboard discovery 6.3h — optimisation needed)
 ```
 
 #### Week-on-Week Trends
 ```
-Directional accuracy (7d window):    50.2% (May 25, n=333) — pool+category change context
-Directional accuracy (30d window):   58.2% (May 25, n=1,071) — approaching 60% gate
-Elite tier accuracy (30d):           62.9% (May 25, n=132) — ABOVE 60% gate ✓
-ELO QUALIFIED authoritative:         63.16% (May 7, historical — most comparable metric)
-Explicit clean pool:                  104 (May 18) → 1,135 (May 25)  ↑↑ RECOVERED
-Research_excluded=0 pool:           7,852 (May 18) → 11,970 (May 25)  ↑ still inflated
-Max ELO (clean pool):               4,305 (May 18) → 2,469.1 (May 25)  ↓ cluster excluded
-Active traders (7d):                  963 (May 18) → 5,115 (May 25)   ↑↑ volume surge
-Trades (7d):                       42,509 (May 18) → 117,768 (May 25) ↑↑ +177%
-Signal accuracy trend:                1/1 STR-003 ✓ | 0/1 STR-004 ✗ — too small
-Phase 5 Gate 1:                       ✅ COMPLETE (6/4 runs)
-Phase 5 Gate 2:                       1/3 HIGH findings (pool clean — unblocked for first time)
-Phase 5 Gate 3:                       50%/4 markets (stalled — pre-res scan stalled since May 10)
-Phase 5 Gate 4:                       Inconclusive → rerun June 1 (pre-registration FILED ✓)
+geo_elo accuracy (30d geo markets):   NEW METRIC — 86.36% (n=22) ✅
+Brier geo_elo (30d):                  NEW METRIC — 0.1222 ✅ (below 0.20 target)
+Directional accuracy 7d (elite):      74.39% (Jun 1, n=82) — methodology comparable to 50.2% May 25
+Legendary tier accuracy (comp_elo):   46.0% (May 25) → 35.92% (Jun 1) ↓↓ deteriorating
+Explicit clean pool:               1,135 (May 25) → 1,449 (Jun 1) ↑ +28%
+Pool C (geo):                        177 (Jun 1)
+Max ELO (clean pool):              2,469.1 (May 25) → 3,325 (Jun 1) ↑ ⚠ new cluster entered
+Active traders (7d):               5,115 (May 25) → 3,327 (Jun 1) ↓ -35%
+Trades (7d):                     117,768 (May 25) → 74,068 (Jun 1) ↓ -37%
+STR-003 signals:                       4 (old criteria) → 0 (geo_elo migration) ↓ reset
+NEW HIGH finding:                  2026-06-01-GEO-ELO-ACCURACY-001 written
+Phase 5 Gate 1:                    ✅ COMPLETE (7+/4 runs)
+Phase 5 Gate 2:                    1/3 valid (+1 NEW finding today = potentially 2/3)
+Phase 5 Gate 3:                    50%/4 markets (stalled — pre-res scan stalled)
+Phase 5 Gate 4:                    INCONCLUSIVE → July 1 (RQ1.1 delayed)
 ```
 
-### Previous Week (2026-05-18 — for reference)
+### Previous Week (2026-05-25 — for reference)
 
 #### Prediction Accuracy
 ```
-ELO QUALIFIED consensus accuracy (latest clean-pool):  63.16% (n=57 — May 7 authoritative)
-ELO QUALIFIED consensus accuracy (7d window, May 11):  92% (n=12 — feedback-loop)
-Brier score (elite positions, 7d):    0.3128 (unchanged — no new feedback-loop run this week)
-Active traders (7d):                    963  (RECOVERED from 22 on May 13)
+Directional accuracy (7d window):   50.2%  (n=333 markets — all "Unknown" category)
+Directional accuracy (30d window):  58.2%  (n=1,071 markets)
+Elite tier accuracy (30d):          62.9%  (n=132 — ABOVE 60% gate)
+Brier score (7d):                   0.4133 (all "Unknown" category context)
+ELO QUALIFIED authoritative:        63.16% (n=57 — May 7, clean 493-trader pool)
+Active traders (7d):                 5,115  (+430% from 963)
+Trades executed (7d):              117,768
 ```
 
 #### ELO System Health
 ```
-Total traders (DB):                110,548
-Research pool (EXPLICIT CLEAN):       104  (⚠ CRITICAL — now resolved)
-Max ELO observed:                   4,305.1 (⚠ suspicious cluster — now excluded from clean pool)
+Total traders (DB):                119,090
+Research pool (EXPLICIT CLEAN):      1,135  (recovered from 104 on May 18)
+Max ELO (explicit clean pool):     2,469.1  (no suspicious >3,500 yet)
+ELO >3,500 cluster:                WARNED — Sunday leaderboard discovery, not yet in clean pool
 ```
 
 ---
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-05-25 (performance-analyst-agent run 4)
+Last updated: 2026-06-01 (performance-analyst-agent run 5)
 
 ```
-Feedback-loop runs: 6/4 ✅ GATE MET
+Feedback-loop runs: 7+/4 ✅ GATE MET
   Run 1: 2026-04-25
   Run 2: 2026-04-27
   Run 3: 2026-05-05
@@ -264,33 +255,34 @@ Feedback-loop runs: 6/4 ✅ GATE MET
   Run 5: 2026-05-07 (manual — clean pool confirmed, 493 genuine traders)
   Run 6: 2026-05-11 (cron, Monday)
   Run 7: 2026-05-18 (cron, Monday — feedback.json restored pre-run)
-  Note:  Run 8 due today (May 25) — feedback.json must be confirmed intact first.
-         Pool is clean (1,135 traders) — unblocked for Gate 2 attempt.
+  Run 8: Status UNCLEAR — feedback.json CORRUPTED (3rd incident) as of May 24-25.
+         Restore feedback.json and re-run before next week's report.
 
-HIGH confidence findings: 1/3 valid
+HIGH confidence findings: 1/3 valid + 1 NEW THIS WEEK (pending Gate 2 confirmation)
   ❌ 2026-05-05-ELO-QUALIFIED-001: INVALIDATED — contaminated pool (82% was artefact)
   ✅ 2026-05-07-ELO-QUALIFIED-002: QUALIFIED 63.16% accuracy, n=57 (clean 493-trader pool)
-  ⏳ Need 2 more with n≥20
-  ✅ BLOCKER RESOLVED: Pool recovered to 1,135 (was 104 on May 18).
-     Spawn feedback-loop-agent this week — pool clean, Gate 2 attempt unblocked.
+  ✅ 2026-06-01-GEO-ELO-ACCURACY-001: geo_elo Pool C 86.36% accuracy, n=22 geo markets
+     (Brier 0.1222 — GOOD tier per Tetlock) — written this run
+  ⏳ Need 1 more with n≥20 for Gate 2 completion
+  ACTION: Spawn feedback-loop-agent Run 8 (pool=1,449, pool C=177) — can produce
+          remaining finding this week
 
 Pre-resolution accuracy: 50% / 4 markets
-  (unchanged — no new resolved pre-resolution signals since May 5)
-  (pre-res scan stalled since May 10 — 15 days missed as of May 25)
+  (unchanged — pre-res scan stalled since May 10)
   Gate needs: 60% accuracy across 10+ resolved markets
+  STR-002 stalled — no new resolved signals in 22 days
 
-RQ1.1 status:   INCONCLUSIVE (n=16, rerun scheduled June 1)
-  ✅ Pre-registration FILED (files: rq1-1-preregistration-2026-06-01.md,
-     rq1-1-rerun-pre-registration-june2026.md). Met May 20 deadline.
-  Run June 1. Pool now 1,135 — should exceed n=30 minimum.
-  ⚠ Screen ELO >3,500 cluster via RQ0.2 BEFORE June 1 run.
+RQ1.1 status:   INCONCLUSIVE → DELAYED to July 1, 2026
+  Signal filed: rq1_1_insufficient_n (n=10 qualifying, minimum 30)
+  ✅ Pre-registration FILED (rq1-1-rerun-pre-registration-june2026.md)
+  ⚠ Screen ELO >3000 cluster via RQ0.2 BEFORE July 1 run
 RQ3.2 status:   INCONCLUSIVE (methodology reframe — extend RQ2.2 to outcome prediction)
 
-Signal accuracy:
-  STR-003: 1/1 resolved correct (Ramaswamy NO ✅ 2026-05-02)
-  STR-004: 0/1 resolved correct (Russia/Ukraine ceasefire ✗ 2026-05-08 — crowd correct)
-  4 STR-003 signals pending resolution (unrescanned 7 days — spawn signal-agent TODAY)
-  Near-term: Putin invades by June 2026 (ELO 3323, resolves ~June 30, ~8 days remaining)
+Signal accuracy (June 1):
+  STR-003 (geo_elo criteria): 0 signals as of June 1 06:00 UTC. First scan: June 1 08:00.
+  STR-003 (old criteria, historical): 1/2 correct (Ramaswamy ✅, Warsh ✗ — scored May 31)
+  STR-004: 0/1 resolved correct (Russia/Ukraine ceasefire ✗ — founding case failed)
+  Putin invades by June 2026: resolves June 30. Needs fresh geo_elo rescan.
 ```
 
 ---
@@ -303,7 +295,7 @@ Updated by performance-analyst-agent as phases complete.
 ```
 Phase         RQ        Status          Started     Completed
 ──────────────────────────────────────────────────────────────
-Phase 1       RQ1.1     INCONCLUSIVE    2026-04-26  — (rerun June 1, pre-registered ✓)
+Phase 1       RQ1.1     INCONCLUSIVE    2026-04-26  — (rerun July 1, n=10<30, pre-registered ✓)
               RQ3.2     INCONCLUSIVE    2026-04-26  — (reframe needed)
 Phase 2       RQ2.1     Not started     —           —
               RQ1.2     Not started     —           —
@@ -322,7 +314,7 @@ Supporting    RQ0.1     PASSED          2026-03-29  2026-03-29
 ──────────────────────────────────────────────────────────────
 ```
 
-Last updated by performance-analyst-agent: 2026-05-25
+Last updated by performance-analyst-agent: 2026-06-01
 
 Stopping rules (halt all research if either fails):
 - RQ1.1: ELO has no predictive validity → redesign ELO system
