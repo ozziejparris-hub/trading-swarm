@@ -713,6 +713,15 @@ def process_signals():
                 send_telegram(message, bot="orchestrator")
                 _record_violation_alert(violation_key)
 
+        # RQ1.1 had insufficient qualifying markets — log and move on, rerun 2026-07-01
+        elif signal_type == "rq1_1_insufficient_n":
+            qualifying_n = payload.get("qualifying_n", "unknown")
+            minimum_required = payload.get("minimum_required", "unknown")
+            log.info(
+                f"RQ1.1 insufficient n (qualifying={qualifying_n}, required={minimum_required})"
+                f" — rerun scheduled 2026-07-01, no action required"
+            )
+
         # Unknown signal type — log and alert rather than silently drop
         else:
             log.warning(
