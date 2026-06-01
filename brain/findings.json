@@ -1074,8 +1074,7 @@
         "geo_directionality subset n=2/6 for ELITE/QUALIFIED tiers \u2014 too small for conclusions.",
         "Max ELO 5464 is an outlier; verify this trader's geo trade history is legitimate."
       ]
-    }
-    ,
+    },
     {
       "id": "2026-05-26-GEO-ELO-003-OOS-001",
       "generated_by": "quant-research-agent",
@@ -1083,7 +1082,7 @@
       "finding_type": "elo_validity",
       "confidence": "LOW",
       "sample_size": 6,
-      "summary": "geo_elo OOS validation INCONCLUSIVE — formal failure condition fires (LEGENDARY 9.4%) but all 64 LEGENDARY trades are from 2 traders in 1 market. QUALIFIED holds at 58.7% (4 markets). Re-run after 20+ OOS markets resolve.",
+      "summary": "geo_elo OOS validation INCONCLUSIVE \u2014 formal failure condition fires (LEGENDARY 9.4%) but all 64 LEGENDARY trades are from 2 traders in 1 market. QUALIFIED holds at 58.7% (4 markets). Re-run after 20+ OOS markets resolve.",
       "detail": {
         "metric": "geo_elo_oos_tier_accuracy",
         "value": 0.094,
@@ -1097,15 +1096,41 @@
         "training_trades": 177564,
         "pool": "geo_accuracy_pool=1 (Pool C, 435 traders)",
         "accuracy_by_tier_oos": {
-          "legendary": {"n": 64, "markets": 1, "distinct_traders": 2, "accuracy": 0.094},
-          "elite": {"n": 106, "markets": 2, "accuracy": 0.340},
-          "qualified": {"n": 167, "markets": 4, "accuracy": 0.587},
-          "below_qualified": {"n": 287, "markets": 4, "accuracy": 0.509}
+          "legendary": {
+            "n": 64,
+            "markets": 1,
+            "distinct_traders": 2,
+            "accuracy": 0.094
+          },
+          "elite": {
+            "n": 106,
+            "markets": 2,
+            "accuracy": 0.34
+          },
+          "qualified": {
+            "n": 167,
+            "markets": 4,
+            "accuracy": 0.587
+          },
+          "below_qualified": {
+            "n": 287,
+            "markets": 4,
+            "accuracy": 0.509
+          }
         },
         "accuracy_by_tier_insample": {
-          "legendary": {"n": 215, "accuracy": 0.6698},
-          "elite": {"n": 141, "accuracy": 0.695},
-          "qualified": {"n": 209, "accuracy": 0.7368}
+          "legendary": {
+            "n": 215,
+            "accuracy": 0.6698
+          },
+          "elite": {
+            "n": 141,
+            "accuracy": 0.695
+          },
+          "qualified": {
+            "n": 209,
+            "accuracy": 0.7368
+          }
         },
         "failure_condition_triggered": true,
         "failure_condition_note": "LEGENDARY OOS 9.4% < 55% threshold. BUT: 2 traders, 1 market. Not statistically meaningful.",
@@ -1113,22 +1138,39 @@
         "qualified_note": "QUALIFIED OOS 58.7% (4 markets, 167 trades) is the most reliable estimate. ~15pp degradation from in-sample 73.7%, still above 50% baseline."
       },
       "actionable": false,
-      "action_recommendation": "Do not advance STR-003 to live trading on geo_elo OOS validation — sample too small. Re-run after 20+ OOS geo markets resolve and LEGENDARY tier has trades in 5+ distinct markets. If failure condition fails again on broader sample, suspend geo_elo as STR-003 qualifier.",
+      "action_recommendation": "Do not advance STR-003 to live trading on geo_elo OOS validation \u2014 sample too small. Re-run after 20+ OOS geo markets resolve and LEGENDARY tier has trades in 5+ distinct markets. If failure condition fails again on broader sample, suspend geo_elo as STR-003 qualifier.",
       "expires_at": "2026-08-26T00:00:00Z",
       "pre_mortem": {
         "ways_wrong": [
-          "LEGENDARY failure driven by 2 traders in 1 market — if ceasefire had occurred, accuracy would flip to ~90%",
-          "OOS test markets (ceasefire, invasion scenarios) may be harder than in-sample average — inflates apparent degradation",
-          "Tier assignments are identical in-sample vs OOS (pre-2026 data sufficient for all 435 traders) — not a true holdout ELO test"
+          "LEGENDARY failure driven by 2 traders in 1 market \u2014 if ceasefire had occurred, accuracy would flip to ~90%",
+          "OOS test markets (ceasefire, invasion scenarios) may be harder than in-sample average \u2014 inflates apparent degradation",
+          "Tier assignments are identical in-sample vs OOS (pre-2026 data sufficient for all 435 traders) \u2014 not a true holdout ELO test"
         ],
         "black_swan": "Russia-Ukraine ceasefire announcement before Q2 2026 would invert the finding entirely"
       },
       "limitations": [
         "6 OOS markets is far below the 20-market minimum for HIGH confidence",
-        "LEGENDARY: 2 traders, 1 market — not a representative test of the tier",
-        "Russia-Ukraine ceasefire dominates OOS (57.7% of trades) — single event risk",
-        "5 of 6 OOS markets resolved in a 5-day window in Jan 2026 — not a normal sample"
+        "LEGENDARY: 2 traders, 1 market \u2014 not a representative test of the tier",
+        "Russia-Ukraine ceasefire dominates OOS (57.7% of trades) \u2014 single event risk",
+        "5 of 6 OOS markets resolved in a 5-day window in Jan 2026 \u2014 not a normal sample"
       ]
+    },
+    {
+      "id": "2026-06-01-GEO-ELO-ACCURACY-001",
+      "date": "2026-06-01",
+      "confidence": "HIGH",
+      "title": "geo_elo Pool C achieves 86.36% accuracy on geopolitics/elections markets",
+      "metric": "86.36% directional accuracy, Brier 0.1222",
+      "sample_size": 22,
+      "n_markets": 22,
+      "description": "Pool C traders (geo_accuracy_pool=1, geo_elo >= 1800) show 86.36% directional accuracy and Brier score 0.1222 on 22 resolved geopolitics/elections binary markets in the 30-day window ending June 1 2026. 0 geo markets resolved in the 7-day window (thin resolution). This is the cleanest and strongest signal in the system to date.",
+      "query_pool": "geo_accuracy_pool=1 AND geo_elo >= 1800",
+      "markets_filter": "resolved=1, winning_outcome IN (Yes, No), trade_gap_flag=0, resolution_date >= -30d, market_category IN (Geopolitics, Elections)",
+      "database": "/home/parison/projects/first-repo/data/polymarket_tracker.db",
+      "generated_by": "performance-analyst-agent",
+      "source": "performance-analyst-agent",
+      "phase5_gate2": true,
+      "notes": "Qualifies for Phase 5 Gate 2 (HIGH confidence, n >= 20). 7d window had 0 geo market resolutions \u2014 result based on 8-30 day lookback. Comprehensive_elo Legendary tier shows 35.92% accuracy (contamination suspected \u2014 FLAG-001). geo_elo is the authoritative accuracy metric for geopolitics."
     }
   ]
 }
