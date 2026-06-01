@@ -168,8 +168,8 @@ Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL
    - Minimum position: $2,000
    - Maximum markets traded simultaneously: 2 (focus signal)
    - Bidirectional holders (both YES and NO in same market) do NOT qualify
-   - Minimum resolved trades: traders with `resolved_trades_count < 10` do NOT
-     qualify for new STR-003 signals. Include `AND resolved_trades_count >= 10`
+   - Minimum resolved trades: traders with `geo_resolved_trades_count < 10` do NOT
+     qualify for new STR-003 signals. Include `AND geo_resolved_trades_count >= 10`
      in all qualifying trader SQL queries alongside the existing filters.
      > **Why:** ELO scores for traders with <10 resolved trades are P&L-weighted
      > rather than accuracy-validated. As of May 2026, 324/333 legendary traders
@@ -197,10 +197,10 @@ Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL
 When rescanning existing active signals (signals already written to signals.json),
 check `resolved_trades_count` for every trader named in the signal:
 
-- If a trader has `resolved_trades_count >= 10`: no change — signal remains valid.
-- If a trader has `resolved_trades_count < 10`: do **not** immediately disqualify the
+- If a trader has `geo_resolved_trades_count >= 10`: no change — signal remains valid.
+- If a trader has `geo_resolved_trades_count < 10`: do **not** immediately disqualify the
   signal. Instead, add a note to the rescan entry:
-  `"thin sample — ELO unvalidated (resolved_trades_count < 10)"`
+  `"thin sample — ELO unvalidated (geo_resolved_trades_count < 10)"`
   This flags the signal for closer human review without silently removing it.
 
 Rationale: an existing signal may have been generated under earlier (looser) criteria,
