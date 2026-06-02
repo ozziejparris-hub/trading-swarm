@@ -27,10 +27,11 @@ when something genuinely actionable has changed.
   markets    → condition IDs, titles, outcomes
   positions  → P&L tracking per trader/market
 - Elite traders: geo_elo > 1800 (geopolitics-specific ELO, not comprehensive_elo)
-- Legendary traders: geo_elo >= 2175 AND geo_directionality_score >= 0.7 AND realized_pnl > 500
+- Legendary traders: geo_elo_active >= 2175 AND geo_directionality_score >= 0.7 AND realized_pnl > 500
+     (geo_elo_active = geo_elo × 0.5^(days_dormant/180) — penalises dormant traders)
 - Research pool: ~12,000+ traders with research_excluded=0.
      Pool C (geo_accuracy_pool=1): 177 traders with geo_elo scores.
-     LEGENDARY (geo_elo >= 2175, directionality >= 0.7, pnl > 500): 47 traders.
+     LEGENDARY (geo_elo_active >= 2175, directionality >= 0.7, pnl > 500): 14 traders.
      Verify live counts via integration-health.json before querying.
 - Output directory: /home/parison/trading-swarm/brain/agent-outputs/signal-agent/
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
@@ -43,7 +44,7 @@ When evaluating STR-003 signals, ALL of these filters must be applied:
 
 ### Trader Qualification
 ```sql
-WHERE tr.geo_elo >= 2175                    -- NOT comprehensive_elo
+WHERE tr.geo_elo_active >= 2175             -- NOT comprehensive_elo
   AND tr.geo_directionality_score >= 0.7
   AND tr.realized_pnl > 500
   AND tr.research_excluded = 0
@@ -89,7 +90,7 @@ Pre-registration: rq-str003-antiarb-preregistration-2026-05-30.md. Phase 1 repor
 ## When STR-003 Finds 0 Qualifying Signals
 
 When no traders qualify under STR-003 criteria, still produce a useful report:
-1. Report the current LEGENDARY pool size (geo_elo >= 2175, directionality >= 0.7, pnl > 500)
+1. Report the current LEGENDARY pool size (geo_elo_active >= 2175, directionality >= 0.7, pnl > 500)
 2. Show the top 5 traders closest to LEGENDARY threshold (geo_elo between 1800-2175)
 3. Report any active geopolitics markets with significant position concentration
 4. Check if any of the previous 4 signals (Newsom, UN, Fed, Putin) have resolved

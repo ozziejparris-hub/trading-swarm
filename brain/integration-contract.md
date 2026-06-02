@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.7 — 2026-05-29
+**Version:** 1.8 — 2026-06-02
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -105,6 +105,7 @@ new accounts.
 | `comprehensive_elo` | REAL | ELO across all markets |
 | `realized_pnl` | REAL | Realized P&L in USD (authoritative — see Section 6b) |
 | `geo_elo` | REAL | Market-implied probability ELO for geopolitics+elections trades only |
+| `geo_elo_active` | REAL | Recency-decayed geo_elo: geo_elo × 0.5^(days_dormant/180). 180-day half-life. Used for STR-003 signal qualification. Base geo_elo preserved for research. Updated daily by update_geo_elo.py. |
 | `geo_resolved_trades_count` | INTEGER | Resolved trades in geo/elections markets |
 | `geo_directionality_score` | REAL | Fraction of geo capital on dominant side (0=pure LP, 1=fully directional) |
 | `geo_accuracy_pool` | BOOLEAN | 1 = Pool C (geopolitics accuracy) |
@@ -274,6 +275,7 @@ Agents should not query the database during the maintenance window
 | 2026-05-25 | Contract updated to v1.5: Pool A/B/C documented in Section 6b; traders column table added to Section 3 (includes geo_elo, geo_resolved_trades_count, geo_directionality_score, geo_accuracy_pool); geo_accuracy_pool column added to first-repo DB; STR-003 updated to use geo_elo >= 2175 + geo_directionality_score >= 0.7. Pool C size: 435 traders. | All agents querying geo ELO or geopolitics markets |
 | 2026-05-29 | Contract updated to v1.6: STR-003 gains `realized_pnl > 500` filter in Section 5. Two LP artifact patterns identified: (1) geo_elo >= 2175 traders with realized_pnl = $0.00 exactly (redemption accounts, not directional), (2) geo_elo >= 2175 traders with realized_pnl < -$100,000 (spread-compression LPs — high ELO from volume not skill). | All agents generating STR-003 signals |
 | 2026-05-29 | Contract updated to v1.7: STR-003 concurrent market count exclusion policy documented in Section 5 — stale unresolved markets (resolved=0, resolution_date older than 180 days) and non-Geo/Elections markets excluded from portfolio count. Decision: Oscar, 2026-05-29. | All agents generating STR-003 signals |
+| 2026-06-02 | geo_elo_active column added — recency-weighted geo_elo for STR-003 qualification. Formula: geo_elo × 0.5^(days_dormant/180). Does not replace base geo_elo. Updated daily by update_geo_elo.py. Contract version v1.8. | STR-003 signal qualification now uses geo_elo_active >= 2175 |
 
 ---
 
