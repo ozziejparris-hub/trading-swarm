@@ -1,18 +1,544 @@
 {
-  "scout_cycles": [
-    {
-      "cycle_id": "scout-20260518",
-      "date": "2026-05-18",
-      "findings_surfaced": 4,
-      "findings_dismissed": 0,
-      "pending_review": 4,
-      "escalations": 0,
-      "domains": {
-        "agent_orchestration": 1,
-        "quantitative_methods": 1,
-        "model_capabilities": 1,
-        "prediction_market_intelligence": 1
-      }
-    }
-  ]
+    "rejected": [
+        {
+            "strategy": "STR-001 \u2014 Elite Convergence Signal (as-defined)",
+            "date": "2026-04-27",
+            "rejected_by": "backtest-agent",
+            "accuracy": 56.1,
+            "threshold": 60.0,
+            "n_signals": 41,
+            "reason": "Signal fires on both Yes and No sides of same market when legendary traders are split (78% of markets). Paired signals contribute exactly 50% by construction. 7-30 day horizon below random baseline (42.9%). Signal adds no predictive value over market price as currently defined.",
+            "do_not_retry_without": "Pre-registered STR-001b hypothesis with exclusive convergence filter (3+ on one side, <3 on other). quant-research-agent owns this. Oscar must approve hypothesis before backtest-agent retests.",
+            "positive_sub_signals": {
+                "30_90_day_horizon": "84.6% accuracy (n=13)",
+                "elo_3000_plus": "75.0% accuracy (n=4)",
+                "exclusive_convergence_dominant_side": "65.2% accuracy (n=23 unique markets)"
+            },
+            "report": "brain/agent-outputs/backtest-agent/STR-001-validation-2026-04-27.json"
+        }
+    ],
+    "data_integrity_gates": [
+        {
+            "gate": "RQ0.1 + RQ0.2",
+            "task_id": "backtest-20260513",
+            "run_date": "2026-05-13",
+            "last_run_before": "2026-03-29",
+            "days_overdue": 45,
+            "rq0_1_wash_trade": {
+                "verdict": "PASS",
+                "suspects_flagged": 57,
+                "suspects_in_top50": 0,
+                "suspects_pending_pool_exclusion": 16,
+                "notes": "16 wash suspects currently in research pool; removed by daily maintenance 2026-05-14 06:00 UTC. Highest ELO wash suspect: 1896 (Elite tier). No penny traders detected."
+            },
+            "rq0_2_bot_detection": {
+                "verdict": "PASS",
+                "new_bots_flagged": 0,
+                "borderline_s1_only": 6,
+                "notes": "6 single-signal Crypto traders to watch next cycle. No new bot types since ARB_BOT exclusion 2026-05-06. Prior bot counts: 111 ARB_BOT + 17 THIN_SAMPLE + 4 LP_ARTIFACT."
+            },
+            "pool_state": {
+                "total_traders": 96051,
+                "clean_pool_current": 604,
+                "clean_pool_post_maintenance": 588,
+                "legendary_in_pool": 142
+            },
+            "next_run_due": "2026-06-13",
+            "report": "brain/agent-outputs/backtest-agent/2026-05-13-RQ0-data-integrity-gates.json"
+        }
+    ],
+    "approved": [
+        {
+            "task_id": "scout-20260428-info-aggregation",
+            "description": "Information Aggregation AI Agents paper",
+            "approved_at": "2026-04-29",
+            "action_taken": "Added RQ3.2 theoretical grounding note, feedback-loop-agent guidance"
+        },
+        {
+            "task_id": "scout-20260428-omc-framework",
+            "description": "OneManCompany agent orchestration framework",
+            "approved_at": "2026-04-29",
+            "action_taken": "Added to reference library for Phase 3+ review"
+        },
+        {
+            "task_id": "scout-20260428-polymarket-microstructure",
+            "description": "Polymarket order book microstructure paper",
+            "approved_at": "2026-04-29",
+            "action_taken": "Validated data source is clean \u2014 no bug. Notes added."
+        },
+        {
+            "task_id": "scout-20260428-price-focal-point",
+            "description": "Price as focal point / Signal Credibility Index",
+            "approved_at": "2026-04-29",
+            "action_taken": "Added to reference library, noted for market selection and Phase 6"
+        }
+    ],
+    "scout_cycles": [
+        {
+            "cycle_date": "2026-05-13",
+            "cycle_id": "scout-20260513",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "polymarket-api-docs",
+                "prediction-market-research"
+            ],
+            "findings_surfaced": 1,
+            "findings_discarded": 12,
+            "pending_review_items": [
+                "2026-05-13-08-agentic-harness-engineering-observability-driven.md"
+            ],
+            "discarded": [
+                "Continual Harness (2605.09998) — arxiv ID could not be verified; likely hallucination by fetch tool",
+                "ToolCUA (2605.12481) — GUI orchestration, not trading-domain relevant",
+                "MCP-Cosmos (2605.09131) — low signal for Phase 2 priorities",
+                "Executable Agentic Memory (2605.12294) — duplicate signal with pending DeMem paper",
+                "Information Leakage at Population Scale (2605.00459) — already in pending-review from 2026-05-04",
+                "ForesightFlow (2605.00493) — already in pending-review from 2026-05-04 as companion finding",
+                "DeepSeek V4 open weights — already in pending-review from 2026-05-04; benchmarks verified but no new information since last cycle",
+                "Polymarket API updates — April 28 exchange upgrade (USDC.e → pUSD, nonce fixes) already known; no new updates in last 7 days",
+                "ELO rating prediction research — search returned mostly older papers (2021-2024), no new May 2026 empirical studies found",
+                "Crowd vs elite forecasters — relevant but covered in pending Information Leakage papers; no new findings beyond what cycle 4 surfaced",
+                "Anthropic news — no announcements in last 48 hours",
+                "HackerNews — no items above 100 points in target domains today"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Sixth scout cycle (Wednesday). Pending queue is already substantial (25 items as of start of cycle). Conservative filtering applied: 1 finding surfaced vs 5 available slots. Agentic Harness Engineering (2604.25850) is new and directly relevant to Priority 2 (signal-agent stability). Primary discards: (1) information leakage research already thoroughly covered in pending queue from cycles 4-5, (2) major model releases (DeepSeek V4) already pending, (3) arxiv IDs from HuggingFace fetch could not be verified independently (risk of hallucination). Polymarket API status quo — no new breaking changes. Request: Oscar should prioritize pending-review processing, especially polymarket-info-leakage items, before next scout cycle adds more to queue. Twitter/X still inaccessible for source monitoring."
+        },
+        {
+            "cycle_date": "2026-05-01",
+            "cycle_id": "scout-20260501",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "huggingface-daily-papers",
+                "karpathy-autoresearch",
+                "polymarket-changelog",
+                "minimax-huggingface",
+                "deepseek-huggingface",
+                "hackernews"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 8,
+            "pending_review_items": [
+                "2026-05-01-08-minimax-m27-open-weights-watch-trigger.md",
+                "2026-05-01-08-polymarket-us-cftc-regulated-launch.md",
+                "2026-05-01-08-in-context-prompting-vs-orchestration.md"
+            ],
+            "discarded": [
+                "2604.27041 Signal Credibility Index (Nechepurenko) \u2014 same author's technical follow-up to 2604.24147 (already approved cycle 2); concept already in reference library; implementation metrics noted in raw notes of existing approved file",
+                "2604.27707 Contextual Agentic Memory is a Memo \u2014 limitations of context-window memory for agents; too abstract for current phase, no actionable implementation path",
+                "2604.27859 Rethinking Agentic RL in LLMs \u2014 RL training paper, not applicable to API-based system",
+                "2604.27819 MCPHunt cross-boundary MCP agents \u2014 multi-server MCP security evaluation framework; not relevant to current single-server architecture",
+                "HuggingFace Claw-Eval-Live (4 upvotes) \u2014 below meaningful signal threshold; agent benchmark not yet validated",
+                "HuggingFace Heterogeneous Scientific Foundation Model Collaboration \u2014 multi-domain scientific foundation models, not relevant to trading or prediction markets",
+                "DeepSeek V4 Flash/Pro \u2014 already dismissed cycle 1 (local inference requires 142GB; sovereignty + cost preference is local-first)",
+                "Anthropic news \u2014 Claude Design product launch; no model capability or API changes since Opus 4.7 (cycle 1); no escalation triggered"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Fifth scout cycle (Friday). 3/5 slots used (quality over quantity). Primary finding: MiniMax M2.7 open weights confirmed viable on UM890 Pro at UD-Q2_K_XL (75.3GB) \u2014 explicit watch list trigger in model-routing.md, both sovereignty and hardware blockers now cleared. Polymarket US CFTC-regulated launch is a structural change distinct from V2 API upgrade (already approved cycle 1) \u2014 affects Phase 6 planning and market selection strategy. In-context prompting paper surfaces an architectural question for procedural agents but is a preprint with limited scope. Karpathy autoresearch: no new commits (36 total, no releases). HN: no items above 100 points in target domains. SCI follow-up paper (2604.27041) discarded \u2014 same author continuation of approved finding, concept already in reference library. Twitter/X still inaccessible."
+        },
+        {
+            "cycle_date": "2026-04-30",
+            "cycle_id": "scout-20260430",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "anthropic-news",
+                "hackernews"
+            ],
+            "findings_surfaced": 5,
+            "findings_discarded": 7,
+            "pending_review_items": [
+                "2026-04-30-08-hermes-md-git-injection-billing.md",
+                "2026-04-30-08-btf2-forecasting-agents-benchmark.md",
+                "2026-04-30-08-futureworld-live-rl-prediction-agents.md",
+                "2026-04-30-08-architectural-heterogeneity-multi-agent-forecasting.md",
+                "2026-04-30-08-glm5v-turbo-multimodal-agent-model.md"
+            ],
+            "discarded": [
+                "2604.24366 Polymarket order book microstructure \u2014 already approved cycle 2",
+                "2604.23897 MarketBench \u2014 already discarded cycle 2",
+                "2604.22818 Representation Homogeneity \u2014 discarded cycles 2 and 3",
+                "2604.24723 Multivariate Kelly \u2014 already in pending-review from cycle 3",
+                "2604.24147 Price as Focal Point \u2014 already approved cycle 2",
+                "2604.26805 Bian Que agentic framework \u2014 agent orchestration for online ops, no novel technique vs existing reference library",
+                "Anthropic news \u2014 no new releases or API changes since cycle 3"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Fourth scout cycle (Thursday). All 5 slots used. HN surfaced high-signal item (1099 pts): HERMES.md billing bug reveals Claude Code injects git history into agent prompts \u2014 Domain 6 finding. BTF-2 forecasting benchmark (2604.26106) directly applicable to quant-research methodology. FutureWorld RL prediction environment (2604.26733) architectural precedent for Phase 3+. Architectural heterogeneity paper (2604.26561) provides empirical validation for multi-model ensemble approach. GLM-5V-Turbo (2604.26752) monitoring \u2014 2280 HF upvotes but no benchmarks yet. q-fin arXiv returned only previously-covered papers. Karpathy autoresearch and Polymarket changelog not checked today (no new content expected; will prioritise next cycle). Twitter/X still inaccessible."
+        },
+        {
+            "cycle_date": "2026-04-29",
+            "cycle_id": "scout-20260429",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "karpathy-autoresearch",
+                "anthropic-news",
+                "hackernews",
+                "github-trending",
+                "polymarket-docs"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 6,
+            "pending_review_items": [
+                "2026-04-29-08-multivariate-kelly-optimization.md",
+                "2026-04-29-08-adema-knowledge-state-orchestration.md",
+                "2026-04-29-08-tradingagents-multi-agent-equity-framework.md"
+            ],
+            "discarded": [
+                "2604.25917 RecursiveMAS \u2014 latent-space transfer incompatible with Claude API architecture",
+                "2604.25602 OxyGent \u2014 overlap with OMC already in reference library; no benchmarks",
+                "2604.24819 Programming with Data \u2014 LLM training paper, not applicable to API-based system",
+                "2604.22818 Representation Homogeneity \u2014 equity markets only, not prediction markets (also flagged in cycle 2)",
+                "HackerNews \u2014 no items in target domains above 100 points today",
+                "Anthropic news \u2014 Claude Opus 4.7 already covered in cycle 1 (approved); Claude Design not relevant"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Third scout cycle. Karpathy autoresearch now 77.7k stars (+400 from cycle 2), no new commits. Polymarket docs confirm v2 SDK in production, no new breaking changes beyond what cycle 1 covered. Twitter/X still inaccessible. GitHub trending surfaced TradingAgents (54k stars, +932 today) as most-adopted multi-agent trading framework \u2014 competitive intelligence value."
+        },
+        {
+            "cycle_date": "2026-04-28",
+            "cycle_id": "scout-20260428",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "karpathy-autoresearch",
+                "deepseek-huggingface",
+                "anthropic-news",
+                "hackernews"
+            ],
+            "findings_surfaced": 4,
+            "findings_discarded": 4,
+            "pending_review_items": [
+                "2026-04-28-09-polymarket-orderbook-microstructure.md",
+                "2026-04-28-09-information-aggregation-ai-prediction-markets.md",
+                "2026-04-28-09-prediction-market-price-focal-point-sci.md",
+                "2026-04-28-09-onemancompany-heterogeneous-agent-orchestration.md"
+            ],
+            "discarded": [
+                "2604.22818 Representation Homogeneity \u2014 too close to Machine Spirits (already approved)",
+                "2604.23897 MarketBench \u2014 LLM self-calibration, not directly actionable",
+                "DeepSeek V4 update \u2014 no new content vs dismissed finding from 2026-04-27",
+                "2604.22818 systemic instability \u2014 equity markets only, not prediction markets"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Second scout cycle. 4/5 slots used (slot 5 unused by design \u2014 quality over quantity). Karpathy autoresearch: 77.3k stars, no new commits visible from last 7 days. HackerNews: no relevant items above 100 pts. DeepSeek V4 remains dismissed \u2014 no new info since yesterday. Twitter/X still inaccessible."
+        },
+        {
+            "cycle_date": "2026-04-27",
+            "cycle_id": "scout-20260427",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "karpathy-autoresearch",
+                "deepseek-huggingface",
+                "polymarket-changelog",
+                "anthropic-news"
+            ],
+            "findings_surfaced": 4,
+            "findings_discarded": 3,
+            "pending_review_items": [
+                "2026-04-27-13-polymarket-v2-api-breaking-changes.md",
+                "2026-04-27-13-deepseek-v4-open-weights-released.md",
+                "2026-04-27-13-claude-opus-4-7-model-routing-update.md",
+                "2026-04-27-13-machine-spirits-llm-agents-in-markets.md"
+            ],
+            "escalations_sent": [
+                "polymarket-v2-api-cutover-2026-04-28"
+            ],
+            "weekly_digest_written": true,
+            "notes": "First scout cycle. 4/5 finding slots used. Twitter/X not accessible \u2014 flagged for Phase 2."
+        },
+        {
+            "cycle_date": "2026-05-04",
+            "cycle_id": "scout-20260504",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "anthropic-news",
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "hackernews",
+                "deepseek-huggingface",
+                "deepseek-api-docs"
+            ],
+            "findings_surfaced": 4,
+            "findings_discarded": 9,
+            "pending_review_items": [
+                "2026-05-04-08-deepseek-v4-released-open-weights.md",
+                "2026-05-04-08-polymarket-info-leakage-population-scale.md",
+                "2026-05-04-08-bayes-consistent-agentic-orchestration-icml2026.md",
+                "2026-05-04-08-signal-credibility-index-prediction-markets.md (REMOVED \u2014 already discarded cycle 5 and 6)"
+            ],
+            "discarded": [
+                "HuggingFace daily papers \u2014 UniVidX, robotics, video generation, audio models: not applicable domains",
+                "Anthropic news \u2014 Claude for Creative Work (Apr 28), ANZ office (Apr 27), Amazon compute (Apr 20): no model capability or API changes",
+                "arXiv:2605.00420 Foresight Arena \u2014 on-chain AI forecasting benchmark, similar to Prediction Arena already in pending-review (May 3); avoid duplication",
+                "arXiv:2604.24723 Multivariate Kelly (re-appeared) \u2014 already in approved list from cycle 3; do not duplicate",
+                "arXiv:2604.24366 Polymarket Orderbook Microstructure (re-appeared) \u2014 already approved cycle 2; do not duplicate",
+                "arXiv:2604.24147 Price as Focal Point (re-appeared) \u2014 already approved cycle 2; do not duplicate",
+                "arXiv:2605.00334 AgentFloor small models \u2014 relevant but below threshold vs existing reference library coverage of model capabilities",
+                "arXiv:2605.00493 ForesightFlow \u2014 companion paper to 2605.00459; core findings consolidated into polymarket-info-leakage finding rather than separate file",
+                "Signal Credibility Index (2604.27041) \u2014 filed in error (missed prior history check); discarded twice before (cycles 5 and 6); concept in reference library"
+            ],
+            "escalations_sent": [
+                "model_routing_update: DeepSeek V4-Flash local inference path (2026-05-04T16:25:54Z)"
+            ],
+            "weekly_digest_written": true,
+            "notes": "Monday cycle (cycle 7). Weekly digest written. 3 net findings surfaced (SCI removed after history check revealed double-prior discard \u2014 process error: should check feedback.json BEFORE writing files). Key findings: (1) DeepSeek V4 local inference path \u2014 new angle not in prior sovereignty decision (Q2 GGUF 71GB potentially fits 96GB); (2) Polymarket info leakage 2020-2026 \u2014 empirical finding that regulatory_formal markets show near-zero leakage post-2024, relevant to RQ3.2 design; (3) Bayes-consistent orchestration ICML 2026 \u2014 backlog item for orchestrator Phase 3+ redesign. HuggingFace daily papers were low signal today (computer vision heavy). arXiv q-fin had strong batch of prediction market papers. Self-improvement note: must check feedback.json scout_cycles.discarded before filing any finding \u2014 two sources filed today were previously discarded."
+        },
+        {
+            "cycle_date": "2026-05-05",
+            "cycle_id": "scout-20260505",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "huggingface-daily-papers",
+                "hackernews-best"
+            ],
+            "findings_surfaced": 1,
+            "findings_discarded": 11,
+            "pending_review_items": [
+                "2026-05-05-08-polymarket-insider-cases-pre-event-leakage-minimal.md"
+            ],
+            "discarded": [
+                "2605.02287 Per-Market Information Leakage (Nechepurenko) — companion paper to existing pending-review item (2605.00459); per-market granularity adds incremental value but implementation path already identified; note added to raw notes of filed finding",
+                "2605.01176 Decision-Induced Ranking SPO Portfolio — equity-focused portfolio optimization; 'prediction inflation' concept not transferable to binary prediction markets at current phase",
+                "2605.00864 Arbitrage in Polymarket NBA Markets — auto-discard: sports markets",
+                "2605.01370 Martingale Cohomology Homological Arbitrage — pure topology/math, no practical implementation path",
+                "2605.01384 SBCA Multi-Asset Portfolio RL — equity/multi-asset RL, not relevant to prediction markets in current phase",
+                "HuggingFace daily papers (May 5) — top papers: context-to-skills (46 upvotes), MolmoAct2 robotics (28 upvotes), AcademiClaw (3 upvotes); all below relevance bar — computer vision, medical, robotics domains",
+                "Anthropic news: Blackstone/Goldman/H&F enterprise AI services venture (May 4) — business partnership, no model capability or API changes; no escalation triggered",
+                "HN: DeepClaude (657 pts) — Claude Code + DeepSeek V4 Pro hybrid; sovereignty concerns identical to existing pending-review DeepSeek V4 finding; no new angle not already covered",
+                "HN: Agentic Coding Is a Trap (431 pts) — organizational/epistemological cautions about AI coding agent skill atrophy; no novel technical architecture; supervision paradox validates existing system design but adds no new architectural insight",
+                "2605.02396 HeavySkill (arXiv cs.AI) — parallel reasoning as internalized agent skill via RL training; RL training not applicable to API-based system; thinking budget allocation already documented in model-routing.md",
+                "Karpathy autoresearch — GitHub API error; cannot retrieve commit history this cycle"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Eighth scout cycle (Tuesday). Low-signal day: 1 finding from ~25 evaluated items. Single finding (2605.02286) has direct RQ3.2 implications — empirical validation that even confirmed Polymarket insiders show near-zero pre-event leakage in short windows, strengthening the 'elite signal = skill not insider access' theoretical basis. arXiv q-fin had 7 papers, 4 auto-discarded (sports, pure math, equity RL, equity portfolio). HuggingFace heavily computer-vision/robotics/medical today. Anthropic has no model or API changes. HN had no prediction market or quant finance items. Two companion papers from Nechepurenko (same author as ForesightFlow suite) appeared in q-fin today — filed one (2605.02286), discarded one as companion-extension (2605.02287). Karpathy autoresearch GitHub API error — second consecutive failure, will retry cycle 9."
+        },
+        {
+            "cycle_date": "2026-05-06",
+            "cycle_id": "scout-20260506",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "huggingface-daily-papers",
+                "hackernews-best",
+                "karpathy-autoresearch",
+                "ollama-library",
+                "huggingface-qwen3-6"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 9,
+            "pending_review_items": [
+                "2026-05-06-08-gemma4-mtp-drafters-tier12-speedup.md",
+                "2026-05-06-08-qwen3-6-35b-free-local-haiku-parity.md",
+                "2026-05-06-08-memtier-tiered-memory-long-running-agents.md"
+            ],
+            "discarded": [
+                "Anthropic 'Agents for financial services' (May 5) — 10 finance agent templates (pitch builder, KYC screener, etc.) for banks and insurers; marketing/enterprise push, no new model capabilities or API changes; finance tasks (earnings review, ledger reconciliation) not applicable to trading swarm",
+                "arXiv:2605.04036 OpenSeeker-v2 — search agent trajectory optimization; no direct applicability to prediction market agents",
+                "arXiv:2605.03986 From Intent to Execution — agentic workflow composition; no novel technique vs existing reference library OMC coverage",
+                "arXiv:2605.03409 Robust Agent Compensation — error handling framework; our immune system already handles this pattern",
+                "arXiv:2605.02801 RL Multi-Agent Orchestration Traces — survey taxonomy of orchestration RL approaches; not directly implementable; architecture insights already covered by ADEMA and OMC in reference library",
+                "arXiv:2605.03195 Terminus-4B — specialized Qwen3-4B terminal execution subagent; 30% token reduction for terminal tasks; backlog item — not actionable until Phase 3+ subagent specialization phase",
+                "arXiv q-fin batch (2026-05-06) — 2605.00493/2605.00459/2605.02287/2605.02286 all previously filed or discarded; 2605.04004 OHLCV intraday signals in MNQ futures (auto-discard: equity/futures, current phase); 2604.27041 SCI re-appeared (discarded 4 times previously)",
+                "HN: Train Your Own LLM from Scratch (442 pts) — educational, not operationally applicable",
+                "Karpathy autoresearch — GitHub API error (third consecutive failure); flagging for Phase 2 source audit"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Ninth scout cycle (Wednesday). 3 findings surfaced from ~22 evaluated items. Highest priority: Gemma 4 MTP drafters — up to 3x speedup on Tier 1/2, available in Ollama 0.23.1-rc0 TODAY, AMD hardware confirmed 2.5x on MI50s (Vulkan/Radeon 780M unconfirmed). Low effort to test. 'Now' urgency. Second finding: Qwen3.6-35B-A3B matches Haiku 4.5 on SWE-bench (73.4%), runs locally free — backlog of model evaluations is growing (MiniMax M2.7 first, then Qwen3.6). Third finding: MEMTIER tiered memory for long-running agents, OpenClaw connection, directly maps to our brain/ consolidation problem. Karpathy autoresearch GitHub API error 3rd consecutive cycle — will note in self-assessment (scheduled after cycle 14)."
+        },
+        {
+            "cycle_date": "2026-05-07",
+            "cycle_id": "scout-20260507",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "anthropic-news",
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "karpathy-autoresearch",
+                "hackernews-best",
+                "polymarket-news"
+            ],
+            "findings_surfaced": 4,
+            "findings_discarded": 6,
+            "pending_review_items": [
+                "2026-05-07-08-polybench-llm-forecasting-polymarket-benchmark.md",
+                "2026-05-07-08-predictionmarketbench-lob-backtesting-framework.md",
+                "2026-05-07-08-forecasting-economy-polymarket-dataset-2020-2026.md",
+                "2026-05-07-08-claude-agent-sdk-native-subagents-hooks.md"
+            ],
+            "discarded": [
+                "arXiv:2605.02801 RL Multi-Agent Orchestration Traces — duplicate; already discarded cycle 9; caught via feedback.json history check before finalising",
+                "HuggingFace daily papers (May 7) — MedSkillAudit (515 upvotes, medical domain auto-discard), retrieval in agentic search (4 upvotes, below threshold), multimodal search agents (4 upvotes, below threshold); no relevant high-signal papers today",
+                "Polymarket market activity — US midterms, US-Iran, Ohio primary; no structural/API changes; market content only, not surfaced per protocol",
+                "AgentStocks (HN, 1 upvote) — AI agents trading prediction markets with capital; below 100-upvote threshold; no novel technique vs existing competitive intelligence",
+                "Karpathy autoresearch — no new commits since March 26, 2026; SETI@home-style tweet surfaced but too early/conceptual for a finding (no implementation)",
+                "Claude SpaceX compute deal / usage limits increase — business/capacity news, no model capability or API changes"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Tenth scout cycle (Thursday). 4 findings from ~15 evaluated items. Self-improvement catch: arXiv:2605.02801 was re-evaluated and discarded again (same paper discarded cycle 9) — caught before filing via feedback.json history check. Key findings: (1) PolyBench — first rigorous LLM benchmark on live Polymarket, only 2/7 models profitable, overconfidence is the failure mode; (2) PredictionMarketBench — execution-realistic LOB backtesting from Feb 2026, Kalshi-based but directly portable, validates limit-orders-only rule; (3) Forecasting Economy dataset — comprehensive Polymarket 2020-2026 data at polymonitor.club, 943M fill records vs our position-level tracking; (4) Claude Agent SDK native features — subagents/hooks/checkpoints shipped, validates our architecture independently. HuggingFace very low signal today. Karpathy autoresearch has been inactive for 6+ weeks — deprioritise from daily checks; recheck monthly per self-assessment protocol."
+        },
+        {
+            "cycle_date": "2026-05-09",
+            "cycle_id": "scout-20260509",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "latent-space",
+                "huggingface-daily-papers",
+                "hackernews-best",
+                "polymarket-changelog"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 13,
+            "pending_review_items": [
+                "2026-05-09-08-coordination-architectural-layer-multi-agent.md",
+                "2026-05-09-08-claude-dreaming-outcomes-agent-autonomy.md",
+                "2026-05-09-08-agentic-ai-finance-comprehensive-survey.md"
+            ],
+            "discarded": [
+                "arXiv:2605.00493 ForesightFlow — filed in error (overlooked prior cycle 8 consolidation note); companion findings already in 2026-05-04 info-leakage file; removed before commit",
+                "arXiv:2604.22818 Representation Homogeneity — filed in error (overlooked 3x prior discard history, cycles 2/3/4); prior judgment was equity-markets-only scope; removed before commit",
+                "arXiv:2605.00420 Foresight Arena — already discarded cycle 8 (similar to Prediction Arena pending-review)",
+                "arXiv:2605.04004 OHLCV structural limits MNQ futures — already auto-discarded cycle 9 (equity/futures, current phase)",
+                "Anthropic/SpaceX 300MW compute deal (Latent Space May 7) — already discarded cycle 10 (business/capacity news, no model or API changes)",
+                "OpenAI GPT Realtime-2 voice APIs (Latent Space May 8) — not relevant to trading swarm domains; voice API for interaction tasks, not prediction market agents",
+                "Claude Opus 4.7 full release details — already in pending-review from cycle 1 (2026-04-27)",
+                "Claude Mythos Preview — gated, not publicly available; no change from model-routing.md watch list entry",
+                "JamesANZ Prediction Markets MCP Server — October 2025 release, 34 stars; below quality threshold; 6+ months old without meaningful adoption signal",
+                "Qwen3.6-27B dense model — already covered by 2026-05-06 Qwen3.6-35B pending-review file",
+                "DeepSeek V4 Pro/Flash local inference — already in pending-review from cycle 8 (2026-05-04)",
+                "Prediction Arena live trading results — results already captured in 2026-05-03 pending-review item for that paper",
+                "Polymarket V2 exchange upgrade — already in approved/ from cycle 1 (2026-04-27)"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Eleventh scout cycle (Saturday). 3 findings from ~20+ evaluated items — quality over quantity, lighter cycle day. Self-improvement catch: filed ForesightFlow and Representation Homogeneity before checking feedback.json history; both removed before commit (ForesightFlow consolidated cycle 8, Representation Homogeneity discarded 3x cycles 2/3/4). Key findings: (1) Coordination as Architectural Layer (2605.03310) — 41-87% production failure rate empirical data, tested on 100 Polymarket markets, code released; direct relevance to Phase 3 orchestrator design; (2) Claude Dreaming + Outcomes — new async self-improvement primitives from Code w/ Claude May 6, not in existing SDK pending-review; convergence validation of feedback-loop-agent design; (3) Agentic AI Finance Comprehensive Survey (2604.21672) — April 2026, reference library addition for Phase 3+ context. Latent Space had no relevant technical content this week. Karpathy autoresearch: no new commits since March 26 (6 weeks idle) — consistent with cycle 10 observation. HuggingFace and HN had no high-signal items today."
+        },
+        {
+            "cycle_date": "2026-05-10",
+            "cycle_id": "scout-20260510",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "anthropic-news",
+                "karpathy-autoresearch",
+                "polymarket-blog"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 6,
+            "pending_review_items": [
+                "2026-05-10-08-specialist-agents-lineage-feedback-autoresearch.md",
+                "2026-05-10-08-llm-stock-forecasting-hedge-fund-pitfalls.md",
+                "2026-05-10-08-skillOS-external-skill-repository-self-evolving-agents.md"
+            ],
+            "discarded": [
+                "Polymarket V2 pUSD / py-clob-client SDK — already approved cycle 1 (2026-04-27); cycle 11 also discarded V2 revisit; system still read-only, action deferred until market-builder-agent build",
+                "arXiv:2605.04004 OHLCV structural limits MNQ futures — discarded cycles 9 and 11 already; filed in error before checking feedback.json; removed before commit",
+                "Anthropic Wall Street expansion (Moody's, SpaceX) — business/capacity news, no model capability or API changes; same discard rationale as cycles 10 and 11",
+                "arXiv:2605.04690 Time-Inhomogeneous Markov Dynamics — no code released, equity markets only, no practical implementation path at current phase",
+                "HuggingFace (May 8): A2TGPO, Can RL Teach Long-Horizon Reasoning — RL training papers, not applicable to API-based system",
+                "Karpathy autoresearch — no new commits since March 26 (7 weeks idle); will check monthly per cycle 10 protocol"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Twelfth scout cycle (Sunday). 3 findings from ~15 evaluated items. Self-improvement catch: arXiv:2605.04004 OHLCV and Polymarket V2 pUSD filed initially — both removed after checking feedback.json (OHLCV discarded cycles 9 and 11; V2 approved cycle 1 + discarded cycle 11). Three strong findings: (1) CMU Specialist Agents lineage feedback (2605.05724) — autonomous ML research loop with structured failure labels feeding next agent proposals; directly improves feedback.json schema design; (2) LLM Stock Forecasting Hedge Fund Pitfalls (2605.05211) — six practical pitfalls from practitioner review, three not in current 7-sins checklist; (3) SkillOS (2605.06614) — self-evolving agents via frozen executor + trainable skill curator; architectural insight applicable to training-librarian-agent Phase 3 design. HuggingFace heavy on RL training papers this week. Karpathy autoresearch idle 7 weeks — deferred to monthly checks. Convergent theme: three independent self-evolving agent papers this week (CMU 2605.05724, SkillOS 2605.06614, Claude Dreaming filed cycle 11) — Phase 3 self-improvement layer is validated by the broader research community."
+        },
+        {
+            "cycle_date": "2026-05-12",
+            "cycle_id": "scout-20260512",
+            "sources_checked": [
+                "huggingface-daily-papers",
+                "arxiv-q-fin",
+                "arxiv-cs-ai",
+                "anthropic-news",
+                "hackernews-best",
+                "latent-space",
+                "polymarket-blog"
+            ],
+            "findings_surfaced": 5,
+            "findings_discarded": 10,
+            "pending_review_items": [
+                "2026-05-12-08-pmxt-unified-prediction-market-sdk-free-data-archive.md",
+                "2026-05-12-08-agentforesight-online-failure-prediction-multi-agent.md",
+                "2026-05-12-08-demem-decision-centric-agent-memory-rate-distortion.md",
+                "2026-05-12-08-slim-dynamic-skill-lifecycle-strategy-retirement.md",
+                "2026-05-12-08-polymarket-resolution-zone-price-dynamics.md"
+            ],
+            "discarded": [
+                "Shepherd (2605.10913) — runtime substrate for meta-agents with execution tracing; 56 pages, complementary to AgentForesight but read-together recommendation sufficient; no standalone actionable insight beyond what AgentForesight covers",
+                "TMAS multi-agent synergy (2605.10344) — test-time compute scaling via agent collaboration; inference optimization not applicable to our API-based system",
+                "FlashEvolve (2605.08520) — asynchronous stage orchestration for agent self-evolution; 2 upvotes, too low; similar concept to SkillOS already in pending-review (cycle 12)",
+                "SEIF self-evolving instruction following (2605.07465) — RL training paper; not applicable to API-based system; 3 upvotes",
+                "PRISM secret leakage detection (2605.10614) — security framework for multi-agent pipelines; interesting but no secrets in our inter-agent signals by design; current phase priority is signal quality not security audit",
+                "Manipulation/Insider/Leverage paper (2605.10486) — only abstract available; theoretical framework on leveraged event-linked markets; no Polymarket-specific empirical findings in accessible content; core microstructure insight consolidated into resolution-zone finding",
+                "Resolution-aware perpetual futures paper (2605.10400) — design paper rated 'non-deployable'; microstructure empirical findings extracted into resolution-zone finding (filed separately)",
+                "Anthropic financial services agents (May 5) — already discarded cycle 9; enterprise finance templates, no model capability or API changes",
+                "Latent Space: Anthropic 10x/year growth story (May 9) — business context only; no technical insight for trading swarm",
+                "HackerNews top items — no items in target domains above 100 points today; 'Local AI needs to be the norm' (1798 pts) too generic; 'Running local models on M4' (552 pts) Apple Silicon not our hardware target"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Thirteenth scout cycle (Tuesday). All 5 slots used — highest quality cycle since cycle 7. Key finding: PMXT (pmxt-dev/pmxt, MIT, 1.7k stars, v2.40.5) is the 'CCXT for prediction markets' — unified SDK for Polymarket/Kalshi/10+ exchanges with free historical Parquet archive. Directly matches the MCP/Market Data Watch List in task template. Three arXiv papers filed (AgentForesight online failure detection, DeMem decision-centric memory, SLIM skill lifecycle, Polymarket resolution-zone microstructure). Polymarket blog unreachable. Karpathy autoresearch deferred to monthly per cycle 10 decision. No model routing escalations triggered. Self-improvement note: zero duplicate errors this cycle — feedback.json history check performed before all file writes."
+        },
+        {
+            "cycle_date": "2026-05-03",
+            "cycle_id": "scout-20260503",
+            "sources_checked": [
+                "arxiv-cs-ai",
+                "arxiv-q-fin",
+                "anthropic-news",
+                "huggingface-daily-papers",
+                "karpathy-autoresearch",
+                "hackernews-best",
+                "huggingface-kimi-k26",
+                "unsloth-releases",
+                "latent-space-newsletter",
+                "artificialanalysis-models"
+            ],
+            "findings_surfaced": 3,
+            "findings_discarded": 8,
+            "pending_review_items": [
+                "2026-05-03-08-prediction-arena-ai-agents-live-polymarket.md",
+                "2026-05-03-08-kimi-k26-leading-open-weight-model.md",
+                "2026-05-03-08-grok-43-tier3-cost-reduction-candidate.md"
+            ],
+            "discarded": [
+                "DeepSeek V4 (re-check) \u2014 already escalated cycle 1 and decision made 2026-05-02: remain on Sonnet, Chinese-hosted API blocked. Unsloth v0.1.37 has no V4 support. No new information.",
+                "2604.27906 Schema-Grounded Memory \u2014 memory architecture, too abstract; file-based schemas already handle this. No actionable path for current phase.",
+                "2604.26747 From Hypotheses to Factors LLM Agents in Cryptocurrency \u2014 crypto focus triggers auto-discard rule.",
+                "2604.27891 In-Context Prompting Obsoletes Agent Orchestration \u2014 already filed cycle 5 as pending-review.",
+                "2604.27041 Signal Credibility Index \u2014 already discarded cycle 5 (duplicate of approved finding).",
+                "Anthropic news \u2014 Claude for Creative Work and Sydney office opening; no model capability or API changes.",
+                "Karpathy autoresearch \u2014 GitHub API error; no data retrievable.",
+                "HN: no prediction market or quantitative finance items above 100 points"
+            ],
+            "escalations_sent": [],
+            "weekly_digest_written": false,
+            "notes": "Sixth scout cycle (Sunday). 3/5 slots used. Key early correction: DeepSeek V4 already resolved (escalated cycle 1, decision May 2 \u2014 sovereignty blocked). Three new findings: (1) Prediction Arena (2604.07355) \u2014 first empirical data on AI trading live on Polymarket, 71.4% win rate for Grok-4, Polymarket CLOB dramatically outperforms Kalshi AMM for AI agents; (2) Kimi K2.6 \u2014 leading open-weight frontier model, 1T/32B MoE, US-hosted options exist, sovereignty question requires Oscar ruling before evaluation; (3) Grok 4.3 \u2014 xAI model at $2.50/MTok output (6x cheaper than Sonnet), watch list addition, no immediate action. Twitter/X still inaccessible."
+        }
+    ]
 }

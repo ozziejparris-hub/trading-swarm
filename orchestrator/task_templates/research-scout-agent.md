@@ -297,7 +297,10 @@ or insert as an element of the `signals` JSON array when editing manually.
 6. When in doubt about relevance, discard —
    Oscar's attention is the scarcest resource in this system
 7. Track your own signal quality in feedback.json —
-   if Oscar dismisses your findings repeatedly, adjust filters
+   ONLY append to the scout_cycles array. Never overwrite or replace other keys
+   (rejected, approved, data_integrity_gates). Read the file first, update only
+   the scout_cycles array, write the full file back. Losing other keys is a
+   critical failure.
 8. Never surface the same source twice without new content
 9. Respect copyright — extract insights and techniques,
    never reproduce substantial text from sources
@@ -327,7 +330,7 @@ requiring manual recalibration.
 - [ ] Self-assessment written (if 7th cycle)
 - [ ] Output files verified by immune system
 - [ ] No content reproduced verbatim from sources
-- [ ] feedback.json updated with cycle summary
+- [ ] feedback.json scout_cycles key updated (append only — NEVER overwrite the full file)
 
 ## Context: Why This Agent Exists
 
