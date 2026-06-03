@@ -27,7 +27,7 @@ when something genuinely actionable has changed.
   markets    → condition IDs, titles, outcomes
   positions  → P&L tracking per trader/market
 - Elite traders: geo_elo > 1800 (geopolitics-specific ELO, not comprehensive_elo)
-- Legendary traders: geo_elo_active >= 2175 AND geo_directionality_score >= 0.7 AND realized_pnl > 500
+- Legendary traders: geo_elo_active >= 2175 AND geo_directionality_score >= 0.7 AND realized_pnl != 0.0 AND realized_pnl > -100000
      (geo_elo_active = geo_elo × 0.5^(days_dormant/180) — penalises dormant traders)
 - Research pool: ~12,000+ traders with research_excluded=0.
      Pool C (geo_accuracy_pool=1): 177 traders with geo_elo scores.
@@ -46,7 +46,8 @@ When evaluating STR-003 signals, ALL of these filters must be applied:
 ```sql
 WHERE tr.geo_elo_active >= 2175             -- NOT comprehensive_elo
   AND tr.geo_directionality_score >= 0.7
-  AND tr.realized_pnl > 500
+  AND tr.realized_pnl != 0.0
+  AND tr.realized_pnl > -100000
   AND tr.research_excluded = 0
 ```
 
