@@ -1218,6 +1218,35 @@
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
       "expires_at": "2026-08-30T07:00:01Z"
+    },
+    {
+      "id": "2026-06-03-ELO-VS-MARKET-001",
+      "generated_by": "Oscar (manual query)",
+      "source": "Oscar (manual query)",
+      "date": "2026-06-03",
+      "confidence": "HIGH",
+      "title": "ELO tiers show 20-31pp edge over market price on genuinely contested markets",
+      "sample_size": 746,
+      "n_markets": 746,
+      "description": "On resolved non-sports/crypto markets where average entry price was BETWEEN 0.35 AND 0.65 (genuinely uncertain outcomes), ELO tier consensus accuracy significantly outperforms the market price baseline. Market price accuracy on this subset: 50.3% (n=1,255 market-tier pairs, essentially random). ELO tier accuracy on same markets: ELITE 81.4% (n=274), LEGENDARY 79.2% (n=288), QUALIFIED 69.6% (n=184). This confirms elite traders have genuine predictive edge specifically on contested markets \u2014 not just easy near-certain outcomes. Clean pool used: research_excluded=0, bot_type IS NULL, post-229-wallet ARB_BOT exclusion 2026-06-03.",
+      "detail": {
+        "metric": "elo_vs_market_price_accuracy_contested",
+        "market_price_baseline": 0.503,
+        "legendary_accuracy": 0.792,
+        "elite_accuracy": 0.814,
+        "qualified_accuracy": 0.696,
+        "legendary_edge_pp": 28.9,
+        "elite_edge_pp": 31.1,
+        "qualified_edge_pp": 19.3,
+        "price_filter": "AVG(entry_price) BETWEEN 0.35 AND 0.65",
+        "min_traders_per_market": 3,
+        "pool": "research_excluded=0, bot_type IS NULL",
+        "categories_excluded": ["Sports", "Crypto", "Entertainment"]
+      },
+      "actionable": true,
+      "action_recommendation": "Strong evidence that ELO consensus on contested markets has genuine alpha over market price. Priority: (1) run time-series stability check to confirm this holds across 2024-2026 not just in aggregate, (2) implement difficulty-weighted Brier scoring, (3) use contested-market accuracy as the primary Phase 5 Gate 2 metric going forward.",
+      "phase5_gate2": true,
+      "expires_at": "2026-09-03T00:00:00Z"
     }
   ]
 }
