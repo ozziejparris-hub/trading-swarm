@@ -414,7 +414,10 @@
       },
       "actionable": true,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
-      "expires_at": "2026-08-03T12:11:47Z"
+      "expires_at": "2026-08-03T12:11:47Z",
+      "status": "EXPIRED",
+      "superseded_by": "resolved",
+      "expiry_reason": "STR-002 revalidation completed. No longer overdue."
     },
     {
       "id": "2026-05-07-ELO-QUALIFIED-002",
@@ -698,7 +701,10 @@
       },
       "actionable": true,
       "action_recommendation": "Oscar to run RQ0.1 (scripts/wash_trade_audit.py) and RQ0.2 (scripts/bot_detection.py) on first-repo. Total traders grew from 53,140 (March baseline) to 93,331 \u2014 new traders may include wash patterns or bots not yet detected. Research pool integrity depends on these gates passing. Revalidation signals written to signals.json.",
-      "expires_at": "2026-08-05T12:00:00Z"
+      "expires_at": "2026-08-05T12:00:00Z",
+      "status": "EXPIRED",
+      "superseded_by": "resolved",
+      "expiry_reason": "RQ0.1 and RQ0.2 both run 2026-05-13. No longer overdue."
     },
     {
       "id": "2026-05-11-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -834,7 +840,10 @@
       },
       "actionable": false,
       "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-08-16T07:00:01Z"
+      "expires_at": "2026-08-16T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-05-25-ELO-LEGENDARY-001",
+      "superseded_reason": "Later run (n=80) supersedes earlier run (n=54) on same metric."
     },
     {
       "id": "2026-05-18-ELO-ELITE-001",
@@ -1171,6 +1180,44 @@
       "source": "performance-analyst-agent",
       "phase5_gate2": true,
       "notes": "Qualifies for Phase 5 Gate 2 (HIGH confidence, n >= 20). 7d window had 0 geo market resolutions \u2014 result based on 8-30 day lookback. Comprehensive_elo Legendary tier shows 35.92% accuracy (contamination suspected \u2014 FLAG-001). geo_elo is the authoritative accuracy metric for geopolitics."
+    },
+    {
+      "id": "2026-06-01-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-01T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 9
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-08-30T07:00:01Z"
+    },
+    {
+      "id": "2026-06-01-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-01T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 24,
+      "summary": "QUALIFIED tier consensus accuracy: 71% over 24 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.7083,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 9
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-08-30T07:00:01Z"
     }
   ]
 }
