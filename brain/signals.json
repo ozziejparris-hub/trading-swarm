@@ -1,6 +1,44 @@
 {
   "signals": [
     {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "directional_signal_detected",
+      "confidence": "MEDIUM",
+      "payload": {
+        "market_id": "0xc4c3dbcc37a957a817599b0bf9fb5bd6b62b19210b0f527fec57cb75c7ed150a",
+        "market_title": "Will Keiko Fujimori win the 2026 Peruvian presidential election?",
+        "resolution_date": "2026-06-07T00:00:00Z",
+        "direction": "YES",
+        "signal_id": "STR003-005",
+        "traders": ["0xecaa8806a9a05049d7d5260a33dc924220e377a9"],
+        "elo_scores": [3580.33],
+        "position_sizes": [3836],
+        "reasoning": "LEGENDARY trader (geo_elo_active 3580, #1 in pool, geo_resolved_trades 723, directionality 0.954) holds 100% YES position in Peruvian presidential election resolving June 7 — 3 days away. All STR-003 criteria satisfied including anti-arb filter (trades 0.43–0.51). First genuine geo_elo_active >= 2175 signal in system history. APPROACHING RESOLUTION."
+      },
+      "timestamp": "2026-06-04T21:48:41Z",
+      "status": "pending"
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "directional_signal_detected",
+      "confidence": "MEDIUM",
+      "payload": {
+        "market_id": "0xae6d3d20bc8f742922dc40880cd8a8671c10385a9912fa7cd670fba0643dfe96",
+        "market_title": "Will Rafael López Aliaga win the 2026 Peruvian presidential election?",
+        "resolution_date": "2026-06-07T00:00:00Z",
+        "direction": "YES",
+        "signal_id": "STR003-006",
+        "traders": ["0xecaa8806a9a05049d7d5260a33dc924220e377a9"],
+        "elo_scores": [3580.33],
+        "position_sizes": [4958],
+        "reasoning": "Same LEGENDARY trader holds larger $4,958 YES position in López Aliaga win at avg 24.5¢ — primary conviction leg of Peru election thesis. Market category is 'Unknown' in DB (data quality) but unambiguously a presidential election market resolving June 7. APPROACHING RESOLUTION."
+      },
+      "timestamp": "2026-06-04T21:48:41Z",
+      "status": "pending"
+    },
+    {
       "from": "quant-research-agent",
       "to": "backtest-agent",
       "type": "validation_requested",
@@ -231,6 +269,45 @@
     }
   ],
   "str003_signals": [
+    {
+      "signal_id": "STR003-005",
+      "type": "str003_active",
+      "market_id": "0xc4c3dbcc37a957a817599b0bf9fb5bd6b62b19210b0f527fec57cb75c7ed150a",
+      "market_title": "Will Keiko Fujimori win the 2026 Peruvian presidential election?",
+      "resolution_date": "2026-06-07T00:00:00Z",
+      "direction": "YES",
+      "key_trader": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+      "trader_geo_elo": 3807.86,
+      "trader_geo_elo_active": 3580.33,
+      "trader_comprehensive_elo": 841.1,
+      "position_size": 3836,
+      "signal_date": "2026-06-04",
+      "confidence": "MEDIUM",
+      "flags": ["approaching_resolution", "trades_52_days_old", "first_genuine_legendary_geo_elo_signal"],
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null
+    },
+    {
+      "signal_id": "STR003-006",
+      "type": "str003_active",
+      "market_id": "0xae6d3d20bc8f742922dc40880cd8a8671c10385a9912fa7cd670fba0643dfe96",
+      "market_title": "Will Rafael López Aliaga win the 2026 Peruvian presidential election?",
+      "resolution_date": "2026-06-07T00:00:00Z",
+      "direction": "YES",
+      "key_trader": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+      "trader_geo_elo": 3807.86,
+      "trader_geo_elo_active": 3580.33,
+      "trader_comprehensive_elo": 841.1,
+      "position_size": 4958,
+      "signal_date": "2026-06-04",
+      "confidence": "MEDIUM",
+      "flags": ["approaching_resolution", "trades_52_days_old", "category_unknown_in_db", "first_genuine_legendary_geo_elo_signal"],
+      "notes": "Market category is 'Unknown' in DB (should be Elections — data quality issue per Section 6c). Market is unambiguously a 2026 Peruvian presidential election market. Larger position than STR003-005 Keiko — primary conviction bet.",
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null
+    },
     {
       "signal_id": "STR003-001",
       "type": "str003_active",
