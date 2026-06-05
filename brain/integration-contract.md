@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** 1.9 — 2026-06-02
+**Version:** v2.0 — 2026-06-05
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -211,6 +211,15 @@ Used for: All ELO queries, signal generation, quant-research queries
 Current size: Read live from `brain/integration-health.json`
 Updated by: `update_research_exclusions.py`
 
+> **⚠️ WARNING — Pool B contamination risk:** `research_excluded = 0` alone is NOT sufficient for research queries. 13,000+ leaderboard-discovered traders with `resolved_trades_count < 20` are in Pool B by design (validated by discover_leaderboard_traders.py criteria). Any accuracy calculation MUST add `AND resolved_trades_count >= 20` explicitly. Using `research_excluded = 0` without this filter will silently include thin-sample traders and inflate accuracy metrics.
+> 
+> **Authoritative research filter:**
+> ```sql
+> WHERE research_excluded = 0
+>   AND resolved_trades_count >= 20
+>   AND bot_type IS NULL
+> ```
+
 #### Pool C — Geopolitics Accuracy Pool
 Filter: `geo_accuracy_pool = 1`
 Subset of traders with:
@@ -309,6 +318,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 | 2026-05-29 | Contract updated to v1.7: STR-003 concurrent market count exclusion policy documented in Section 5 — stale unresolved markets (resolved=0, resolution_date older than 180 days) and non-Geo/Elections markets excluded from portfolio count. Decision: Oscar, 2026-05-29. | All agents generating STR-003 signals |
 | 2026-06-02 | geo_elo_active column added — recency-weighted geo_elo for STR-003 qualification. Formula: geo_elo × 0.5^(days_dormant/180). Does not replace base geo_elo. Updated daily by update_geo_elo.py. Contract version v1.8. | STR-003 signal qualification now uses geo_elo_active >= 2175 |
 | 2026-06-02 | Contract updated to v1.9 (full audit). Section 3: geo_elo_oos column added to traders table; Pool C hardcode removed (query live). Section 4: geo_elo_active tier note added for STR-003. Section 5: STR-003 qualification now explicitly references geo_elo_active >= 2175; LH-001 (CONDITIONAL_PASS) and STR-004 (HYPOTHESIS) added. Section 6c: market_category Unknown issue documented (81% of trades, backfill in progress). Section 7: full step list updated to match actual daily_maintenance.py (15 daily steps + Sunday extras); recalculate_comprehensive_elo.py correctly noted as separate systemd timer. Section 9: expected ranges updated to reflect current pool sizes. | All agents |
+| 2026-06-05 | Contract v2.0: Pool B contamination warning added. 13K+ leaderboard traders with <20 resolved trades correctly included in Pool B by design but must be filtered explicitly in research queries. | All research queries — add `resolved_trades_count >= 20` explicitly |
 
 ---
 
