@@ -1,6 +1,6 @@
 # Strategy Registry
 
-Last updated: 2026-05-29
+Last updated: 2026-06-05
 Maintained by: feedback-loop-agent (weekly) + Oscar (approvals)
 
 ---
@@ -129,6 +129,8 @@ Blocking items (ALL must resolve before PASS upgrade):
      time periods; need at least 3/5 to show p<0.05 event-level significance
   2. Validate 7 existing insider_signals records as markets resolve
      (need >=60% accuracy on resolved records)
+     RESULT 2026-06-05: All 7 scored — 4/7 correct (57.1%) — FAILS 60% threshold.
+     Blocking item 2 NOT cleared. Finding: 2026-06-05-LH001-INSIDER-SCORED-001.
   3. Confirm insider_signals uses Gamma API wallet creation date vs first-
      trade proxy (critical for signal precision)
   4. Verify Iran market title via Gamma API (condition_id:
@@ -500,6 +502,8 @@ for validation. Quant-research-agent manages that directory.
 | 2026-05-07 | STR-003 Single Legendary Directional | RQ2.2 extended window analysis | EXPERIMENTAL — YES 61.1% (n=18), NO 77.8% (n=9) at 95% eventual resolution. Both above 60% threshold. April 26 NO=0% was 7d window artifact. | quant-research-agent |
 | 2026-05-21 | LH-001 Lifecycle Heuristic | First validation | CONDITIONAL_PASS — pooled p=0.0160, r=0.208. Neither event individually significant (Haley p=0.1087, Iran p=0.4818). V1 Haley p=0.0000 corrected — was market-scale confound. N=2 events insufficient. Watchlist trigger only via insider_signals. | backtest-agent (v2) |
 | 2026-05-22 | LH-001 Lifecycle Heuristic | Formal v2 rerun (task backtest-lh001-v4-20260522) | CONDITIONAL_PASS confirmed — all statistics independently reproduced from DB via positions table. p=0.0160, r=0.2083. Haley p=0.1087, Iran p=0.4818. 7 insider_signals confirmed. Formal report: LH-001-validation-v2.md | backtest-agent |
+| 2026-06-05 | LH-001 Lifecycle Heuristic blocking item 2 | All 7 insider_signals now scored (score_insider_signals.py) | RESULT: 4/7 correct (57.1%) — FAILS 60% threshold. Blocking item 2 not cleared. LH-001 remains CONDITIONAL_PASS watchlist trigger. Finding: 2026-06-05-LH001-INSIDER-SCORED-001. | feedback-loop-agent |
+| 2026-06-05 | RQ-CONTESTED-001 contested market accuracy | Phase 5 Gate 2 analysis — QUALIFIED tier on 2026 contested markets | PASS: QUALIFIED 66.3% (n=101), ELITE 64.3% (n=98), LEGENDARY 49.2% (below random — contamination confirmed). Market baseline 55.2%. Phase 5 Gate 2 MET (3/3 HIGH findings). | feedback-loop-agent |
 
 ---
 
