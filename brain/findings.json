@@ -700,10 +700,10 @@
         ]
       },
       "actionable": true,
-      "action_recommendation": "Oscar to run RQ0.1 (scripts/wash_trade_audit.py) and RQ0.2 (scripts/bot_detection.py) on first-repo. Total traders grew from 53,140 (March baseline) to 93,331 \u2014 new traders may include wash patterns or bots not yet detected. Research pool integrity depends on these gates passing. Revalidation signals written to signals.json.",
+      "action_recommendation": "ARCHIVED: bot_detection.py and wash_trade_audit.py are archived (2026-06-05). Use detect_arb_bots.py for automated ARB_BOT detection (runs daily in maintenance Step 2).",
       "expires_at": "2026-08-05T12:00:00Z",
-      "status": "EXPIRED",
-      "superseded_by": "resolved",
+      "status": "SUPERSEDED",
+      "superseded_by": "detect_arb_bots.py",
       "expiry_reason": "RQ0.1 and RQ0.2 both run 2026-05-13. No longer overdue."
     },
     {

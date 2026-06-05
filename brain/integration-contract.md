@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.0 — 2026-06-05
+**Version:** v2.1 — 2026-06-05
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -101,12 +101,12 @@ new accounts.
 | `bot_suspect` | INTEGER | 1 = suspected automated trader |
 | `wash_trade_suspect` | INTEGER | 1 = suspected wash trader |
 | `bot_type` | TEXT | `LP_ARTIFACT`, `THIN_SAMPLE_ARTIFACT`, `ARB_BOT`, or NULL |
-| `accuracy_pool` | BOOLEAN | 1 = Pool A (accuracy/validation) |
+| `accuracy_pool` | BOOLEAN | DROPPED 2026-06-05 — written daily but never consumed by any downstream script. Column removed from DB. |
 | `comprehensive_elo` | REAL | ELO across all markets |
 | `realized_pnl` | REAL | Realized P&L in USD (authoritative — see Section 6b) |
 | `geo_elo` | REAL | Market-implied probability ELO for geopolitics+elections trades only |
 | `geo_elo_active` | REAL | Recency-decayed geo_elo: geo_elo × 0.5^(days_dormant/180). 180-day half-life. Used for STR-003 signal qualification. Base geo_elo preserved for research. Updated daily by update_geo_elo.py. |
-| `geo_elo_oos` | REAL | Out-of-sample geo ELO — reserved for hold-out validation. Do not use for signal generation. |
+| `geo_elo_oos` | REAL | DROPPED 2026-06-05 — populated by deleted script, zero code references. Column removed from DB. |
 | `geo_resolved_trades_count` | INTEGER | Resolved trades in geo/elections markets |
 | `geo_directionality_score` | REAL | Fraction of geo capital on dominant side (0=pure LP, 1=fully directional) |
 | `geo_accuracy_pool` | BOOLEAN | 1 = Pool C (geopolitics accuracy) |
@@ -199,10 +199,8 @@ they are handled by the query filters in Section 2.
 ### Research Pools (maintained by update_research_exclusions.py)
 
 #### Pool A — Accuracy/Validation Pool
-Filter: `accuracy_pool = 1`
-Requirements: `research_excluded = 0`, `resolved_trades_count >= 10`, `realized_pnl > 1000`, `bot_type IS NULL`, `wash/bot suspect = 0`
-Used for: ELO calibration, feedback-loop accuracy scoring, Phase 5 gates
-Updated by: `update_research_exclusions.py`
+
+> **Note:** Pool A (accuracy_pool) was dropped 2026-06-05. No replacement defined. Use Pool B filter (research_excluded=0, resolved_trades_count>=20, bot_type IS NULL) for accuracy validation queries.
 
 #### Pool B — General Research Pool
 Filter: `research_excluded = 0`
@@ -242,7 +240,7 @@ Updated by: `update_research_exclusions.py`
 
 | Issue | Affected rows | Cause | Mitigation |
 |-------|--------------|-------|------------|
-| `trades.market_category = 'Unknown'` | ~81% of trades (≈4.5M / 5.5M) | The `market_category` column in the trades table is denormalized from the market record at insert time. Most markets have `category = 'Unknown'` in the markets table because category backfill from the Gamma API is incomplete. | Use `markets.category` via JOIN for any category-based filtering (NOT `trades.market_category`). STR-003 concurrent market count uses `markets.category` as authoritative. Backfill script running via `verify_market_titles.py` (daily, non-blocking). Ongoing. |
+| `trades.market_category = 'Unknown'` | ~81% of trades (≈4.5M / 5.5M) | The `market_category` column in the trades table is denormalized from the market record at insert time. Most markets have `category = 'Unknown'` in the markets table because category backfill from the Gamma API is incomplete. | Use `markets.category` via JOIN for any category-based filtering (NOT `trades.market_category`). STR-003 concurrent market count uses `markets.category` as authoritative. The one-time category backfill was performed by backfill_market_categories.py (run 2026-06-03, classified 11,001 Unknown markets). verify_market_titles.py runs daily but only verifies/updates titles — it does NOT perform category backfill. No ongoing automated category backfill exists; new markets enter with Unknown category until manually reclassified. |
 
 ### Bot Exclusion History (resolved — documented for context)
 
@@ -275,7 +273,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
   Step  5: score_str003_signals.py             — scores open STR-003 signals [non-blocking]
   Step  6: backfill_transaction_hashes.py      — fills tx hashes for Pool C trades [non-blocking]
   Step  7: polygon_maker_taker.py              — labels maker/taker roles [non-blocking]
-  Step  8: verify_market_titles.py             — verifies and backfills market titles + categories [non-blocking]
+  Step  8: verify_market_titles.py             — verifies and updates market titles only — category backfill is not automated [non-blocking]
   Step  9: fast_resolution_check.py            — marks newly resolved markets [blocking]
   Step 10: evaluate_new_trader_results.py      — evaluates recently resolved trader positions [non-blocking]
   Step 11: requeue_resolved_market_traders.py  — queues ELO recalculation for resolved markets [blocking]
@@ -319,6 +317,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 | 2026-06-02 | geo_elo_active column added — recency-weighted geo_elo for STR-003 qualification. Formula: geo_elo × 0.5^(days_dormant/180). Does not replace base geo_elo. Updated daily by update_geo_elo.py. Contract version v1.8. | STR-003 signal qualification now uses geo_elo_active >= 2175 |
 | 2026-06-02 | Contract updated to v1.9 (full audit). Section 3: geo_elo_oos column added to traders table; Pool C hardcode removed (query live). Section 4: geo_elo_active tier note added for STR-003. Section 5: STR-003 qualification now explicitly references geo_elo_active >= 2175; LH-001 (CONDITIONAL_PASS) and STR-004 (HYPOTHESIS) added. Section 6c: market_category Unknown issue documented (81% of trades, backfill in progress). Section 7: full step list updated to match actual daily_maintenance.py (15 daily steps + Sunday extras); recalculate_comprehensive_elo.py correctly noted as separate systemd timer. Section 9: expected ranges updated to reflect current pool sizes. | All agents |
 | 2026-06-05 | Contract v2.0: Pool B contamination warning added. 13K+ leaderboard traders with <20 resolved trades correctly included in Pool B by design but must be filtered explicitly in research queries. | All research queries — add `resolved_trades_count >= 20` explicitly |
+| 2026-06-05 | v2.1: accuracy_pool and geo_elo_oos documented as dropped. Section 6c corrected — verify_market_titles.py does not backfill categories. Pool A removed. | All agents |
 
 ---
 

@@ -647,7 +647,7 @@ Every Monday:
 
 ## Monthly Maintenance (30 minutes)
 
-1. Run wash_trade_audit.py and bot_detection.py in first-repo
+1. Bot/wash-trade audit: run scripts/detect_arb_bots.py --dry-run first, then without --dry-run if results look correct. wash_trade_audit.py is archived — the 57 flagged traders from prior runs remain excluded but no new flags will be written.
 2. Review API costs — flag if any agent exceeded budget
 3. Check disk space and clean old logs if needed:
    ```bash

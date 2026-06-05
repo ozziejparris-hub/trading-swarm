@@ -56,7 +56,7 @@ EXPERIMENTAL        — in development, not yet validated
 ```
 Status:                 PASSED
 Run date:               2026-03-29
-Script:                 scripts/wash_trade_audit.py (first-repo)
+Script:                 ARCHIVED 2026-06-05. Replaced by detect_arb_bots.py (Pattern B symmetric arb detection). 57 traders previously flagged remain excluded.
 Result:                 36 wallets flagged as wash_trade_suspect
                         0 of 36 in current top-50 leaderboard
                         0.1% of ELO >= 1500 traders affected
@@ -70,7 +70,7 @@ Next run:               Monthly or after any major platform
 ```
 Status:                 PASSED
 Run date:               2026-03-29
-Script:                 scripts/bot_detection.py (first-repo)
+Script:                 ARCHIVED 2026-06-05. Superseded by detect_arb_bots.py (scripts/detect_arb_bots.py, added to daily maintenance Step 2).
 Result:                 9 traders heavy in short-duration crypto
                         0 traders with 90%+ win rate over 30 trades
                         0 traders with uniform sizing
