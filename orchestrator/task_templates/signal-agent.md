@@ -12,6 +12,8 @@ when something genuinely actionable has changed.
 
 ## Your Environment
 
+> ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+
 > **CONTEXT FILES — READ THESE FIRST (local Ollama run):**
 > Always read compressed versions from /tmp/swarm-context/ before reading any brain file.
 > These are pre-generated before your session starts and are significantly smaller:
@@ -31,7 +33,7 @@ when something genuinely actionable has changed.
      (geo_elo_active = geo_elo × 0.5^(days_dormant/180) — penalises dormant traders)
 - Research pool: ~12,000+ traders with research_excluded=0.
      Pool C (geo_accuracy_pool=1): 177 traders with geo_elo scores.
-     LEGENDARY (geo_elo_active >= 2175, directionality >= 0.7, pnl > 500): 14 traders.
+     LEGENDARY (geo_elo_active >= 2175, directionality >= 0.7, realized_pnl != 0.0 AND realized_pnl > -100000): 14 traders.
      Verify live counts via integration-health.json before querying.
 - Output directory: /home/parison/trading-swarm/brain/agent-outputs/signal-agent/
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
@@ -54,7 +56,7 @@ WHERE tr.geo_elo_active >= 2175             -- NOT comprehensive_elo
 ### Concurrent Markets (max 5)
 Count only markets where:
 ```sql
-WHERE m.market_category IN ('Geopolitics', 'Elections')
+WHERE m.category IN ('Geopolitics', 'Elections')
   AND m.resolved = 0
   AND (m.resolution_date IS NULL
        OR m.resolution_date > datetime('now', '-180 days'))
@@ -85,13 +87,13 @@ Phase 1 confirmed safe: 0.4% contamination, single arb trader (0x63d43bbb, 90.6%
 Pre-registration: rq-str003-antiarb-preregistration-2026-05-30.md. Phase 1 report: agent-outputs/str003-antiarb-phase1-2026-05-30.md.
 
 ### Pool Selection
-- **Validation queries:** `accuracy_pool = 1 OR geo_accuracy_pool = 1`
+- **Validation queries:** `geo_accuracy_pool = 1`
 - **Signal detection:** `research_excluded = 0` (broader pool — use for live signal generation)
 
 ## When STR-003 Finds 0 Qualifying Signals
 
 When no traders qualify under STR-003 criteria, still produce a useful report:
-1. Report the current LEGENDARY pool size (geo_elo_active >= 2175, directionality >= 0.7, pnl > 500)
+1. Report the current LEGENDARY pool size (geo_elo_active >= 2175, directionality >= 0.7, realized_pnl != 0.0 AND realized_pnl > -100000)
 2. Show the top 5 traders closest to LEGENDARY threshold (geo_elo between 1800-2175)
 3. Report any active geopolitics markets with significant position concentration
 4. Check if any of the previous 4 signals (Newsom, UN, Fed, Putin) have resolved

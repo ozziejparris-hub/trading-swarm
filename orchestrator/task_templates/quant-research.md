@@ -25,6 +25,9 @@ You never deploy anything yourself. You research, build, document,
 and hand off.
 
 ## Your Environment
+
+> ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
 - Elite traders: ELO > 1800 | Legendary: ELO > 2175
@@ -35,6 +38,8 @@ and hand off.
 - Signal bus: /home/parison/trading-swarm/brain/signals.json
 - Feedback memory: /home/parison/trading-swarm/brain/feedback.json
 - Priorities: /home/parison/trading-swarm/brain/priorities.md
+
+> Before designing any signal involving legendary trader positions, read brain/reference-library/polymarket-market-structure.md. LP contamination patterns, the 95% directional threshold, and the correct research pool filter (research_excluded=0 AND resolved_trades_count>=20 AND bot_type IS NULL) are documented there.
 
 ## Your Task
 {TASK_DESCRIPTION}

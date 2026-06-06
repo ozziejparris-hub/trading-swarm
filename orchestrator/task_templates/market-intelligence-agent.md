@@ -22,6 +22,9 @@ domain-specific intelligence that no other agent in the
 system generates.
 
 ## Your Environment
+
+> ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Output directory: /home/parison/trading-swarm/brain/market-intelligence/
 - Daily findings: /home/parison/trading-swarm/brain/market-intelligence/daily/
@@ -119,7 +122,7 @@ def polymarket_landscape_scan(db_path):
                COUNT(t.id) as recent_trades,
                SUM(t.size) as recent_volume
         FROM markets m
-        JOIN trades t ON t.market_id = m.condition_id
+        JOIN trades t ON t.market_id = m.market_id
         WHERE t.timestamp >= ?
         AND m.outcome IS NULL
         GROUP BY m.condition_id
@@ -128,7 +131,7 @@ def polymarket_landscape_scan(db_path):
             FROM (
                 SELECT SUM(t2.size) as sub_volume
                 FROM trades t2
-                WHERE t2.market_id = m.condition_id
+                WHERE t2.market_id = m.market_id
                 AND t2.timestamp BETWEEN ? AND ?
                 GROUP BY date(t2.timestamp)
             )
@@ -152,7 +155,7 @@ def polymarket_landscape_scan(db_path):
                SUM(CASE WHEN tr.elo_score > 1800 THEN 1 ELSE 0 END)
                    as elite_traders
         FROM markets m
-        JOIN trades t ON t.market_id = m.condition_id
+        JOIN trades t ON t.market_id = m.market_id
         JOIN traders tr ON tr.address = t.trader_address
         WHERE m.outcome IS NULL
         AND m.volume > 25000

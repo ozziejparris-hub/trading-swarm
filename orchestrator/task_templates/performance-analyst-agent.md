@@ -24,6 +24,9 @@ of decay this week. You catch that signal before it becomes
 a loss.
 
 ## Your Environment
+
+> ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
 - Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (read all subdirectories)
@@ -93,12 +96,13 @@ def calculate_brier_scores(db_path, lookback_days=7):
     for _, market in markets.iterrows():
         # Get elite trader positions before resolution
         positions_query = """
-            SELECT t.elo_score, p.position, p.size,
+            SELECT t.comprehensive_elo, p.position, p.size,
                    p.entry_price, p.outcome
             FROM positions p
             JOIN traders t ON p.trader_address = t.address
             WHERE p.market_id = ?
-            AND t.elo_score > 1800
+            AND t.comprehensive_elo > 1800
+            AND t.bot_type IS NULL
         """
         positions = pd.read_sql_query(
             positions_query,
@@ -110,10 +114,10 @@ def calculate_brier_scores(db_path, lookback_days=7):
             continue
         
         # ELO-weighted probability estimate
-        total_elo = positions['elo_score'].sum()
+        total_elo = positions['comprehensive_elo'].sum()
         yes_elo = positions[
             positions['outcome'] == 'YES'
-        ]['elo_score'].sum()
+        ]['comprehensive_elo'].sum()
         
         predicted_prob = yes_elo / total_elo if total_elo > 0 else 0.5
         actual_outcome = 1 if market['outcome'] == 'YES' else 0
@@ -174,18 +178,19 @@ def elo_system_health(db_path):
     # Tier distribution
     tier_query = """
         SELECT
-            COUNT(CASE WHEN elo_score > 2175 THEN 1 END) as legendary,
-            COUNT(CASE WHEN elo_score BETWEEN 1800 AND 2175
+            COUNT(CASE WHEN comprehensive_elo > 2175 THEN 1 END) as legendary,
+            COUNT(CASE WHEN comprehensive_elo BETWEEN 1800 AND 2175
                   THEN 1 END) as elite,
-            COUNT(CASE WHEN elo_score BETWEEN 1200 AND 1800
+            COUNT(CASE WHEN comprehensive_elo BETWEEN 1200 AND 1800
                   THEN 1 END) as standard,
-            COUNT(CASE WHEN elo_score < 1200 THEN 1 END) as below_average,
+            COUNT(CASE WHEN comprehensive_elo < 1200 THEN 1 END) as below_average,
             COUNT(*) as total,
-            AVG(elo_score) as mean_elo,
-            MAX(elo_score) as max_elo,
-            MIN(elo_score) as min_elo
+            AVG(comprehensive_elo) as mean_elo,
+            MAX(comprehensive_elo) as max_elo,
+            MIN(comprehensive_elo) as min_elo
         FROM traders
         WHERE is_active = 1
+        AND bot_type IS NULL
     """
     tier_data = pd.read_sql_query(tier_query, conn).iloc[0]
     
@@ -202,18 +207,20 @@ def elo_system_health(db_path):
     
     # Top 10 by ELO
     top_traders = pd.read_sql_query("""
-        SELECT address, username, elo_score,
+        SELECT address, username, comprehensive_elo,
                last_active, total_trades
         FROM traders
-        ORDER BY elo_score DESC
+        WHERE bot_type IS NULL
+        ORDER BY comprehensive_elo DESC
         LIMIT 10
     """, conn)
     
     # Inactive legendary traders (potential data quality issue)
     inactive_legendary = pd.read_sql_query("""
-        SELECT address, username, elo_score, last_active
+        SELECT address, username, comprehensive_elo, last_active
         FROM traders
-        WHERE elo_score > 2175
+        WHERE comprehensive_elo > 2175
+        AND bot_type IS NULL
         AND last_active < datetime('now', '-14 days')
     """, conn)
     
