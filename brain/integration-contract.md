@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.3 — 2026-06-06
+**Version:** v2.4 — 2026-06-06
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -376,6 +376,7 @@ AND >= 95% of trader's capital on one side
 | 2026-06-05 | v2.1: accuracy_pool and geo_elo_oos documented as dropped. Section 6c corrected — verify_market_titles.py does not backfill categories. Pool A removed. | All agents |
 | 2026-06-06 | v2.2: Section 9 expected ranges updated to reflect post-audit pool sizes. Pool C 477 (was 272), LEGENDARY active 15 (was 13), clean markets 17,447. | All agents running startup validation |
 | 2026-06-06 | v2.3: Section 10 added — Canonical Agent Definitions. Single source of truth for ELO thresholds, pool filters, output paths, STR-003 criteria, and known metric limitations. | All agents |
+| 2026-06-06 | v2.4: Section 9 updated — 195 external_seed traders added from vgregoire/polymarket-users parquet. Three Tier 1 directional traders added via add_watched_trader.py (Nocthyra, Calythius, anonymous). /holders endpoint identified as superior discovery mechanism for resolved markets — Layer 3 implementation pending. | All agents running startup validation |
 
 ---
 
@@ -423,8 +424,8 @@ SELECT
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
-| `clean_pool` | ≈ 15,083 (grows daily as traders qualify) | < 10,000 (unexpected shrinkage — check integration-health.json alerts array) |
-| `true_research_pool` | ≈ 1,712 (research_excluded=0 AND resolved_trades_count>=20) | < 1,500 (unexpected shrinkage) |
+| `clean_pool` | ≈ 15,083 (grows daily as traders qualify). **2026-06-06: 195 traders added via external_seed (vgregoire/polymarket-users parquet). These are directional politics specialists with pnl_taker_politics > $10K, frac_both_sides < 0.25, frac_maker < 0.3, frac_politics > 0.5, n_markets >= 15, last_trade >= 2025-06-01. Trade histories pending backfill. ELO scores will populate over next 24-48 hours.** | < 10,000 (unexpected shrinkage — check integration-health.json alerts array) |
+| `true_research_pool` | ≈ 1,712 (research_excluded=0 AND resolved_trades_count>=20). **2026-06-06: 195 external_seed traders not yet counted here — trade histories pending backfill, resolved_trades_count will not reach ≥20 threshold until backfill completes.** | < 1,500 (unexpected shrinkage) |
 | `clean_markets` | ≈ 17,447 (grows as markets resolve) | < 16,000 (markets missing) |
 | `pool_c` | ≈ 477 (geo_accuracy_pool=1) | < 400 (unexpected shrinkage) |
 | `legendary_base` | ≈ 46 (geo_elo >= 2175, research_excluded=0) | < 30 or > 200 (tier contamination or mass exclusion) |
