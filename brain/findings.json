@@ -202,7 +202,8 @@
       "actionable": false,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
       "expires_at": "2026-05-02",
-      "expiry_reason": "STR-001 validated and SUSPENDED 2026-04-27 by backtest-agent. 56.1% accuracy, structural LP contamination flaw. No further revalidation needed."
+      "status": "EXPIRED",
+      "expiry_reason": "STR-001 revalidation is BLOCKED per strategy-registry.md \u2014 requires STR-001b pre-registration before revalidation can proceed. Not overdue; correctly blocked. No revalidation signal should be generated."
     },
     {
       "id": "2026-04-26-RQ3.2-PRELIMINARY-001",
@@ -355,7 +356,8 @@
       "actionable": false,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
       "expires_at": "2026-05-02",
-      "expiry_reason": "STR-001 validated and SUSPENDED 2026-04-27 by backtest-agent. 56.1% accuracy, structural LP contamination flaw. No further revalidation needed."
+      "status": "EXPIRED",
+      "expiry_reason": "STR-001 revalidation is BLOCKED per strategy-registry.md \u2014 requires STR-001b pre-registration before revalidation can proceed. Not overdue; correctly blocked. No revalidation signal should be generated."
     },
     {
       "id": "2026-05-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
