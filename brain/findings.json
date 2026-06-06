@@ -1258,6 +1258,7 @@
       "source": "Oscar (manual query)",
       "date": "2026-06-03",
       "confidence": "HIGH",
+      "summary": "ELO tiers show 20-31pp edge over market price on genuinely contested markets (0.35-0.65 price band) — ELITE 81.4% (n=274), LEGENDARY 79.2% (n=288), QUALIFIED 69.6% (n=184) vs market baseline 50.3% (n=1,255)",
       "title": "ELO tiers show 20-31pp edge over market price on genuinely contested markets",
       "sample_size": 746,
       "n_markets": 746,
