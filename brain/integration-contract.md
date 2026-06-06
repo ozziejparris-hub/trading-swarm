@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.2 — 2026-06-06
+**Version:** v2.3 — 2026-06-06
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -295,6 +295,62 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 
 ---
 
+## Section 10 — Canonical Agent Definitions
+
+> **CRITICAL:** All agent templates must use these definitions. Do not hardcode thresholds in templates — reference this section. When any value here changes, update ALL affected templates.
+
+### 10.1 — ELO Tier Thresholds
+
+| Tier | Metric | Threshold | Notes |
+|------|--------|-----------|-------|
+| LEGENDARY (geo) | `geo_elo` | >= 2175 AND `geo_accuracy_pool = 1` | Use for geopolitics/elections research and STR-003 signals. Primary accuracy metric. |
+| LEGENDARY (comprehensive) | `comprehensive_elo` | >= 2175 | No proven edge on contested markets (0.35-0.65). Do NOT use for signal generation. Use for bot detection and Pool B qualification only. |
+| ELITE | `comprehensive_elo` | > 1800 | With `research_excluded = 0 AND bot_type IS NULL` |
+| QUALIFIED | `comprehensive_elo` | > 1550 | With `research_excluded = 0 AND bot_type IS NULL` |
+
+### 10.2 — Research Pool Filters
+
+| Pool | Filter | Size (approx) | Use for |
+|------|--------|---------------|---------|
+| Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ~1,712 | All accuracy calculations, ELO research |
+| Pool C (geo) | `geo_accuracy_pool = 1` | ~477 | geo_elo accuracy, STR-003 qualification |
+| ⚠️ WARNING | `research_excluded = 0` alone | ~15,083 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
+
+### 10.3 — Agent Output Paths
+
+| Agent | Primary output | Writes to findings.json? |
+|-------|---------------|--------------------------|
+| feedback-loop-agent | brain/agent-outputs/feedback-loop/ | YES — primary writer |
+| performance-analyst-agent | brain/agent-outputs/performance-analyst/ | YES — can write |
+| training-librarian-agent | brain/agent-outputs/training-librarian/ | YES — maintains/cleans |
+| research-agent | brain/agent-outputs/research/ | NO — signals via signals.json (type: finding_ready) |
+| quant-research-agent | brain/agent-outputs/quant-research/ | NO — siloed |
+| research-scout-agent | brain/research-scout/ | NO — external reference only |
+| signal-agent | brain/signals.json | NO — signal bus only |
+| backtest-agent | brain/agent-outputs/backtest-agent/ | NO — strategy validation |
+
+### 10.4 — STR-003 Qualification Criteria (authoritative)
+```
+geo_elo_active >= 2175
+AND geo_directionality_score >= 0.7
+AND realized_pnl != 0.0 AND realized_pnl > -100000
+AND research_excluded = 0
+AND entry_price BETWEEN 0.10 AND 0.80
+AND market.category IN ('Geopolitics', 'Elections')
+AND >= 95% of trader's capital on one side
+```
+
+### 10.5 — Known Metric Limitations
+
+| Metric | Limitation | Impact |
+|--------|-----------|--------|
+| `comprehensive_elo` | 2.3x accumulation bias toward easy-market specialists | Do not use for signal generation on contested markets |
+| `geo_elo` | Only 477 traders in Pool C, thin 2026 sample (~10 contested markets) | Validate July 1 per RQ-CONTESTED-001 |
+| `research_excluded = 0` alone | Includes 13K+ leaderboard traders with <20 resolved trades | Always add `AND resolved_trades_count >= 20` |
+| `trades.market_category` | 81% Unknown — denormalized field | Always use `markets.category` via JOIN |
+
+---
+
 ## Section 8 — Change Log
 
 | Date | Change | Impact on agents |
@@ -319,6 +375,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 | 2026-06-05 | Contract v2.0: Pool B contamination warning added. 13K+ leaderboard traders with <20 resolved trades correctly included in Pool B by design but must be filtered explicitly in research queries. | All research queries — add `resolved_trades_count >= 20` explicitly |
 | 2026-06-05 | v2.1: accuracy_pool and geo_elo_oos documented as dropped. Section 6c corrected — verify_market_titles.py does not backfill categories. Pool A removed. | All agents |
 | 2026-06-06 | v2.2: Section 9 expected ranges updated to reflect post-audit pool sizes. Pool C 477 (was 272), LEGENDARY active 15 (was 13), clean markets 17,447. | All agents running startup validation |
+| 2026-06-06 | v2.3: Section 10 added — Canonical Agent Definitions. Single source of truth for ELO thresholds, pool filters, output paths, STR-003 criteria, and known metric limitations. | All agents |
 
 ---
 
