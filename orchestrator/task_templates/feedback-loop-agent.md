@@ -23,6 +23,10 @@ performance is worse than useless.
 
 > ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
 
+> ⚠️ JOIN KEY WARNING: Always use market_id (TEXT NOT NULL, all rows) as the join key.
+> Never use condition_id — it is NULL for ~53% of markets and will silently return 0 rows.
+> condition_id is only for external Gamma API lookups. See integration-contract.md Section 2.
+
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
 - Performance analyst output: /home/parison/trading-swarm/brain/agent-outputs/performance-analyst/
@@ -63,16 +67,19 @@ trigger spurious revalidation signals on every subsequent run.
 
 ### Step 1 — Signal accuracy audit
 
-> **CRITICAL: Always resolve signals using market_id (condition_id)
+> **CRITICAL: Always resolve signals using market_id
 > from the signal payload, NOT by title matching. Title matching
 > causes false positives when multiple markets have similar names
 > (e.g. rolling monthly ceasefire markets — "by Q2 2026", "by May 31",
-> "by June 30" are all distinct markets with different condition_ids).
-> The condition_id is the authoritative market identifier.**
+> "by June 30" are all distinct markets with different market_ids).
+> market_id is the authoritative DB join key (TEXT NOT NULL, all rows populated).
+> condition_id is a nullable Polymarket external API identifier used only for
+> Gamma API resolution lookups — it is NULL for ~53% of markets and must NOT
+> be used as a join key. See integration-contract.md Section 2.**
 >
 > Correct pattern:
 >   SELECT resolved, winning_outcome FROM markets
->   WHERE condition_id = {signal.payload.market_id}
+>   WHERE market_id = {signal.payload.market_id}
 >
 > NEVER use:
 >   SELECT resolved, winning_outcome FROM markets

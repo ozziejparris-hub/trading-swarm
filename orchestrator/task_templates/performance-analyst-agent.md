@@ -27,6 +27,10 @@ a loss.
 
 > ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
 
+> ⚠️ JOIN KEY WARNING: Always use market_id (TEXT NOT NULL, all rows) as the join key.
+> Never use condition_id — it is NULL for ~53% of markets and will silently return 0 rows.
+> condition_id is only for external Gamma API lookups. See integration-contract.md Section 2.
+
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
 - Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (read all subdirectories)
@@ -75,7 +79,7 @@ def calculate_brier_scores(db_path, lookback_days=7):
     
     # Get resolved markets in period
     markets_query = """
-        SELECT m.condition_id, m.title, m.category,
+        SELECT m.market_id, m.title, m.category,
                m.outcome, m.resolution_date
         FROM markets m
         WHERE m.resolution_date >= ?
@@ -109,7 +113,7 @@ def calculate_brier_scores(db_path, lookback_days=7):
         positions = pd.read_sql_query(
             positions_query,
             conn,
-            params=[market['condition_id']]
+            params=[market['market_id']]
         )
         
         if len(positions) == 0:
@@ -131,7 +135,7 @@ def calculate_brier_scores(db_path, lookback_days=7):
         naive_brier = (avg_entry_price - actual_outcome) ** 2
         
         results.append({
-            'market_id': market['condition_id'],
+            'market_id': market['market_id'],
             'category': market.get('category', 'Unknown'),
             'predicted_prob': predicted_prob,
             'actual_outcome': actual_outcome,
@@ -285,7 +289,7 @@ def signal_quality_analysis(signals_file, db_path, lookback_days=30):
         
         # Check if market resolved
         market = pd.read_sql_query(
-            "SELECT outcome FROM markets WHERE condition_id = ?",
+            "SELECT outcome FROM markets WHERE market_id = ?",
             conn,
             params=[market_id]
         )
