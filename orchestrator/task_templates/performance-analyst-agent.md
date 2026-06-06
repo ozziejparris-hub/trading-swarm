@@ -26,6 +26,7 @@ a loss.
 ## Your Environment
 
 > ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+> Also read brain/schema-change-log.md before writing any database query.
 
 > ⚠️ JOIN KEY WARNING: Always use market_id (TEXT NOT NULL, all rows) as the join key.
 > Never use condition_id — it is NULL for ~53% of markets and will silently return 0 rows.

@@ -27,6 +27,7 @@ and hand off.
 ## Your Environment
 
 > ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+> Also read brain/schema-change-log.md before writing any database query.
 
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions

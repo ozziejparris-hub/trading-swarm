@@ -846,6 +846,10 @@ def expire_overdue_findings_for_non_active_strategies(
 > check, templates silently drift from the canonical definitions in
 > `brain/integration-contract.md` Section 10.
 
+> **Step 0 — Read schema-change-log.md first:** Read brain/schema-change-log.md at the
+> start of every audit. For any entry marked PROPAGATION INCOMPLETE, verify and fix the
+> remaining unchecked templates before proceeding with the 7 checks below.
+
 Read every file in `orchestrator/task_templates/` and check it against
 `brain/integration-contract.md` Section 10. Fix issues directly; do not just report.
 If a change feels risky or ambiguous, flag for Oscar review instead of editing.

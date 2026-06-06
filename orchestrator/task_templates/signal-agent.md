@@ -13,6 +13,7 @@ when something genuinely actionable has changed.
 ## Your Environment
 
 > ⚠️ CANONICAL DEFINITIONS: Before writing any database query, read brain/integration-contract.md Section 10. It defines authoritative ELO thresholds, pool filters, STR-003 criteria, and known metric limitations. Do not hardcode values from memory.
+> Also read brain/schema-change-log.md before writing any database query.
 
 > **CONTEXT FILES — READ THESE FIRST (local Ollama run):**
 > Always read compressed versions from /tmp/swarm-context/ before reading any brain file.
