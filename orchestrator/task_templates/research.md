@@ -16,7 +16,7 @@ You research, answer, and document.
 ## Your Environment
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
-- Elite traders: ELO > 1800 | Legendary: ELO > 2175
+- Elite traders: comprehensive_elo > 1800 | Legendary (geo): geo_elo >= 2175 AND geo_accuracy_pool = 1 | NOTE: comprehensive_elo LEGENDARY has no proven edge on contested markets — use geo_elo for geopolitics/elections research
 - Strategy notes: /home/parison/trading-swarm/brain/strategy-notes/ (read before starting)
 - Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/ (read before starting)
 - Agent output: /home/parison/trading-swarm/brain/agent-outputs/research/
