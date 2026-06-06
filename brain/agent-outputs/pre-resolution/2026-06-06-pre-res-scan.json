@@ -1,0 +1,140 @@
+{
+  "date": "2026-06-06",
+  "markets_checked": 48,
+  "signals_found": 12,
+  "signals": [
+    {
+      "market": "Will Jorge Nieto win the 2026 Peruvian presidential election?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.9743,
+      "market_price_pct": 0.001,
+      "gap_pt": 97.3,
+      "elite_traders": 21,
+      "legendary_traders": 1,
+      "resolution_date": "2026-06-07"
+    },
+    {
+      "market": "Will Roberto S\u00e1nchez Palomino win the 2026 Peruvian presidential election?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.9833,
+      "market_price_pct": 0.2221,
+      "gap_pt": 76.1,
+      "elite_traders": 85,
+      "legendary_traders": 19,
+      "resolution_date": "2026-06-07"
+    },
+    {
+      "market": "Will Ricardo Belmont win the 2026 Peruvian presidential election?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.3525,
+      "market_price_pct": 0.001,
+      "gap_pt": 35.2,
+      "elite_traders": 16,
+      "legendary_traders": 3,
+      "resolution_date": "2026-06-07"
+    },
+    {
+      "market": "Will Rafael L\u00f3pez Aliaga win the 2026 Peruvian presidential election?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.7395,
+      "market_price_pct": 0.012,
+      "gap_pt": 72.8,
+      "elite_traders": 23,
+      "legendary_traders": 1,
+      "resolution_date": "2026-06-07"
+    },
+    {
+      "market": "US x Iran permanent peace deal by June 7, 2026?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.3301,
+      "market_price_pct": 0.05,
+      "gap_pt": 28.0,
+      "elite_traders": 5,
+      "legendary_traders": 2,
+      "resolution_date": "2026-06-07"
+    },
+    {
+      "market": "Israel announces Lebanon ceasefire extension by June 7?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.138,
+      "market_price_pct": 0.999,
+      "gap_pt": 86.1,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-07"
+    },
+    {
+      "market": "Will Shenna Bellows win the 2026 Maine Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0099,
+      "gap_pt": 99.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Troy Jackson win the 2026 Maine Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.28,
+      "gap_pt": 72.0,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Robert Charles win the 2026 Maine Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.48,
+      "gap_pt": 52.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Ben Midgley win the 2026 Maine Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.13,
+      "gap_pt": 87.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Pamela Evette win the 2026 South Carolina Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.28,
+      "gap_pt": 28.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Nancy Mace win the 2026 South Carolina Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.8368,
+      "market_price_pct": 0.11,
+      "gap_pt": 72.7,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    }
+  ],
+  "scan_timestamp": "2026-06-06T13:18:52.114638+00:00"
+}
