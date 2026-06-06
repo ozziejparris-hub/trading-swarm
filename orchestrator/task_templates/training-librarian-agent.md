@@ -641,6 +641,204 @@ def update_lessons_learned(lessons_file,
 """
 ```
 
+### Responsibility 7 — findings.json Maintenance (run every week)
+
+`brain/findings.json` accumulates entries from multiple agents. Without
+active curation it grows stale, duplicated, and misleading. This is your
+mandatory weekly housekeeping pass — run it before writing the weekly report.
+
+#### Step 1 — Rolling findings cleanup
+
+For any finding where a newer finding covers the same metric, mark the
+older one SUPERSEDED so agents stop acting on outdated data.
+
+Known rolling patterns (keep only the latest per pattern):
+- `"signal accuracy insufficient"` — any finding whose `detail.metric`
+  or `summary` matches this pattern: retain only the most recent by `date`;
+  set all older ones to `status = "SUPERSEDED"`, `superseded_by = <id of newest>`.
+- ELO tier accuracy weekly snapshots — any finding whose summary matches
+  `"ELO tier * accuracy"` or `detail.metric` is `"elo_tier_*_accuracy"`:
+  retain only the most recent per tier; supersede older entries the same way.
+
+When superseding, add a `superseded_by` field pointing to the newest finding's `id`.
+
+#### Step 2 — Expiry enforcement
+
+Scan every finding. For any entry where:
+- `expires_at` < today's date, AND
+- `status` is NOT already `"EXPIRED"`, `"SUPERSEDED"`, or `"INVALIDATED"`
+
+Set:
+```json
+"status": "EXPIRED",
+"expiry_reason": "Past expires_at date of {expires_at}."
+```
+
+#### Step 3 — Schema conformance
+
+For any finding with `"confidence": "HIGH"` that is missing an `expires_at`
+field, add:
+```json
+"expires_at": "<finding.date + 90 days, ISO format>"
+```
+
+Use the finding's `date` field as the base. If `date` is also missing,
+use today's date as the base and log a warning in the weekly report.
+
+#### Step 4 — Empty directory cleanup
+
+Check every subdirectory under `brain/agent-outputs/`. Remove any that
+are empty (contain no files, including no hidden files). Log removed
+directories in the weekly report under a "Housekeeping" section.
+
+#### Step 5 — STRATEGY-OVERDUE cross-check
+
+For any finding with `status = "ACTIVE"` and `type = "STRATEGY-OVERDUE"`
+(or `category = "STRATEGY-OVERDUE"`):
+1. Read `brain/strategy-registry.md`.
+2. Find the referenced strategy by ID or name.
+3. If that strategy's current status is `BLOCKED`, `SUSPENDED`, or
+   `EXPERIMENTAL`, mark the finding:
+   ```json
+   "status": "EXPIRED",
+   "expiry_reason": "Strategy status is {status} — OVERDUE finding no longer applicable."
+   ```
+
+This duplicates feedback-loop-agent Step 0 intentionally — it is a
+safety net for cases where feedback-loop-agent has not run recently.
+
+```python
+import json
+from datetime import datetime, timedelta
+from pathlib import Path
+
+def maintain_findings(findings_path: str, today: str = None):
+    """
+    Weekly findings.json maintenance pass.
+    Returns a summary dict of all changes made.
+    """
+    today_dt = datetime.fromisoformat(today) if today \
+               else datetime.utcnow().replace(hour=0, minute=0,
+                                              second=0, microsecond=0)
+    today_str = today_dt.date().isoformat()
+
+    with open(findings_path) as f:
+        data = json.load(f)
+    findings = data.get('findings', [])
+
+    summary = {
+        'superseded': [], 'expired': [], 'schema_fixed': [],
+        'dirs_removed': [], 'overdue_expired': []
+    }
+
+    # --- Step 1: Rolling cleanup ---
+    ROLLING_PATTERNS = [
+        ('signal accuracy insufficient',
+         lambda f: 'signal accuracy insufficient' in
+                   (f.get('summary', '') + f.get('detail', {})
+                    .get('metric', '')).lower()),
+        ('elo_tier_accuracy',
+         lambda f: 'elo tier' in f.get('summary', '').lower() or
+                   str(f.get('detail', {}).get('metric', ''))
+                   .startswith('elo_tier_')),
+    ]
+    for _label, matcher in ROLLING_PATTERNS:
+        matched = [f for f in findings if matcher(f)]
+        if len(matched) <= 1:
+            continue
+        matched_sorted = sorted(matched,
+                                key=lambda f: f.get('date', ''),
+                                reverse=True)
+        newest = matched_sorted[0]
+        for old in matched_sorted[1:]:
+            if old.get('status') not in ('EXPIRED', 'SUPERSEDED',
+                                          'INVALIDATED'):
+                old['status'] = 'SUPERSEDED'
+                old['superseded_by'] = newest.get('id', '')
+                summary['superseded'].append(old.get('id'))
+
+    # --- Step 2: Expiry enforcement ---
+    terminal = {'EXPIRED', 'SUPERSEDED', 'INVALIDATED'}
+    for f in findings:
+        expires = f.get('expires_at', '')
+        if expires and f.get('status') not in terminal:
+            if expires < today_str:
+                f['status'] = 'EXPIRED'
+                f['expiry_reason'] = \
+                    f"Past expires_at date of {expires}."
+                summary['expired'].append(f.get('id'))
+
+    # --- Step 3: Schema conformance ---
+    for f in findings:
+        if f.get('confidence') == 'HIGH' and not f.get('expires_at'):
+            base = f.get('date', today_str)
+            try:
+                base_dt = datetime.fromisoformat(base[:10])
+            except ValueError:
+                base_dt = today_dt
+            f['expires_at'] = (base_dt + timedelta(days=90)) \
+                               .date().isoformat()
+            summary['schema_fixed'].append(f.get('id'))
+
+    data['findings'] = findings
+    with open(findings_path, 'w') as fh:
+        json.dump(data, fh, indent=2)
+
+    # --- Step 4: Empty directory cleanup (call separately) ---
+    # --- Step 5: STRATEGY-OVERDUE cross-check (call separately) ---
+    return summary
+
+
+def remove_empty_agent_output_dirs(agent_outputs_root: str):
+    root = Path(agent_outputs_root)
+    removed = []
+    for subdir in root.iterdir():
+        if subdir.is_dir() and not any(subdir.iterdir()):
+            subdir.rmdir()
+            removed.append(str(subdir))
+    return removed
+
+
+def expire_overdue_findings_for_non_active_strategies(
+        findings_path: str, strategy_registry_path: str):
+    """
+    STRATEGY-OVERDUE safety-net: expire findings whose strategy
+    is no longer ACTIVE.
+    """
+    with open(findings_path) as f:
+        data = json.load(f)
+    registry_text = Path(strategy_registry_path).read_text()
+
+    expired_ids = []
+    for finding in data.get('findings', []):
+        if finding.get('status') != 'ACTIVE':
+            continue
+        is_overdue = (
+            finding.get('type') == 'STRATEGY-OVERDUE' or
+            finding.get('category') == 'STRATEGY-OVERDUE'
+        )
+        if not is_overdue:
+            continue
+        # Extract strategy reference from finding
+        strat_ref = (finding.get('detail', {}).get('strategy_id') or
+                     finding.get('detail', {}).get('strategy', ''))
+        if not strat_ref:
+            continue
+        for blocked_status in ('BLOCKED', 'SUSPENDED', 'EXPERIMENTAL'):
+            if strat_ref in registry_text and blocked_status in registry_text:
+                finding['status'] = 'EXPIRED'
+                finding['expiry_reason'] = (
+                    f"Strategy status is {blocked_status} — "
+                    "OVERDUE finding no longer applicable."
+                )
+                expired_ids.append(finding.get('id'))
+                break
+
+    with open(findings_path, 'w') as fh:
+        json.dump(data, fh, indent=2)
+    return expired_ids
+```
+
 ## Weekly Report Format
 
 Write to:
@@ -741,7 +939,12 @@ is required for attribution tracking across agents.
 - [ ] Agent templates audited for currency
 - [ ] Knowledge gap analysis completed
 - [ ] Lessons-learned log updated
-- [ ] Weekly report written to output directory
+- [ ] **findings.json — rolling cleanup**: older duplicates superseded with `superseded_by` pointer
+- [ ] **findings.json — expiry enforcement**: all past-`expires_at` findings set to EXPIRED
+- [ ] **findings.json — schema conformance**: HIGH confidence findings missing `expires_at` patched (90-day default)
+- [ ] **findings.json — empty dir cleanup**: empty `brain/agent-outputs/` subdirectories removed
+- [ ] **findings.json — STRATEGY-OVERDUE cross-check**: OVERDUE findings for BLOCKED/SUSPENDED/EXPERIMENTAL strategies expired
+- [ ] Weekly report written to output directory (includes Housekeeping section listing findings.json changes)
 - [ ] Signals written for any immediate issues
 - [ ] Completed before noon Saturday
   (gives time for human review before Sunday integration test)
