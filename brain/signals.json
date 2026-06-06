@@ -99,7 +99,8 @@
         "run_id": "feedback-202606052112"
       },
       "timestamp": "2026-06-05T21:22:22Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-06-05T21:31:12.088773"
     }
   ],
   "pending": [
@@ -335,7 +336,8 @@
       ],
       "outcome_correct": null,
       "resolved_at": null,
-      "scored_at": null
+      "scored_at": null,
+      "mutual_exclusivity_note": "Same-election conflict: STR003-005 (Keiko YES) and STR003-006 (L\u00f3pez Aliaga YES) cannot both resolve correct. Trader holds both positions simultaneously \u2014 possible multi-scenario bet on first-round dynamics. Signal-agent should implement inter-signal conflict detection for same-election markets in future."
     },
     {
       "signal_id": "STR003-006",
@@ -360,7 +362,8 @@
       "notes": "Market category is 'Unknown' in DB (should be Elections \u2014 data quality issue per Section 6c). Market is unambiguously a 2026 Peruvian presidential election market. Larger position than STR003-005 Keiko \u2014 primary conviction bet.",
       "outcome_correct": null,
       "resolved_at": null,
-      "scored_at": null
+      "scored_at": null,
+      "mutual_exclusivity_note": "Same-election conflict: STR003-005 (Keiko YES) and STR003-006 (L\u00f3pez Aliaga YES) cannot both resolve correct. Trader holds both positions simultaneously \u2014 possible multi-scenario bet on first-round dynamics. Signal-agent should implement inter-signal conflict detection for same-election markets in future."
     },
     {
       "signal_id": "STR003-001",
