@@ -140,7 +140,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-07-24T15:05:25Z"
+      "expires_at": "2026-07-24T15:05:25Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-04-25-ELO-ELITE-001",
@@ -315,7 +318,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-07-26T07:00:01Z"
+      "expires_at": "2026-07-26T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-04-27-ELO-QUALIFIED-001",
@@ -376,7 +382,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-08-03T12:11:47Z"
+      "expires_at": "2026-08-03T12:11:47Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-05-ELO-QUALIFIED-001",
@@ -726,7 +735,10 @@
       "actionable": false,
       "action_recommendation": "Await 9 more signal resolutions before drawing conclusions",
       "expires_at": "2026-08-09T07:00:01Z",
-      "investigation_note": "The 1 resolved signal (STR-004 ceasefire YES, outcome: NO) may be a market confusion artifact. DB investigation 2026-05-11: condition_id 0x7b629fc0b14bece5d568e748f7a8c7c472f90833e9a00c3d4cc3c49e267f194c confirmed as 'Russia x Ukraine ceasefire by Q2 2026?' \u2014 resolved=1, winning_outcome=No, end_date=2026-01-23. This is the SAME condition_id stored in the STR-004 signal payload. HOWEVER: a separate DB record 'Russia x Ukraine ceasefire by June 30, 2026?' resolved YES (no condition_id stored). The STR-004 signal noted the actual intended market was the June 30 2026 founding case (confirmed via Polymarket API) but stored market_id 0x7b629fc0... which maps to the Q2 market that resolved early. If the wrong condition_id was stored in the signal payload, the true founding case outcome may be YES (ceasefire DID occur by June 30). Oscar must verify whether 0x7b629fc0... is the correct condition_id for the intended STR-004 founding case before any accuracy calculation is made against this signal."
+      "investigation_note": "The 1 resolved signal (STR-004 ceasefire YES, outcome: NO) may be a market confusion artifact. DB investigation 2026-05-11: condition_id 0x7b629fc0b14bece5d568e748f7a8c7c472f90833e9a00c3d4cc3c49e267f194c confirmed as 'Russia x Ukraine ceasefire by Q2 2026?' \u2014 resolved=1, winning_outcome=No, end_date=2026-01-23. This is the SAME condition_id stored in the STR-004 signal payload. HOWEVER: a separate DB record 'Russia x Ukraine ceasefire by June 30, 2026?' resolved YES (no condition_id stored). The STR-004 signal noted the actual intended market was the June 30 2026 founding case (confirmed via Polymarket API) but stored market_id 0x7b629fc0... which maps to the Q2 market that resolved early. If the wrong condition_id was stored in the signal payload, the true founding case outcome may be YES (ceasefire DID occur by June 30). Oscar must verify whether 0x7b629fc0... is the correct condition_id for the intended STR-004 founding case before any accuracy calculation is made against this signal.",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-11-ELO-QUALIFIED-001",
@@ -745,7 +757,10 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-08-09T07:00:01Z"
+      "expires_at": "2026-08-09T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-CONTESTED-ACCURACY-2026-001",
+      "superseded_reason": "Superseded by contested-market accuracy analysis which is more methodologically rigorous."
     },
     {
       "id": "2026-05-11-STR004-FOUNDING-CASE-001",
@@ -785,7 +800,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 9 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-08-11T12:04:48Z"
+      "expires_at": "2026-08-11T12:04:48Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-13-ELO-VALIDITY-INSUFFICIENT-001",
@@ -823,7 +841,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 9 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-08-16T07:00:01Z"
+      "expires_at": "2026-08-16T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-18-ELO-LEGENDARY-001",
@@ -883,7 +904,10 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-08-16T07:00:01Z"
+      "expires_at": "2026-08-16T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-CONTESTED-ACCURACY-2026-001",
+      "superseded_reason": "Superseded by contested-market accuracy analysis which is more methodologically rigorous."
     },
     {
       "id": "2026-05-20-LH-001-LIFECYCLE-001",
@@ -949,7 +973,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-08-23T07:00:01Z"
+      "expires_at": "2026-08-23T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-25-ELO-LEGENDARY-001",
@@ -1181,7 +1208,8 @@
       "generated_by": "performance-analyst-agent",
       "source": "performance-analyst-agent",
       "phase5_gate2": true,
-      "notes": "Qualifies for Phase 5 Gate 2 (HIGH confidence, n >= 20). 7d window had 0 geo market resolutions \u2014 result based on 8-30 day lookback. Comprehensive_elo Legendary tier shows 35.92% accuracy (contamination suspected \u2014 FLAG-001). geo_elo is the authoritative accuracy metric for geopolitics."
+      "notes": "Qualifies for Phase 5 Gate 2 (HIGH confidence, n >= 20). 7d window had 0 geo market resolutions \u2014 result based on 8-30 day lookback. Comprehensive_elo Legendary tier shows 35.92% accuracy (contamination suspected \u2014 FLAG-001). geo_elo is the authoritative accuracy metric for geopolitics.",
+      "expires_at": "2026-09-01T00:00:00Z"
     },
     {
       "id": "2026-06-01-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -1200,7 +1228,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-08-30T07:00:01Z"
+      "expires_at": "2026-08-30T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-05-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-01-ELO-QUALIFIED-001",
@@ -1252,7 +1283,7 @@
       "actionable": true,
       "action_recommendation": "Strong evidence that ELO consensus on contested markets has genuine alpha over market price. Priority: (1) run time-series stability check to confirm this holds across 2024-2026 not just in aggregate, (2) implement difficulty-weighted Brier scoring, (3) use contested-market accuracy as the primary Phase 5 Gate 2 metric going forward.",
       "phase5_gate2": true,
-      "expires_at": "2026-09-03T00:00:00Z"
+      "expires_at": "2026-09-01T00:00:00Z"
     },
     {
       "id": "2026-06-05-CONTESTED-ACCURACY-2026-001",
