@@ -22,7 +22,7 @@ BACKUP_DIR="/home/parison/projects/first-repo/data/backups"
 TIMESTAMP=$(date +%Y-%m-%d)
 BACKUP_FILE="$BACKUP_DIR/polymarket_tracker_$TIMESTAMP.db"
 LOG_FILE="/home/parison/trading-swarm/logs/backup.log"
-KEEP_DAYS=7
+KEEP_DAYS=3
 
 # ── Create backup directory if needed ────────
 mkdir -p "$BACKUP_DIR"
