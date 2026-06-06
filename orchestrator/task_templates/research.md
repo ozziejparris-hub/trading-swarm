@@ -46,9 +46,10 @@ Document your SQL so the output is reproducible.
 Interpret the results. Be specific and quantitative.
 Where relevant, segment by ELO tier:
   - All traders (baseline)
-  - ELO > 1400 (active traders)
-  - ELO > 1800 (elite)
-  - ELO > 2175 (legendary)
+  - comprehensive_elo > 1400 (active traders)
+  - comprehensive_elo > 1800 (elite, with research_excluded=0 AND bot_type IS NULL)
+  - geo_elo >= 2175 AND geo_accuracy_pool = 1 (legendary — geo/elections research)
+    OR comprehensive_elo > 2175 (comprehensive legendary — health/bot monitoring only)
 
 ### Step 4 — Write finding
 Write a single structured finding file (see Output Format below).

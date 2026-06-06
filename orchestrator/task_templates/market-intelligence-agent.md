@@ -152,7 +152,7 @@ def polymarket_landscape_scan(db_path):
         SELECT m.condition_id, m.title, m.category,
                m.volume,
                COUNT(DISTINCT t.trader_address) as total_traders,
-               SUM(CASE WHEN tr.elo_score > 1800 THEN 1 ELSE 0 END)
+               SUM(CASE WHEN tr.comprehensive_elo > 1800 THEN 1 ELSE 0 END)
                    as elite_traders
         FROM markets m
         JOIN trades t ON t.market_id = m.market_id
