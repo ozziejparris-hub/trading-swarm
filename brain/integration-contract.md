@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.1 — 2026-06-05
+**Version:** v2.2 — 2026-06-06
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -318,6 +318,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 | 2026-06-02 | Contract updated to v1.9 (full audit). Section 3: geo_elo_oos column added to traders table; Pool C hardcode removed (query live). Section 4: geo_elo_active tier note added for STR-003. Section 5: STR-003 qualification now explicitly references geo_elo_active >= 2175; LH-001 (CONDITIONAL_PASS) and STR-004 (HYPOTHESIS) added. Section 6c: market_category Unknown issue documented (81% of trades, backfill in progress). Section 7: full step list updated to match actual daily_maintenance.py (15 daily steps + Sunday extras); recalculate_comprehensive_elo.py correctly noted as separate systemd timer. Section 9: expected ranges updated to reflect current pool sizes. | All agents |
 | 2026-06-05 | Contract v2.0: Pool B contamination warning added. 13K+ leaderboard traders with <20 resolved trades correctly included in Pool B by design but must be filtered explicitly in research queries. | All research queries — add `resolved_trades_count >= 20` explicitly |
 | 2026-06-05 | v2.1: accuracy_pool and geo_elo_oos documented as dropped. Section 6c corrected — verify_market_titles.py does not backfill categories. Pool A removed. | All agents |
+| 2026-06-06 | v2.2: Section 9 expected ranges updated to reflect post-audit pool sizes. Pool C 477 (was 272), LEGENDARY active 15 (was 13), clean markets 17,447. | All agents running startup validation |
 
 ---
 
@@ -330,24 +331,47 @@ executing any research queries. Alert if results are outside expected ranges.
 SELECT
   (SELECT COUNT(*)
    FROM traders
-   WHERE research_excluded = 0)            AS clean_pool,
+   WHERE research_excluded = 0)                          AS clean_pool,
+
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE research_excluded = 0
+     AND resolved_trades_count >= 20)                    AS true_research_pool,
 
   (SELECT COUNT(*)
    FROM markets
    WHERE resolved = 1
      AND (trade_gap_flag = 0
-          OR trade_gap_flag IS NULL))      AS clean_markets,
+          OR trade_gap_flag IS NULL))                    AS clean_markets,
+
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE geo_accuracy_pool = 1)                         AS pool_c,
+
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE geo_elo >= 2175
+     AND research_excluded = 0)                         AS legendary_base,
+
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE geo_elo_active >= 2175
+     AND research_excluded = 0)                         AS legendary_active,
 
   (SELECT journal_mode
-   FROM pragma_journal_mode())             AS wal_mode;
+   FROM pragma_journal_mode())                          AS wal_mode;
 ```
 
-**Expected results:**
+**Expected results (as of 2026-06-06 post-audit):**
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
-| `clean_pool` | ≈ 15,000 (grows daily as traders qualify) | < 10,000 (unexpected shrinkage — check integration-health.json alerts array) |
-| `clean_markets` | ≈ 16,800 (grows as markets resolve) | < 15,000 (markets missing) |
+| `clean_pool` | ≈ 15,083 (grows daily as traders qualify) | < 10,000 (unexpected shrinkage — check integration-health.json alerts array) |
+| `true_research_pool` | ≈ 1,712 (research_excluded=0 AND resolved_trades_count>=20) | < 1,500 (unexpected shrinkage) |
+| `clean_markets` | ≈ 17,447 (grows as markets resolve) | < 16,000 (markets missing) |
+| `pool_c` | ≈ 477 (geo_accuracy_pool=1) | < 400 (unexpected shrinkage) |
+| `legendary_base` | ≈ 46 (geo_elo >= 2175, research_excluded=0) | < 30 or > 200 (tier contamination or mass exclusion) |
+| `legendary_active` | ≈ 15 (geo_elo_active >= 2175, research_excluded=0) | < 5 (too few for STR-003 signals) or > 100 (recency decay not applied) |
 | `wal_mode` | `wal` | ≠ `wal` (WAL disabled — risk of read contention) |
 
 If any alert condition is triggered, write a `contract_violation` signal
