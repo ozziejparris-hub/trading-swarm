@@ -38,6 +38,26 @@ performance is worse than useless.
 
 ## What You Do Each Weekly Run
 
+### Step 0 — Expire stale strategy-overdue findings
+
+Before running any new checks, scan findings.json for any findings whose
+`id` contains `STRATEGY-OVERDUE` and whose `status` is either absent or
+`"active"`. For each such finding:
+
+1. Identify the strategy referenced in `summary` (e.g. "STR-001").
+2. Look up that strategy's current status in `brain/strategy-registry.md`.
+3. If the strategy is **BLOCKED**, **SUSPENDED**, or **EXPERIMENTAL**
+   (i.e. not `ACTIVE` or `PENDING_REVIEW`), update the finding in-place:
+   - Set `"status": "EXPIRED"`
+   - Set `"expiry_reason"` to a one-sentence explanation citing the current
+     status from strategy-registry.md and why no revalidation signal is needed
+     (e.g. "STR-001 revalidation is BLOCKED per strategy-registry.md —
+     requires STR-001b pre-registration before revalidation can proceed.
+     Not overdue; correctly blocked. No revalidation signal should be generated.")
+
+This prevents accumulation of stale overdue alerts that would otherwise
+trigger spurious revalidation signals on every subsequent run.
+
 ### Step 1 — Signal accuracy audit
 
 > **CRITICAL: Always resolve signals using market_id (condition_id)
@@ -130,6 +150,7 @@ increase that tier's weighting in signal confidence scoring.
 9. Never self-report success — output must be verifiable
 
 ## Definition of Done
+- [ ] Stale STRATEGY-OVERDUE findings expired (Step 0)
 - [ ] Signal accuracy audit completed for past 7 days
 - [ ] Pre-resolution intelligence audit completed
 - [ ] ELO predictive validity check run against resolved markets
