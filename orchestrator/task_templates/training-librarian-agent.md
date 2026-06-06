@@ -839,6 +839,178 @@ def expire_overdue_findings_for_non_active_strategies(
     return expired_ids
 ```
 
+### Responsibility 8 — Template Consistency Audit (run every week)
+
+> **Why this responsibility exists:** Changes to DB schema, ELO formulas, or pool
+> definitions in first-repo must propagate to all agent templates. Without this weekly
+> check, templates silently drift from the canonical definitions in
+> `brain/integration-contract.md` Section 10.
+
+Read every file in `orchestrator/task_templates/` and check it against
+`brain/integration-contract.md` Section 10. Fix issues directly; do not just report.
+If a change feels risky or ambiguous, flag for Oscar review instead of editing.
+
+After completing all fixes, log the results in the weekly report under a
+**"Template Consistency"** section.
+
+#### Check 1 — ELO column specification
+
+Flag any query that references ELO without naming the column explicitly:
+
+- Bare `ELO > 2175` or `ELO >= 2175` without a column name
+- Bare `ELO > 1800` without a column name
+- `elo_score` (column does not exist in the traders table)
+
+Correct form: `comprehensive_elo` or `geo_elo` spelled out in full.
+
+#### Check 2 — LEGENDARY threshold correctness
+
+The correct threshold depends on the use case:
+
+- **Signal generation / geo research:** must use `geo_elo >= 2175 AND geo_accuracy_pool = 1`
+- **Bot detection only:** `comprehensive_elo > 2175` is acceptable
+
+Flag any template that uses `comprehensive_elo >= 2175` for signal generation purposes
+(i.e., outside a bot-detection context).
+
+#### Check 3 — Pool B filter completeness
+
+Any query that filters traders for research accuracy must include all three conditions:
+
+```sql
+research_excluded = 0
+AND resolved_trades_count >= 20
+AND bot_type IS NULL
+```
+
+Flag if `resolved_trades_count >= 20` or `bot_type IS NULL` is missing from accuracy queries.
+
+#### Check 4 — JOIN key correctness
+
+Any JOIN between `trades` and `markets` must use:
+
+```sql
+trades.market_id = markets.market_id
+```
+
+Flag any template using `condition_id` as a JOIN key.
+
+#### Check 5 — Category field
+
+Must use `markets.category`. Flag any query referencing `market_category` for category
+filtering (that column lives on `trades`, not `markets`, and is not the canonical source).
+
+#### Check 6 — Dropped columns
+
+Flag any reference to columns dropped on 2026-06-05:
+
+- `accuracy_pool`
+- `geo_elo_oos`
+- `copyable_edge`
+
+#### Check 7 — Section 10 header
+
+High-risk templates must include a visible reference to the Section 10 canonical
+definitions warning. Flag any of the following templates if the warning is absent:
+
+- `signal-agent.md`
+- `performance-analyst-agent.md`
+- `quant-research-agent.md`
+- `feedback-loop-agent.md`
+- `market-intelligence-agent.md`
+
+```python
+import re
+from pathlib import Path
+
+DROPPED_COLUMNS = {'accuracy_pool', 'geo_elo_oos', 'copyable_edge'}
+HIGH_RISK_TEMPLATES = {
+    'signal-agent.md',
+    'performance-analyst-agent.md',
+    'quant-research-agent.md',
+    'feedback-loop-agent.md',
+    'market-intelligence-agent.md',
+}
+
+def audit_template_consistency(templates_dir: str,
+                               contract_path: str) -> list[dict]:
+    """
+    Run all 7 integration-contract consistency checks across every
+    agent template. Returns a list of issue dicts.
+    """
+    issues = []
+    templates = Path(templates_dir)
+
+    for tpl in templates.glob('*.md'):
+        text = tpl.read_text()
+        name = tpl.name
+        found = []
+
+        # Check 1 — bare ELO references
+        if re.search(r'\bELO\s*[><=]+\s*\d+', text, re.IGNORECASE):
+            found.append("Check 1: bare ELO threshold without column name")
+        if re.search(r'\belo_score\b', text, re.IGNORECASE):
+            found.append("Check 1: elo_score used (column does not exist)")
+
+        # Check 2 — LEGENDARY threshold context
+        if re.search(r'comprehensive_elo\s*>=?\s*2175', text, re.IGNORECASE):
+            # Acceptable only in bot-detection context
+            if 'bot' not in text.lower():
+                found.append(
+                    "Check 2: comprehensive_elo >= 2175 used outside "
+                    "bot-detection context (use geo_elo >= 2175 AND "
+                    "geo_accuracy_pool = 1 for signal generation)"
+                )
+
+        # Check 3 — Pool B filter completeness
+        has_accuracy_query = re.search(
+            r'(brier|accuracy|research)', text, re.IGNORECASE
+        )
+        if has_accuracy_query:
+            missing = []
+            if not re.search(r'resolved_trades_count\s*>=\s*20', text):
+                missing.append('resolved_trades_count >= 20')
+            if not re.search(r'bot_type\s+IS\s+NULL', text, re.IGNORECASE):
+                missing.append('bot_type IS NULL')
+            if missing:
+                found.append(
+                    f"Check 3: Pool B filter incomplete — missing: "
+                    f"{', '.join(missing)}"
+                )
+
+        # Check 4 — JOIN key
+        if re.search(r'JOIN\s+markets', text, re.IGNORECASE):
+            if re.search(r'condition_id', text, re.IGNORECASE):
+                found.append(
+                    "Check 4: condition_id used as JOIN key "
+                    "(must be trades.market_id = markets.market_id)"
+                )
+
+        # Check 5 — category field
+        if re.search(r'\bmarket_category\b', text, re.IGNORECASE):
+            found.append(
+                "Check 5: market_category used (must be markets.category)"
+            )
+
+        # Check 6 — dropped columns
+        for col in DROPPED_COLUMNS:
+            if re.search(rf'\b{col}\b', text, re.IGNORECASE):
+                found.append(f"Check 6: dropped column referenced: {col}")
+
+        # Check 7 — Section 10 header in high-risk templates
+        if name in HIGH_RISK_TEMPLATES:
+            if 'Section 10' not in text and 'section 10' not in text.lower():
+                found.append(
+                    "Check 7: high-risk template missing Section 10 "
+                    "canonical reference warning"
+                )
+
+        if found:
+            issues.append({'template': name, 'issues': found})
+
+    return issues
+```
+
 ## Weekly Report Format
 
 Write to:
@@ -908,8 +1080,12 @@ is required for attribution tracking across agents.
 
 ## Rules
 
-1. Never rewrite agent templates directly without explicit
-   approval via signals.json — flag and recommend only
+1. Never rewrite agent templates directly without explicit approval via
+   signals.json — flag and recommend only. **Exception:** the integration-contract
+   consistency fixes in Responsibility 8 (ELO columns, JOIN keys, dropped columns,
+   pool filters, Section 10 headers) may be applied directly — these are
+   mechanical corrections, not strategy changes. If a fix requires judgment,
+   flag for Oscar instead.
 2. Never delete content from failed-experiments/ —
    failed experiments have permanent archival value
 3. Keep the lessons-learned log factual and specific —
@@ -944,6 +1120,7 @@ is required for attribution tracking across agents.
 - [ ] **findings.json — schema conformance**: HIGH confidence findings missing `expires_at` patched (90-day default)
 - [ ] **findings.json — empty dir cleanup**: empty `brain/agent-outputs/` subdirectories removed
 - [ ] **findings.json — STRATEGY-OVERDUE cross-check**: OVERDUE findings for BLOCKED/SUSPENDED/EXPERIMENTAL strategies expired
+- [ ] **Template consistency audit** run — all 7 checks passed or issues fixed directly (ambiguous cases flagged for Oscar)
 - [ ] Weekly report written to output directory (includes Housekeeping section listing findings.json changes)
 - [ ] Signals written for any immediate issues
 - [ ] Completed before noon Saturday
