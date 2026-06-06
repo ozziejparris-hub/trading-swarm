@@ -541,6 +541,13 @@ with accumulated knowledge rather than from zero.
 - 2026-05-29: STR-003 anti-arb filter identified — high-ELO geo traders winning at arb ($0.95+ entries) inflate geo_elo but produce no directional signal. Proposed entry_price 0.10–0.80 filter. Pre-registration required before implementing.
 - 2026-05-29: Integration contract v1.7 — stale market exclusion policy formalised. Concurrent market count for STR-003 excludes unresolved markets with 2025-or-earlier context in titles.
 - 2026-05-29: RQ3.2 re-pre-registered — new framing: geo_elo LEGENDARY consensus (3+ traders agreeing, geopolitics) vs market price. Data timeline: July–September 2026.
+- 2026-06-01: QUALIFIED tier consensus accuracy: 71% over 24 non-sports markets (slight dip from 92% at n=12 May 11, but larger sample is more reliable). Signal durable.
+- 2026-06-03: ELO vs Market Price HIGH finding — contested markets (entry_price 0.35–0.65): LEGENDARY 79.2%, ELITE 81.4%, QUALIFIED 69.6% vs 50.3% baseline. +28.9/+31.1/+19.3pp edge. Strongest alpha evidence to date. Next step: time-series stability check 2024–2026.
+- 2026-06-05: Phase 5 Gate 2 MET — 3/3 HIGH confidence findings. Gates remaining: STR-002 ≥60% accuracy (0 resolved), RQ1.1 and RQ3.2 both passed (deferred Q3 2026).
+- 2026-06-05: RQ-CONTESTED-001 PASS — QUALIFIED tier 66.3% on 2026 contested markets (n=101), LEGENDARY only 49.2% (comprehensive_elo contamination confirmed). Reinforces geo_elo as correct qualifier for STR-003.
+- 2026-06-05: Pool C geo/elections full-year: 70.7% accuracy (n=444 resolved 2026 markets). Durable — not a short-window artifact.
+- 2026-06-05: LH-001 blocking item 2 FAILS — 4/7 insider_signals correct (57.1%), below 60% threshold. Remains watchlist trigger only.
+- 2026-06-06: STR003-005/006 mutual exclusivity gap identified — same trader holds YES on both Peru presidential candidates. STR-003 needs an inter-signal mutual exclusivity check for same-election markets. Score June 7.
 
 
 ## Formal Research Questions

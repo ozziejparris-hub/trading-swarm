@@ -94,6 +94,21 @@ This document grows more valuable every week.
   July 1 and RQ3.2 data timeline is July–September 2026.
   (Source: swarm-assessment 2026-05-29)
 
+- 2026-06-05: Phase 5 Gate 2 cleared — findings.json now contains 3+ HIGH-confidence
+  findings. Run #10 added RQ-CONTESTED-001 (QUALIFIED 66.3%, n=101) and Pool C geo
+  70.7% (n=444), tipping the count past the gate-2 threshold. Remaining gates: STR-002
+  accuracy ≥60% across ≥10 markets (0 resolved); RQ1.1 and RQ3.2 both passed (both
+  deferred to Q3 2026). Earliest Phase 5 entry remains Q3 2026.
+  (Source: feedback-loop-agent Run #10, 2026-06-05)
+
+- 2026-06-03: ELO consensus substantially outperforms market price on contested markets
+  (entry_price 0.35–0.65, ≥3 ELO-tracked traders). LEGENDARY: 79.2%, ELITE: 81.4%,
+  QUALIFIED: 69.6% vs market baseline 50.3%. Edge: +28.9/+31.1/+19.3pp respectively.
+  This is the strongest alpha evidence to date — a direct comparison of ELO-weighted
+  consensus against market price on the same markets. Priority: time-series stability
+  check across 2024–2026 before treating as a deployable signal.
+  (Source: feedback-loop-agent findings, 2026-06-03-ELO-VS-MARKET-001)
+
 ---
 
 ## Strategy Insights
@@ -174,12 +189,33 @@ This document grows more valuable every week.
   resolve and new traders earn LEGENDARY geo_elo.
   (Source: rq3-2-preregistration-2026-05-29.md)
 
+- 2026-06-05: RQ-CONTESTED-001 PASS — QUALIFIED tier achieves 66.3%
+  accuracy on 2026 contested markets (n=101), 11.1pp above 55.2% market
+  baseline. LEGENDARY tier only 49.2% (below random) — comprehensive_elo
+  contamination confirmed. This is the first formally approved HIGH finding
+  of the signal_direction_accuracy type. ELITE: 64.3% (n=98). The LEGENDARY
+  underperformance reinforces the case for geo_elo over comprehensive_elo
+  as the qualifying metric for STR-003.
+  (Source: feedback-loop-agent Run #10, 2026-06-05-CONTESTED-ACCURACY-2026-001)
+
 ---
 
 ## Calibration Findings
 *(measured accuracy of ELO predictions by tier and category)*
 
-- None yet — awaiting Phase 1 Brier score calibration.
+- 2026-06-03: ELO vs Market Price on contested markets (entry_price 0.35–0.65,
+  ≥3 ELO-tracked traders per market, excluding Sports/Crypto/Entertainment):
+  LEGENDARY: 79.2%, ELITE: 81.4%, QUALIFIED: 69.6%. Market baseline: 50.3%.
+  Edges of +28.9pp, +31.1pp, +19.3pp. Pool: research_excluded=0, bot_type IS NULL.
+  Action: run time-series stability check (2024–2026) before treating as deployable.
+  (Source: 2026-06-03-ELO-VS-MARKET-001)
+
+- 2026-06-05: Pool C geo/elections full-year accuracy: 70.7% (n=444 resolved 2026
+  markets). Extends prior 30-day finding — the 70%+ signal is durable across the
+  full 2026 dataset, not a short-window artifact.
+  (Source: 2026-06-05-POOL-C-GEO-FULL-2026-001)
+
+- None yet — Brier score calibration via RQ1.1 deferred to July 2026.
 
 - 2026-03-16: Baseline Brier scores established.
   897 traders have calibration data. Range: 0.08-0.89.
@@ -304,6 +340,28 @@ This document grows more valuable every week.
   returned empty results. Always test analysis scripts
   with explicit output checks before integrating.
 
+- 2026-06-06: Two findings in findings.json have empty summary fields
+  (2026-06-01-GEO-ELO-ACCURACY-001, 2026-06-03-ELO-VS-MARKET-001). The
+  detail blocks are present and correct, but the summary string is empty.
+  The ELO-VS-MARKET-001 finding is particularly important (LEGENDARY 79.2%,
+  ELITE 81.4% on contested markets). When populating findings.json, the
+  `summary` field must be filled before the entry can be consumed by agents
+  that read only the summary. Code-hygiene-agent should add a schema
+  validation step: any finding with `confidence = "HIGH"` and an empty
+  `summary` string should fail the immune system check.
+
+- 2026-06-06: STR003-005 and STR003-006 (Peru presidential election, June 7)
+  are logically contradictory — both are YES signals, but both Keiko Fujimori
+  and Rafael López Aliaga cannot win the same election. The generating trader
+  (geo_elo_active 3580, #1 in pool) holds YES positions on both candidates
+  simultaneously, apparently as a "one of them will win" hedge rather than
+  a directional conviction play. This exposes a gap in STR-003: the 95%
+  directional threshold applies per-market (trader holds ≥95% in YES on
+  each individual market) but does not check mutual exclusivity across markets.
+  A signal-agent or backtest-agent pre-filter should detect when two active
+  STR-003 YES signals are from the same election and flag as conflicting.
+  Outcome of both signals scores June 7: only one can be correct.
+
 ---
 
 ## What We Tried That Did Not Work
@@ -342,13 +400,25 @@ This document grows more valuable every week.
   asymmetric conviction rather than prediction? To investigate before
   next STR-004 signal is acted on. (Source: performance-analyst May 13)
 
+- 2026-06-05: LH-001 blocking item 2 FAILS — all 7 insider_signals
+  records scored (score_insider_signals.py): 4/7 correct (57.1%),
+  below the 60% accuracy threshold. LH-001 remains CONDITIONAL_PASS /
+  watchlist trigger only. Blocking item 2 is not cleared. Do not
+  promote to EXPERIMENTAL until blocking items 1 (5+ distinct events,
+  p<0.05 event-level), 2 (≥60% on resolved insider_signals), and 3
+  (Gamma API wallet creation date confirmed) are all cleared.
+  n=7 is also too small — 57.1% vs 60% threshold is within noise at
+  this sample size. Continue tracking as new insider_signals resolve.
+  (Source: feedback-loop-agent Run #10, 2026-06-05)
+
 ---
 
 ## Open Questions
 *(things the system does not yet know but needs to)*
 
 - What is the actual Brier score of ELO-based predictions
-  across resolved markets? (Phase 1 research target — RQ1.1 June 1)
+  across resolved markets? (Phase 1 research target — RQ1.1 deferred to July 1 2026;
+  n=10 qualifying traders vs 30 required minimum)
 - Which ELO tier is best calibrated by market category?
   (Geopolitics 92.3% is known; Economics unknown at n=4; Elections 46.7%)
 - Does the ELO calibration drift (28x legendary count) explain
@@ -402,3 +472,19 @@ This document grows more valuable every week.
 - Are the 39 new traders above ELO 3,500 (May 18) coordinated ARB_BOTs or legitimate
   new entrants? Must answer before any signal generation from the ELO 3,500+ range.
   Bring RQ0 forward from June 13. (Performance-analyst Flag 2, May 18)
+
+- Does the ELO vs Market Price edge on contested markets (LEGENDARY 79.2%, ELITE 81.4%,
+  2026-06-03) hold across 2024–2026 independently, or is it driven by one strong year?
+  Run time-series stability check across yearly cohorts before treating as deployable.
+  (Raised by 2026-06-03-ELO-VS-MARKET-001 action_recommendation)
+
+- Do the STR003-005/006 Peru signals (same trader, YES on both Keiko and López Aliaga)
+  resolve in a way that informs the "one of two candidates" hedge pattern? If the winning
+  candidate's YES bet scores correctly, it suggests the signal has value even for
+  multi-candidate hedges; if both are wrong (both lose), the strategy is exploiting
+  price inefficiency in a different way than the 95% directional conviction thesis assumes.
+  Score June 7 2026.
+
+- What is the mutual exclusivity rate among STR-003 YES signals? How often does the same
+  trader hold YES positions on multiple mutually exclusive outcomes in the same event?
+  This affects how signal accuracy is calculated for multi-outcome electoral markets.
