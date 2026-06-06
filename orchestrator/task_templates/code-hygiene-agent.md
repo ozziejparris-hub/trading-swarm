@@ -388,8 +388,8 @@ def get_trader_elo_scores(db_path, min_elo=0):
     conn = get_db_connection(db_path, read_only=True)
     import pandas as pd
     traders = pd.read_sql_query(
-        "SELECT address, elo_score, username FROM traders "
-        "WHERE elo_score >= ? ORDER BY elo_score DESC",
+        "SELECT address, comprehensive_elo, username FROM traders "
+        "WHERE comprehensive_elo >= ? ORDER BY comprehensive_elo DESC",
         conn,
         params=[min_elo]
     )

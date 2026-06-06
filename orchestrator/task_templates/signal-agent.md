@@ -166,7 +166,7 @@ Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL
 
 ## Signal Types You Look For
 1. Single legendary directional (STR-003 — EXPERIMENTAL) — a single
-   legendary trader (ELO >2175, research_excluded=0) with ≥95% of their
+   legendary trader (geo_elo_active >= 2175, research_excluded=0) with ≥95% of their
    capital on one side of a market (zero or near-zero opposing position).
    Qualifying criteria:
    - Minimum position: $2,000
@@ -243,9 +243,9 @@ required for attribution tracking across agents.
 
 ## Confidence Levels
 Use these consistently so the orchestrator can filter:
-- HIGH: 2+ independent legendary traders (ELO >2175, research_excluded=0)
+- HIGH: 2+ independent legendary traders (geo_elo_active >= 2175, research_excluded=0)
         on the same side, each meeting the ≥95% STR-003 directional threshold
-- MEDIUM: single legendary trader (ELO >2175, research_excluded=0) with
+- MEDIUM: single legendary trader (geo_elo_active >= 2175, research_excluded=0) with
           ≥95% capital on one side, min $2,000, max 2 markets active
 - LOW: single data point, worth logging but not alerting
 

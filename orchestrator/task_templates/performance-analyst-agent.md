@@ -103,6 +103,8 @@ def calculate_brier_scores(db_path, lookback_days=7):
             WHERE p.market_id = ?
             AND t.comprehensive_elo > 1800
             AND t.bot_type IS NULL
+            AND t.research_excluded = 0
+            AND t.resolved_trades_count >= 20
         """
         positions = pd.read_sql_query(
             positions_query,
