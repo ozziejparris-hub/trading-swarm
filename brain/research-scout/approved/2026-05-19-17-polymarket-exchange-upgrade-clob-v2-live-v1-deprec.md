@@ -9,3 +9,6 @@ CLOB V2 went live April 28 2026; legacy V1 SDKs and V1-signed orders are no long
 Audit any direct CLOB API integration for V1 references; update signing to V2; monitor pUSD migration impact on position and collateral tracking in first-repo.
 ## Verified
 Yes — fetched via Claude CLI web search
+
+## Implementation Status
+COMPLETE as of 2026-06-06. market-builder template updated with V2 warning block. integration-contract.md documents V2 breaking changes. No further action required.

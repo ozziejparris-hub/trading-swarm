@@ -414,6 +414,9 @@ released, priority evaluation — compatible API means
 zero integration cost. Sovereignty blocker remains
 until open weights confirmed.
 
+**DeepSeek V4-Flash (released April 2026 — Tier 2 candidate):**
+DeepSeek V4-Flash (284B/13B active, Apache 2.0, April 2026) — candidate for Tier 2 local model replacement. Benchmark against current Tier 2 when stable GGUF weights available. Check UD-Q2 GGUF size vs UM890 Pro 96GB headroom before deploying.
+
 **Qwen3-Coder-480B quantised locally:**
 Deferred — requires ~250GB RAM, not viable on current hardware
 (96GB UM890 Pro). Revisit if hardware is upgraded in 2027.

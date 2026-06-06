@@ -1423,3 +1423,7 @@ calculation to WHERE is_taker = 1.
 The Data API already returns transactionHash on every trade. Storing it costs 
 nothing and enables: maker/taker detection, duplicate trade detection improvement 
 (hash is a better dedup key than our current composite), and on-chain verification.
+
+## arXiv 2605.02287 — Insider Wallet Cross-Reference (May 2026)
+
+arXiv 2605.02287 (May 2026): 1,950 insider wallets identified with 69.9% win rate across 93K+ markets and 210,000 wallet-market pairs. Methodology overlaps with our geo_elo system. Future work: obtain the paper's wallet list (if published) and cross-reference against our Pool C. Could validate or improve our insider detection. Relevant to RQ3.2.
