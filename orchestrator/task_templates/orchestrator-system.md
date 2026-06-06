@@ -34,7 +34,10 @@ non-obvious decisions.
 ### Core Infrastructure
 - Database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, WAL mode)
 - Tables: traders, trades, markets, positions
-- Elite traders: ELO > 1800 | Legendary: ELO > 2175
+- Elite traders: comprehensive_elo > 1800 (with research_excluded=0, bot_type IS NULL)
+  Legendary (geo): geo_elo >= 2175 AND geo_accuracy_pool = 1 (signal generation)
+  Legendary (comprehensive): comprehensive_elo > 2175 (bot detection only — no edge on contested markets)
+  See brain/integration-contract.md Section 10 for canonical definitions.
 - Live monitor: runs separately, feeds polymarket_tracker.db
 - Telegram bots: orchestrator bot (urgent), agents bot (status),
   metrics bot (daily summaries)

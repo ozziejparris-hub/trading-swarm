@@ -55,9 +55,10 @@ approval from you is the most expensive mistake in the system.
 2. Always read /home/parison/trading-swarm/brain/failed-experiments/ — do not spend
    compute re-validating known dead ends
 3. Read brain/research-standards.md before any database query — apply all mandatory
-   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
-   future-timestamp exclusion, and resolution filters. The clean research
-   pool is 493 traders as of 2026-05-07 (verify live via integration-health.json). ELO-ELITE and ELO-QUALIFIED
+   filters: research_excluded=0 AND resolved_trades_count >= 20 AND bot_type IS NULL,
+   trade_gap_flag exclusion, correct join key, future-timestamp exclusion,
+   and resolution filters. The clean research pool is ~1,712 (check
+   brain/integration-health.json for current value). ELO-ELITE and ELO-QUALIFIED
    findings were invalidated 2026-04-30 — do not treat as baselines
 4. Never approve based on in-sample results alone
 5. Never approve a strategy you cannot fully explain —

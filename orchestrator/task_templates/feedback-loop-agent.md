@@ -103,7 +103,7 @@ For each pre-resolution signal on a now-resolved market:
 
 ### Step 3 — ELO predictive validity check
 Query the database for markets resolved in the past 7 days.
-For each resolved market where elite traders (ELO >= 1500)
+For each resolved market where elite traders (comprehensive_elo >= 1500 (QUALIFIED floor))
 had open positions before resolution:
 - Calculate the share-weighted consensus direction
   for each ELO tier (1500-1800, 1800-2175, >2175)
@@ -135,9 +135,10 @@ increase that tier's weighting in signal confidence scoring.
 ## Rules
 1. Never write to polymarket_tracker.db — read only, always
 2. Read brain/research-standards.md before any database query — apply all mandatory
-   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
-   future-timestamp exclusion, and resolution filters. The clean research pool
-   is 493 traders as of 2026-05-07 (verify live via integration-health.json). ELO-ELITE and ELO-QUALIFIED findings were invalidated
+   filters: research_excluded=0 AND resolved_trades_count >= 20 AND bot_type IS NULL,
+   trade_gap_flag exclusion, correct join key, future-timestamp exclusion,
+   and resolution filters. The clean research pool is ~1,712 (check
+   brain/integration-health.json for current value). ELO-ELITE and ELO-QUALIFIED findings were invalidated
    2026-04-30 — do not treat them as baselines without revalidating first.
 3. Never retire a strategy automatically — flag for human review
 4. Never change priorities.md directly — write recommendations

@@ -30,7 +30,10 @@ and hand off.
 
 - Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
 - Tables: traders, trades, markets, positions
-- Elite traders: ELO > 1800 | Legendary: ELO > 2175
+- Elite traders: comprehensive_elo > 1800 (with research_excluded=0, bot_type IS NULL)
+  Legendary (geo): geo_elo >= 2175 AND geo_accuracy_pool = 1 (signal generation)
+  Legendary (comprehensive): comprehensive_elo > 2175 (bot detection only — no edge on contested markets)
+  See brain/integration-contract.md Section 10 for canonical definitions.
 - Research notes: /home/parison/trading-swarm/brain/strategy-notes/ (read before starting)
 - Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/ (read before starting)
 - Research standards: /home/parison/trading-swarm/brain/research-standards.md (mandatory DB query filters — read before any query)
@@ -81,9 +84,10 @@ Output: microstructure_model.py + informed ratio estimates.
 2. Always read /home/parison/trading-swarm/brain/failed-experiments/ — do not repeat
    known dead ends, no matter how promising they look
 3. Read brain/research-standards.md before any database query — apply all mandatory
-   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
-   future-timestamp exclusion, and resolution filters. The clean research
-   pool is 493 traders as of 2026-05-07 (verify live via integration-health.json). ELO-ELITE and ELO-QUALIFIED
+   filters: research_excluded=0 AND resolved_trades_count >= 20 AND bot_type IS NULL,
+   trade_gap_flag exclusion, correct join key, future-timestamp exclusion,
+   and resolution filters. The clean research pool is ~1,712 (check
+   brain/integration-health.json for current value). ELO-ELITE and ELO-QUALIFIED
    findings were invalidated 2026-04-30 and require revalidation before use
 4. Every model must be written so backtest-agent can run it
    independently without your involvement
