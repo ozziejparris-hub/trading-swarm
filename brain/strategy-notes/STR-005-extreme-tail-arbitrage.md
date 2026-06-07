@@ -1,4 +1,4 @@
-# STR-004 — Extreme Tail Arbitrage (HYPOTHESIS)
+# STR-005 — Extreme Tail Arbitrage (HYPOTHESIS)
 
 ## Premise
 Markets systematically misprice extreme unlikely outcomes

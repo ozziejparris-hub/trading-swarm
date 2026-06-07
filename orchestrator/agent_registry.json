@@ -1,3 +1,20 @@
 {
-  "active_tasks": []
+  "active_tasks": [
+    {
+      "id": "signal-202606042140",
+      "agent": "signal-agent",
+      "description": "URGENT: Run STR-003 scan. Trader 0xecaa8806 now has geo_elo 3807 (was 2389 before 180-market resolution fix today). They hold active positions in 2026 Peruvian presidential election markets resolving ",
+      "branch": "feat/signal-202606042140",
+      "tmux_session": "signal-agent-signal-202606042140",
+      "model": "claude-sonnet-4-6 (Tier 3)",
+      "tier": "3",
+      "worktree": "/tmp/trading-swarm-worktrees/signal-202606042140",
+      "log": "/home/parison/trading-swarm/logs/agent_logs/signal-202606042140.log",
+      "started_at": "2026-06-04T21:40:57.491789",
+      "status": "respawning",
+      "retries": 1,
+      "pr": null,
+      "verified": false
+    }
+  ]
 }
