@@ -75,6 +75,7 @@ Using comprehensive_elo for signal generation produces no proven edge on contest
 - [x] feedback-loop-agent.md — ELO column names specified 2026-06-06
 - [x] market-intelligence-agent.md — elo_score → comprehensive_elo fixed 2026-06-06
 - [x] pre_resolution_intelligence.py — geo_elo threshold fixed 2026-06-06
+- [ ] monitoring/system_observer.py in first-repo — uses comprehensive_elo throughout AND uses elo >= 2500 for LEGENDARY badge (should be geo_elo >= 2175 AND geo_accuracy_pool = 1). Multiple query locations affected.
 **Reference:** integration-contract.md Section 10.1
 
 ---
@@ -121,6 +122,20 @@ Using research_excluded = 0 alone includes 13,000+ leaderboard traders with <20 
 195 traders inserted with discovery_source = 'external_seed' from vgregoire/polymarket-users HuggingFace dataset. These traders have no trade history in our DB yet — backfill worker will populate. Do not include in ELO calculations until resolved_trades_count >= 20.
 **No template changes required.**
 **Reference:** brain/strategy-notes/trader-discovery-overhaul-2026-06-06.md
+
+---
+
+### SCL-007 — system_observer.py alert thresholds not updated since pre-Phase 5
+**Date:** 2026-06-07
+**Type:** Configuration drift — non-breaking but produces misleading alerts
+**Description:**
+system_observer.py has two threshold issues:
+1. LEGENDARY tier badge uses comprehensive_elo >= 2500 (line ~1238). Per SCL-003 and integration-contract Section 10.1, LEGENDARY should use geo_elo >= 2175 AND geo_accuracy_pool = 1. comprehensive_elo is for bot detection only.
+2. Error rate thresholds (error_rate < 10 = healthy, < 30 = warning, >= 30 = critical) were set before backfill of large trader batches. During backfill of 100+ traders, DB lock contention produces 15-24 errors per 10 minutes which triggers CRITICAL alerts that are actually expected behaviour.
+**Affected files requiring fix:**
+- [ ] monitoring/system_observer.py (~line 1238) — LEGENDARY threshold: comprehensive_elo >= 2500 → geo_elo >= 2175 AND geo_accuracy_pool = 1
+- [ ] monitoring/system_observer.py (~lines 1989-1991) — error rate thresholds: consider raising CRITICAL from 30 to 50 during backfill periods, or add a backfill-mode suppression
+**Reference:** integration-contract.md Section 10.1, SCL-003
 
 ---
 
