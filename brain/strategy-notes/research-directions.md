@@ -1457,3 +1457,42 @@ Cross-reference Pool C avg_market_age_at_trade with their geo_elo scores:
 
 ## Defer Until
 After RQ-CONTESTED-001 (July 1) — this is a secondary validation question.
+
+## Preliminary Results (2026-06-07)
+Data: 317 Pool C traders found in vgregoire/polymarket-users external dataset. 4 LEGENDARY traders found.
+
+### Correlation table: geo_elo vs execution/behaviour metrics
+| Metric | Correlation with geo_elo | Interpretation |
+|--------|--------------------------|----------------|
+| pnl_taker_politics | +0.120 | Weak positive — higher geo_elo = more taker politics P&L |
+| frac_early_trader | +0.085 | Weak positive — slightly earlier entry |
+| frac_held_to_resolution | +0.082 | Weak positive — holds positions longer |
+| avg_market_age_at_trade | -0.002 | Essentially zero — entry timing not driving geo_elo |
+| frac_late_trader | -0.093 | Weak negative — less late entry |
+
+### LEGENDARY vs Non-LEGENDARY Pool C means (n=4 vs n=313)
+| Metric | LEGENDARY | Non-LEGENDARY | Difference |
+|--------|-----------|----------------|------------|
+| frac_early_trader | 0.161 | 0.182 | -0.021 (LEGENDARY enter slightly LATER) |
+| avg_market_age_at_trade | 62.5d | 63.8d | negligible |
+| frac_held_to_resolution | 0.978 | 0.891 | +0.087 (LEGENDARY hold to resolution more) |
+| pnl_taker_politics | $61,985 | $5,625 | +$56,360 (11x higher) |
+| frac_maker | 0.232 | 0.362 | -0.130 (LEGENDARY are less maker-oriented) |
+| frac_both_sides | 0.416 | 0.510 | -0.094 (LEGENDARY hold both sides less) |
+
+### Preliminary conclusion
+Della Vedova execution hypothesis does NOT strongly apply to our LEGENDARY cohort:
+- All correlations weak (under 0.12) — geo_elo is not strongly driven by execution timing
+- LEGENDARY traders enter slightly LATER than average Pool C — contradicts early-entry execution hypothesis
+- 11x higher taker politics P&L despite later entry — points toward genuine forecasting skill
+- frac_held_to_resolution = 0.978 for LEGENDARY — near-perfect conviction holding
+
+### Caveat
+n=4 LEGENDARY traders in external dataset is too small for robust conclusions. Results are directionally interesting but not statistically reliable. Full validation requires July 1 RQ-CONTESTED-001 results and more resolved geo markets.
+
+### New finding worth pre-registering
+frac_held_to_resolution as a potential STR-003 quality filter:
+- Current STR-003 has no holding conviction filter
+- External data suggests LEGENDARY traders hold to resolution at 97.8% rate vs 89.1% for rest of Pool C
+- Hypothesis: signals from traders with high frac_held_to_resolution have higher conviction and may be more reliable
+- Pre-register as RQ-CONVICTION-001 for July 1 analysis
