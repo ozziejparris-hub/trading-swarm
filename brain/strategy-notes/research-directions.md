@@ -1427,3 +1427,33 @@ nothing and enables: maker/taker detection, duplicate trade detection improvemen
 ## arXiv 2605.02287 — Insider Wallet Cross-Reference (May 2026)
 
 arXiv 2605.02287 (May 2026): 1,950 insider wallets identified with 69.9% win rate across 93K+ markets and 210,000 wallet-market pairs. Methodology overlaps with our geo_elo system. Future work: obtain the paper's wallet list (if published) and cross-reference against our Pool C. Could validate or improve our insider detection. Relevant to RQ3.2.
+
+---
+
+## RQ-EXEC-001 — Execution Timing vs Directional Accuracy
+**Pre-registered:** 2026-06-07
+**Source:** Della Vedova (2026) SSRN 6191618
+**Status:** FUTURE — requires entry price data analysis
+
+## Hypothesis
+Della Vedova (2026) shows execution timing dominates profitability over directional accuracy in Polymarket retail traders. Our geo_elo system measures directional accuracy. Research question: do our geo_elo LEGENDARY traders achieve their 79.6% accuracy advantage via early entry (good execution) or via superior forecasting that would persist regardless of entry timing?
+
+## Why This Matters
+If LEGENDARY accuracy is execution-driven (entering early when market prices are still wrong), then:
+- Our signals are valid but for a different reason than assumed
+- Entry timing should be incorporated into signal strength
+- Traders who enter late on correct calls should be downweighted
+
+If LEGENDARY accuracy is forecasting-driven:
+- Our current geo_elo approach is validated
+- Execution timing is orthogonal and can be ignored
+
+## Implementation
+Requires avg_market_age_at_trade from external dataset (available in user_features.parquet: avg_market_age_at_trade, frac_early_trader, frac_late_trader fields).
+
+Cross-reference Pool C avg_market_age_at_trade with their geo_elo scores:
+- If high geo_elo correlates with low avg_market_age_at_trade: execution-driven
+- If low correlation: forecasting-driven
+
+## Defer Until
+After RQ-CONTESTED-001 (July 1) — this is a secondary validation question.
