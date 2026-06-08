@@ -267,13 +267,13 @@ def run_accuracy_check(conn):
     print("\n[PHASE 3] Running accuracy check...")
     cur = conn.cursor()
 
-    # Check accuracy_pool=1 AND geo_elo IS NOT NULL overlap
-    cur.execute("SELECT COUNT(*) FROM traders WHERE accuracy_pool = 1 AND geo_elo IS NOT NULL")
+    # Check geo_accuracy_pool=1 AND geo_elo IS NOT NULL overlap
+    cur.execute("SELECT COUNT(*) FROM traders WHERE geo_accuracy_pool = 1 AND geo_elo IS NOT NULL")
     overlap = cur.fetchone()[0]
-    print(f"  accuracy_pool=1 AND geo_elo IS NOT NULL: {overlap}")
+    print(f"  geo_accuracy_pool=1 AND geo_elo IS NOT NULL: {overlap}")
     if overlap == 0:
         print("  NOTE: Zero overlap — geo_elo traders have <20 total resolved trades")
-        print("        (research_excluded=1) while accuracy_pool requires research_excluded=0.")
+        print("        (research_excluded=1) while geo_accuracy_pool requires research_excluded=0.")
         print("        Running accuracy check on all geo_elo holders instead.")
 
     # Load positions for geo_elo holders on resolved geo markets
@@ -404,9 +404,9 @@ def write_handoff(dist, accuracy):
         },
         "phase3_accuracy": {
             "note": (
-                "accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. "
+                "geo_accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. "
                 "Reason: geo_elo holders have <20 total resolved trades (research_excluded=1); "
-                "accuracy_pool requires research_excluded=0 (>=20 resolved trades). "
+                "geo_accuracy_pool requires research_excluded=0 (>=20 resolved trades). "
                 "Accuracy reported on all geo_elo holders."
             ),
             "accuracy_pool_geo_overlap": accuracy["accuracy_pool_geo_overlap"],
@@ -494,9 +494,9 @@ def write_findings_md(dist, accuracy):
         "",
         "### Accuracy_pool overlap",
         "",
-        f"- `accuracy_pool=1 AND geo_elo IS NOT NULL` = **{accuracy['accuracy_pool_geo_overlap']} traders**",
+        f"- `geo_accuracy_pool=1 AND geo_elo IS NOT NULL` = **{accuracy['accuracy_pool_geo_overlap']} traders**",
         "- Root cause: geo_elo holders have <20 total resolved trades (`research_excluded=1`);",
-        "  `accuracy_pool` requires `research_excluded=0` (≥20 resolved trades).",
+        "  `geo_accuracy_pool` requires `research_excluded=0` (≥20 resolved trades).",
         "- Resolution: accuracy check run on all geo_elo holders (435 traders).",
         "- This is a data reality, not a bug: geo-specialists trade only in geo markets",
         "  and accumulate few total resolved trades relative to general traders.",
@@ -548,7 +548,7 @@ def write_findings_md(dist, accuracy):
         "- Oscar to review LEGENDARY/ELITE tier accuracy vs comprehensive_elo baseline.",
         "- If geo_elo LEGENDARY accuracy > 50% (outperforms comprehensive_elo LEGENDARY),",
         "  proceed to Phase 4 signal generation using geo_elo tiers.",
-        "- Consider defining a geo-specific research pool to enable accuracy_pool crossover.",
+        "- Consider defining a geo-specific research pool to enable geo_accuracy_pool crossover.",
     ]
 
     with open(path, "w") as f:
@@ -609,7 +609,7 @@ def update_findings_json(dist, accuracy):
             "accuracy_by_tier": {k: fmt_tier(v) for k, v in acc.items()},
             "accuracy_by_tier_directional": {k: fmt_tier(v) for k, v in acc_dir.items()},
             "accuracy_pool_overlap_note": (
-                "accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. "
+                "geo_accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. "
                 "Geo specialists have <20 total resolved trades (research_excluded=1). "
                 "Accuracy computed on all 435 geo_elo holders."
             ),
@@ -625,7 +625,7 @@ def update_findings_json(dist, accuracy):
         "expires_at": expires,
         "limitations": [
             "In-sample accuracy: ELO and accuracy computed on same resolved market pool.",
-            "accuracy_pool=1 overlap=0: structural separation prevents out-of-sample validation.",
+            "geo_accuracy_pool=1 overlap=0: structural separation prevents out-of-sample validation.",
             "geo_directionality subset n=2/6 for ELITE/QUALIFIED tiers — too small for conclusions.",
             "Max ELO 5464 suggests possible outlier; verify trader has plausible geo trade history.",
         ],

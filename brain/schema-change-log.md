@@ -50,6 +50,7 @@ Any query referencing these columns will throw "no such column" errors.
 **Affected templates (requiring fix):**
 - [x] signal-agent.md — accuracy_pool removed 2026-06-06
 - [x] integration-contract.md Section 3 — documented 2026-06-06
+- [x] scripts/calculate_geo_elo.py — accuracy_pool → geo_accuracy_pool fixed 2026-06-08
 - [ ] backtest-agent.md — verify no references
 - [ ] quant-research.md — verify no references
 - [ ] feedback-loop-agent.md — verify no references
