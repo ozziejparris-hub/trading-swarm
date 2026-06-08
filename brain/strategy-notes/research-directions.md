@@ -1496,3 +1496,36 @@ frac_held_to_resolution as a potential STR-003 quality filter:
 - External data suggests LEGENDARY traders hold to resolution at 97.8% rate vs 89.1% for rest of Pool C
 - Hypothesis: signals from traders with high frac_held_to_resolution have higher conviction and may be more reliable
 - Pre-register as RQ-CONVICTION-001 for July 1 analysis
+
+---
+
+## RQ-PNLGATE-001 — P&L Gate as Secondary STR-003 Filter
+**Pre-registered:** 2026-06-08
+**Status:** HYPOTHESIS — requires external dataset cross-reference
+
+### Motivation
+geo_elo correlates with pnl_taker_politics at only +0.138 (Pool C, n=337 traders with external data).
+Della Vedova (2026) shows directional accuracy and profitability share <1% variance.
+A trader can have high geo_elo accuracy but still lose money due to poor execution timing or small position sizes.
+
+### Hypothesis
+Adding a secondary filter — pnl_taker_politics > $10,000 from the vgregoire external dataset — to STR-003 qualification would improve signal quality without over-filtering, by excluding accurate-but-unprofitable traders.
+
+### Data Available
+- vgregoire/polymarket-users pnl_taker_politics: /home/parison/projects/first-repo/data/external/user_pnl_summary.parquet
+- Coverage: Nov 2022 – Mar 2026 (V1 exchange only)
+- Pool C traders with external data: 337/402
+
+### Implementation Path
+1. Cross-reference current STR-003 qualifying traders against pnl_taker_politics
+2. Test: what % of Pool C LEGENDARY traders pass pnl_taker_politics > $10K threshold?
+3. Backtest: do signals from pnl_taker_politics-qualified traders have higher accuracy than unfiltered signals?
+
+### Decision Gate
+Do NOT add this filter to STR-003 until:
+- Peru signals scored (STR003-005, STR003-006)
+- At least 30 geo markets resolved with LEGENDARY consensus in 2026
+- RQ-EXEC-001 results reviewed (July 1)
+
+### Note on Architecture
+P&L should NOT be incorporated into geo_elo formula. geo_elo stays pure accuracy. P&L gate would be an additional STR-003 criterion, not a formula change.
