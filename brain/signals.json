@@ -1,6 +1,35 @@
 {
   "signals": [
     {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "contract_violation",
+      "confidence": "HIGH",
+      "payload": {
+        "metric": "legendary_base",
+        "current_value": 25,
+        "alert_threshold": 30,
+        "expected_value": 46,
+        "description": "legendary_base (geo_elo >= 2175, research_excluded=0) dropped from 47 (June 1) to 25 (June 8), below the Section 9 alert threshold of 30. Total geo_elo >= 2175 traders = 56 but 31 are now research_excluded=1 and 7 have bot_type set. Cause unknown — possibly Sunday June 7 recalculate_comprehensive_elo.py run or update_research_exclusions.py batch change. Note: legendary_active (geo_elo_active >= 2175) = 13 UNCHANGED — STR-003 signal capacity unaffected.",
+        "action_required": "Query first-repo traders WHERE geo_elo >= 2175 ORDER BY research_excluded DESC to identify newly excluded traders. Confirm cause before next STR-003 signal scan.",
+        "run_id": "analyst-20260608"
+      },
+      "timestamp": "2026-06-08T06:00:02Z",
+      "status": "pending"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
+        "message": "📊 *Weekly Performance Report — 2026-06-08*\n─────────────────────────────\nBrier (Geopolitics 30d): 0.2400 ✅ (beats naive)\nDirectional Accuracy (geo): 71.3% (n=108)\nPool C validated: 70.7% full 2026 (n=444)\n\n🚨 Flags: [1 critical] [2 warnings]\nTop flag: legendary_base dropped 47→25 (below alert threshold 30). STR-003 capacity (13 active) unaffected but cause needs investigation.\n\n✅ Gate 2 CONFIRMED: 3/3 HIGH findings met (Jun 5)\n⏳ Gate 3: 50%/4 markets (STALLED 29+ days)\n\nFull report: brain/agent-outputs/performance-analyst/2026-06-08-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260608"
+      },
+      "timestamp": "2026-06-08T06:00:02Z",
+      "status": "pending"
+    },
+    {
       "from": "signal-agent",
       "to": "orchestrator",
       "type": "directional_signal_detected",
