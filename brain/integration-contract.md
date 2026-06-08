@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.4 — 2026-06-06
+**Version:** v2.5 — 2026-06-08
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -313,7 +313,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 | Pool | Filter | Size (approx) | Use for |
 |------|--------|---------------|---------|
 | Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ~1,712 | All accuracy calculations, ELO research |
-| Pool C (geo) | `geo_accuracy_pool = 1` | ~477 | geo_elo accuracy, STR-003 qualification |
+| Pool C (geo) | `geo_accuracy_pool = 1` | ~402 (recovering — see Section 9 note) | geo_elo accuracy, STR-003 qualification |
 | ⚠️ WARNING | `research_excluded = 0` alone | ~15,083 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
 
 ### 10.3 — Agent Output Paths
@@ -345,7 +345,7 @@ AND >= 95% of trader's capital on one side
 | Metric | Limitation | Impact |
 |--------|-----------|--------|
 | `comprehensive_elo` | 2.3x accumulation bias toward easy-market specialists | Do not use for signal generation on contested markets |
-| `geo_elo` | Only 477 traders in Pool C, thin 2026 sample (~10 contested markets) | Validate July 1 per RQ-CONTESTED-001 |
+| `geo_elo` | Pool C temporarily 402 (down from 477) — 809 traders have NULL geo_directionality_score due to hydration gap; will recover as hydrate_stub_markets.py populates positions data | Validate July 1 per RQ-CONTESTED-001 |
 | `research_excluded = 0` alone | Includes 13K+ leaderboard traders with <20 resolved trades | Always add `AND resolved_trades_count >= 20` |
 | `trades.market_category` | 81% Unknown — denormalized field | Always use `markets.category` via JOIN |
 
@@ -377,6 +377,7 @@ AND >= 95% of trader's capital on one side
 | 2026-06-06 | v2.2: Section 9 expected ranges updated to reflect post-audit pool sizes. Pool C 477 (was 272), LEGENDARY active 15 (was 13), clean markets 17,447. | All agents running startup validation |
 | 2026-06-06 | v2.3: Section 10 added — Canonical Agent Definitions. Single source of truth for ELO thresholds, pool filters, output paths, STR-003 criteria, and known metric limitations. | All agents |
 | 2026-06-06 | v2.4: Section 9 updated — 195 external_seed traders added from vgregoire/polymarket-users parquet. Three Tier 1 directional traders added via add_watched_trader.py (Nocthyra, Calythius, anonymous). /holders endpoint identified as superior discovery mechanism for resolved markets — Layer 3 implementation pending. | All agents running startup validation |
+| 2026-06-08 | v2.5: Section 9 updated — Pool C temporarily 402 (down from ~477). geo_directionality_score recalculated from clean state; 809 traders with geo_elo have NULL directionality due to incomplete positions table coverage for newly hydrated markets. Pool C will recover and grow as hydrate_stub_markets.py pipeline populates positions data. LEGENDARY active 11 (down from 15, same cause). geo_legendary total (geo_elo >= 2175): 44. Three scoring pipeline blockers fixed for external_seed traders. calculate_geo_elo.py SCL-002 propagation fixed. | All agents running startup validation |
 
 ---
 
@@ -420,16 +421,16 @@ SELECT
    FROM pragma_journal_mode())                          AS wal_mode;
 ```
 
-**Expected results (as of 2026-06-06 post-audit):**
+**Expected results (as of 2026-06-08):**
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
 | `clean_pool` | ≈ 15,083 (grows daily as traders qualify). **2026-06-06: 195 traders added via external_seed (vgregoire/polymarket-users parquet). These are directional politics specialists with pnl_taker_politics > $10K, frac_both_sides < 0.25, frac_maker < 0.3, frac_politics > 0.5, n_markets >= 15, last_trade >= 2025-06-01. Trade histories pending backfill. ELO scores will populate over next 24-48 hours.** | < 10,000 (unexpected shrinkage — check integration-health.json alerts array) |
 | `true_research_pool` | ≈ 1,712 (research_excluded=0 AND resolved_trades_count>=20). **2026-06-06: 195 external_seed traders not yet counted here — trade histories pending backfill, resolved_trades_count will not reach ≥20 threshold until backfill completes.** | < 1,500 (unexpected shrinkage) |
 | `clean_markets` | ≈ 17,447 (grows as markets resolve) | < 16,000 (markets missing) |
-| `pool_c` | ≈ 477 (geo_accuracy_pool=1) | < 400 (unexpected shrinkage) |
-| `legendary_base` | ≈ 46 (geo_elo >= 2175, research_excluded=0) | < 30 or > 200 (tier contamination or mass exclusion) |
-| `legendary_active` | ≈ 15 (geo_elo_active >= 2175, research_excluded=0) | < 5 (too few for STR-003 signals) or > 100 (recency decay not applied) |
+| `pool_c` | ≈ 402 (geo_accuracy_pool=1). **2026-06-08: temporarily reduced from ~477. geo_directionality_score was recalculated from a clean state on 2026-06-08; 809 traders with geo_elo have NULL directionality due to incomplete positions table coverage for newly hydrated markets. Pool C will recover and grow beyond 477 as hydrate_stub_markets.py pipeline populates positions data.** | < 350 (unexpected shrinkage beyond hydration shortfall) |
+| `legendary_base` | ≈ 44 (geo_elo >= 2175, research_excluded=0) | < 30 or > 200 (tier contamination or mass exclusion) |
+| `legendary_active` | ≈ 11 (geo_elo_active >= 2175, research_excluded=0). **2026-06-08: temporarily down from 15 — same cause as Pool C reduction. geo_directionality_score NULL for 809 traders due to hydration gap; affected traders' geo_elo_active will recover as positions data is populated.** | < 5 (too few for STR-003 signals) or > 100 (recency decay not applied) |
 | `wal_mode` | `wal` | ≠ `wal` (WAL disabled — risk of read contention) |
 
 If any alert condition is triggered, write a `contract_violation` signal
