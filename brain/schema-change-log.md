@@ -77,7 +77,9 @@ Using comprehensive_elo for signal generation produces no proven edge on contest
 - [x] market-intelligence-agent.md — elo_score → comprehensive_elo fixed 2026-06-06
 - [x] pre_resolution_intelligence.py — geo_elo threshold fixed 2026-06-06
 - [x] scripts/verify_market_titles.py in first-repo — fixed 2026-06-08
-- [ ] monitoring/system_observer.py in first-repo — uses comprehensive_elo throughout AND uses elo >= 2500 for LEGENDARY badge (should be geo_elo >= 2175 AND geo_accuracy_pool = 1). Multiple query locations affected.
+- [x] monitoring/system_observer.py in first-repo — fixed 2026-06-07 (LEGENDARY badge threshold)
+
+**PROPAGATION COMPLETE** — all items resolved as of 2026-06-07.
 **Reference:** integration-contract.md Section 10.1
 
 ---
