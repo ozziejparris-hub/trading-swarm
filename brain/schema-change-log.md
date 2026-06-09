@@ -143,6 +143,18 @@ system_observer.py has two threshold issues:
 
 ---
 
+### SCL-008 — legendary_positions_scan.py canonical filters
+**Date:** 2026-06-09
+**Type:** New script — canonical definitions enforced
+**Description:**
+New script uses geo_elo_active >= 2175 AND geo_accuracy_pool = 1 for LEGENDARY (not comprehensive_elo).
+Also uses research_excluded = 0 AND bot_type IS NULL for pool filter (full Pool B contract).
+Markets where Gamma API returns no price are skipped (not reported with stale data).
+MIXED_SIGNAL flag added: both_sides_ratio > 0.3 indicates LEGENDARY traders hold both sides.
+**Affected:** scripts/legendary_positions_scan.py — PROPAGATION COMPLETE on creation.
+
+---
+
 ## Pending verification items
 These templates have not been fully audited against all SCL entries:
 - backtest-agent.md — SCL-001, SCL-002, SCL-004 unverified
