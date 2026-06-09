@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.5 — 2026-06-08
+**Version:** v2.6 — 2026-06-09
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -328,6 +328,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 | research-scout-agent | brain/research-scout/ | NO — external reference only |
 | signal-agent | brain/signals.json | NO — signal bus only |
 | backtest-agent | brain/agent-outputs/backtest-agent/ | NO — strategy validation |
+| legendary-positions-scan | brain/agent-outputs/positions-scan/ | NO — standalone research tool |
 
 ### 10.4 — STR-003 Qualification Criteria (authoritative)
 ```
@@ -377,6 +378,7 @@ AND >= 95% of trader's capital on one side
 | 2026-06-06 | v2.2: Section 9 expected ranges updated to reflect post-audit pool sizes. Pool C 477 (was 272), LEGENDARY active 15 (was 13), clean markets 17,447. | All agents running startup validation |
 | 2026-06-06 | v2.3: Section 10 added — Canonical Agent Definitions. Single source of truth for ELO thresholds, pool filters, output paths, STR-003 criteria, and known metric limitations. | All agents |
 | 2026-06-06 | v2.4: Section 9 updated — 195 external_seed traders added from vgregoire/polymarket-users parquet. Three Tier 1 directional traders added via add_watched_trader.py (Nocthyra, Calythius, anonymous). /holders endpoint identified as superior discovery mechanism for resolved markets — Layer 3 implementation pending. | All agents running startup validation |
+| 2026-06-09 | v2.6: legendary_positions_scan.py added. Weekly Monday 07:30 UTC cron. Covers all open geo/elections markets with LEGENDARY trader positions, regardless of resolution date. Filters: stale prices excluded, overdue markets excluded (>7 day grace). Training-librarian Responsibility 9 added. |
 | 2026-06-08 | v2.5: Section 9 updated — Pool C temporarily 402 (down from ~477). geo_directionality_score recalculated from clean state; 809 traders with geo_elo have NULL directionality due to incomplete positions table coverage for newly hydrated markets. Pool C will recover and grow as hydrate_stub_markets.py pipeline populates positions data. LEGENDARY active 11 (down from 15, same cause). geo_legendary total (geo_elo >= 2175): 44. Three scoring pipeline blockers fixed for external_seed traders. calculate_geo_elo.py SCL-002 propagation fixed. | All agents running startup validation |
 
 ---

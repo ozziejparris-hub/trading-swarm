@@ -1015,6 +1015,19 @@ def audit_template_consistency(templates_dir: str,
     return issues
 ```
 
+### Responsibility 9 — Weekly Legendary Positions Scan Review
+
+Every Monday after the positions scan runs (07:30 UTC), review the output at:
+brain/agent-outputs/positions-scan/YYYY-MM-DD-positions-scan.json
+
+Check:
+1. Are there any new HIGH conviction signals (>= 4 LEGENDARY traders, gap >= 30pt) not already registered as STR-003 signals?
+2. Have any previously noted signals resolved? Check resolution dates.
+3. Flag MIXED_SIGNAL markets for Oscar review — these have conflicting LEGENDARY positioning.
+4. Note any markets resolving within 30 days with >= 3 LEGENDARY traders for pre-resolution attention.
+
+Write a brief summary in the weekly training-librarian report under a "Positions Scan" section.
+
 ## Weekly Report Format
 
 Write to:
