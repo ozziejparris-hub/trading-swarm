@@ -1579,3 +1579,37 @@ Current DB has market titles sufficient for keyword-based subcategory tagging. ~
 
 ### Decision Gate
 Defer until July 1. Lower priority than RQ-CONTESTED-001 and RQ-POSSIZE-001.
+
+---
+
+## RQ-SCI-001 — Signal Credibility Index for LEGENDARY Position Signals
+**Pre-registered:** 2026-06-09
+**Status:** HYPOTHESIS — implemented in scripts/signal_credibility.py, awaiting validation
+**Defer until:** Validation can run now on historical resolved markets (read-only); no live trading dependency
+
+### Motivation
+2026-06-09-POSITIONS-ANALYSIS-001 showed raw LEGENDARY trader count overcounts conviction: of 7 traders on the Iran regime market, only 3 had genuine open net positions (the rest exited, switched sides, net-zero news-traded, or followed late). A credibility score built on net positions should separate trustworthy signals from headcount artefacts. Methodology adapted from arXiv 2604.24147 (Signal Credibility Index: variance-ratio directionality, two-sidedness diagnostic, trader-concentration adjustment).
+
+### Hypothesis
+Signal Credibility Score (SCS) > 70 predicts better signal accuracy than the raw filter of trader count >= 2. Accuracy is monotonic across credibility tiers: HIGH (>=70) > MEDIUM (40-69) > LOW (<40).
+
+### SCS Definition (as implemented in first-repo scripts/signal_credibility.py)
+- Component 1 — Net Position Conviction (0-40): net_position per trader = signed YES shares minus signed NO shares (BUY minus SELL per leg); traders with abs(net_position) > 1.0 are net-committed; score = 40 × net_consensus², where net_consensus = fraction of net-committed traders agreeing on direction
+- Component 2 — Two-Sidedness Penalty (0 to -20): -20 × min(yes_cap, no_cap)/max(yes_cap, no_cap) over net capital by direction
+- Component 3 — Entry Timing Alpha (0-20): current price of trader's side minus capital-weighted avg entry price; >0.20 → 20, 0.10-0.20 → 10, 0-0.10 → 5, <0 → 0; averaged over net-committed traders
+- Component 4 — Conviction Depth (0-20): 20 × min(relative_size, 2)/2 where relative_size = this-market BUY notional / trader's avg per-market BUY notional; averaged over net-committed traders
+- SCS = clamp(C1+C2+C3+C4, 0, 100). Tiers: HIGH >= 70, MEDIUM 40-69, LOW < 40.
+- Uses canonical LEGENDARY definition (geo_elo_active >= 2175 AND geo_accuracy_pool = 1 AND research_excluded = 0 AND bot_type IS NULL) per integration-contract.md Section 10.
+
+### Validation Plan
+1. Identify all resolved geo/elections markets where LEGENDARY traders held positions (apply Section 2 mandatory filters: resolved = 1, winning_outcome valid, trade_gap_flag clean, timestamp <= now)
+2. Compute SCS for each at a frozen pre-resolution snapshot (entry prices and net positions from trades; market price as of snapshot)
+3. Compute signal accuracy (net_direction == winning_outcome) per credibility tier: HIGH vs MEDIUM vs LOW
+4. Compare against baseline: accuracy of raw trader count >= 2 consensus (current scan filter)
+5. Success criterion: HIGH-tier accuracy exceeds baseline accuracy AND tiers are ordered HIGH > MEDIUM > LOW; minimum 20 resolved markets per Phase 5 finding standards
+
+### Note on Timing Alpha Lookahead Risk
+Component 3 uses the current market price, which at validation time on resolved markets converges toward the outcome — naively computing it post-resolution leaks the answer. Validation MUST use a price snapshot from before resolution (e.g. 7 days prior, matching pre-resolution scan cadence), not the final price.
+
+### Decision Gate
+Do NOT use SCS tiers to gate live signals until validation completes on >= 20 resolved markets with LEGENDARY positions. Until then SCS is annotation-only in the positions scan output.

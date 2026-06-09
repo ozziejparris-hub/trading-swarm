@@ -27,7 +27,16 @@
       "current_price_yes": 0.2945,
       "gap_pt": 70.5,
       "days_to_resolution": 116.3,
-      "resolution_date": "2026-10-04"
+      "resolution_date": "2026-10-04",
+      "signal_credibility_score": 47.2,
+      "signal_credibility_tier": "MEDIUM",
+      "signal_credibility_components": {
+        "net_position_conviction": 40.0,
+        "two_sidedness_penalty": -0.0,
+        "entry_timing_alpha": 0.0,
+        "conviction_depth": 7.2
+      },
+      "net_committed_traders": 3
     },
     {
       "rank": 2,
@@ -45,7 +54,16 @@
       "current_price_yes": 0.99,
       "gap_pt": 99.0,
       "days_to_resolution": 51.3,
-      "resolution_date": "2026-07-31"
+      "resolution_date": "2026-07-31",
+      "signal_credibility_score": 43.2,
+      "signal_credibility_tier": "MEDIUM",
+      "signal_credibility_components": {
+        "net_position_conviction": 40.0,
+        "two_sidedness_penalty": -0.0,
+        "entry_timing_alpha": 0.0,
+        "conviction_depth": 3.2
+      },
+      "net_committed_traders": 2
     },
     {
       "rank": 3,
@@ -63,7 +81,16 @@
       "current_price_yes": 1.0,
       "gap_pt": 69.3,
       "days_to_resolution": null,
-      "resolution_date": ""
+      "resolution_date": "",
+      "signal_credibility_score": 29.6,
+      "signal_credibility_tier": "LOW",
+      "signal_credibility_components": {
+        "net_position_conviction": 10.0,
+        "two_sidedness_penalty": -1.1,
+        "entry_timing_alpha": 10.0,
+        "conviction_depth": 10.7
+      },
+      "net_committed_traders": 2
     },
     {
       "rank": 4,
@@ -81,7 +108,16 @@
       "current_price_yes": 0.175,
       "gap_pt": 68.9,
       "days_to_resolution": 146.3,
-      "resolution_date": "2026-11-03"
+      "resolution_date": "2026-11-03",
+      "signal_credibility_score": 10.9,
+      "signal_credibility_tier": "LOW",
+      "signal_credibility_components": {
+        "net_position_conviction": 10.0,
+        "two_sidedness_penalty": -3.1,
+        "entry_timing_alpha": 0.0,
+        "conviction_depth": 4.1
+      },
+      "net_committed_traders": 2
     },
     {
       "rank": 5,
@@ -99,7 +135,16 @@
       "current_price_yes": 0.2565,
       "gap_pt": 25.6,
       "days_to_resolution": 881.3,
-      "resolution_date": "2028-11-07"
+      "resolution_date": "2028-11-07",
+      "signal_credibility_score": 53.7,
+      "signal_credibility_tier": "MEDIUM",
+      "signal_credibility_components": {
+        "net_position_conviction": 40.0,
+        "two_sidedness_penalty": -0.0,
+        "entry_timing_alpha": 0.0,
+        "conviction_depth": 13.7
+      },
+      "net_committed_traders": 2
     }
   ]
 }
