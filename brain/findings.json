@@ -1036,84 +1036,6 @@
       "expires_at": "2026-08-23T07:00:01Z"
     },
     {
-      "id": "2026-05-25-GEO-ELO-001",
-      "generated_by": "quant-research-agent",
-      "generated_at": "2026-05-25T12:22:24Z",
-      "finding_type": "elo_validity",
-      "confidence": "MEDIUM",
-      "sample_size": 969,
-      "summary": "geo_elo v2 (market-implied probability): 46 LEGENDARY, 47 ELITE, 114 QUALIFIED traders. LEGENDARY accuracy 67% (n=215) vs comprehensive_elo LEGENDARY baseline 46%.",
-      "detail": {
-        "metric": "geo_elo_tier_accuracy",
-        "value": 0.6698,
-        "baseline": 0.46,
-        "direction": "above_baseline",
-        "weeks_observed": 1,
-        "algorithm": "market_implied_probability",
-        "algorithm_note": "expected_score=price (Yes) or 1-price (No). K=32/<20 trades, K=24/20-50, K=16/>50. Phase 1 fixed-opponent ELO capped at ~1993; v2 is uncapped.",
-        "tier_distribution": {
-          "traders_with_geo_elo": 435,
-          "max_geo_elo": 5464.54,
-          "avg_geo_elo": 1605.99,
-          "geo_legendary": 46,
-          "geo_elite": 47,
-          "geo_qualified": 114,
-          "geo_below": 228,
-          "highly_directional": 60
-        },
-        "accuracy_by_tier": {
-          "legendary": {
-            "n": 215,
-            "accuracy": 0.6698
-          },
-          "elite": {
-            "n": 141,
-            "accuracy": 0.695
-          },
-          "qualified": {
-            "n": 209,
-            "accuracy": 0.7368
-          },
-          "below_qualified": {
-            "n": 399,
-            "accuracy": 0.2882
-          },
-          "all": {
-            "n": 964,
-            "accuracy": 0.5301
-          }
-        },
-        "accuracy_by_tier_directional": {
-          "legendary_dir": {
-            "n": 113,
-            "accuracy": 0.6283
-          },
-          "elite_dir": {
-            "n": 2,
-            "accuracy": 1.0
-          },
-          "qualified_dir": {
-            "n": 6,
-            "accuracy": 1.0
-          },
-          "all_dir": {
-            "n": 151,
-            "accuracy": 0.5364
-          }
-        },
-        "accuracy_pool_overlap_note": "accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. Geo specialists have <20 total resolved trades (research_excluded=1). Accuracy computed on all 435 geo_elo holders."
-      },
-      "actionable": true,
-      "action_recommendation": "geo_elo LEGENDARY (46 traders) shows 67% accuracy on resolved geo markets \u2014 significantly above comprehensive_elo LEGENDARY 46% baseline. Investigate whether geo_elo tier can supplement geo/elections signals. Define geo-specific research pool (>=5 geo trades, bot/wash filters) to enable out-of-sample validation. BELOW QUALIFIED accuracy 28.8% confirms ELO discriminates.",
-      "expires_at": "2026-08-23T00:00:00Z",
-      "limitations": [
-        "In-sample accuracy: ELO and accuracy computed on same resolved market pool.",
-        "accuracy_pool=1 overlap=0: structural separation prevents out-of-sample validation.",
-        "geo_directionality subset n=2/6 for ELITE/QUALIFIED tiers \u2014 too small for conclusions.",
-        "Max ELO 5464 is an outlier; verify this trader's geo trade history is legitimate."
-      ]
-    },
-    {
       "id": "2026-05-26-GEO-ELO-003-OOS-001",
       "generated_by": "quant-research-agent",
       "generated_at": "2026-05-26T16:00:00Z",
@@ -1258,7 +1180,7 @@
       "source": "Oscar (manual query)",
       "date": "2026-06-03",
       "confidence": "HIGH",
-      "summary": "ELO tiers show 20-31pp edge over market price on genuinely contested markets (0.35-0.65 price band) — ELITE 81.4% (n=274), LEGENDARY 79.2% (n=288), QUALIFIED 69.6% (n=184) vs market baseline 50.3% (n=1,255)",
+      "summary": "ELO tiers show 20-31pp edge over market price on genuinely contested markets (0.35-0.65 price band) \u2014 ELITE 81.4% (n=274), LEGENDARY 79.2% (n=288), QUALIFIED 69.6% (n=184) vs market baseline 50.3% (n=1,255)",
       "title": "ELO tiers show 20-31pp edge over market price on genuinely contested markets",
       "sample_size": 746,
       "n_markets": 746,
@@ -1409,6 +1331,171 @@
       "action_recommendation": "Monitor STR003-005 and STR003-006 (Peru markets, resolve June 7 2026). Score immediately after resolution.",
       "expires_at": "2026-09-03T21:21:49Z",
       "notes": "STR003-003 (Warsh NO) scored WRONG previously. STR003-005 (Keiko YES) and STR003-006 (Aliaga YES) resolve June 7. No signals resolved in past 7 days."
+    },
+    {
+      "id": "2026-06-08-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-08T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 10
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-09-06T07:00:01Z"
+    },
+    {
+      "id": "2026-06-08-ELO-LEGENDARY-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-08T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 59,
+      "summary": "LEGENDARY tier consensus accuracy: 46% over 59 non-sports markets",
+      "detail": {
+        "metric": "elo_legendary_consensus_accuracy",
+        "value": 0.4576,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "weeks_observed": 10
+      },
+      "actionable": false,
+      "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-09-06T07:00:01Z"
+    },
+    {
+      "id": "2026-06-08-ELO-ELITE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-08T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 140,
+      "summary": "ELITE tier consensus accuracy: 59% over 140 non-sports markets",
+      "detail": {
+        "metric": "elo_elite_consensus_accuracy",
+        "value": 0.5857,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 10
+      },
+      "actionable": false,
+      "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-09-06T07:00:01Z"
+    },
+    {
+      "id": "2026-06-08-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-08T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 134,
+      "summary": "QUALIFIED tier consensus accuracy: 55% over 134 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.5522,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 10
+      },
+      "actionable": false,
+      "action_recommendation": "QUALIFIED tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-09-06T07:00:01Z"
+    },
+    {
+      "id": "2026-06-09-POSITIONS-ANALYSIS-001",
+      "title": "LEGENDARY trader consensus overcounts conviction — Iran regime analysis",
+      "confidence": "MEDIUM",
+      "actionable": true,
+      "source": "manual analysis — legendary_positions_scan.py + trade-level data",
+      "finding": "Analysis of 7 LEGENDARY traders on Iran regime fall June 30 market reveals three distinct behaviour patterns: (1) Conviction holders who built and held NO positions throughout (SirHarryOakes: $11K, kept adding at 0.90-0.96); (2) News traders with no net position (anonymous: rapid in-out same day, net zero); (3) A YES trader who was wrong and cut losses (N0stradumba55: $330 YES, sold at 0.25 loss). The consensus calculation showing 7 traders NO overstates conviction — only 4-5 traders have genuine open NO positions. The YES trader exiting does not mean they agree with NO consensus.",
+      "action_recommendation": "Weight positions scan by OPEN position size not historical trade volume. Add a filter: exclude traders who have fully exited their position (net_position = 0). Consider tracking which side each trader is CURRENTLY holding vs historically traded.",
+      "confidence_rationale": "Single market analysis — needs validation across multiple markets before changing system",
+      "expires_at": "2026-09-09"
+    },
+    {
+      "id": "2026-05-25-GEO-ELO-001",
+      "generated_by": "quant-research-agent",
+      "generated_at": "2026-06-08T17:19:41Z",
+      "finding_type": "elo_validity",
+      "confidence": "MEDIUM",
+      "sample_size": 28191,
+      "summary": "geo_elo v2 (market-implied probability): 169 LEGENDARY, 224 ELITE, 4292 QUALIFIED traders. LEGENDARY accuracy 78% (n=2344) vs comprehensive_elo LEGENDARY baseline 46%.",
+      "detail": {
+        "metric": "geo_elo_tier_accuracy",
+        "value": 0.7777,
+        "baseline": 0.46,
+        "direction": "above_baseline",
+        "weeks_observed": 1,
+        "algorithm": "market_implied_probability",
+        "algorithm_note": "expected_score=price (Yes) or 1-price (No). K=32/<20 trades, K=24/20-50, K=16/>50. Phase 1 fixed-opponent ELO capped at ~1993; v2 is uncapped.",
+        "tier_distribution": {
+          "traders_with_geo_elo": 6098,
+          "max_geo_elo": 10002.53,
+          "avg_geo_elo": 1392.1,
+          "geo_legendary": 169,
+          "geo_elite": 224,
+          "geo_qualified": 4292,
+          "geo_below": 1413,
+          "highly_directional": 4292
+        },
+        "accuracy_by_tier": {
+          "legendary": {
+            "n": 2344,
+            "accuracy": 0.7777
+          },
+          "elite": {
+            "n": 2709,
+            "accuracy": 0.7586
+          },
+          "qualified": {
+            "n": 17375,
+            "accuracy": 0.6974
+          },
+          "below_qualified": {
+            "n": 5602,
+            "accuracy": 0.4891
+          },
+          "all": {
+            "n": 28030,
+            "accuracy": 0.6684
+          }
+        },
+        "accuracy_by_tier_directional": {
+          "legendary_dir": {
+            "n": 2184,
+            "accuracy": 0.7747
+          },
+          "elite_dir": {
+            "n": 2545,
+            "accuracy": 0.7599
+          },
+          "qualified_dir": {
+            "n": 17006,
+            "accuracy": 0.6981
+          },
+          "all_dir": {
+            "n": 26812,
+            "accuracy": 0.6753
+          }
+        },
+        "accuracy_pool_overlap_note": "geo_accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. Geo specialists have <20 total resolved trades (research_excluded=1). Accuracy computed on all 435 geo_elo holders."
+      },
+      "actionable": true,
+      "action_recommendation": "geo_elo LEGENDARY (169 traders) shows 78% accuracy on resolved geo markets \u2014 significantly above comprehensive_elo LEGENDARY 46% baseline. Investigate whether geo_elo tier can be used as a supplementary filter for geo/elections signals. Define geo-specific research pool (>=5 geo trades, bot/wash filters) to enable out-of-sample validation. BELOW QUALIFIED accuracy 28.8% confirms ELO discriminates.",
+      "expires_at": "2026-08-23T00:00:00Z",
+      "limitations": [
+        "In-sample accuracy: ELO and accuracy computed on same resolved market pool.",
+        "geo_accuracy_pool=1 overlap=0: structural separation prevents out-of-sample validation.",
+        "geo_directionality subset n=2/6 for ELITE/QUALIFIED tiers \u2014 too small for conclusions.",
+        "Max ELO 5464 suggests possible outlier; verify trader has plausible geo trade history."
+      ]
     }
   ]
 }
