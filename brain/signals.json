@@ -234,25 +234,25 @@
         "legendary_count_geo_elo_active": 13,
         "legendary_qualified_directionality": 11,
         "signal_statuses": {
-          "STR003-005_keiko_peru": "OVERDUE — resolution_date 2026-06-07 passed, DB still resolved=0. Position intact $3,836 YES. Oscar action required.",
-          "STR003-006_lopezaliaga_peru": "OVERDUE — resolution_date 2026-06-07 passed, DB still resolved=0. Position intact $4,958 YES. Oscar action required.",
-          "STR003-001_newsom_2026": "MEDIUM_RETAINED — market active (resolves Sept 1), position intact $3,475 NO, trader fails geo_elo threshold (geo_elo_active 845.9 << 2175)",
-          "STR003-003_fed_warsh": "SCORED_WRONG — already scored, no action",
-          "STR003-004_putin_june_2026": "MEDIUM_APPROACHING_RESOLUTION — resolves June 30 (22 days), position intact $7,191 NO, counter-signal intensified (YES $200K+), trader fails geo_elo threshold (geo_elo_active 842.5 << 2175)"
+          "STR003-005_keiko_peru": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB still resolved=0. Position intact $3,836 YES. Oscar action required.",
+          "STR003-006_lopezaliaga_peru": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB still resolved=0. Position intact $4,958 YES. Oscar action required.",
+          "STR003-001_newsom_2026": "MEDIUM_RETAINED \u2014 market active (resolves Sept 1), position intact $3,475 NO, trader fails geo_elo threshold (geo_elo_active 845.9 << 2175)",
+          "STR003-003_fed_warsh": "SCORED_WRONG \u2014 already scored, no action",
+          "STR003-004_putin_june_2026": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 (22 days), position intact $7,191 NO, counter-signal intensified (YES $200K+), trader fails geo_elo threshold (geo_elo_active 842.5 << 2175)"
         },
-        "upgrade_check": "No upgrade possible — single trader (0xecaa8806) across all active signals. HIGH confidence requires 2+ independent LEGENDARY traders on same side. 10 other qualifying LEGENDARY traders have zero open positions in active geo/elections markets.",
-        "near_legendary_pipeline": "IMPROVED — 3 traders now at geo_elo_active 1834-1885 with directionality 0.92-1.0 and active geo positions. Major improvement from June 1 (max directionality 0.379). Watch for threshold crossover as 2026 markets resolve.",
+        "upgrade_check": "No upgrade possible \u2014 single trader (0xecaa8806) across all active signals. HIGH confidence requires 2+ independent LEGENDARY traders on same side. 10 other qualifying LEGENDARY traders have zero open positions in active geo/elections markets.",
+        "near_legendary_pipeline": "IMPROVED \u2014 3 traders now at geo_elo_active 1834-1885 with directionality 0.92-1.0 and active geo positions. Major improvement from June 1 (max directionality 0.379). Watch for threshold crossover as 2026 markets resolve.",
         "near_legendary_watch": [
-          "0x9cb98fc5 (geo_elo_active 1885.6, directionality 0.939) — NO in US-invade-Iran-before-July $2,991",
-          "0xbc54e69f (geo_elo_active 1842.2, directionality 0.920) — NO in US-invade-Iran-before-July $3,612",
-          "0x19704070 (geo_elo_active 1834.3, directionality 1.000) — NO in Irish Presidential Election $2,225"
+          "0x9cb98fc5 (geo_elo_active 1885.6, directionality 0.939) \u2014 NO in US-invade-Iran-before-July $2,991",
+          "0xbc54e69f (geo_elo_active 1842.2, directionality 0.920) \u2014 NO in US-invade-Iran-before-July $3,612",
+          "0x19704070 (geo_elo_active 1834.3, directionality 1.000) \u2014 NO in Irish Presidential Election $2,225"
         ],
         "anomalies": [
-          "legendary_base dropped 47→25 (below alert threshold 30) — already flagged by performance-analyst as contract_violation (processed). legendary_active=13 UNCHANGED, STR-003 capacity unaffected.",
+          "legendary_base dropped 47\u219225 (below alert threshold 30) \u2014 already flagged by performance-analyst as contract_violation (processed). legendary_active=13 UNCHANGED, STR-003 capacity unaffected.",
           "Peru markets OVERDUE (2 markets): STR003-005 + STR003-006 both past resolution_date June 7. DB shows resolved=0. Oscar must verify outcome on Polymarket.",
-          "Near-LEGENDARY pipeline dramatically improved — 3 traders approaching threshold with directionality >= 0.7 (vs 0 on June 1). First meaningful STR-003 pipeline in system history.",
-          "Key trader (0xecaa8806) concurrent elections positions at max-5: Peru markets (3, OVERDUE) + Steve Hilton + Vivek Ramaswamy. All non-Peru positions below $2,000 minimum — no new signals when Peru resolves.",
-          "Putin market counter-signal now $200K+ YES vs signal's $7,191 NO — market strongly weighted toward invasion (or NO as winning outcome)."
+          "Near-LEGENDARY pipeline dramatically improved \u2014 3 traders approaching threshold with directionality >= 0.7 (vs 0 on June 1). First meaningful STR-003 pipeline in system history.",
+          "Key trader (0xecaa8806) concurrent elections positions at max-5: Peru markets (3, OVERDUE) + Steve Hilton + Vivek Ramaswamy. All non-Peru positions below $2,000 minimum \u2014 no new signals when Peru resolves.",
+          "Putin market counter-signal now $200K+ YES vs signal's $7,191 NO \u2014 market strongly weighted toward invasion (or NO as winning outcome)."
         ],
         "action_required": "Oscar to verify Peru election outcome (STR003-005/006 OVERDUE). Record Putin outcome in strategy-registry.md after June 30. Monitor near-LEGENDARY pipeline.",
         "report_path": "brain/agent-outputs/signal-agent/2026-06-08-08-signal-report.md"
@@ -386,6 +386,42 @@
     }
   ],
   "str003_signals": [
+    {
+      "signal_id": "STR003-007",
+      "type": "str003_active",
+      "market_id": "0x9352c559e9648ab4cab236087b64ca85c5b7123a4c7d9d7d4efde4a39c18056f",
+      "market_title": "Will the Iranian regime fall by June 30?",
+      "resolution_date": "2026-06-30T00:00:00Z",
+      "direction": "NO",
+      "legendary_traders": 7,
+      "avg_entry_price": 0.678,
+      "total_capital": 27371.74,
+      "signal_date": "2026-06-09",
+      "registered_at": "2026-06-09",
+      "confidence": "HIGH",
+      "status": "ACTIVE",
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null,
+      "notes": "Signal largely validated — market moved from 32% YES at entry to 1.25% YES currently. 7 LEGENDARY traders entered NO at avg 0.678 across price range 0.53-0.96. Discovered via legendary_positions_scan.py retrospective analysis. Will formally score on June 30 resolution."
+    },
+    {
+      "signal_id": "STR003-008",
+      "type": "str003_active",
+      "market_id": "0x2a6d2cb5250e55c9c910e2ce005cc67d956973fbffe9b69539fb4ab58383cc59",
+      "market_title": "European country agrees to give Ukraine security guarantee by June 30?",
+      "resolution_date": "2026-06-30T00:00:00Z",
+      "direction": "NO",
+      "legendary_traders": 2,
+      "signal_date": "2026-06-09",
+      "registered_at": "2026-06-09",
+      "confidence": "MEDIUM",
+      "status": "ACTIVE",
+      "outcome_correct": null,
+      "resolved_at": null,
+      "scored_at": null,
+      "notes": "2 LEGENDARY traders, 100% NO. Lower conviction than STR003-007. Resolves June 30."
+    },
     {
       "signal_id": "STR003-005",
       "type": "str003_active",
