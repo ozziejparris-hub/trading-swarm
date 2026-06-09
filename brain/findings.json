@@ -1410,13 +1410,13 @@
     },
     {
       "id": "2026-06-09-POSITIONS-ANALYSIS-001",
-      "title": "LEGENDARY trader consensus overcounts conviction — Iran regime analysis",
+      "title": "LEGENDARY trader consensus overcounts conviction — net position filter needed",
       "confidence": "MEDIUM",
       "actionable": true,
-      "source": "manual analysis — legendary_positions_scan.py + trade-level data",
-      "finding": "Analysis of 7 LEGENDARY traders on Iran regime fall June 30 market reveals three distinct behaviour patterns: (1) Conviction holders who built and held NO positions throughout (SirHarryOakes: $11K, kept adding at 0.90-0.96); (2) News traders with no net position (anonymous: rapid in-out same day, net zero); (3) A YES trader who was wrong and cut losses (N0stradumba55: $330 YES, sold at 0.25 loss). The consensus calculation showing 7 traders NO overstates conviction — only 4-5 traders have genuine open NO positions. The YES trader exiting does not mean they agree with NO consensus.",
-      "action_recommendation": "Weight positions scan by OPEN position size not historical trade volume. Add a filter: exclude traders who have fully exited their position (net_position = 0). Consider tracking which side each trader is CURRENTLY holding vs historically traded.",
-      "confidence_rationale": "Single market analysis — needs validation across multiple markets before changing system",
+      "source": "manual analysis — legendary_positions_scan.py + Iran regime trade data",
+      "finding": "Analysis of 7 LEGENDARY traders on Iran regime fall June 30 market reveals positions_scan.py overcounts consensus. Of 7 traders: 3 have genuine open NO positions (SirHarryOakes $11K, randomWalkingShrimp $310, Giorgio2 $540); 1 was on YES side and cut losses (N0stradumba55); 1 news-traded with net zero position (anonymous 0xec05c); 1 is a late follower at high price (CompulsiveGambler); 1 exited for profit (Spirit of Ukraine). Raw trader count of 7 misrepresents genuine conviction of 3.",
+      "action_recommendation": "Add net_position filter to legendary_positions_scan.py: calculate sum(BUY shares) - sum(SELL shares) per trader per market. Only count traders with net_position > 0 in consensus. This is a script fix, not a formula change.",
+      "confidence_rationale": "Single market analysis — needs validation across 5+ markets before changing system",
       "expires_at": "2026-09-09"
     },
     {

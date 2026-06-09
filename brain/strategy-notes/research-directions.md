@@ -1529,3 +1529,53 @@ Do NOT add this filter to STR-003 until:
 
 ### Note on Architecture
 P&L should NOT be incorporated into geo_elo formula. geo_elo stays pure accuracy. P&L gate would be an additional STR-003 criterion, not a formula change.
+
+---
+
+## RQ-POSSIZE-001 — Normalised Position Size as ELO Signal
+**Pre-registered:** 2026-06-09
+**Status:** HYPOTHESIS — requires position data analysis
+**Defer until:** After RQ-CONTESTED-001 (July 1)
+
+### Motivation
+SirHarryOakes deployed $11,103 on Iran regime NO. CompulsiveGambler deployed $356 on the same market at similar prices. Under current geo_elo, identical ELO impact. Kelly criterion theory suggests rational bettors size proportional to conviction and edge. Unusually large positions relative to a trader's average may signal higher conviction.
+
+### Hypothesis
+Weighting geo_elo updates by relative_position_size = trade_notional / trader_avg_notional would improve the signal quality of LEGENDARY tier by amplifying high-conviction entries and dampening small/exploratory positions.
+
+### Why Raw Dollar Size Is Wrong
+A rich trader can bet $50K on every market regardless of conviction. Normalised size (relative to own average) captures abnormal conviction signals without wealth bias.
+
+### Implementation Path
+1. Calculate avg_notional per trader from their trade history
+2. Compute relative_position_size = trade_notional / avg_notional for each trade
+3. Multiply K by min(relative_position_size, 2.0) — cap at 2x to prevent single outlier trades dominating
+4. Test: does position-weighted geo_elo show stronger accuracy separation across tiers?
+
+### Decision Gate
+Do not implement until RQ-CONTESTED-001 validated (July 1) and at least 30 geo markets with LEGENDARY consensus scored in 2026.
+
+---
+
+## RQ-SECTOR-001 — Category Specialisation Weighting
+**Pre-registered:** 2026-06-09
+**Status:** HYPOTHESIS — requires category-level accuracy analysis
+**Defer until:** After RQ-CONTESTED-001 (July 1)
+
+### Motivation
+A trader who correctly calls 10 consecutive Iran markets should carry more weight on Iran markets than their overall geo_elo suggests. Current geo_elo treats all geo/elections markets as equivalent. Category specialisation is invisible.
+
+### Hypothesis
+Traders with high accuracy in a specific subcategory (Iran, Russia-Ukraine, US elections, European elections) have genuine domain expertise. Their signals in that domain should receive higher weight than their generic geo_elo implies.
+
+### Implementation Path
+1. Tag markets with subcategory (Iran, Ukraine, US, Europe, LatAm, Asia etc.) — can use title keyword matching
+2. Calculate per-trader per-subcategory accuracy from resolved geo trades
+3. Create subcategory_elo scores alongside geo_elo
+4. For STR-003 signals: weight by subcategory_elo if available, fall back to geo_elo
+
+### Data Available
+Current DB has market titles sufficient for keyword-based subcategory tagging. ~2,344 resolved geo trades across LEGENDARY tier to compute initial subcategory accuracy.
+
+### Decision Gate
+Defer until July 1. Lower priority than RQ-CONTESTED-001 and RQ-POSSIZE-001.
