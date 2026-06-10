@@ -1,0 +1,100 @@
+{
+  "address": "0x197040709ae61627d3685a8d6ce1f9e82e6b398d",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1904.3539,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Directionality of 1.0 and open positions dominated by near-certainty entries (0.97-0.999 for obvious outcomes, 0.01-0.02 for near-impossible outcomes) are classic yield-harvesting signatures. The open book shows systematic collection of small premiums on highly probable outcomes: SNP winning Scottish Parliament seats at 0.997, Zelenskyy-Putin no-meeting at 0.989, Heather Humphreys not winning Irish presidency at 0.975. The recent catastrophic loss on Mamdani YES at 0.87-0.938 (bought a near-certainty that failed) confirms the archetype: occasional large losses when the harvested tail event materialises.",
+  "primary_domain": "Europe",
+  "domain_strengths": [
+    "Other",
+    "Russia_UKR"
+  ],
+  "domain_blindspots": [
+    "Iran_ME: 1W/3L (25% accuracy) \u2014 consistently wrong on Middle East outcomes",
+    "Europe: 11W/11L (50% accuracy) \u2014 despite heavy activity in European elections, no demonstrable edge",
+    "Trump_US: 58% accuracy is marginal and likely inflated by near-certainty positions"
+  ],
+  "domain_summary": "Apparent strength in the catch-all 'Other' domain (76% accuracy) likely reflects yield-harvesting on obvious outcomes rather than genuine forecasting edge. Russia_UKR accuracy (67%) is a thin sample of 9 trades and should not be over-weighted.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Near-perfect directionality (1.0) and systematic near-certainty entries strip out genuine forecasting signal. When this trader does enter at contested prices (Mamdani YES at 0.87+), the result is catastrophic loss suggesting no real edge at those levels. The portfolio is structured to generate yield from obvious outcomes, not to forecast uncertain events \u2014 making it unreliable for STR-003 signal generation.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Iran_ME",
+    "Europe",
+    "Trump_US",
+    "Russia_UKR",
+    "Other",
+    "China_Asia"
+  ],
+  "behavioural_flags": [
+    "Extreme concentration: 13 separate trades on a single Mamdani market at similar near-peak prices (0.866-0.938), suggesting averaging-up or repeated position-building",
+    "Near-certainty portfolio construction: majority of open positions entered at >0.87 or <0.05 price levels",
+    "Sunk-cost doubling: multiple identical Mamdani entries at 0.938 suggesting repeated reinvestment despite no price improvement",
+    "Asymmetric position structure: small long-shot longs (Glucksmann 2.3%, Whitmer 2.1%) alongside heavy near-certainty shorts \u2014 optionality hunting on tails",
+    "Possible stale positions: Sinn F\u00e9in 2024 Irish election at 0.001 (already resolved market) still listed as open"
+  ],
+  "risk_patterns": [
+    "Mamdani blowup: concentrated 13+ trade loss at high prices illustrates catastrophic tail risk from yield-harvesting strategy",
+    "Romanian presidential election at 0.989 entry \u2014 lost \u2014 another near-certainty failure showing systematic underestimation of resolution uncertainty",
+    "Concentration risk: multiple open positions in Irish presidential election across different candidates without clear hedging logic",
+    "Overlapping exposure: YES on Catherine Connolly winning AND NO on Connolly winning by less than 15% creates structural confusion about actual thesis",
+    "geo_elo_active (1904) significantly decayed from base geo_elo (2033), suggesting recent performance deterioration"
+  ],
+  "notable_calls": [
+    {
+      "market": "Mamdani wins 2025 NYC mayoral election",
+      "side": "YES",
+      "entry_price": 0.938,
+      "result": "LOST",
+      "significance": "13+ repeated entries near peak price; represents a classic yield-harvesting blowup \u2014 bought near-certainty that resolved adversely, likely wiping a significant portion of accumulated premiums"
+    },
+    {
+      "market": "Will another candidate win 2024 Romanian Presidential election",
+      "side": "YES",
+      "entry_price": 0.989,
+      "result": "LOST",
+      "significance": "Extreme near-certainty entry that failed; confirms the tail-event risk in this trader's core strategy"
+    },
+    {
+      "market": "Israel x Hamas ceasefire by October 31",
+      "side": "NO",
+      "entry_price": 0.39,
+      "result": "LOST",
+      "significance": "One of the rare genuinely contested price entries (0.39); lost, consistent with poor Iran_ME domain accuracy"
+    },
+    {
+      "market": "Will China invade Taiwan by end of 2026",
+      "side": "NO",
+      "entry_price": 0.87,
+      "result": "OPEN",
+      "significance": "Near-certainty NO on Taiwan invasion \u2014 textbook yield harvesting on a low-probability event"
+    },
+    {
+      "market": "Will SNP win most seats in 2026 Scottish Parliament",
+      "side": "YES",
+      "entry_price": 0.997,
+      "result": "OPEN",
+      "significance": "Extreme near-certainty position offering minimal yield; illustrates the compressed risk/reward of this strategy"
+    }
+  ],
+  "open_positions_summary": "Portfolio is heavily oriented toward near-certainty yield collection across European politics and geopolitical low-probability events: SNP dominance in Scotland, no China-Taiwan invasion, Zelenskyy-Putin no-meeting, Trump not acquiring Greenland. A cluster of Irish presidential election positions across multiple candidates (Connolly, Humphreys) creates confused exposure. Small speculative long-shot longs on Glucksmann (2.3%), Whitmer (2.1%), and Lammy (1%) suggest optionality hunting. Overall thesis: earn steady small returns on obvious outcomes while holding tiny positions on high-upside long shots.",
+  "watch_items": [
+    "Monitor for further Mamdani-style concentration events: does this trader repeat the pattern of doubling into a losing near-certainty position?",
+    "Track Irish presidential election resolution \u2014 multiple overlapping positions could generate both wins and losses simultaneously",
+    "Observe whether geo_elo_active continues to decay, indicating ongoing performance deterioration post-Mamdani blowup",
+    "Watch if the Zelenskyy-Putin no-meeting position (0.989) resolves correctly \u2014 a Putin-Zelenskyy meeting would be another severe tail hit",
+    "Monitor total PnL trajectory: $5,115 realized gains could evaporate quickly if another concentrated near-certainty fails"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "This trader is a textbook yield-harvester operating across geopolitics and European elections, extracting small premiums from near-certain outcomes rather than making genuine probabilistic forecasts. The directionality score of 1.0 and the concentration of open positions at price extremes (>0.87 or <0.05) confirm this is a premium-collection strategy, not a forecasting one. The Mamdani debacle \u2014 13+ trades at 0.87-0.938 on a position that resolved adversely \u2014 illustrates the catastrophic tail risk embedded in this approach and explains the significant decay in geo_elo_active (2033 base vs. 1904 active). Domain accuracy figures, especially the 76% 'Other' category, are likely artifacts of near-certainty positioning and should not be interpreted as genuine forecasting skill.",
+  "data_snapshot": {
+    "geo_elo": 2033.1913852723294,
+    "geo_elo_active": 1904.3539,
+    "resolved_trades": 55,
+    "distinct_markets": 32,
+    "directionality": 1.0,
+    "pnl": 5115.111384566577
+  }
+}

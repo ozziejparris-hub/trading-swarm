@@ -1,0 +1,93 @@
+{
+  "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 3706.5888,
+  "tier": "LEGENDARY",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "With 723 resolved trades across 184 distinct geopolitical markets, this trader demonstrates broad coverage and genuine directional conviction (directionality 0.954). Entries are predominantly at contested prices (0.10-0.80 range), not near-certainty harvesting. Strong positive PnL ($13,170) across diverse domains including Trump_US, China_Asia, Iran_ME, and Europe confirms real forecasting edge rather than liquidity provision or yield-harvesting.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Iran_ME",
+    "Russia_UKR",
+    "Europe"
+  ],
+  "domain_blindspots": [
+    "LatAm: 33% accuracy on 3 trades, weak sample and poor calibration \u2014 recent Kast/Peru positions suggest overconfidence in LatAm political calls"
+  ],
+  "domain_summary": "This trader has a clear and sustained edge in Trump_US (72.1% accuracy, 534 trades), with strong supplementary performance in Iran_ME (78.6%), Russia_UKR (76.2%), and Europe (72.7%). LatAm is an explicit blind spot with only 3 trades at 33% accuracy, though recent open positions suggest expanding into that domain incautiously.",
+  "signal_weight": "FULL",
+  "signal_weight_reasoning": "ELO of 3707 active is far above the LEGENDARY threshold of 2175, with 723 resolved trades providing a statistically robust sample. Accuracy rates above 70% in four distinct domains, contested-price entries, and positive PnL across a large trade universe justify FULL weight. LatAm should be individually discounted given the track record.",
+  "trusted_domains": [
+    "Trump_US",
+    "Iran_ME",
+    "Russia_UKR",
+    "Europe",
+    "China_Asia"
+  ],
+  "discounted_domains": [
+    "LatAm"
+  ],
+  "behavioural_flags": [
+    "High directionality (0.954): nearly always takes a single directional stance \u2014 not an LP artifact",
+    "Repeated re-entry into same market at similar prices (e.g., California redistricting referendum: 7 trades across overlapping outcome buckets) \u2014 suggests conviction doubling or averaging-in under uncertainty",
+    "Dutch government coalition market: 5 entries at nearly identical prices (~0.60) \u2014 pattern of accumulation rather than single decisive entry",
+    "Recent resolved trades show a cluster of losses on contested US domestic and European coalition markets \u2014 possible short-term calibration drift",
+    "Open positions include large LatAm exposure (L\u00f3pez Aliaga: 10,294 shares at 0.25) \u2014 unusual size relative to LatAm track record"
+  ],
+  "risk_patterns": [
+    "Sunk-cost accumulation: multiple re-entries into losing positions (California redistricting, Dutch coalition) without apparent price improvement",
+    "Domain overextension: expanding into LatAm with large position sizes despite historically poor accuracy in that domain",
+    "Concentration risk in a single open position (L\u00f3pez Aliaga 10,294 shares) dwarfs all other open positions combined",
+    "Recent resolved batch shows all 15 trades resulted in losses \u2014 possible short streak of adverse outcomes or systematic miscalibration on a specific event cluster"
+  ],
+  "notable_calls": [
+    {
+      "market": "Trump_US domain aggregate",
+      "side": "YES",
+      "entry_price": 0.5,
+      "result": "WON",
+      "significance": "385 wins from 534 trades at 72.1% accuracy is the core of this trader's edge \u2014 sustained and statistically significant alpha in the dominant market domain"
+    },
+    {
+      "market": "Iran/ME domain aggregate",
+      "side": "YES",
+      "entry_price": 0.5,
+      "result": "WON",
+      "significance": "78.6% accuracy across 14 trades \u2014 highest domain accuracy suggesting genuine geopolitical insight into Middle East outcomes"
+    },
+    {
+      "market": "Will the California redistricting referendum pass by >29%?",
+      "side": "YES",
+      "entry_price": 0.55,
+      "result": "LOST",
+      "significance": "Multiple re-entries at contested prices (0.26\u20130.64) all lost \u2014 illustrates sunk-cost accumulation risk pattern"
+    },
+    {
+      "market": "Will Rafael L\u00f3pez Aliaga win the 2026 Peruvian presidential election?",
+      "side": "YES",
+      "entry_price": 0.25,
+      "result": "OPEN",
+      "significance": "Largest single open position by shares (10,294) in a domain with historically poor accuracy \u2014 outsized risk relative to demonstrated edge"
+    }
+  ],
+  "open_positions_summary": "Current live positions are concentrated in LatAm (Peru presidential election \u2014 L\u00f3pez Aliaga YES at 0.25 and Fujimori YES at 0.51) and US domestic politics (Steve Hilton CA Governor YES at 0.76, Ramaswamy Ohio NO at 0.28). The Peru thesis appears to be a multi-candidate portfolio approach to the Peruvian election. The Hilton entry at 0.76 is toward the upper bound of contested pricing. Overall thesis implies contrarian/speculative bets on underdog or non-consensus candidates in both LatAm and US primaries.",
+  "watch_items": [
+    "Monitor L\u00f3pez Aliaga resolution (2026-06-07) \u2014 loss on 10,294 shares would be significant PnL drawdown and signal LatAm overextension",
+    "Track whether recent 15-trade losing streak represents a temporary cluster or broader miscalibration shift",
+    "Watch for continued accumulation patterns in Dutch or European coalition markets \u2014 repeated same-price entries may indicate information edge or sunk-cost bias",
+    "Steve Hilton CA Governor position at 0.76 is high-price entry \u2014 monitor for exit or further accumulation as primary approaches",
+    "Assess whether LatAm positions expand further \u2014 escalating domain exposure despite poor historical accuracy would be a meaningful risk flag"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "This is a LEGENDARY-tier trader with one of the highest active ELO scores in the system, backed by 723 resolved trades and sustained accuracy above 70% in Trump_US, Iran_ME, Russia_UKR, and Europe. The trader demonstrates genuine forecasting behaviour: contested-price entries, broad market diversity, and strong directional conviction. The primary concern is a pattern of sunk-cost accumulation in losing positions (California redistricting, Dutch coalition) and a troubling expansion into LatAm with oversized positions despite a 33% historical accuracy in that domain. Signals from Trump_US, Iran_ME, and Russia_UKR should be treated as high-conviction; LatAm signals should be discounted until the track record improves.",
+  "data_snapshot": {
+    "geo_elo": 3807.8614008491636,
+    "geo_elo_active": 3706.5888,
+    "resolved_trades": 723,
+    "distinct_markets": 184,
+    "directionality": 0.9542456548325189,
+    "pnl": 13170.692420516478
+  }
+}

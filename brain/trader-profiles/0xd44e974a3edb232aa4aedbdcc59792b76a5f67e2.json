@@ -1,0 +1,101 @@
+{
+  "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2403.4211,
+  "tier": "LEGENDARY",
+  "archetype": "VOLUME_SPECIALIST",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader is heavily concentrated in Russia-Ukraine and Iran-ME conflict themes, with 247 resolved trades across only 48 distinct markets. Directionality of 0.961 indicates near-uniform one-directional betting (predominantly NO on conflict escalation/ceasefires). The recent resolved trades show a cascade of losses on the same ceasefire-NO thesis across rolling date markets, a classic volume-specialist pattern of repeating the same thematic bet.",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR",
+    "China_Asia",
+    "LatAm"
+  ],
+  "domain_blindspots": [
+    "Europe: 31.2% accuracy \u2014 well below baseline, strong fade signal",
+    "Trump_US: 46.7% accuracy \u2014 marginally below coin-flip, no demonstrated edge",
+    "Iran_ME: 57.9% is modest but many recent losses on ceasefire-NO cascade suggest deteriorating edge"
+  ],
+  "domain_summary": "Genuine historical edge in Russia-Ukraine at 60.7% accuracy across 275 trades, likely reflecting deep situational knowledge of the conflict trajectory. China_Asia and LatAm show strong numbers but thin sample sizes; Europe and Trump_US should be discounted or faded.",
+  "signal_weight": "DOMAIN_ONLY",
+  "signal_weight_reasoning": "Strong Russia-UKR track record over large sample justifies domain-level signal weight. However, the extreme directionality (0.961 NO bias) and recent streak of ceasefire-NO losses \u2014 including some near-certainty entries at 0.992 and 0.999 \u2014 indicate possible anchoring and sunk-cost doubling-down. Signals outside Russia-UKR and possibly Iran-ME should be discounted given poor cross-domain accuracy.",
+  "trusted_domains": [
+    "Russia_UKR"
+  ],
+  "discounted_domains": [
+    "Europe",
+    "Trump_US",
+    "Iran_ME (recent deterioration)"
+  ],
+  "behavioural_flags": [
+    "Extreme directional bias: 96.1% of trades in one direction, almost exclusively NO on conflict resolution/ceasefires",
+    "Rolling date market chasing: repeatedly bets NO on same ceasefire question with advancing deadlines, suggesting conviction anchoring rather than fresh forecasting",
+    "Near-certainty entries: multiple trades at 0.999, 0.992, 0.93+ prices \u2014 minimal forecasting value at these levels",
+    "Position concentration: top open position is 17,683 shares on Iranian regime fall NO, representing massive single-thesis exposure",
+    "Doubling-down pattern: Israel-Hamas ceasefire NO traded at least 9 times across rolling markets, despite accumulating losses"
+  ],
+  "risk_patterns": [
+    "Sunk-cost anchoring: continued NO bets on ceasefire markets after consecutive losses, consistent with refusal to update priors",
+    "Yield harvesting crossover: several open positions at 0.91-0.99 NO prices blurring into near-certainty harvesting territory",
+    "Concentration risk: open book heavily weighted to Iran-ME with multiple correlated NO positions on US-Iran conflict escalation/resolution events",
+    "Recent resolved trades show 15 straight losses \u2014 may reflect a significant regime change in underlying conflict dynamics not yet incorporated into trading behavior",
+    "High ELO may partly reflect past Russia-UKR accuracy masking recent deterioration in Iran-ME domain"
+  ],
+  "notable_calls": [
+    {
+      "market": "Israel x Hamas ceasefire by July 15?",
+      "side": "NO",
+      "entry_price": 0.999,
+      "result": "LOST",
+      "significance": "Near-certainty entry that still lost \u2014 signals that late-deadline ceasefire NO bets are now failing; this is the most dangerous type of loss given minimal upside was available"
+    },
+    {
+      "market": "Israel x Hamas ceasefire by September 15?",
+      "side": "NO",
+      "entry_price": 0.992,
+      "result": "LOST",
+      "significance": "Another near-certainty loss confirming the ceasefire thesis collapsed; trader was effectively harvesting yield at this price, not forecasting"
+    },
+    {
+      "market": "Will Ukraine agree to cede territory to Russia in 2025?",
+      "side": "NO",
+      "entry_price": 0.88,
+      "result": "LOST",
+      "significance": "Russia-UKR core domain loss at relatively high confidence price; suggests primary edge domain is under stress from real-world developments in 2025-2026"
+    },
+    {
+      "market": "Russia x Ukraine Peace Parlay",
+      "side": "NO",
+      "entry_price": 0.801,
+      "result": "OPEN",
+      "significance": "Large open position 9,872 shares at 0.80 \u2014 high stakes continuation of core thesis; resolution will be telling for domain credibility"
+    },
+    {
+      "market": "Will the Iranian regime fall before 2027?",
+      "side": "NO",
+      "entry_price": 0.636,
+      "result": "OPEN",
+      "significance": "Largest open position at 17,683 shares and most contested price entry \u2014 genuine forecasting territory; this is the highest conviction live bet"
+    }
+  ],
+  "open_positions_summary": "Open book is dominated by Iran-ME NO positions across multiple correlated markets (regime stability, US-Iran ceasefire, Kharg Island, uranium enrichment) totaling significant capital concentration. The unifying thesis is: no major Iran capitulation, no ceasefire, no regime change. Russia-Ukraine exposure is maintained via Peace Parlay NO and Pokrovsk territorial NO. A single YES position (US strikes Iran by Jan 14, 2026) suggests some hedging or conviction in limited escalation. The portfolio carries meaningful correlated drawdown risk if a US-Iran deal or major Iranian concession materialises.",
+  "watch_items": [
+    "Monitor whether ceasefire-NO losing streak continues \u2014 15 straight recent losses suggests thesis break, not bad luck",
+    "Iran diplomatic talks: any US-Iran deal would cascade losses across 5+ correlated open positions simultaneously",
+    "Russia x Ukraine Peace Parlay NO resolution by Dec 31 2026 \u2014 single largest Russia-UKR risk event",
+    "Whether trader adjusts directionality or continues doubling into NO positions despite losses",
+    "Iran regime stability NO at 0.636 \u2014 one of few genuinely contested price entries; monitor for position increases or exits as signal of conviction update",
+    "ELO decay trajectory: active ELO (2403) is already 263 points below peak ELO (2667), suggesting recency-weighted performance is declining"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "This trader has a demonstrably strong Russia-Ukraine track record over a large sample (60.7% across 275 trades) and a LEGENDARY overall ELO, but the profile is significantly complicated by recent deterioration. A cascade of 15 consecutive losses \u2014 many in the core Iran-ME ceasefire-NO theme \u2014 combined with extreme directional bias (96.1%) and near-certainty yield harvesting entries suggests the trader is anchored to a geopolitical thesis that recent events have partially invalidated. Open positions carry heavy correlated Iran-ME risk. Signal value is HIGH for Russia-UKR directional calls at contested prices (0.10\u20130.80), but should be discounted or faded entirely in Europe, Trump_US, and near-certainty Iran positions.",
+  "data_snapshot": {
+    "geo_elo": 2666.7626299615317,
+    "geo_elo_active": 2403.4211,
+    "resolved_trades": 247,
+    "distinct_markets": 48,
+    "directionality": 0.9611738307995464,
+    "pnl": 43314.11989007666
+  }
+}

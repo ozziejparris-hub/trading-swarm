@@ -1,0 +1,100 @@
+{
+  "address": "0xbc1775a8bc4dda029c04bc4976c5612430f6289a",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2136.5153,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "This trader covers 52 distinct geo markets across multiple domains (Trump_US, Canada, Germany, Iran, LatAm, Europe), demonstrating genuine breadth. Directionality of 1.0 indicates they always trade one side rather than LP behaviour, and many entries occur at genuinely contested prices (0.17-0.67). However, the 54% accuracy across 157 resolved trades is barely above chance, and recent resolved history shows a persistent string of losses, raising questions about genuine edge versus noise.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "LatAm: 0/1 accuracy, low sample but no demonstrated edge",
+    "Russia_UKR: 1/3 accuracy, below random",
+    "Europe: 0/1 accuracy, near-certainty entries observed (AfD 0.93) suggest overconfidence"
+  ],
+  "domain_summary": "Marginal edge in Trump_US and Other (both ~54%) but insufficient to be confident this is skill over variance given sample size. No demonstrated edge outside those two domains; Europe and Russia_UKR trades show poor calibration and some near-certainty entries that went wrong.",
+  "signal_weight": "PARTIAL",
+  "signal_weight_reasoning": "Active ELO of 2136 is near-legendary but below the 2175 threshold. Win rates across all domains hover near 50-55%, barely distinguishable from noise. Breadth is real but accuracy is marginal. Some near-certainty entries (Trump Texas 0.95, Liberal Party margin 0.96, AfD 0.93) that lost suggest calibration problems. Signal is worth tracking but should not be given full weight without corroboration.",
+  "trusted_domains": [
+    "Trump_US",
+    "Other"
+  ],
+  "discounted_domains": [
+    "LatAm",
+    "Russia_UKR",
+    "Europe",
+    "Iran_ME"
+  ],
+  "behavioural_flags": [
+    "Directionality of 1.0 \u2014 never trades the opposing side, suggesting strong conviction bias rather than probabilistic hedging",
+    "Near-certainty entries: Trump Texas at 0.95 YES, Liberal majority at 0.986 NO, AfD 20-25% at 0.93 YES \u2014 multiple large-price entries that resolved against",
+    "Clustering of losses in bulk-resolved batch (2026-06-04) suggests legacy positions from 2024 US election cycle that underperformed",
+    "Open positions include several very-low-probability YES bets (Liberal 3-6% win margin at 0.016, Minnesota Republican Senate at 0.034) suggesting a longshot/lottery ticket pattern",
+    "Reasonable position sizing discipline \u2014 shares range widely but no single catastrophic outlier visible"
+  ],
+  "risk_patterns": [
+    "Persistent near-certainty buying on contested outcomes (e.g., AfD, Trump Texas, Liberal margin) indicates overconfidence or yield-harvesting behaviour creeping into otherwise genuine forecasting",
+    "Longshot accumulation in open positions (very low prices, high share counts) could indicate sunk-cost doubling-down on wrong-side theses",
+    "15 consecutive losses in recent resolved history is a significant red flag \u2014 unclear if this is a bad run or systematic deterioration",
+    "Concentration in US electoral markets with thin edge could mean realized PnL is largely driven by a few big wins masking poor base accuracy"
+  ],
+  "notable_calls": [
+    {
+      "market": "2024 Balance of Power: R Prez R Senate R House",
+      "side": "YES",
+      "entry_price": 0.46,
+      "result": "LOST",
+      "significance": "Genuinely contested entry at 0.46, large thematic call on Republican sweep \u2014 outcome was Republican sweep in reality but this resolved LOST, suggesting a resolution discrepancy or wrong market version"
+    },
+    {
+      "market": "Will Mark Carney be next Canadian Prime Minister?",
+      "side": "YES",
+      "entry_price": 0.39,
+      "result": "LOST",
+      "significance": "Contested entry at 0.39 but Carney did become PM \u2014 again suggests possible resolution anomaly or wrong market framing"
+    },
+    {
+      "market": "Will Trump win Texas by 10+ points?",
+      "side": "YES",
+      "entry_price": 0.95,
+      "result": "LOST",
+      "significance": "Near-certainty entry on a heavily favoured outcome that resolved against \u2014 significant calibration failure or data anomaly"
+    },
+    {
+      "market": "Will Lindsey Graham be Republican nominee for Senate in South Carolina?",
+      "side": "NO",
+      "entry_price": 0.179,
+      "result": "LOST",
+      "significance": "Contrarian call at low price suggesting Graham would be challenged \u2014 lost, showing limits of domain knowledge"
+    },
+    {
+      "market": "Will a Republican win Ohio US Senate Election?",
+      "side": "YES",
+      "entry_price": 0.61,
+      "result": "LOST",
+      "significance": "Contested price entry on a market Republicans ultimately won (Moreno defeated Brown) \u2014 another possible resolution data anomaly worth investigating"
+    }
+  ],
+  "open_positions_summary": "Current open book is dominated by longshot YES positions: very low-probability Canadian election margin bets (Liberal 3-6% at 0.016, Conservative 150-159 seats), a Peruvian election candidate (Carlos \u00c1lvarez, dual bets), Kharg Island control by April 30 (0.04), and several US Republican longshots (Minnesota Senate, New Mexico presidential, NJ Senate). The overall thesis implies this trader is systematically accumulating low-probability YES positions for outsized returns \u2014 a longshot portfolio strategy. Also holds a Catherine Connolly Irish Presidential bet at 0.20 showing some international breadth.",
+  "watch_items": [
+    "Investigate whether multiple 'LOST' resolutions on outcomes that appear to have gone the trader's way (Carney PM, Republican OH Senate, R sweep) are data errors or genuine losses from wrong market framing",
+    "Monitor whether the longshot open positions (sub-0.10 entries) resolve positively \u2014 a few hits could significantly change PnL and ELO trajectory",
+    "Watch for any new entries in Trump_US domain in 2026 midterm cycle as this is the primary domain",
+    "Track if losing streak continues into 2026 markets \u2014 15 consecutive losses is a material signal about current form",
+    "Monitor Peruvian election positions closely as LatAm is a stated blindspot"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "This trader has genuine breadth across 52 geo markets and a near-legendary ELO, but the underlying accuracy (~54%) is marginally above chance and a long recent losing streak raises questions about current calibration. Several notable resolved-as-LOST positions appear to be on outcomes that went the trader's way, suggesting possible data quality issues that \u2014 if corrected \u2014 could significantly improve the apparent track record. Open positions reveal a systematic longshot accumulation strategy at very low prices, which is speculative and distinct from the contested-price genuine forecasting seen in some earlier trades. Treat as a PARTIAL signal source with higher trust in Trump_US domain calls and caution on all others.",
+  "data_snapshot": {
+    "geo_elo": 2211.8593103616113,
+    "geo_elo_active": 2136.5153,
+    "resolved_trades": 157,
+    "distinct_markets": 52,
+    "directionality": 1.0,
+    "pnl": 15128.706739386076
+  }
+}

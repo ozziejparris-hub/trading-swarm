@@ -1,0 +1,81 @@
+{
+  "address": "0xe0bc6311306558d71f68fc085c26f0337996ad7c",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2192.0639,
+  "tier": "LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader exhibits near-perfect yield-harvesting behaviour: directionality of 1.0 combined with virtually all entries at 0.993-0.999 on the NO side confirms they are systematically collecting small premiums on near-certain outcomes. Across recent resolved trades, every position is on events that were already overwhelmingly likely (third-party wins in US states, Greens in German coalition), not genuine forecasting. The ELO is inflated by high win rates on trivially safe bets, not by contested-price conviction.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "Trump_US: accuracy of 55.6% suggests some real-probability misjudgements even in primary domain, possibly from occasional near-certain bets that resolved adversely",
+    "LatAm: tiny sample (2 trades), no meaningful edge demonstrated"
+  ],
+  "domain_summary": "This trader has no genuine forecasting edge in any domain \u2014 their apparent accuracy is an artifact of harvesting near-certainty premiums. The high ELO reflects volume of safe wins, not analytical skill; any signal on contested markets should be heavily discounted.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "All observable trades are near-certainty NO positions at 0.993-0.999. This trader generates zero informational value for STR-003 signal generation because their entries reflect no probabilistic assessment of contested outcomes. Directionality of 1.0 into near-certain territory is structurally identical to noise for forecasting purposes.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Other",
+    "LatAm",
+    "Europe"
+  ],
+  "behavioural_flags": [
+    "Exclusively buys NO at 0.993-0.999 \u2014 pure yield-harvesting pattern",
+    "Directionality of 1.0 indicates zero market diversity in direction",
+    "Repeats the same trade multiple times in the same market (e.g., 4x German Greens, 6x Virginia third-party)",
+    "Small position sizes (8-75 shares) consistent with premium-farming, not conviction sizing",
+    "Open positions mirror the exact same pattern: all NO at 0.993-0.999 across unrelated markets"
+  ],
+  "risk_patterns": [
+    "Concentration in near-certainty NO trades means a single black-swan mispriced event can wipe accumulated premiums",
+    "Virginia Presidential Election produced losses on 3 of 6 trades despite 0.998 entry \u2014 suggests occasional resolution errors or market quirks causing unexpected losses",
+    "Low realized PnL (1.76 USDC) relative to 65 trades confirms margins are razor-thin; strategy is fragile to resolution surprises",
+    "No evidence of exit discipline \u2014 positions appear held to resolution"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will the Greens be part of the next German government?",
+      "side": "NO",
+      "entry_price": 0.997,
+      "result": "WON",
+      "significance": "Typical yield-harvest: entered at near-certainty price, no forecasting insight implied"
+    },
+    {
+      "market": "Will a candidate from another party win Virginia Presidential Election?",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "LOST",
+      "significance": "Three losses at 0.998 entry illustrate the tail risk of this strategy \u2014 even 0.2% implied probability events can and do occur"
+    },
+    {
+      "market": "Will the US officially declare war on Iran before August?",
+      "side": "NO",
+      "entry_price": 0.993,
+      "result": "OPEN",
+      "significance": "Slightly lower entry price (0.993) suggests marginally more contested market, but still firmly in yield-harvest territory"
+    }
+  ],
+  "open_positions_summary": "All 7 open positions are NO bets at 0.986-0.998 across politically disparate markets (US Senate races, Russian/Czech elections, Iran war declaration, Romanian court ruling, Biden resignation). The thesis is entirely mechanical: sell near-certainty premium across any market where NO is priced above 0.985, with no domain thesis implied. Aggregate exposure is minimal in dollar terms.",
+  "watch_items": [
+    "Monitor for any trade entries below 0.90 \u2014 this would signal a genuine shift toward contested-price forecasting",
+    "Track whether losses on near-certain positions accumulate (as seen in Virginia trades) to assess strategy sustainability",
+    "Check if position sizing ever scales up materially, which could indicate transition to CONVICTION_SIZER behaviour",
+    "Watch for any YES-side entries, which would break the 1.0 directionality and suggest a strategy change"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a textbook yield-harvester with no forecasting signal value: 100% of observable trades are NO positions entered at 0.993-0.999, purely collecting fractional premiums on near-certain outcomes. The LEGENDARY ELO tier is entirely misleading \u2014 it reflects win-rate inflation from trivially safe bets, not analytical skill. Despite 65 resolved trades across 19 markets, realized PnL of just 1.76 USDC confirms the strategy generates negligible returns and zero informational edge. This address should be excluded entirely from STR-003 signal generation and treated as a yield-farming artifact rather than a forecaster.",
+  "data_snapshot": {
+    "geo_elo": 2367.560000000002,
+    "geo_elo_active": 2192.0639,
+    "resolved_trades": 65,
+    "distinct_markets": 19,
+    "directionality": 1.0,
+    "pnl": 1.7609999999999075
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "address": "0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2092.997,
+  "tier": "ELITE",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "This trader operates across 74 distinct geo markets with solid win rates in Russia/UKR (66.3%), Iran/ME (72%), Europe (67.2%), and Trump/US (65.8%), suggesting real multi-domain forecasting ability rather than niche repetition. Directionality of 0.918 indicates strong directional conviction rather than LP behavior. However, open positions show a notable mix of near-certainty yield-harvesting trades (YES at 0.997, NO at 0.999) alongside genuinely contested entries, creating a hybrid profile that slightly dilutes the pure forecaster classification.",
+  "primary_domain": "DIVERSE",
+  "domain_strengths": [
+    "Iran_ME",
+    "Europe"
+  ],
+  "domain_blindspots": [
+    "China_Asia: only 7 trades with 14.3% accuracy \u2014 near-random performance, possible overconfidence in unfamiliar geopolitics",
+    "Trump_US: near-certainty bets on government shutdown at 0.97-0.982 that lost, indicating yield-harvesting errors bleeding into this domain"
+  ],
+  "domain_summary": "Strongest genuine edge in Iran/ME (72% on 75 trades) and Europe (67.2% on 61 trades), both with meaningful sample sizes. Russia/UKR and Trump/US are solid but noisy, with some near-certainty losses suggesting the trader occasionally drifts into harvesting behavior and gets caught on tail events.",
+  "signal_weight": "PARTIAL",
+  "signal_weight_reasoning": "The trader shows real forecasting skill across multiple domains with respectable accuracy and a positive realized PnL of ~$5,400. However, the high directionality (0.918) combined with near-certainty open positions (multiple at 0.997-0.999) suggests contamination from yield-harvesting behavior, particularly in Trump/US. The geo_elo_active of 2093 falls below the LEGENDARY threshold, and China_Asia results are nearly worthless. PARTIAL weight is appropriate \u2014 trust directional calls in Iran/ME and Europe at contested prices, discount near-certainty trades and China/Asia signals entirely.",
+  "trusted_domains": [
+    "Iran_ME",
+    "Europe",
+    "Russia_UKR"
+  ],
+  "discounted_domains": [
+    "China_Asia",
+    "Trump_US near-certainty entries"
+  ],
+  "behavioural_flags": [
+    "Repeated entries in the same market (Israel x Hamas ceasefire: 7 recent trades), suggesting averaging-in or doubling-down behavior",
+    "Near-certainty yield harvesting in open positions: multiple NO positions at 0.987-0.999 on Iran-related military events",
+    "Entry at contested prices in some markets (0.26, 0.48, 0.49 on ceasefire) alongside high-conviction late entries (0.77) \u2014 inconsistent entry discipline",
+    "Government shutdown trades at 0.97 and 0.982 resulted in losses \u2014 chasing near-certainty and getting burned by tail events",
+    "NYC Mamdani NO trades at 0.051-0.055 are borderline yield-harvesting wins, not genuine forecasting"
+  ],
+  "risk_patterns": [
+    "Sunk-cost or averaging behavior: multiple ceasefire positions across wide price range suggests reluctance to cut losing thesis",
+    "Concentration risk in Iran/ME open positions: multiple large positions on related Iran military inaction themes (Israel invade Iran, Iran strike Israel, US invade Iran) \u2014 correlated tail risk if regional escalation occurs",
+    "Near-certainty position sizing: $3,931 shares at 0.997 and $3,261 at 0.999 represent large nominal exposure for minimal expected return \u2014 asymmetric downside if black swan event occurs",
+    "Tucker Carlson 2028 NO at 0.946 is a very long-dated near-certainty trade with capital tied up for years"
+  ],
+  "notable_calls": [
+    {
+      "market": "Israel x Hamas ceasefire by Oct 31",
+      "side": "YES",
+      "entry_price": 0.26,
+      "result": "WON",
+      "significance": "Low-price contested entry that paid off \u2014 genuine forecasting judgment at underpriced odds"
+    },
+    {
+      "market": "US Government shutdown",
+      "side": "YES",
+      "entry_price": 0.97,
+      "result": "LOST",
+      "significance": "Near-certainty trade that lost \u2014 illustrates yield-harvesting risk when tail events materialize"
+    },
+    {
+      "market": "US Government shutdown",
+      "side": "YES",
+      "entry_price": 0.982,
+      "result": "LOST",
+      "significance": "Second position doubling down on near-certainty shutdown bet at even higher price \u2014 compounded yield-harvesting error"
+    },
+    {
+      "market": "Iran strike on Israel today",
+      "side": "NO",
+      "entry_price": 0.038,
+      "result": "OPEN",
+      "significance": "Extremely low-price NO on daily Iran strike \u2014 borderline yield-harvesting but reflects Iran/ME domain knowledge"
+    },
+    {
+      "market": "US-Iran nuclear deal before July",
+      "side": "YES",
+      "entry_price": 0.22,
+      "result": "OPEN",
+      "significance": "Genuine contested long on Iran nuclear deal \u2014 meaningful directional call in core domain at fair odds"
+    }
+  ],
+  "open_positions_summary": "Portfolio implies two distinct theses: (1) Iran/ME de-escalation \u2014 multiple large NO positions on Israeli/US military action against Iran and Iranian regime collapse, with one contrarian YES on a nuclear deal at 0.22, suggesting this trader believes diplomacy is underpriced and military action overpriced; (2) Near-certainty yield collection \u2014 large positions at 0.987-0.999 on obvious outcomes (Trump lowers China tariffs, Trump attends NATO summit, US doesn't invade Iran) that provide minimal return for significant tail risk exposure. The US-Venezuela military engagement YES at 0.57 is the most genuinely contested open call.",
+  "watch_items": [
+    "Monitor Iran/ME escalation events \u2014 trader has large correlated short-volatility exposure across multiple related markets; any escalation could trigger simultaneous losses",
+    "Track whether ceasefire-averaging behavior continues \u2014 repeated entries in the same market at declining prices is a potential sunk-cost flag",
+    "Watch US-Venezuela position at 0.57 as a signal of this trader's LatAm forecasting ability (currently only 1 resolved LatAm trade)",
+    "Monitor China_Asia entries if any appear \u2014 current 14.3% accuracy there should trigger immediate discount of any signals",
+    "Track if near-certainty yield positions resolve correctly or if tail-event losses recur as seen with government shutdown trades"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "A capable multi-domain forecaster with real edge in Iran/ME and Europe, demonstrated by 72% and 67.2% accuracy on substantial trade samples. The $5,400 positive PnL and 74-market breadth confirm genuine forecasting ability rather than lucky specialization. However, the trader has a persistent yield-harvesting tendency \u2014 particularly visible in near-certainty open positions and the government shutdown losses \u2014 which contaminates the signal and introduces correlated tail risk. Best used as a PARTIAL signal source: weight directional calls in Iran/ME and Europe at contested prices (0.10-0.80), disregard China/Asia entirely, and flag near-certainty positions as unreliable indicators of forecasting skill.",
+  "data_snapshot": {
+    "geo_elo": 2304.5085438882675,
+    "geo_elo_active": 2092.997,
+    "resolved_trades": 145,
+    "distinct_markets": 74,
+    "directionality": 0.9178947918090494,
+    "pnl": 5389.3859647296495
+  }
+}

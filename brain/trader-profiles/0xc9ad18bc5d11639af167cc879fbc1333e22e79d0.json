@@ -1,0 +1,101 @@
+{
+  "address": "0xc9ad18bc5d11639af167cc879fbc1333e22e79d0",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1865.3777,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Despite trading 86 distinct markets with apparent diversity, the open positions reveal a dominant pattern of near-certainty NO trades at 0.97-0.999 price levels (e.g., US declares war on Iran at 0.998, Israel strikes Iran at 0.994, Putin meets Zelenskyy at 0.992). The directionality of 0.97 confirms nearly all trades go the same direction. Recent resolved trades show multiple losses precisely on near-certainty positions (Israel-Hamas ceasefire NO at 0.954, 0.95), exposing the classic yield-harvesting blowup risk where rare events wipe accumulated gains.",
+  "primary_domain": "DIVERSE",
+  "domain_strengths": [
+    "Other",
+    "Iran_ME"
+  ],
+  "domain_blindspots": [
+    "Europe: 54.2% accuracy barely above chance, yet continues trading this domain",
+    "China_Asia: 0% accuracy (small sample but warrants caution)",
+    "Russia_UKR: 62.5% accuracy inflated by near-certainty harvesting, genuine directional calls may underperform"
+  ],
+  "domain_summary": "Best genuine edge appears in 'Other' (85.7% accuracy) and Iran_ME (73.6%), though both may be inflated by near-certainty position harvesting. Europe and Russia_UKR accuracy suggests limited genuine forecasting edge outside obvious outcomes.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "The extreme directionality (0.97) combined with near-certainty open positions (7+ positions at 0.97+ price) indicates this trader is primarily harvesting yield on foregone conclusions rather than providing genuine forecasting signal. Recent string of 15 consecutive losses in resolved trades also suggests a deteriorating edge or a concentrated bad-period in contested markets. Genuine directional calls in the 0.10-0.80 range are rare.",
+  "trusted_domains": [
+    "Iran_ME"
+  ],
+  "discounted_domains": [
+    "Europe",
+    "China_Asia",
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "behavioural_flags": [
+    "Extreme directionality (0.97): almost never takes the contrarian side except via near-certainty harvesting",
+    "Near-certainty clustering: multiple open positions at 0.97-0.999 across unrelated geopolitical domains",
+    "Doubling-down pattern: multiple entries in same market (Epstein files: 7 trades, Israel-Hamas ceasefire: 5 trades) including averaging into losing positions",
+    "Mixed direction within same market: held both YES at 0.96 and NO at 0.10 for Epstein files \u2014 possible hedging or LP artifact on single market",
+    "Catastrophic recent resolved stretch: 15 consecutive losses with no wins recorded in recent history",
+    "Near-certainty buys on volatile geopolitical events (ceasefire NO at 0.95) \u2014 classic yield-harvester vulnerability"
+  ],
+  "risk_patterns": [
+    "Sunk-cost re-entry: repeated trades in same losing market (Epstein files, Israel-Hamas ceasefire) at worsening prices",
+    "Tail-risk concentration: multiple large positions on low-probability events NOT happening \u2014 a single unexpected escalation wipes multiple positions simultaneously",
+    "Fordow nuclear facility YES at 0.965 is inconsistent with Iran_ME NO positions \u2014 possible confusion or hedging error",
+    "Realized PnL of $1,481 is modest given 93 resolved trades \u2014 suggests harvesting small margins that will be wiped by occasional tail losses",
+    "All recent resolved trades are losses \u2014 possible model degradation or entering a domain where tail events are clustering"
+  ],
+  "notable_calls": [
+    {
+      "market": "Israel-Hamas ceasefire by September 15",
+      "side": "NO",
+      "entry_price": 0.954,
+      "result": "LOST",
+      "significance": "Textbook yield-harvester blowup: near-certainty NO on a geopolitical ceasefire that actually occurred, demonstrating the fatal flaw in this strategy"
+    },
+    {
+      "market": "Will Trump release the Epstein files by December 19?",
+      "side": "YES",
+      "entry_price": 0.98,
+      "result": "LOST",
+      "significance": "Bought near-certainty YES at 0.98 and lost \u2014 indicates chasing momentum into overpriced positions, not genuine forecasting"
+    },
+    {
+      "market": "Fordow nuclear facility destroyed before July?",
+      "side": "YES",
+      "entry_price": 0.965,
+      "result": "OPEN",
+      "significance": "Contrarian to this trader's usual NO harvesting strategy; at 0.965 this is a near-certainty YES on a low-base-rate event \u2014 high risk of large loss"
+    },
+    {
+      "market": "Will Keiko Fujimori win 2026 Peruvian election?",
+      "side": "YES",
+      "entry_price": 0.66,
+      "result": "OPEN",
+      "significance": "One of the few genuinely contested price entries (0.66) in a non-obvious market \u2014 atypical for this trader and worth monitoring as a real directional call"
+    },
+    {
+      "market": "Will Salvador Nasralla win Honduras 2025 election?",
+      "side": "YES",
+      "entry_price": 0.07,
+      "result": "OPEN",
+      "significance": "Low-probability YES at 0.07 is genuinely contrarian and contested \u2014 another rare example of non-harvesting behaviour, small position size limits impact"
+    }
+  ],
+  "open_positions_summary": "Portfolio is dominated by near-certainty NO positions across Iran escalation (US war on Iran, Israel strikes Iran, Iranian regime collapse), Russia-Ukraine (Putin-Zelenskyy meeting), and European politics (Denmark PM candidates, AFD in government). The implied thesis is 'extreme geopolitical events won't happen in the near term.' Two anomalous positions \u2014 Fordow YES at 0.965 and Mette Frederiksen YES at 0.93 \u2014 contradict the dominant strategy and may represent hedges or errors. Keiko Fujimori YES at 0.66 is the sole genuinely contested directional bet.",
+  "watch_items": [
+    "Monitor Fordow nuclear facility position: YES at 0.965 is a large contradictory bet \u2014 if this loses, confirms systematic near-certainty harvesting vulnerability",
+    "Track whether 15-loss streak in recent resolved represents a structural shift or temporary clustering",
+    "Watch Iran escalation cluster: 4+ large NO positions on Iran-related events \u2014 a single US or Israel strike event would cause simultaneous blowup across all",
+    "Keiko Fujimori position resolves 2026-06-07: one of the few genuine directional calls, outcome will test if trader has real LatAm edge",
+    "Monitor if trader adds more near-certainty positions to recover from recent loss streak \u2014 sunk-cost escalation risk"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "This trader presents as a yield harvester masquerading as a broad geopolitical forecaster. While the 86-market breadth and positive realized PnL suggest sophistication, the 0.97 directionality, clustering of open positions at 0.97-0.999, and a string of 15 consecutive recent losses all point to a trader systematically collecting small premiums on 'obvious' outcomes rather than genuine forecasting. The strategy is structurally vulnerable to tail events, as demonstrated by losing near-certainty ceasefire NO positions. Genuine signal exists only in isolated cases (Fujimori, Nasralla) at contested price levels; do not follow this trader's near-certainty positions as forecasting intelligence.",
+  "data_snapshot": {
+    "geo_elo": 1991.5783199442383,
+    "geo_elo_active": 1865.3777,
+    "resolved_trades": 93,
+    "distinct_markets": 86,
+    "directionality": 0.9726651034993432,
+    "pnl": 1480.9051733987433
+  }
+}

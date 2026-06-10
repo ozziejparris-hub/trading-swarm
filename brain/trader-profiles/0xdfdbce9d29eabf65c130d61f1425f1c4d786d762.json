@@ -1,0 +1,82 @@
+{
+  "address": "0xdfdbce9d29eabf65c130d61f1425f1c4d786d762",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2037.2739,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Virtually all resolved trades are YES positions bought at 0.006-0.007 on long-shot candidates (Obama 2028, Kristi Noem 2028, Mike Pence 2028) that resolved YES purely because the market closed \u2014 these are near-certainty harvesting plays on deeply unlikely candidates at sub-1-cent prices. The 0.965 directionality and repeated identical entries across the same markets confirm a mechanical strategy of sweeping cheap YES shares on doomed candidacies. Open positions follow the exact same template: LeBron James, Zohran Mamdani, Stephen A. Smith, Tim Walz \u2014 all at 0.007-0.011 YES.",
+  "primary_domain": "Other",
+  "domain_strengths": [
+    "Other",
+    "Trump_US"
+  ],
+  "domain_blindspots": [
+    "Europe: tiny sample (2 wins) on French election long-shots at 0.006, no genuine edge demonstrated",
+    "Trump_US: 29-0 record almost certainly driven by near-certainty or market-closure wins, not forecasting skill"
+  ],
+  "domain_summary": "This trader has no demonstrated genuine forecasting edge \u2014 performance is driven entirely by collecting sub-1-cent YES positions on candidates who never ran, winning when markets close and resolve NO (paradoxically recorded as wins in the data structure). Discount all signals from this account.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "The trader's strategy is purely mechanical yield-harvesting on near-zero probability YES positions. The 100% win rates and 0.965 directionality reflect market-closure resolution artifacts, not genuine forecasting. Entries at 0.006-0.011 provide no price discovery signal \u2014 they are noise positions chasing small absolute dollar returns across throwaway candidacies. No signal from this account should be used for STR-003.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Other",
+    "Europe",
+    "LatAm"
+  ],
+  "behavioural_flags": [
+    "Systematic near-zero entry: almost all trades entered at 0.006-0.011 YES",
+    "Extreme market concentration: 11+ trades on Kristi Noem 2028 alone",
+    "High share volume on long-shots (36,560 shares at 0.002 on Eduardo Bolsonaro)",
+    "No position exits detected \u2014 holds to resolution uniformly",
+    "Single-direction bias (0.965) consistent with automated or templated trade execution",
+    "One anomalous contested-price position: Gavin Newsom NO at 0.64 \u2014 stands out as potentially genuine"
+  ],
+  "risk_patterns": [
+    "Concentration risk: massive share counts on effectively worthless positions",
+    "Sunk-cost not applicable \u2014 positions are so cheap that losses are trivially small per trade",
+    "Gavin Newsom NO at 0.64 is a genuine contested-price bet that could represent real capital at risk",
+    "geo_elo inflated by volume of trivially winning market-closure trades rather than real predictive accuracy"
+  ],
+  "notable_calls": [
+    {
+      "market": "Kristi Noem wins 2028 GOP nomination",
+      "side": "YES",
+      "entry_price": 0.007,
+      "result": "WON",
+      "significance": "Repeated 11+ times \u2014 exemplifies the yield-harvesting template, not genuine forecasting"
+    },
+    {
+      "market": "Gavin Newsom wins 2028 Dem nomination",
+      "side": "NO",
+      "entry_price": 0.64,
+      "result": "OPEN",
+      "significance": "Only contested-price position in the entire book; anomalous and potentially the one genuine directional call"
+    },
+    {
+      "market": "Eduardo Bolsonaro wins 2026 Brazil presidential election",
+      "side": "YES",
+      "entry_price": 0.002,
+      "result": "OPEN",
+      "significance": "Largest share position (36,560) \u2014 extreme long-shot, classic yield-harvest template applied to LatAm"
+    }
+  ],
+  "open_positions_summary": "Portfolio is dominated by near-zero probability YES positions across 2028 US presidential long-shots (LeBron James, Zohran Mamdani, Tim Walz, Raphael Warnock, Nikki Haley, John Thune, Chris Murphy, Stephen A. Smith) and 2027 French election also-rans (S\u00e9gol\u00e8ne Royal, Carole Delga, Xavier Bertrand) \u2014 all at 0.006-0.011. The outlier is Gavin Newsom NO at 0.64, implying a genuine thesis that Newsom will not secure the 2028 Democratic nomination. The overall thesis is mechanical: buy cheap YES on every candidate, collect resolution payouts on market closures.",
+  "watch_items": [
+    "Monitor Gavin Newsom NO position \u2014 the only genuine price-discovery bet in the book, worth tracking as a real signal",
+    "Watch whether trader begins entering YES positions at contested prices (0.10-0.80) \u2014 would indicate strategy shift",
+    "Track whether geo_elo_active continues to decay due to inactivity or inflates further via volume of trivial wins",
+    "Observe if Bolsonaro YES position at 0.002 gets added to significantly \u2014 would indicate escalation of the template"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader's impressive ELO and perfect domain win rates are entirely artifactual \u2014 the strategy is to sweep sub-1-cent YES positions on implausible candidates and collect resolution payouts when markets close, generating wins with no genuine forecasting content. With only 6 distinct markets and near-identical entry prices across nearly all trades, this is a mechanical template rather than analytical trading. The sole exception is the Gavin Newsom NO at 0.64, which deserves isolated attention as a potentially genuine directional call. All other signals from this account should be excluded from STR-003 intelligence generation.",
+  "data_snapshot": {
+    "geo_elo": 2175.1040000000007,
+    "geo_elo_active": 2037.2739,
+    "resolved_trades": 22,
+    "distinct_markets": 6,
+    "directionality": 0.9647807287903649,
+    "pnl": 1225.0592948530468
+  }
+}

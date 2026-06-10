@@ -1,0 +1,89 @@
+{
+  "address": "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1884.6492,
+  "tier": "ELITE",
+  "archetype": "VOLUME_SPECIALIST",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "This trader concentrates heavily on single markets \u2014 most recently placing 11 separate YES trades on the Graham Platner Maine Senate primary, buying at prices ranging from 0.48 to 0.89. Directionality of 1.0 confirms they almost exclusively take one side across trades. The pattern of averaging into a single market theme with repeated entries resembles volume specialization rather than broad genuine forecasting, though the 33 distinct markets suggests some breadth.",
+  "primary_domain": "Other",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "LatAm: only 3 trades, 33% accuracy \u2014 insufficient sample and poor results",
+    "Iran_ME: 1 win 1 loss, no meaningful edge demonstrated"
+  ],
+  "domain_summary": "Best demonstrated edge is in Trump_US markets at 60% accuracy across 50 trades, which is modest but meaningful. The 'Other' domain (93 trades, 48.4%) is slightly below breakeven and suggests the trader overextends into markets outside their comfort zone.",
+  "signal_weight": "DOMAIN_ONLY",
+  "signal_weight_reasoning": "Trump_US is the only domain with enough volume and above-breakeven accuracy to warrant signal use. The trader's 1.0 directionality and repeated hammering of single markets (Maine primary, Mamdani) introduces noise from averaging behavior rather than independent forecasting signals. Open positions are predominantly low-probability long-shot bets at 0.5-2.6 cents which are near-certainty/yield territory in reverse (speculative lottery tickets), further diluting signal quality.",
+  "trusted_domains": [
+    "Trump_US"
+  ],
+  "discounted_domains": [
+    "LatAm",
+    "Iran_ME",
+    "Other"
+  ],
+  "behavioural_flags": [
+    "Averaging into single markets with 5-11 separate entries (Graham Platner: 11 trades, Mamdani: multiple entries)",
+    "Bought Mamdani YES at 0.943 \u2014 near-certainty price for a contested outcome, a clear misjudgment of pricing",
+    "Open positions dominated by extreme long-shots at 0.2-2.6 cents (French presidential candidates, obscure primaries)",
+    "Directionality of 1.0 \u2014 never takes NO side except on resolved positions, extremely one-directional",
+    "Entry at both contested and near-certainty prices suggests inconsistent methodology"
+  ],
+  "risk_patterns": [
+    "Sunk-cost averaging: repeatedly buying into losing/uncertain positions in same market",
+    "Lottery-ticket accumulation: open book full of <1 cent positions that will mostly expire worthless",
+    "Overconfidence risk: 0.943 entry on Mamdani primary shows willingness to chase at dangerous prices",
+    "Concentration risk: cluster of Platner trades means single market can dominate recent P&L"
+  ],
+  "notable_calls": [
+    {
+      "market": "Graham Platner Maine Senate Democratic primary",
+      "side": "YES",
+      "entry_price": 0.48,
+      "result": "WON",
+      "significance": "Early entry at contested price on obscure primary shows research capability; later entries at 0.89 diluted the quality of this call"
+    },
+    {
+      "market": "Zohran Mamdani NYC Democratic Primary",
+      "side": "YES",
+      "entry_price": 0.943,
+      "result": "LOST",
+      "significance": "Near-certainty buy on contested market \u2014 worst kind of entry, lost a near-lock priced bet"
+    },
+    {
+      "market": "Zohran Mamdani NYC mayoral election",
+      "side": "YES",
+      "entry_price": 0.708,
+      "result": "LOST",
+      "significance": "General election bet at high price also lost; double exposure to same thesis"
+    },
+    {
+      "market": "Andrew Cuomo second place NYC mayoral",
+      "side": "YES",
+      "entry_price": 0.14,
+      "result": "LOST",
+      "significance": "Contested entry, non-obvious call, but wrong \u2014 shows limits of NYC political read"
+    }
+  ],
+  "open_positions_summary": "Current open book is almost entirely sub-2-cent long-shot bets on obscure candidates in French 2027 presidential race, Peruvian election, LA mayor, Idaho governor, and various US primaries. These are speculative portfolio-spreading positions implying no strong thesis \u2014 the trader appears to be buying optionality cheaply across many low-probability outcomes. The Elly Schlein Italy PM position at 14.9 cents is the only meaningfully priced open bet and represents a genuine directional call.",
+  "watch_items": [
+    "Monitor whether the Platner-style averaging pattern repeats in upcoming 2026 primaries \u2014 if so, early entries are the signal, late ones are noise",
+    "Track Elly Schlein Italy open position as the most substantive current directional bet",
+    "Watch if lottery-ticket open positions begin to close at a loss pattern \u2014 could indicate shift to higher-quality entry discipline",
+    "Observe if Trump_US accuracy holds above 0.60 in 2026 midterm cycle markets"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "A moderately capable trader with genuine edge in Trump_US markets (60% over 50 trades) but significant behavioral noise from averaging into single markets and chasing near-certainty prices on contested outcomes. The 1.0 directionality and open book of lottery-ticket positions suggest a speculative streak that undermines forecasting credibility. Realized PnL of ~$390 is modest relative to trade volume, consistent with a trader who wins often but over-extends. Best used as a DOMAIN_ONLY signal source for Trump_US political calls, with heavy discounting applied to any entries above 0.85 or below 0.05.",
+  "data_snapshot": {
+    "geo_elo": 1891.9206119316975,
+    "geo_elo_active": 1884.6492,
+    "resolved_trades": 110,
+    "distinct_markets": 33,
+    "directionality": 1.0,
+    "pnl": 389.93798750146095
+  }
+}

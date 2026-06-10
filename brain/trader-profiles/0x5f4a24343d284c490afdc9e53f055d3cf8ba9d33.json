@@ -1,0 +1,81 @@
+{
+  "address": "0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2011.912,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Virtually every visible trade involves buying NO at 0.93-0.999 or YES at 0.978+, i.e. near-certainty positions collecting tiny premiums on highly improbable outcomes. Directionality of 1.0 confirms no genuine two-sided forecasting. Despite 42 resolved trades across 20 markets, the pattern is systematic yield extraction \u2014 selling risk on extreme long-shots \u2014 rather than forecasting contested outcomes.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "Trump_US: 53% accuracy on 30 trades suggests near-random outcomes, likely because near-certainty trades occasionally misfire when mispriced; Russia_UKR and Europe too thin to assess"
+  ],
+  "domain_summary": "This trader has no identifiable genuine forecasting edge \u2014 the near-certainty entry strategy inflates win rates mechanically but delivers negligible PnL ($0.65 total). Domain labels are largely irrelevant because the signal comes from price extremity, not domain insight.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "All positions are entered at prices where the outcome is already near-certain (0.93\u20130.999). There is zero informational content about contested probabilities; this trader is harvesting basis points, not forecasting. Copying these signals would expose STR-003 to catastrophic tail risk on the rare misfires, for almost no expected return.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Europe",
+    "Russia_UKR",
+    "Other"
+  ],
+  "behavioural_flags": [
+    "Exclusively trades at near-certainty prices (NO at 0.93-0.999 or YES at 0.978+)",
+    "Directionality of exactly 1.0 \u2014 never takes the opposite side of a market",
+    "Multiple simultaneous positions on the same market at marginally different prices suggest systematic sweep or DCA into near-zero-risk positions",
+    "Small position sizes (25-150 shares) consistent with yield harvesting rather than conviction sizing",
+    "Many open positions in distant-future markets (2028 elections) where liquidity is thin and mispricing risk is elevated",
+    "Realized PnL of $0.65 on 42 trades is negligibly small \u2014 confirms near-zero-edge strategy"
+  ],
+  "risk_patterns": [
+    "Occasional losses on near-certainty positions (e.g. 'Democrats and Republicans both lose' NO at 0.997 lost) reveal tail-event exposure",
+    "Holding multiple 2028 election NO positions at 0.91-0.995 \u2014 resolution is years away and odds could shift materially",
+    "Concentration in US political markets with no demonstrated edge in Russia_UKR or Europe",
+    "Thin sample in non-US domains means any apparent accuracy there is noise"
+  ],
+  "notable_calls": [
+    {
+      "market": "2024 Balance of Power: R Prez R Senate R House",
+      "side": "YES",
+      "entry_price": 0.978,
+      "result": "LOST",
+      "significance": "Bought YES at 0.978 and lost \u2014 illustrates the tail risk of near-certainty trading; even 'obvious' outcomes misfire"
+    },
+    {
+      "market": "Democrats and Republicans both lose the 2024 Presidential Election",
+      "side": "NO",
+      "entry_price": 0.997,
+      "result": "LOST",
+      "significance": "Lost on a 99.7% priced position \u2014 demonstrates that even extreme near-certainty is not risk-free"
+    },
+    {
+      "market": "Will Michelle Obama win the popular vote in the 2024 Presidential Election?",
+      "side": "NO",
+      "entry_price": 0.996,
+      "result": "LOST",
+      "significance": "Another near-certainty loss; highlights systematic tail exposure across this strategy"
+    }
+  ],
+  "open_positions_summary": "Trader holds 15 open NO positions on low-probability political candidates (2028 US presidential candidates including Youngkin, Cooper, Gallego, Oprah, Tucker Carlson, Harris; French 2027 election; Peruvian 2026 election) all priced at 0.91-0.998. The implied thesis is simply 'these individuals will not win' \u2014 a structurally sound but informationally vacuous set of bets. The Kamala Harris NO at 0.935 and Marco Rubio NO at 0.91 are the only positions with slightly less extreme certainty, introducing modest tail risk.",
+  "watch_items": [
+    "Monitor whether any open 2028 positions reprice significantly \u2014 a candidate gaining traction (e.g. Kamala Harris) could turn profitable NO at 0.935 into a loss",
+    "Track if the trader ever enters positions below 0.90 \u2014 would signal a change toward genuine forecasting",
+    "Watch for any large sizing changes that would shift this from yield harvesting to conviction sizing",
+    "Monitor Roberto S\u00e1nchez Palomino (Peruvian election, resolves 2026-06-07) \u2014 the least extreme open position at 0.938"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a pure yield harvester with no detectable forecasting signal: every trade is placed at near-certainty prices (0.93-0.999), generating a total realized PnL of $0.65 across 42 trades. The 1.0 directionality score confirms this is a one-strategy operation \u2014 collecting small premiums on politically improbable outcomes \u2014 not genuine geopolitical prediction. Occasional losses on sub-1% outcomes confirm meaningful tail exposure embedded in the strategy. This trader's positioning carries zero informational value for STR-003 signal generation and should be fully excluded from the intelligence feed.",
+  "data_snapshot": {
+    "geo_elo": 2011.912000000001,
+    "geo_elo_active": 2011.912,
+    "resolved_trades": 42,
+    "distinct_markets": 20,
+    "directionality": 1.0,
+    "pnl": 0.648000000000095
+  }
+}

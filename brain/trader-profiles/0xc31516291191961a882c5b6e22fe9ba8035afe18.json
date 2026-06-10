@@ -1,0 +1,90 @@
+{
+  "address": "0xc31516291191961a882c5b6e22fe9ba8035afe18",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2163.8093,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Overwhelmingly trades near-certainty positions: open positions show prices of 0.985\u20130.999 across nearly every market, and resolved trades are dominated by entries at 0.94\u20130.999. Directionality of 0.9964 confirms almost exclusively one-sided positioning with no genuine two-way forecasting. The strategy is to collect small premiums on highly probable outcomes rather than make contested directional calls \u2014 classic yield harvesting behavior.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "China_Asia"
+  ],
+  "domain_blindspots": [
+    "Trump_US: High win count is inflated by near-certainty entries, not genuine forecasting edge \u2014 lost on Judy Shelton Fed nomination at 0.996 and 0.954, and Trump China visit at 0.981",
+    "Iran_ME: Small sample (1 trade), open positions suggest overconfidence in near-certainty pricing on regime collapse and military strike scenarios"
+  ],
+  "domain_summary": "Apparent accuracy across all domains is driven by harvesting near-certain outcomes, not genuine domain expertise. The few losses (Shelton Fed nomination, Trump China visit) occurred precisely on near-certainty entries that failed, exposing the core risk of this strategy rather than revealing calibrated forecasting.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Nearly all trades are entered at 0.92\u20130.999, meaning this trader is not price-discovering \u2014 they are confirming already-priced consensus. Copying these signals offers near-zero alpha and carries asymmetric downside risk when near-certain events fail to resolve as expected. The Shelton and China visit losses at near-certainty prices illustrate this tail risk clearly.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Russia_UKR",
+    "Europe",
+    "China_Asia",
+    "Iran_ME"
+  ],
+  "behavioural_flags": [
+    "Extreme near-certainty entry bias: virtually all positions entered above 0.92",
+    "Repetitive same-market stacking: multiple entries in the same market (Epstein files x10, Shelton x2)",
+    "No evidence of mid-market or contested price entries in recent resolved trades",
+    "Open positions span many markets but all with identical yield-harvesting pricing logic",
+    "One anomalous loss at 0.87 (Trump Epstein files) suggests occasional misjudgment of near-certain outcomes"
+  ],
+  "risk_patterns": [
+    "Concentration in near-certainty NO positions on US political tail events \u2014 correlated failure risk if political volatility spikes",
+    "Stacking duplicate trades on same market increases exposure without diversification benefit",
+    "Shelton Fed nomination loss at 0.996 demonstrates that even sub-1% priced events resolve adversely, and position sizing at those prices leaves limited recovery margin",
+    "Open positions include two expired-looking markets (Trump out by April 30, resolves April 2026) suggesting portfolio may include stale unresolved entries"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Trump release the Epstein files by December 19?",
+      "side": "YES",
+      "entry_price": 0.87,
+      "result": "LOST",
+      "significance": "Only contested-price entry visible in recent history \u2014 lost, confirming trader struggles outside yield-harvesting zone"
+    },
+    {
+      "market": "Will Trump nominate Judy Shelton as next Fed chair?",
+      "side": "NO",
+      "entry_price": 0.996,
+      "result": "LOST",
+      "significance": "Near-certainty entry at 0.996 that resolved adversely \u2014 illustrates core risk of yield harvesting strategy"
+    },
+    {
+      "market": "Will Trump visit China by March 31?",
+      "side": "NO",
+      "entry_price": 0.981,
+      "result": "LOST",
+      "significance": "Another high-confidence near-certainty NO that failed; shows geopolitical tail events can invalidate near-certain pricing"
+    },
+    {
+      "market": "Trump out as President in 2025?",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "OPEN",
+      "significance": "Largest open position by share count (11,321 shares) \u2014 anchors entire portfolio to political stability thesis"
+    }
+  ],
+  "open_positions_summary": "Portfolio is entirely structured around geopolitical and political stability: NO on Trump removal, NO on Iranian regime fall, NO on US-Iran war, NO on Kim Jong Un outreach, YES on Hezbollah ceasefire extension \u2014 all entered at 0.92\u20130.999. The implicit thesis is 'status quo persists across all major geopolitical flashpoints.' This is a highly correlated book that would suffer simultaneous losses if any major destabilizing shock occurred.",
+  "watch_items": [
+    "Monitor Trump removal / impeachment news \u2014 largest single open position (11K shares at 0.998) is directly exposed",
+    "Track Iran escalation signals \u2014 multiple near-certainty NO positions on regime fall and US strikes could face simultaneous stress",
+    "Watch for any new contested-price entries (0.10\u20130.80) as a signal of genuine forecasting shift",
+    "Observe whether Judy Shelton / China visit losses trigger strategy adjustment or continued near-certainty stacking",
+    "Check resolution of stale-looking 'Trump out by April 30' position which appears past its resolve date"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "This trader is a textbook yield harvester operating almost exclusively at near-certainty price points (0.92\u20130.999), generating modest returns by collecting small premiums on highly probable outcomes. The 80%+ accuracy across domains is entirely a function of entry price selection rather than genuine forecasting insight \u2014 there is no evidence of price discovery or contested-market conviction. Three notable losses on near-certainty entries (Shelton, Trump China visit, Epstein files at 0.87) confirm the strategy's tail risk. Signals from this trader should be treated as near-noise for STR-003 purposes, as copying near-certainty entries offers negligible alpha and non-trivial downside when consensus pricing proves wrong.",
+  "data_snapshot": {
+    "geo_elo": 2410.1600002195214,
+    "geo_elo_active": 2163.8093,
+    "resolved_trades": 55,
+    "distinct_markets": 10,
+    "directionality": 0.9964307015451801,
+    "pnl": 2792.290600670685
+  }
+}

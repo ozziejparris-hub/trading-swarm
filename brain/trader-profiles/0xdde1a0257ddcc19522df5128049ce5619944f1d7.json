@@ -1,0 +1,80 @@
+{
+  "address": "0xdde1a0257ddcc19522df5128049ce5619944f1d7",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2128.4276,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "The dominant pattern in recent resolved trades is mass near-certainty buying of YES on 'Will Trump visit China by March 31?' at prices of 0.012-0.014 \u2014 classic yield harvesting on near-certain NO outcomes (which correctly resolved NO, meaning these YES bets lost or were near-zero recoveries). Wait \u2014 the YES trades at 0.012-0.014 WON, meaning the market resolved YES despite low probability implied at entry. However, the open positions show consistent NO-side bets at prices like 0.94 and 0.87 (equivalent to buying NO cheaply), plus 'Iran Strike on Israel' YES at 0.965 \u2014 these are near-certainty premium collection plays. The trader systematically enters positions at near-certain prices (sub-0.05 for YES or above 0.90 for NO) to harvest small premiums, with the one genuine directional call at 0.37 being a loss.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "China_Asia"
+  ],
+  "domain_blindspots": [
+    "Trump_US: accuracy inflated by near-certainty near-zero YES buys that happened to win; one directional bet at 0.37 was lost",
+    "Iran_ME: small sample, open positions concentrated in near-certainty NO side"
+  ],
+  "domain_summary": "Apparent strength in Trump_US and China_Asia is substantially driven by near-certainty position harvesting rather than genuine forecasting edge. The single contested-price call (Trump China visit at 0.37) was a loss, undermining claims of real directional insight.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "The overwhelming majority of wins come from near-certainty price entries (0.012-0.014 YES buys, 0.94+ NO buys) that reflect yield harvesting, not forecasting skill. The geo_elo_active of 2128 is below the LEGENDARY threshold and the raw ELO is inflated by volume of near-certain wins. The one genuine contested-price call lost. Signal value for STR-003 is minimal as trades don't reflect informational edge.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "China_Asia",
+    "Iran_ME"
+  ],
+  "behavioural_flags": [
+    "Mass repeated entries on same market at near-zero prices (0.012-0.014) \u2014 strongly suggests yield harvesting or arbitrage sweeping",
+    "High directionality (0.969) consistent with one-sided near-certainty position taking",
+    "Only 3 distinct geo markets across 34 resolved trades \u2014 extreme concentration",
+    "Open positions in Iran_ME skew heavily toward NO at high prices (0.94, 0.87) \u2014 classic near-certainty premium collection",
+    "One anomalous YES at 0.965 on 'Iran Strike on Israel' alongside NO at 0.033 on same market \u2014 possible LP artifact or hedging"
+  ],
+  "risk_patterns": [
+    "Single directional bet at contested price (0.37) resulted in a loss \u2014 suggests limited genuine forecasting capability at contested prices",
+    "Extreme market concentration (3 markets) makes overall record fragile and non-generalizable",
+    "Near-certainty harvesting exposes trader to low-probability tail events wiping accumulated gains",
+    "Both YES and NO positions open in Iran Strike on Israel market suggests possible liquidity provision masking true conviction"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Trump visit China by March 31?",
+      "side": "YES",
+      "entry_price": 0.013,
+      "result": "WON",
+      "significance": "Repeated near-zero entry across 14 positions \u2014 likely tail-risk harvesting that paid off when market resolved YES unexpectedly; not a genuine forecasting signal"
+    },
+    {
+      "market": "Will Trump visit China by March 31?",
+      "side": "YES",
+      "entry_price": 0.372,
+      "result": "LOST",
+      "significance": "Only contested-price directional call in recent history \u2014 lost, suggesting real forecasting at non-trivial prices is weak"
+    },
+    {
+      "market": "Will Reza Pahlavi enter Iran by March 31?",
+      "side": "NO",
+      "entry_price": 0.945,
+      "result": "OPEN",
+      "significance": "Near-certainty NO purchase; illustrates yield harvesting strategy in Iran_ME domain"
+    }
+  ],
+  "open_positions_summary": "Current open book is concentrated in Iran_ME with a near-certainty NO on Reza Pahlavi entering Iran (0.945 price), a near-certainty NO on US forces entering Iran by March 7 (0.868), and a near-certainty YES on Iran Strike on Israel (0.965) alongside a NO on the same market at 0.033 \u2014 the latter pair suggest LP behavior or a hedge. A smaller contested position exists (NO on Witkoff meeting Iranian officials at 0.20). The overall thesis is: Iran escalation/unlikely events won't materialize, collect premium.",
+  "watch_items": [
+    "Monitor whether the Iran Strike YES at 0.965 and NO at 0.033 on same market resolve as a paired LP artifact or genuine contradiction",
+    "Track if trader enters any contested-price positions (0.10-0.80) to reassess genuine forecasting ability",
+    "Watch for expansion beyond 3 markets as a signal of genuine forecasting vs pure yield strategy",
+    "Monitor Iran_ME positions for tail-risk realization given heavy NO concentration on low-probability events"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "This trader's impressive win rate and ELO are almost entirely products of near-certainty position harvesting at prices below 0.02 or above 0.93, not genuine forecasting. The record across 34 trades spans only 3 markets, and the sole contested-price directional call (Trump China visit at 0.37) was a loss. Open positions continue the same pattern: collecting small premiums on near-certain outcomes in Iran_ME. Until this trader demonstrates consistent edge at contested prices across diverse markets, their signals should be discounted heavily for STR-003 purposes.",
+  "data_snapshot": {
+    "geo_elo": 2379.8969714261016,
+    "geo_elo_active": 2128.4276,
+    "resolved_trades": 34,
+    "distinct_markets": 3,
+    "directionality": 0.9686773325090398,
+    "pnl": 1298.3750446092142
+  }
+}

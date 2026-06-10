@@ -1,0 +1,84 @@
+{
+  "address": "0x4c34beb16ddedf02116413693b07a709e0a1dcce",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2327.0246,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader shows extreme domain concentration: 92.8% accuracy in Russia_UKR across 1,025 resolved trades is a genuine, statistically significant edge. Trump_US accuracy of 74.2% over 449 trades is also strong. However, the 'Other' domain shows catastrophic failure (9.2% accuracy over 502 trades), confirming this is a specialist who loses badly when trading outside their core expertise. The recent loss streak on the Harris market illustrates this blindspot sharply.",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "domain_blindspots": [
+    "Other: 9.2% accuracy across 502 trades \u2014 near-random performance suggesting systematic misjudgment outside core domains, possibly overconfidence or information deficit"
+  ],
+  "domain_summary": "Exceptional edge in Russia-Ukraine dynamics and solid Trump/US political forecasting; signals in these domains carry very high confidence. Outside these two domains, this trader is a net negative signal generator and should be fully discounted.",
+  "signal_weight": "DOMAIN_ONLY",
+  "signal_weight_reasoning": "Russia_UKR and Trump_US signals from this trader are among the most reliable in the system given high accuracy at scale. However, the catastrophic 'Other' performance (9.2% accuracy, 502 trades) means any signal outside the two trusted domains must be excluded entirely \u2014 it would degrade system performance.",
+  "trusted_domains": [
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "discounted_domains": [
+    "Other",
+    "LatAm",
+    "Iran_ME",
+    "Europe",
+    "China_Asia"
+  ],
+  "behavioural_flags": [
+    "Heavy trade repetition within single markets \u2014 recent resolved shows 15 consecutive trades on the same Harris market at similar prices, suggesting systematic position-building or averaging",
+    "High directionality (0.864) indicates strong conviction bias \u2014 rarely hedges or takes both sides",
+    "Only 5 distinct geo markets despite 1,976 resolved trades \u2014 extreme market concentration",
+    "Entries in Harris trades clustered around 0.65\u20130.73 range suggest dollar-cost averaging into a losing position"
+  ],
+  "risk_patterns": [
+    "Sunk-cost / averaging-down behaviour visible in the 15 repeated Harris NO trades across the same market \u2014 continued buying despite presumably adverse price movement",
+    "Catastrophic performance in 'Other' domain (502 losses vs 46 wins) suggests overconfidence when applying Russia/US expertise to unfamiliar geopolitical contexts",
+    "Extreme market concentration (5 distinct markets, 1,976 trades) creates vulnerability to single-market shocks",
+    "No open positions currently \u2014 possible post-loss withdrawal or repositioning phase after Harris losses"
+  ],
+  "notable_calls": [
+    {
+      "market": "Russia_UKR domain aggregate",
+      "side": "Various",
+      "entry_price": 0.0,
+      "result": "WON",
+      "significance": "951 wins vs 74 losses (92.8% accuracy) across Russia-Ukraine markets represents one of the most statistically significant domain edges in the system \u2014 extremely unlikely to be noise at this sample size"
+    },
+    {
+      "market": "Will Harris drop out of 2025 race before September?",
+      "side": "NO",
+      "entry_price": 0.693,
+      "result": "LOST",
+      "significance": "Lost 15+ consecutive positions on this market, averaging in at ~0.65\u20130.73. Illustrates the 'Other' domain blindspot and sunk-cost averaging behaviour that drags down overall performance"
+    },
+    {
+      "market": "Trump_US domain aggregate",
+      "side": "Various",
+      "entry_price": 0.0,
+      "result": "WON",
+      "significance": "74.2% accuracy over 449 trades in Trump/US markets confirms genuine forecasting edge in this domain, not just lucky concentration"
+    }
+  ],
+  "open_positions_summary": "No open positions currently. The trader appears to have fully exited or is between cycles \u2014 possibly following the Harris market loss sequence. No active thesis to assess.",
+  "watch_items": [
+    "Monitor for re-entry into Russia_UKR markets \u2014 any new positions there carry FULL signal weight",
+    "Watch whether trader continues to enter 'Other' domain markets despite persistent losses \u2014 would confirm behavioral blindspot rather than bad luck",
+    "Track if averaging-down pattern continues in new markets \u2014 a repeated sunk-cost signal",
+    "Check if dormancy following Harris losses is temporary repositioning or start of DORMANT phase",
+    "Flag any new Trump_US positions as high-confidence signals given historical accuracy"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "This is a LEGENDARY-tier domain specialist with one of the strongest single-domain track records in the system: 92.8% accuracy across 1,025 Russia-Ukraine trades is a genuine and exploitable edge. Trump_US performance (74.2%, 449 trades) is also strong. However, the trader loses catastrophically outside these domains \u2014 a 9.2% win rate across 502 'Other' trades is worse than random and suggests severe overconfidence or information deficit when moving beyond core expertise. The recent Harris loss sequence, involving 15+ averaged-down positions on a single market, highlights a sunk-cost behaviour risk that could cause significant drawdowns. Follow this trader exclusively in Russia_UKR and Trump_US; discard all other signals.",
+  "data_snapshot": {
+    "geo_elo": 4309.066407473199,
+    "geo_elo_active": 2327.0246,
+    "resolved_trades": 1976,
+    "distinct_markets": 5,
+    "directionality": 0.8635262794213757,
+    "pnl": 5419532.53222492
+  }
+}

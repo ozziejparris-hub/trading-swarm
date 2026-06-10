@@ -1,0 +1,79 @@
+{
+  "address": "0xd684df320961d73d746a59e7b5343a0b7a733d4c",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2695.58,
+  "tier": "LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Virtually every resolved and open trade is a NO position entered at 0.99+ (or YES at 0.98+), collecting tiny premiums on near-certain outcomes. Directionality of 1.0 confirms a single-direction strategy with no genuine two-sided forecasting. Despite 169 resolved trades, domain accuracy sits near 50/50 across both domains, consistent with a harvesting strategy where wins and losses on near-certainty bets roughly cancel until a tail event hits.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "Trump_US: near-certainty harvesting masks zero genuine forecasting edge; coin-flip accuracy confirms no real predictive signal",
+    "Other: same pattern, 51.9% accuracy on near-certainty entries is not meaningful signal"
+  ],
+  "domain_summary": "This trader has no identifiable forecasting edge in any domain. All activity is yield harvesting at extreme probabilities; the high ELO reflects volume of correct near-certainty resolutions, not analytical skill.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "All entries are at 0.99+ prices, meaning this trader is never expressing a genuine probability judgment \u2014 they are collecting yield on outcomes the market already rates as near-certain. Domain accuracy of ~50% across both domains confirms the losses (tail events) offset the wins. No signal value for STR-003 forecasting purposes.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Other",
+    "all domains"
+  ],
+  "behavioural_flags": [
+    "Exclusively enters NO positions at 0.99+ or YES positions at 0.98+ \u2014 zero contested-price entries",
+    "Directionality of 1.0: never buys the opposing side in any market",
+    "Repeats the same market multiple times (e.g. 7 entries on Trump family VP nomination) at identical near-certainty prices \u2014 scaling into yield positions",
+    "Realized PnL is negative (-$204) despite 169 trades, confirming tail-event losses outpace premium collection",
+    "Resolution dates all cluster on 2026-04-01, suggesting these are old markets being batch-resolved rather than active recent trading"
+  ],
+  "risk_patterns": [
+    "Negative realized PnL despite high-win-rate strategy \u2014 tail events periodically wipe accumulated premium",
+    "Concentration in a single strategy type with no diversification of approach",
+    "Multiple repeat entries in same market suggests position scaling without reconsidering thesis",
+    "High ELO score is misleading \u2014 inflated by volume of trivial correct resolutions, not forecasting quality"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will a Trump family member win 2024 Republican VP nomination?",
+      "side": "NO",
+      "entry_price": 0.99,
+      "result": "LOST",
+      "significance": "Lost 4 of 7 entries at 0.99 on same market \u2014 illustrates tail-event risk of harvesting strategy; even 'safe' markets bite repeatedly"
+    },
+    {
+      "market": "Will someone else win 2024 Republican Presidential Nomination?",
+      "side": "NO",
+      "entry_price": 0.997,
+      "result": "LOST",
+      "significance": "Repeat losses at near-certainty prices confirm yield harvesting is not reliably profitable here"
+    },
+    {
+      "market": "Arizona Presidential Election \u2014 another party candidate",
+      "side": "NO",
+      "entry_price": 0.996,
+      "result": "LOST",
+      "significance": "Lost one entry, won another in the same market at slightly higher price \u2014 characteristic harvesting split outcome"
+    }
+  ],
+  "open_positions_summary": "All open positions are NO bets on already-resolved or near-resolved political scenarios (RFK Democratic nominee, another woman as Democratic nominee, balance-of-power outcomes, Biden resignation) at prices of 0.95\u20130.997. These imply no forward-looking thesis \u2014 they are legacy yield positions awaiting resolution, likely long-stale.",
+  "watch_items": [
+    "Monitor whether any open near-certainty positions resolve against the trader \u2014 another cluster loss would confirm ongoing strategy fragility",
+    "Watch for any deviation from 0.99+ entry prices \u2014 any entry below 0.90 would be significant behavioral change worth noting",
+    "Track whether realized PnL continues to deteriorate, which would signal the harvesting strategy is net-negative over time"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a textbook yield harvester with a directionality of 1.0 and virtually all entries at 0.99+ prices \u2014 there is no genuine forecasting activity to extract signal from. Despite a LEGENDARY-tier ELO (2695), the score reflects trade volume on trivial resolutions, not analytical accuracy; domain accuracy of ~50% in both active domains confirms this. The negative realized PnL (-$204) across 169 trades demonstrates the strategy is marginally net-negative when tail events hit. Exclude entirely from signal generation.",
+  "data_snapshot": {
+    "geo_elo": 3060.842880836213,
+    "geo_elo_active": 2695.5799,
+    "resolved_trades": 169,
+    "distinct_markets": 31,
+    "directionality": 1.0,
+    "pnl": -203.91168484405154
+  }
+}

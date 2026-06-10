@@ -1,0 +1,80 @@
+{
+  "address": "0x89cb24d0fed5df730e09d4a33451e72e648c46cb",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1822.155,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Virtually every resolved and open trade is entered at near-certainty prices (0.94\u20130.998), collecting tiny premiums on outcomes that are already near-certain. Directionality is 1.0, indicating no genuine two-sided forecasting. The pattern of buying NO on longshot candidates (MTG, Vivek, LeBron James, Zohran Mamdani for 2028 presidency) and YES/NO on already-settled outcomes confirms classic yield harvesting rather than informational edge.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "Trump_US: 53.8% accuracy at near-certainty prices implies occasional catastrophic losses when harvesting goes wrong",
+    "Other: 50% accuracy despite near-certainty entries suggests mispricing blindspots or resolution anomalies"
+  ],
+  "domain_summary": "This trader has no demonstrable informational edge in any domain. All activity is mechanical yield harvesting at extreme prices. Domain accuracy near 50% at near-certainty entries is a warning sign, not a strength signal.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "Entries at 0.94-0.998 provide zero directional signal for STR-003 purposes. The trader is not expressing beliefs about outcomes but collecting near-zero variance premiums. The 50-54% accuracy at these extreme prices also reveals losses on supposedly near-certain events, further undermining signal value.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Other",
+    "All domains"
+  ],
+  "behavioural_flags": [
+    "Consistently enters at near-certainty prices (0.94-0.998) \u2014 no contested price entries observed",
+    "Directionality of 1.0 indicates all trades go same direction \u2014 no genuine two-sided market making or contrarian calls",
+    "Duplicate positions in same market at nearly identical prices (e.g., Michelle Obama popular vote: 4 entries at 0.994-0.998)",
+    "Open positions span extremely speculative longshot candidates for 2028 at 0.977-0.992 NO",
+    "Thin sample: only 27 resolved trades across 10 markets"
+  ],
+  "risk_patterns": [
+    "Near-certainty harvesting exposes trader to rare but catastrophic tail events (e.g., lost on 0.997 Michelle Obama NO \u2014 an ostensibly 'safe' trade)",
+    "Concentration in US electoral politics with no diversification into genuine uncertainty markets",
+    "Small realized PnL of -$2.98 despite near-certainty strategy suggests net negative even on this low-risk approach",
+    "Duplicate stacking in same markets at same prices suggests possible bot or automated strategy with no edge"
+  ],
+  "notable_calls": [
+    {
+      "market": "Michelle Obama popular vote 2024",
+      "side": "NO",
+      "entry_price": 0.997,
+      "result": "LOST",
+      "significance": "Lost a 0.997 near-certainty bet \u2014 reveals that even 'obvious' harvesting positions can resolve adversely, likely a resolution/market anomaly"
+    },
+    {
+      "market": "2024 Balance of Power: R Prez, R Senate, D House",
+      "side": "NO",
+      "entry_price": 0.98,
+      "result": "LOST",
+      "significance": "Lost at 0.98 entry on a near-certain outcome \u2014 another harvesting failure, contributing to negative PnL"
+    },
+    {
+      "market": "Will Kamala Harris win the 2028 US Presidential Election?",
+      "side": "NO",
+      "entry_price": 0.964,
+      "result": "OPEN",
+      "significance": "Largest open harvesting position at a relatively more contested price \u2014 slightly more risk than typical positions"
+    }
+  ],
+  "open_positions_summary": "All 15 open positions are near-certainty NO bets on longshot 2028 presidential candidates (Vivek, MTG, LeBron James, Tucker Carlson, Dwayne Johnson etc.) and a few US electoral markets. The sole YES position is Tim Walz as D-VP nominee at 0.966. The thesis is purely mechanical premium collection \u2014 no directional market view is implied beyond 'these longshots won't win.'",
+  "watch_items": [
+    "Monitor whether any 2028 candidate positions resolve adversely due to unexpected market dynamics or early resolution triggers",
+    "Watch for escalation in position sizing \u2014 current sizes (~$75-150 face value) are small but stacking could amplify tail risk",
+    "Check if trader diversifies into genuine uncertainty markets, which would signal a strategy shift worth tracking",
+    "Observe whether the negative realized PnL deepens \u2014 if harvesting continues to underperform, trader may exit or change approach"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a pure yield harvester with zero informational signal value. All entries occur at 0.94+ near-certainty prices, directionality is a perfect 1.0, and the 27-trade sample shows only 50-54% accuracy even at these extreme prices \u2014 meaning the strategy has produced net losses of ~$3. The open book is a mechanical sweep of longshot 2028 candidates at NO prices above 0.96. Do not use this trader's positions as signals for any market; they reflect premium collection mechanics, not forecasting conviction.",
+  "data_snapshot": {
+    "geo_elo": 1850.439427304403,
+    "geo_elo_active": 1822.155,
+    "resolved_trades": 27,
+    "distinct_markets": 10,
+    "directionality": 1.0,
+    "pnl": -2.982603910770284
+  }
+}

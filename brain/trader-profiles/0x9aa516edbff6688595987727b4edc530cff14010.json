@@ -1,0 +1,81 @@
+{
+  "address": "0x9aa516edbff6688595987727b4edc530cff14010",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2268.4832,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Every observable trade is a NO position entered at 0.994\u20130.999, representing near-certainty premium collection with no genuine forecasting content. Directionality of 1.0 confirms this trader never takes contested positions. The realized PnL of -$6.18 despite 86 resolved trades and domain accuracy at exactly 0.5 across all domains reflects the inherent tail-risk of this strategy: one wrong resolution wipes many small gains.",
+  "primary_domain": "Other",
+  "domain_strengths": [
+    "Operational execution of near-certainty NO positions",
+    "Broad market coverage across US election sub-markets"
+  ],
+  "domain_blindspots": [
+    "Other: 50% accuracy despite near-certainty entries implies repeated tail hits that erode strategy edge",
+    "Trump_US: 50% accuracy suggests systematic mispricing or resolution anomalies being exploited but also backfiring"
+  ],
+  "domain_summary": "This trader has no identifiable forecasting edge in any domain. All activity is mechanical yield-harvesting at near-certainty prices; the 0.5 accuracy across all domains is an artifact of occasional tail losses on positions priced at 0.997+, not genuine domain knowledge.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "All entries are at 0.994\u20130.999 NO prices with directionality of 1.0. These positions carry no information about the trader's views on contested outcomes and should be entirely excluded from STR-003 signal generation. Mimicking these trades would expose followers to catastrophic tail risk for negligible expected return.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Other",
+    "Trump_US",
+    "Europe",
+    "All domains \u2014 strategy is price-agnostic yield harvesting, not domain forecasting"
+  ],
+  "behavioural_flags": [
+    "Systematic near-certainty NO entries exclusively at 0.994\u20130.999 across all markets",
+    "Directionality of exactly 1.0 \u2014 never takes a YES or contested position",
+    "Spreads small position sizes (8\u201387 shares) across many markets to diversify tail-risk",
+    "Repeated duplicate entries on the same market (e.g., Wyoming, Mississippi, Netherlands) suggesting automated or semi-automated placement",
+    "Some positions have null resolution dates suggesting stale or abandoned markets"
+  ],
+  "risk_patterns": [
+    "Tail-risk concentration: any single unexpected YES resolution at 0.997 erases many prior wins",
+    "50% domain accuracy despite near-certainty entries implies meaningful loss frequency \u2014 strategy is not as low-risk as entry prices suggest",
+    "No stop-loss or exit behavior visible; positions held to resolution regardless of market repricing",
+    "Negative realized PnL (-$6.18) despite high volume indicates the strategy is marginally unprofitable after tail hits"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will a candidate from another party win Wyoming Presidential Election?",
+      "side": "NO",
+      "entry_price": 0.997,
+      "result": "LOST",
+      "significance": "Lost at 0.997 \u2014 illustrates tail-risk materializing on what appears to be a near-certain outcome"
+    },
+    {
+      "market": "Will the Party for the Animals win the second most seats in 2025 Netherlands",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "LOST",
+      "significance": "International market tail hit \u2014 confirms strategy operates across geographies with same near-certainty mechanics"
+    },
+    {
+      "market": "Will a candidate from another party win Wisconsin Presidential Election?",
+      "side": "NO",
+      "entry_price": 0.996,
+      "result": "LOST",
+      "significance": "Another 0.996 entry loss \u2014 pattern of tail hits at sub-0.5% implied probability is notable"
+    }
+  ],
+  "open_positions_summary": "15 open NO positions across US election sub-markets (Nebraska CD2, Senate races, Governor races), balance-of-power outcomes, and miscellaneous political questions. All entries between 0.984\u20130.999. The aggregate thesis is 'nothing unusual happens in US elections' \u2014 a structural bet on status-quo outcomes. Expected aggregate gain is minimal; tail risk on any single surprise resolution is disproportionate.",
+  "watch_items": [
+    "Monitor whether any open balance-of-power or Senate election markets resolve unexpectedly YES \u2014 would confirm continued tail-risk exposure",
+    "Track whether trader shifts strategy following continued negative PnL \u2014 any move to contested prices would signal genuine forecasting intent",
+    "Watch for position size escalation that would indicate increased conviction or desperation to recover losses",
+    "Flag if trader begins entering YES positions \u2014 would represent a fundamental strategy change worth reassessing"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a pure yield-harvester with no forecasting signal value whatsoever. Every trade is a NO at 0.994\u20130.999 across US and international political markets, representing mechanical premium collection rather than genuine probabilistic assessment. Despite a high raw ELO inflated by volume, the negative realized PnL and 50% domain accuracy reveal that tail losses regularly negate gains. This address should be excluded from all signal generation pipelines.",
+  "data_snapshot": {
+    "geo_elo": 2469.040000000001,
+    "geo_elo_active": 2268.4832,
+    "resolved_trades": 86,
+    "distinct_markets": 30,
+    "directionality": 1.0,
+    "pnl": -6.183559999999987
+  }
+}

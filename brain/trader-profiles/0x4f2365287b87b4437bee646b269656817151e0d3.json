@@ -1,0 +1,88 @@
+{
+  "address": "0x4f2365287b87b4437bee646b269656817151e0d3",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 2615.893,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader has extraordinarily high accuracy in Russia_UKR (92.8%, 951 wins) and Trump_US (89.2%, 323 wins) domains, but catastrophically poor performance outside these areas (9.2% accuracy, 46 wins vs 456 losses in 'Other'). The trader operates across only 5 distinct geo markets, confirming tight domain focus. The dramatic performance divergence between core domains and everything else is a textbook DOMAIN_SPECIALIST signature.",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "domain_blindspots": [
+    "Other: 9.2% accuracy across 502 trades implies severe negative edge \u2014 near-inverse forecasting outside core domains"
+  ],
+  "domain_summary": "This trader has genuine, consistent edge in Russia-Ukraine and Trump/US political markets, producing elite-level win rates over large sample sizes. Outside these two domains, their signal is not merely noise but actively negative \u2014 fading their 'Other' calls may itself be profitable.",
+  "signal_weight": "DOMAIN_ONLY",
+  "signal_weight_reasoning": "Full weight should only apply to Russia_UKR and Trump_US calls where sample size and accuracy are both extremely strong. The 'Other' domain accuracy of 9.2% over 502 trades is statistically significant negative edge \u2014 any signal outside the two core domains should be excluded entirely and possibly inverted.",
+  "trusted_domains": [
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "discounted_domains": [
+    "Other"
+  ],
+  "behavioural_flags": [
+    "Heavy repetitive trading on single markets: 15 consecutive losing trades on the same Harris drop-out market suggest position averaging or doubling-down behavior",
+    "High directionality (0.853) indicates strong directional conviction rather than liquidity provision",
+    "Concentrated recent losses all in a single market at similar price levels (~0.65-0.73 range) suggest failure to cut losses",
+    "No open positions currently \u2014 may have stepped back after Harris market losses",
+    "Volume of Russia_UKR trades (1025 resolved) suggests possible repetitive theme trading similar to VOLUME_SPECIALIST behavior within that domain"
+  ],
+  "risk_patterns": [
+    "Sunk-cost behavior: 15 repeated entries on same losing Harris market rather than reversing or exiting",
+    "Domain overconfidence: appears to have extended core-domain confidence into unrelated 'Other' markets with disastrous results (456 losses)",
+    "Concentration risk: overwhelming share of trades in just 2 domains creates vulnerability to sudden regime changes in those markets",
+    "Recent resolved trades are entirely losses on a single market \u2014 possible tilt or stubborn thesis-holding"
+  ],
+  "notable_calls": [
+    {
+      "market": "Russia_UKR domain (aggregate)",
+      "side": "Various",
+      "entry_price": 0.0,
+      "result": "WON",
+      "significance": "951 wins at 92.8% accuracy over a large sample is statistically extraordinary and represents genuine forecasting edge in Russia-Ukraine conflict markets"
+    },
+    {
+      "market": "Trump_US domain (aggregate)",
+      "side": "Various",
+      "entry_price": 0.0,
+      "result": "WON",
+      "significance": "323 wins at 89.2% accuracy confirms strong edge in Trump/US political markets beyond chance"
+    },
+    {
+      "market": "Will Harris drop out of 2025 race before September?",
+      "side": "NO",
+      "entry_price": 0.69,
+      "result": "LOST",
+      "significance": "15 consecutive losing trades on this single market at contested prices (~0.65-0.73) \u2014 illustrates dangerous doubling-down behavior and possible domain misclassification of a US political question as within their edge zone"
+    },
+    {
+      "market": "Other domain (aggregate)",
+      "side": "Various",
+      "entry_price": 0.0,
+      "result": "LOST",
+      "significance": "9.2% accuracy across 502 trades is statistically significant negative edge \u2014 this is not noise, this trader loses severely outside core domains"
+    }
+  ],
+  "open_positions_summary": "No open positions currently. The trader appears to have exited all markets, possibly following the string of Harris market losses. No active thesis to monitor.",
+  "watch_items": [
+    "Monitor re-entry into Russia_UKR markets \u2014 any new positions there carry FULL signal weight",
+    "Watch for further 'Other' domain activity \u2014 continued trading outside core domains should trigger caution flags",
+    "Track whether the Harris market losses represent a one-off or a pattern of stubborn loss-averaging emerging",
+    "Monitor if trader returns to Trump_US markets given 2025 political calendar \u2014 high value signal expected",
+    "Watch total PnL trajectory: $8.2M realized is strong but the 'Other' domain losses may be accelerating"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "This is a LEGENDARY-tier DOMAIN_SPECIALIST with genuinely exceptional forecasting accuracy in Russia-Ukraine (92.8%) and Trump/US (89.2%) markets across large sample sizes \u2014 these are among the strongest domain-specific signals available. However, the trader's performance outside these domains is not merely weak but catastrophically negative at 9.2% accuracy over 502 trades, making domain filtering absolutely critical. Recent behavior shows concerning loss-averaging on the Harris drop-out market with 15 repeated losing entries, suggesting sunk-cost behavior that may bleed into their strong domains. Copy this trader's Russia_UKR and Trump_US signals at full weight, but actively filter or invert any calls falling outside these two domains.",
+  "data_snapshot": {
+    "geo_elo": 4843.978446415932,
+    "geo_elo_active": 2615.893,
+    "resolved_trades": 1889,
+    "distinct_markets": 5,
+    "directionality": 0.8534341671161778,
+    "pnl": 8225080.4644077895
+  }
+}

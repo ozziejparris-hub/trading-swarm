@@ -1,0 +1,80 @@
+{
+  "address": "0x9f5fb07d75c818b583f199cc8b2e215654f33181",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1831.0427,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader exhibits textbook yield-harvesting behaviour: virtually every trade is a NO position entered at prices between 0.94 and 0.998, collecting tiny premiums on near-certain outcomes. Directionality of 1.0 confirms they exclusively take one side. Open positions are a spread of long-shot 2028 presidential candidate NO bets (Zohran Mamdani, LeBron James, MrBeast, Kim Kardashian, etc.) all entered above 0.978, which are not genuine forecasts but premium-collection on obvious non-starters.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Other"
+  ],
+  "domain_blindspots": [
+    "Trump_US: near-certainty entries mean wins are trivial and losses reveal tail risk, not genuine forecasting edge",
+    "All domains: 0.5 win rate at near-certainty prices is actually underperformance vs baseline"
+  ],
+  "domain_summary": "This trader has no demonstrable genuine forecasting edge \u2014 a 52.4% win rate on Trump_US markets entered above 0.94 represents structural underperformance. The near-certainty entry prices mean any single wrong call (like the Kristi Noem cluster losses) erases many prior wins.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "All entries are at near-certainty prices (0.94\u20130.998), making this trader's directional choices informationally worthless for STR-003 signal generation. The trader is not forecasting probability \u2014 they are harvesting basis points. Their 50/50 win rate at these prices is worse than random given the implied odds.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Other",
+    "All domains"
+  ],
+  "behavioural_flags": [
+    "Exclusively trades NO at prices above 0.94 \u2014 never takes contested positions",
+    "Multiple entries in the same market at incrementally different prices (Kristi Noem: 6 trades at 0.992\u20130.995)",
+    "Ladder-buying pattern: enters same market 2-3 times at fractionally different prices suggesting automated or systematic accumulation",
+    "Open positions span celebrity/long-shot 2028 candidates exclusively, consistent with spray-and-harvest strategy",
+    "Some losses on near-certainty positions (Kristi Noem NO at 0.992-0.994 lost 3/6) suggest market mis-resolution or edge cases"
+  ],
+  "risk_patterns": [
+    "Concentration in near-certainty NO positions creates asymmetric tail risk: each win earns 0.5-2 cents per dollar, each loss costs 99+ cents",
+    "27 resolved trades with near-zero net PnL (-$6.63) confirms yield strategy is barely breaking even after losses",
+    "Kristi Noem cluster: 3 losses at 0.992-0.994 on what should have been a trivial NO suggests either market anomaly or unexpected resolution criteria \u2014 not investigated or adjusted",
+    "No evidence of position sizing discipline; shares relatively uniform across all open positions (~68-149 shares)"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Kristi Noem win the 2028 Republican nomination?",
+      "side": "NO",
+      "entry_price": 0.992,
+      "result": "LOST",
+      "significance": "Three separate NO positions at 0.992-0.994 lost \u2014 either a resolution anomaly or a cautionary example of tail risk in near-certainty harvesting"
+    },
+    {
+      "market": "Democrats and Republicans both lose the 2024 Presidential Election?",
+      "side": "NO",
+      "entry_price": 0.997,
+      "result": "LOST",
+      "significance": "Near-certain NO at 0.997 lost \u2014 highlights that even at extreme probabilities, the strategy carries non-zero loss risk"
+    },
+    {
+      "market": "2024 presidential election: Democrats win by 215+",
+      "side": "NO",
+      "entry_price": 0.941,
+      "result": "LOST",
+      "significance": "Entry at 0.941 is the closest to a contested price in the dataset, and it lost \u2014 no genuine price discovery value"
+    }
+  ],
+  "open_positions_summary": "Current open positions are a diversified basket of 2028 presidential long-shot NO bets (LeBron James, MrBeast, Kim Kardashian, Chelsea Clinton, etc.) all above 0.978. The thesis is pure premium harvesting on celebrity/fringe candidates almost certain not to win nominations. This is structurally sound but generates minimal returns and carries correlated tail risk if any position resolves unexpectedly.",
+  "watch_items": [
+    "Monitor resolution of 2028 nomination markets \u2014 any surprise resolutions will reveal tail risk in the strategy",
+    "Track whether trader begins entering positions below 0.90; if so, reclassify as potential genuine forecaster",
+    "Watch for pattern of systematic losses on markets that resolve due to technicalities or rule changes",
+    "Check if Marjorie Taylor Greene, Kim Kardashian, Hunter Biden, Rahm Emanuel NO positions resolve as expected by Nov 2028"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a pure yield harvester with zero genuine forecasting signal value. Every trade is a NO position entered at 0.94+ price, collecting fractional premiums on near-certain outcomes across 2028 presidential long-shot markets. A realized PnL of -$6.63 across 27 trades confirms the strategy is barely profitable and heavily exposed to tail risk. Exclude entirely from STR-003 signal generation \u2014 this trader reveals nothing about underlying market probabilities.",
+  "data_snapshot": {
+    "geo_elo": 1902.9280000000003,
+    "geo_elo_active": 1831.0427,
+    "resolved_trades": 27,
+    "distinct_markets": 12,
+    "directionality": 1.0,
+    "pnl": -6.629339999999939
+  }
+}

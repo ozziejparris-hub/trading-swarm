@@ -1,0 +1,81 @@
+{
+  "address": "0x821ebe19a8979904476f3ab6d23879dbccf6e7a9",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1889.6049,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader exclusively buys NO at 0.992-0.999 prices across near-certain political outcomes \u2014 third-party election wins, obscure balance-of-power configurations, and long-shot candidacies. Directionality of 1.0 confirms they never take the other side. All entries are in the 0.992-0.999 range, well past the near-certainty threshold of 0.95, indicating pure premium collection rather than genuine forecasting.",
+  "primary_domain": "Other",
+  "domain_strengths": [
+    "Other",
+    "Trump_US"
+  ],
+  "domain_blindspots": [
+    "All domains: 50% win rate across every domain signals no genuine predictive edge \u2014 losses occur when near-certain positions occasionally resolve wrong (e.g. Wyoming Presidential market resolving as a loss at 0.998)"
+  ],
+  "domain_summary": "This trader has no identifiable domain edge \u2014 all domain accuracies sit at exactly 0.50, which is consistent with a yield-harvesting strategy where wins and losses balance out and edge comes from tiny premium spreads, not forecasting skill. The geo_elo of 2408 is likely an artifact of high trade volume rather than genuine predictive accuracy.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "All trades are near-certainty NO positions at 0.992-0.999. This trader provides zero signal about genuine probability assessments of contested outcomes. Copying these trades offers no alpha and carries occasional catastrophic loss risk when a near-certain outcome fails. Realized PnL is slightly negative despite operating in near-certainty space, confirming the edge is minimal to nonexistent.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Other",
+    "Trump_US",
+    "Russia_UKR",
+    "All domains"
+  ],
+  "behavioural_flags": [
+    "Exclusively buys NO at 0.992-0.999 \u2014 never trades contested markets",
+    "Multiple duplicate trades on the same market (e.g. 6 trades on Wyoming Presidential at identical prices)",
+    "Positions sized uniformly small (8-76 shares), suggesting systematic small-lot harvesting",
+    "Active across many markets but all with identical structural characteristics",
+    "No evidence of exiting positions early or adjusting based on new information"
+  ],
+  "risk_patterns": [
+    "Near-certainty trades can suffer total loss on tail events \u2014 Wyoming at 0.998 resolved as a loss, demonstrating real downside",
+    "Duplicate positions on same market inflates exposure concentration without diversification benefit",
+    "Realized PnL is negative despite only trading near-certainties, suggesting slippage and loss events erode all premium gains",
+    "High geo_elo (2408) likely inflated by volume/near-certainty wins and not reflective of forecasting skill \u2014 active ELO (1889) is more representative",
+    "Open positions include markets with null resolution dates suggesting potential illiquidity or abandoned markets"
+  ],
+  "notable_calls": [
+    {
+      "market": "Wyoming Presidential - third party win",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "LOST",
+      "significance": "Multiple NO positions at 0.997-0.999 all resolved as losses, demonstrating that even near-certainty harvesting carries real loss risk"
+    },
+    {
+      "market": "Virginia Presidential - third party win",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "LOST",
+      "significance": "Additional losses on ostensibly near-certain positions, reinforcing that yield harvesting at these prices does not guarantee profit"
+    },
+    {
+      "market": "Biden resigns from presidency by August 31",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "OPEN",
+      "significance": "Stale open position with no resolution date \u2014 possible liquidity trap or forgotten position"
+    }
+  ],
+  "open_positions_summary": "All 15 open positions are NO bets at 0.992-0.998 on obvious outcomes: third-party Senate/Congressional wins, obscure balance-of-power configurations, long-shot 2028 Democratic nominees (Walz, Warnock), and a stale Biden resignation market. The unified thesis is premium collection on near-zero probability events. Aggregate exposure is modest but concentrated in the same structural bet.",
+  "watch_items": [
+    "Monitor whether any open third-party Senate/House positions resolve as unexpected losses, which would further depress already-negative PnL",
+    "Check if Biden resignation and other null-resolution-date positions ever resolve \u2014 they may be permanently open illiquid markets",
+    "Track whether geo_elo continues to decay via geo_elo_active \u2014 if active ELO drops below 1800, reclassify tier downward",
+    "Watch for any deviation from 1.0 directionality \u2014 any YES trade would signal a meaningful behavioural shift worth investigating"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a textbook yield harvester with zero genuine forecasting signal \u2014 every single trade is a NO position at 0.992-0.999 on near-certain outcomes. The high raw geo_elo (2408) is misleading and purely volume-driven; the recency-decayed active ELO (1889) is more honest and sits well below LEGENDARY threshold. Realized PnL is actually slightly negative despite trading only near-certainties, confirming the strategy generates no net alpha. This address should be excluded from all signal generation pipelines as it provides no information about contested probability assessments.",
+  "data_snapshot": {
+    "geo_elo": 2408.415999999999,
+    "geo_elo_active": 1889.6049,
+    "resolved_trades": 80,
+    "distinct_markets": 28,
+    "directionality": 1.0,
+    "pnl": -6.138000000000044
+  }
+}

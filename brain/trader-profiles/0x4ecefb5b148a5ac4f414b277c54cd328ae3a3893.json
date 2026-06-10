@@ -1,0 +1,101 @@
+{
+  "address": "0x4ecefb5b148a5ac4f414b277c54cd328ae3a3893",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1850.2495,
+  "tier": "ELITE",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Covers 22 distinct geo markets across multiple domains including Trump/US, Iran/ME, Russia/UKR, LatAm, and European elections, suggesting genuine breadth rather than niche repetition. Directionality of 1.0 is technically unusual but may reflect all-YES trading style rather than LP activity. Entry prices span the full contested range (0.06 to 0.96+), with meaningful positions at genuinely uncertain prices alongside some near-certainty entries that introduce YIELD_HARVESTER contamination.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Iran_ME"
+  ],
+  "domain_blindspots": [
+    "LatAm: 0-1 record, insufficient track record but flagged red",
+    "Canada/BC elections: multiple recent losses including near-certainty entries at 0.993 and 0.767 on Carney suggesting overconfidence",
+    "NYC mayoral: entered Mamdani YES at near-certainty prices (0.996, 0.999) and lost \u2014 poor exit discipline on collapsing probability"
+  ],
+  "domain_summary": "Genuine edge exists in Trump_US (69.7% over 33 trades) and Iran_ME (81.8% over 11 trades), both with meaningful sample sizes. Outside these domains, recent performance has been significantly negative, particularly on Canadian and NYC markets where near-certainty entries were made on outcomes that failed to materialise.",
+  "signal_weight": "DOMAIN_ONLY",
+  "signal_weight_reasoning": "Strong track record in Trump_US and Iran_ME warrants domain-specific signal weight, but a pattern of doubling down on collapsing probabilities (Mamdani 0.999, Carney 0.993, Platner 0.987) and consistent losses across recent non-core markets reduces overall signal reliability. The 1.0 directionality (all-YES) eliminates NO-side calibration signals entirely.",
+  "trusted_domains": [
+    "Trump_US",
+    "Iran_ME"
+  ],
+  "discounted_domains": [
+    "LatAm",
+    "Canada",
+    "NYC municipal",
+    "Eastern Europe"
+  ],
+  "behavioural_flags": [
+    "All-YES trader (directionality 1.0) \u2014 never trades the NO side in resolved markets, limiting signal diversity",
+    "Near-certainty averaging down: multiple entries on same market at degrading prices (Mamdani: 0.999, 0.996, 0.883, 0.575, 0.08 \u2014 catching falling knife)",
+    "Platner YES at 0.987 after earlier correct entries at 0.40 and 0.48 \u2014 chased near-certainty premium into a loss",
+    "Open positions include both YES and NO on same markets (Cuomo, Pakistan, Trump mineral deal) \u2014 possible hedging or LP behaviour in open book",
+    "Entry at 0.001 on Trump approval rating market \u2014 appears more like noise/lottery than signal"
+  ],
+  "risk_patterns": [
+    "Sunk-cost averaging: entering same market at progressively higher prices as outcome seems locked in, then losing",
+    "Near-certainty harvesting creating large downside exposure when black-swan outcomes occur",
+    "Pakistan military strike YES at 0.806 is highly speculative and large \u2014 concentration in a low-probability event",
+    "35% Canada tariff YES at 0.96 is near-certainty position \u2014 small upside, significant loss risk",
+    "Recent resolved trades show a notable losing streak (8+ losses in sequence) suggesting possible tilt or domain overreach"
+  ],
+  "notable_calls": [
+    {
+      "market": "Zohran Mamdani wins Democratic Primary NYC",
+      "side": "YES",
+      "entry_price": 0.575,
+      "result": "LOST",
+      "significance": "Moderate-price contested entry that then became a near-certainty chase; illustrates both genuine forecasting and sunk-cost deterioration in the same market"
+    },
+    {
+      "market": "Will Graham Platner be the Democratic nominee for Senate in Maine?",
+      "side": "YES",
+      "entry_price": 0.399,
+      "result": "WON",
+      "significance": "Good early entry at genuinely contested price; then added at 0.987 near resolution, losing that tranche \u2014 mixed discipline"
+    },
+    {
+      "market": "Will Mark Carney be the next Canadian Prime Minister?",
+      "side": "YES",
+      "entry_price": 0.993,
+      "result": "LOST",
+      "significance": "Near-certainty entry that lost \u2014 either misread resolution criteria or harvesting failed; significant negative signal on Canada domain"
+    },
+    {
+      "market": "Will Zohran Mamdani win the 2025 NYC mayoral election?",
+      "side": "YES",
+      "entry_price": 0.883,
+      "result": "WON",
+      "significance": "Won at high price, but paired with a 0.999 loss on same outcome \u2014 net result ambiguous, suggests over-concentration on single thesis"
+    },
+    {
+      "market": "Iran_ME domain aggregate",
+      "side": "YES",
+      "entry_price": 0.0,
+      "result": "WON",
+      "significance": "81.8% accuracy over 11 trades is the strongest domain signal in the profile and most actionable for mirroring"
+    }
+  ],
+  "open_positions_summary": "Current open book suggests a mixed thesis: speculative long-tail YES bets (Hawley 2028 at 0.006, Tucker Carlson at 0.06, China invades Taiwan at 0.15, Iran declares war at 0.045) alongside near-certainty positions (Cuomo non-Democrat run at 0.999, Canada tariff at 0.96, Trump mineral deal at 0.962). The Pakistan strike YES at 0.806 is the largest genuine-risk open position. The simultaneous YES+NO positions on Cuomo, Pakistan, and Trump mineral deal suggest partial hedging. Overall thesis implies a trader comfortable holding speculative geopolitical event risk alongside near-certain premium harvests.",
+  "watch_items": [
+    "Monitor Pakistan strike position \u2014 large near-certainty-level directional bet on a volatile geopolitical event",
+    "Track whether Carney/Canada losses represent a temporary domain misstep or a broader calibration deterioration",
+    "Watch if the all-YES directionality shifts \u2014 any NO trades would be a strong signal of new conviction",
+    "Monitor Iran_ME new entries closely given the 81.8% domain accuracy \u2014 highest-value mirroring signal",
+    "Cuomo dual YES+NO position resolution \u2014 will reveal whether this is LP behaviour or genuine hedging strategy"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "This trader shows genuine forecasting capability with strong historical accuracy in Trump_US (69.7%) and Iran_ME (81.8%) domains, supported by a meaningful 43-trade sample across 22 markets. However, a damaging pattern of near-certainty position chasing \u2014 most visibly in the Mamdani and Carney trades \u2014 has produced a run of recent losses that erodes confidence in cross-domain reliability. The all-YES directionality (1.0) limits the trader's usefulness as a bidirectional signal source and raises questions about calibration on the NO side. Best used as a DOMAIN_ONLY signal in Trump_US and Iran_ME with discount applied elsewhere.",
+  "data_snapshot": {
+    "geo_elo": 1922.8888982206952,
+    "geo_elo_active": 1850.2495,
+    "resolved_trades": 43,
+    "distinct_markets": 22,
+    "directionality": 1.0,
+    "pnl": 1195.0338669393916
+  }
+}

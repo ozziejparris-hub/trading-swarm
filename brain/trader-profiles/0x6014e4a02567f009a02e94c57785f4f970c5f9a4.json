@@ -1,0 +1,80 @@
+{
+  "address": "0x6014e4a02567f009a02e94c57785f4f970c5f9a4",
+  "profile_date": "2026-06-10",
+  "geo_elo_active": 1953.6454,
+  "tier": "ELITE",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "This trader exhibits textbook yield-harvesting behaviour: directionality of 1.0 (always buys the same side) and virtually all entries are at near-certainty prices (0.95+). The recent resolved trades show entries at 0.966-0.998, collecting tiny premiums on highly probable outcomes. Open positions follow the same pattern \u2014 systematically selling longshot 2028 candidates at 0.92-0.994, not genuine forecasting.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "US_Elections_General"
+  ],
+  "domain_blindspots": [
+    "Trump_US: accuracy of only 51.6% despite near-certainty entries suggests frequent losses even on 'obvious' trades \u2014 Judy Shelton Fed chair bets lost 3/6 entries; margin compression from unexpected resolutions is a real risk"
+  ],
+  "domain_summary": "This trader has no demonstrated genuine forecasting edge; their apparent domain coverage is wide but all activity is yield-harvesting at the tail. The 51-52% accuracy across domains despite near-certainty entries indicates systemic mispricing risk \u2014 they lose more often than expected on positions that should almost never lose.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "Directionality of 1.0 and uniform near-certainty entry prices (0.95+) mean this trader is not performing genuine probability estimation. Their calls carry no informational content about contested outcomes \u2014 they are purely collecting yield on extreme odds. The surprisingly low accuracy (~52%) even on near-certainty trades further invalidates them as a signal source for STR-003.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "US_Elections_General",
+    "Europe",
+    "LatAm"
+  ],
+  "behavioural_flags": [
+    "Directionality = 1.0: exclusively buys the same directional side (overwhelmingly NO on longshots)",
+    "All entries at 0.90+ prices \u2014 no contested market participation",
+    "Repeats same market multiple times (Judy Shelton: 6 trades; Scott Bessent: 2 trades) suggesting incremental yield accumulation rather than conviction updates",
+    "One anomalous near-certainty YES position on Tim Walz VP (0.966) \u2014 inconsistent with overall NO bias, possibly a data artifact or legacy position",
+    "Open positions scatter across 2028 candidates indiscriminately, suggesting portfolio-style premium collection rather than genuine views"
+  ],
+  "risk_patterns": [
+    "Low accuracy (51-52%) on near-certainty trades signals tail risk \u2014 unexpected resolutions are wiping out accumulated yield",
+    "Judy Shelton positions: 3 losses on a trade that resolved unexpectedly, demonstrating vulnerability to correlated outcome surprises",
+    "Concentration in long-dated 2028 markets creates extended capital lockup with limited yield per trade",
+    "Realized PnL of only 3.54 USDC on 44 trades indicates the yield-harvesting strategy is producing near-zero net returns after losses"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Trump nominate Judy Shelton as Fed chair?",
+      "side": "NO",
+      "entry_price": 0.984,
+      "result": "LOST",
+      "significance": "Lost 3 of 6 entries on a near-certainty NO position \u2014 emblematic of the yield harvesting blow-up pattern"
+    },
+    {
+      "market": "Will a Democrat win Arizona US Senate Election?",
+      "side": "YES",
+      "entry_price": 0.996,
+      "result": "LOST",
+      "significance": "Rare YES near-certainty entry that lost \u2014 further confirms tail risk exposure"
+    },
+    {
+      "market": "Will Trump nominate Scott Bessent as Fed chair?",
+      "side": "NO",
+      "entry_price": 0.98,
+      "result": "LOST",
+      "significance": "Bessent was actually nominated \u2014 a paradigmatic yield-harvester loss on a low-probability outcome that materialised"
+    }
+  ],
+  "open_positions_summary": "Current open book is entirely 2028 US presidential/nomination longshot NOs (Kim Kardashian, The Rock, Liz Cheney, Elon Musk, etc.) plus a UK PM Wes Streeting NO and a Brazil Haddad NO. The thesis is pure yield collection \u2014 betting that fringe candidates won't win nominations. One outlier: Tim Walz VP YES at 0.966. No genuine contested market calls.",
+  "watch_items": [
+    "Monitor whether Scott Bessent Fed chair appointment triggers further losses on related positions",
+    "Watch 2028 nomination markets for surprise frontrunner shifts that could wipe multiple open positions simultaneously",
+    "Track whether realized PnL improves \u2014 currently near breakeven despite 44 trades, suggesting the strategy is not profitable net of losses",
+    "Flag if trader begins entering contested price ranges (0.10-0.80) \u2014 would represent a genuine behavioural shift worth reassessing"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "This trader is a pure yield harvester with zero genuine forecasting signal. Directionality of 1.0 and near-universal entries above 0.95 confirm this is premium collection, not prediction. Critically, the strategy is barely profitable \u2014 3.54 USDC net on 44 trades \u2014 because unexpected resolutions (Bessent nomination, Judy Shelton outcome uncertainty) are eroding accumulated yield. No weight should be assigned to any of this trader's positions in STR-003 signal generation.",
+  "data_snapshot": {
+    "geo_elo": 2030.344,
+    "geo_elo_active": 1953.6454,
+    "resolved_trades": 44,
+    "distinct_markets": 18,
+    "directionality": 1.0,
+    "pnl": 3.538952710518349
+  }
+}
