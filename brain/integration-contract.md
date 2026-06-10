@@ -438,3 +438,77 @@ SELECT
 If any alert condition is triggered, write a `contract_violation` signal
 to `brain/signals.json` and halt — do not proceed with research queries
 on a database that fails the contract check.
+
+---
+
+## Changelog v2.7 — 2026-06-10 (Session #30)
+
+### BREAKING — Pool size changes (update all agent alert thresholds)
+- Pool C: 402 → 2,835 (sync_trade_categories.py backfill corrected 176,748 mismatches)
+- LEGENDARY active clean: 11 → 22 (post-recalc, post-exclusions)
+- NEAR_LEGENDARY clean: 21 traders (geo_elo_active 1800–2174)
+- ELITE clean: 1,394 traders (1400–1799, avg 20 trades — thin samples)
+
+### New script: sync_trade_categories.py
+- Location: first-repo/scripts/sync_trade_categories.py
+- Purpose: syncs trades.market_category from authoritative markets.category
+- Daily maintenance: Step 0b (--incremental, non-blocking) — runs BEFORE update_geo_elo.py
+- Full sync completed 2026-06-10: +145,092 geo trades gained, -31,479 lost, net +113,613
+- Run --full-sync manually after any large Polymarket category reclassification event
+
+### ARCHITECTURE RULE (new — propagate to all agents)
+trades.market_category is a STALE SNAPSHOT from ingestion time.
+markets.category is the AUTHORITATIVE current categorisation.
+sync_trade_categories.py --incremental runs daily (Step 0b) to keep these in sync.
+Never use trades.market_category as authoritative without confirming sync is current.
+
+### New infrastructure: trader profile store
+- Location: trading-swarm/brain/trader-profiles/{full_address}.json (37 profiles)
+- Index: brain/trader-profiles/_index.json
+- Schema: archetype, tier, signal_weight, domain_strengths, domain_blindspots,
+  trusted_domains, discounted_domains, behavioural_flags, notable_calls, watch_items
+- Generation script: trading-swarm/scripts/run_trader_profiling.py (Sonnet, API)
+- Weekly maintenance: trader-intelligence-agent (Monday 07:15 UTC)
+
+### New agent: trader-intelligence-agent
+- Template: orchestrator/task_templates/trader-intelligence-agent.md (679 lines, Fable 5)
+- Cron wrapper: scripts/cron_wrappers/run_trader_intelligence.sh
+- Schedule: Monday 07:15 UTC (between feedback-loop 07:00 and positions-scan 07:30)
+- Tier: 3 (Sonnet)
+- Purpose: delta detection, archetype drift, new trader discovery, position intelligence
+
+### Trader archetype findings (Session #30)
+From profiling 37 LEGENDARY + NEAR_LEGENDARY traders:
+- GENUINE_FORECASTER: 4 — diverse markets, real directional calls, FULL weight
+- DOMAIN_SPECIALIST: 13 — genuine edge in 1-2 domains (Russia_UKR dominant), DOMAIN_ONLY
+- YIELD_HARVESTER: 17 — near-certainty positions, NOT forecasting, EXCLUDE
+- VOLUME_SPECIALIST: 3 — single-theme ELO, narrow applicability
+Raw ELO rank is a poor signal quality proxy. STR-003 must weight by archetype x domain.
+
+### Trader exclusions (Session #30)
+- 0x44a1159b: research_excluded=1, reason=single_market_concentration
+- 0xf0d3c90f: bot_type=LP_ARTIFACT (two-sided market maker, directionality=0.529)
+
+### system_observer.py fixes (Session #30)
+- Column corrected: t.geo_elo → t.geo_elo_active (canonical)
+- Threshold corrected: >= 2500 → >= 2175 for LEGENDARY badge
+- NEAR_LEGENDARY tier added: geo_elo_active 1800-2174, badge 🌟
+- Query WHERE extended to capture Pool C traders with comprehensive_elo < 2000
+
+### Pre-registered research (Session #30)
+- RQ-POOL-QUALITY-001: LEGENDARY pool quality filter (minimum market diversity)
+  Filed: brain/strategy-notes/RQ-POOL-QUALITY-001.md | Implement: July 1 2026
+
+### STR-003 signal scoring (Session #30)
+- STR003-006 (López Aliaga YES): WRONG — eliminated R1, resolved_at 2026-06-04
+- STR003-009 (Graham SC NO): WRONG — Graham won 59.1%, resolved_at 2026-06-09
+- STR003-005 (Keiko Peru YES): PENDING — Sánchez leading 50.055% at 96.87% counted
+- STR003-007 (Iran regime fall NO): ACTIVE — resolves June 30
+- STR003-008 (European security guarantee NO): ACTIVE — resolves June 30
+Signal ID note: Graham SC = STR003-009. STR003-007 = Iran regime fall (active).
+
+### Market backfill hygiene (confirmed functioning)
+Daily chain: Step 0b sync_trade_categories → Step 9 fast_resolution_check (50K) →
+Step 10c hydrate_stub_markets (200/day, 3338 remaining) → Step 13 resolve_legendary_markets
+(50/day) → Post backfill_market_dates (500/day geo-only)
+No gaps remaining after sync_trade_categories added today.
