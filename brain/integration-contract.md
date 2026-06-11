@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.6 — 2026-06-09
+**Version:** v2.8 — 2026-06-11
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -70,7 +70,7 @@ WHERE tr.research_excluded = 0
 
 ## Section 3 — Research Pool
 
-**Current clean pool:** See `brain/integration-health.json` (updated daily at 06:00 UTC by write_integration_health.py). Never hardcode this number — always read it live.
+**Current pool sizes:** See `brain/integration-health.json` (updated daily at 06:00 UTC by write_integration_health.py). Never hardcode these numbers — always read them live.
 
 A trader is included in the research pool (`research_excluded = 0`) if ALL
 criteria are met:
@@ -117,16 +117,18 @@ new accounts.
 
 ELO tier thresholds for trader segmentation:
 
-| Tier | Field | Threshold |
-|------|-------|-----------|
-| Legendary | `comprehensive_elo` | > 2175 |
-| Elite | `comprehensive_elo` | > 1800 |
-| Strong | `comprehensive_elo` | > 1550 |
+| Tier | Primary Field | Secondary Field | Threshold |
+|------|--------------|-----------------|-----------|
+| Legendary (geo) | `geo_elo_active` | `geo_elo` | >= 2175 |
+| Elite (geo) | `geo_elo_active` | — | > 1800 |
+| Strong (comprehensive) | `comprehensive_elo` | — | > 1550 |
+
+**`geo_elo_active` is the primary field for all LEGENDARY tier decisions.** `geo_elo` (without recency decay) is preserved for research comparisons only. Never gate signal generation on `geo_elo >= 2175` — use `geo_elo_active >= 2175`.
 
 **Always pair tier filters with the research exclusion filter:**
 
 ```sql
-WHERE comprehensive_elo > 1800
+WHERE geo_elo_active >= 2175
   AND research_excluded = 0
 ```
 
@@ -141,7 +143,7 @@ These are measurement artefacts — their ELO scores are not predictive:
 
 **STR-003 geo ELO tier — uses `geo_elo_active`, not `comprehensive_elo`:**
 
-STR-003 signal qualification uses `geo_elo_active >= 2175` (not `geo_elo >= 2175` and not `comprehensive_elo >= 2175`). `geo_elo_active` is the recency-decayed version of `geo_elo` — it down-weights traders who have been dormant for 6+ months so that stale high ELO scores do not generate signals. See Section 3 for formula.
+STR-003 signal qualification uses `geo_elo_active >= 2175`. `geo_elo_active` is the recency-decayed version of `geo_elo` — it down-weights traders who have been dormant for 6+ months so that stale high ELO scores do not generate signals. See Section 3 for formula.
 
 ---
 
@@ -153,7 +155,7 @@ STR-003 signal qualification uses `geo_elo_active >= 2175` (not `geo_elo >= 2175
 | STR-001 | SUSPENDED | LP contamination — liquidity provider trades inflate signal counts |
 | STR-001b | SUSPENDED | 0 qualifying signals after STR-001 fix |
 | STR-002 | EXPERIMENTAL | Accumulating pre-resolution accuracy data (n=4 as of 2026-05-05) |
-| STR-003 | EXPERIMENTAL | Primary strategy: single legendary geo trader (`geo_elo_active >= 2175`, `geo_directionality_score >= 0.7`, `realized_pnl != 0.0 AND realized_pnl > -100000`, `research_excluded = 0`, signal trade price BETWEEN 0.10 AND 0.80) with ≥95% of capital on one side. Max 5 concurrent GEOPOLITICS/ELECTIONS markets (not platform-wide). Bidirectional holders excluded. P&L filter: realized_pnl != 0.0 AND realized_pnl > -100000 — removes exact-zero redemption accounts and spread-compression LPs (< -$100K). Does not exclude legitimate directional traders with modest or negative P&L from correct directional losses. |
+| STR-003 | EXPERIMENTAL | Primary strategy: single legendary geo trader (`geo_elo_active >= 2175`, `geo_directionality_score >= 0.7`, `realized_pnl != 0.0 AND realized_pnl > -100000`, `research_excluded = 0`, signal trade price BETWEEN 0.10 AND 0.80) with ≥95% of capital on one side. Max 5 concurrent GEOPOLITICS/ELECTIONS markets (not platform-wide). Bidirectional holders excluded. P&L filter: realized_pnl != 0.0 AND realized_pnl > -100000 — removes exact-zero redemption accounts and spread-compression LPs (< -$100K). Does not exclude legitimate directional traders with modest or negative P&L from correct directional losses. **STR-003 signals must weight by archetype × domain — see Section 11. YIELD_HARVESTERs must never contribute to signals.** |
 | STR-004 | HYPOTHESIS | Capital-weighted legendary aggregate signal: when capital-weighted aggregate of legendary traders diverges from market price by ≥20pp, fires as signal. Pre-registered 2026-05-08. Founding case resolved NO (n=1). Needs 9 more resolved signals. |
 
 **STR-003 — Concurrent Market Count Exclusions (added v1.7, 2026-05-29):**
@@ -163,11 +165,66 @@ Concurrent market count excludes:
   (unresolved for 6+ months — template/stale markets)
 - Markets where `markets.category NOT IN ('Geopolitics','Elections')`
 
-> **Note:** Category filtering uses `markets.category` (the markets table column), NOT `trades.market_category` (the denormalized column in the trades table). These are distinct fields. The trades table's `market_category` is 81% 'Unknown' due to a data quality issue — see Section 6c. Always join to the markets table to get the authoritative category.
+> **Note:** Category filtering uses `markets.category` (the markets table column), NOT `trades.market_category` (the denormalized column in the trades table). `trades.market_category` is a snapshot synchronized daily by sync_trade_categories.py — use `markets.category` via JOIN for authoritative category values. See Section 6c for architecture rule.
 
 Rationale: Stale unresolved markets contain no actionable information.
 A trader holding a 2025 template position is not actively trading that market.
 Decision: Oscar, 2026-05-29.
+
+### STR-003 Signal Canonical Schema
+
+All STR-003 signals must carry the following fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `signal_id` | TEXT | e.g. STR003-005 |
+| `status` | TEXT | See status values below |
+| `market_id` | TEXT | Polymarket market_id |
+| `market_title` | TEXT | Human-readable title |
+| `direction` | TEXT | YES or NO |
+| `registered_at` | TEXT | ISO datetime of signal registration |
+| `signal_date` | TEXT | Date string |
+| `key_traders` | LIST | List of trader addresses |
+| `trader_elos_at_registration` | DICT | {address: geo_elo_active} at registration time |
+| `market_price_at_registration` | REAL | Market price at signal time |
+| `legendary_count` | INTEGER | Count of qualifying LEGENDARY traders |
+| `signal_credibility_score` | REAL | Computed credibility score |
+| `signal_credibility_tier` | TEXT | e.g. STRONG, MODERATE, WEAK |
+| `outcome_correct` | BOOLEAN or NULL | NULL until resolved |
+| `resolved_at` | TEXT or NULL | ISO datetime of resolution |
+| `scored_at` | TEXT or NULL | ISO datetime scoring was applied |
+| `notes` | TEXT | Free-text notes |
+
+**Status values:** `ACTIVE` | `PENDING_RESOLUTION` | `RESOLVED_CORRECT` | `RESOLVED_WRONG` | `ACTIVE_BELOW_THRESHOLD` | `RETIRED`
+
+### STR-003 Current Signal Status (as of 2026-06-11)
+
+| Signal ID | Status | Description |
+|-----------|--------|-------------|
+| STR003-001 | ACTIVE_BELOW_THRESHOLD | — |
+| STR003-003 | RESOLVED_WRONG | Warsh Fed |
+| STR003-004 | ACTIVE | Putin invasion NO — resolves June 30 |
+| STR003-005 | RESOLVED_CORRECT | Keiko Peru YES — scored 2026-06-11 (Polymarket 97%) |
+| STR003-006 | RESOLVED_WRONG | López Aliaga YES |
+| STR003-007 | ACTIVE | Iran regime fall NO — resolves June 30 |
+| STR003-008 | ACTIVE | European security guarantee NO — resolves June 30 |
+| STR003-009 | RESOLVED_WRONG | Graham SC NO |
+
+**Scored accuracy: 1/4 (25%)** — STR003-005 correct; STR003-003, STR003-006, STR003-009 wrong.
+
+### Pre-Registered Research
+
+All pre-registration documents are in `brain/strategy-notes/`. No experiment may run without prior approval.
+
+| RQ ID | Filed | Implement | Description |
+|-------|-------|-----------|-------------|
+| RQ-POOL-QUALITY-001 | 2026-06-10 | 2026-07-01 | LEGENDARY pool quality filter: ≥30 geo trades, ≥10 distinct markets, no single market >40% concentration |
+| RQ-EXT-001a/b/c | 2026-06-10 | 2026-08-01 | External dataset discovery validation — re-run 2026-08-01 |
+| RQ-SECTOR-001 | 2026-06-10 | 2026-07-01 | Sector rotation signal hypothesis |
+| RQ-EXEC-001 | 2026-06-10 | 2026-07-01 | Executive decision signal hypothesis |
+| RQ-LH-001 | 2026-06-10 | 2026-07-01 | Lifecycle heuristic upgrade |
+| RQ-CONTESTED-001 | 2026-06-10 | 2026-07-01 | Comprehensive ELO on contested markets validation |
+| RQ1.1 | 2026-06-10 | 2026-07-01 | ELO in period T predicts Brier in T+1 (Phase 5 gate) |
 
 Agents must read `brain/strategy-registry.md` before generating any
 signals — strategies change status frequently and the registry is
@@ -195,6 +252,7 @@ they are handled by the query filters in Section 2.
 |-------|----------|--------|
 | Position duplication — BST/UTC timezone mismatch | 2026-05-05 | April 18-20 server migration imported positions twice due to 1-hour BST/UTC offset. 38,630 duplicate rows removed. Post-cleanup totals: 1,026,810 positions total, 73,910 open, 952,900 closed. Dedup guard now in place. |
 | `traders.total_pnl` never written | 2026-05-05 | Column existed but the monitor.py UPDATE only wrote `realized_pnl`. Fixed: `total_pnl` now set to `realized_pnl` in every P&L update (unrealized_pnl is a permanent placeholder at 0.0). **Use `realized_pnl` for all P&L queries — it is the authoritative column.** |
+| manual_watchlist deadlock | 2026-06-11 | Circular dependency: research_excluded=1 blocked evaluate_new_trader_results.py → trades stuck at 'pending' → resolved_trades_count stayed NULL → re-excluded each daily run. Fix: evaluate_new_trader_results.py now includes grace period for manual_watchlist/external_seed traders with NULL resolved_trades_count. 14/17 manual_watchlist traders unblocked. 612 trades scored (529W/83L). |
 
 ### Research Pools (maintained by update_research_exclusions.py)
 
@@ -210,7 +268,7 @@ Current size: Read live from `brain/integration-health.json`
 Updated by: `update_research_exclusions.py`
 
 > **⚠️ WARNING — Pool B contamination risk:** `research_excluded = 0` alone is NOT sufficient for research queries. 13,000+ leaderboard-discovered traders with `resolved_trades_count < 20` are in Pool B by design (validated by discover_leaderboard_traders.py criteria). Any accuracy calculation MUST add `AND resolved_trades_count >= 20` explicitly. Using `research_excluded = 0` without this filter will silently include thin-sample traders and inflate accuracy metrics.
-> 
+>
 > **Authoritative research filter:**
 > ```sql
 > WHERE research_excluded = 0
@@ -236,22 +294,38 @@ Updated by: `update_research_exclusions.py`
 
 ---
 
-## Section 6c — Open Data Quality Issues (known, no fix yet applied)
+## Section 6c — Open Data Quality Issues (known, mitigated)
+
+### Architecture Rule: trades.market_category
+
+> **`trades.market_category` is a STALE SNAPSHOT from ingestion time. `markets.category` is the AUTHORITATIVE current categorisation.**
+>
+> `sync_trade_categories.py --incremental` runs daily as Step 0b (non-blocking) to keep `trades.market_category` in sync with `markets.category`. A full sync completed 2026-06-10 corrected 176,748 mismatches (+145,092 geo trades gained, -31,479 lost, net +113,613), restoring Pool C from 402 to 2,835.
+>
+> **Never use `trades.market_category` as authoritative.** Always join to `markets.category` for any category-based filtering. New markets still enter with `category = 'Unknown'` in the markets table until manually reclassified — the daily sync propagates whatever value is in `markets.category`, so if a market is Unknown there it will be Unknown in trades too.
 
 | Issue | Affected rows | Cause | Mitigation |
 |-------|--------------|-------|------------|
-| `trades.market_category = 'Unknown'` | ~81% of trades (≈4.5M / 5.5M) | The `market_category` column in the trades table is denormalized from the market record at insert time. Most markets have `category = 'Unknown'` in the markets table because category backfill from the Gamma API is incomplete. | Use `markets.category` via JOIN for any category-based filtering (NOT `trades.market_category`). STR-003 concurrent market count uses `markets.category` as authoritative. The one-time category backfill was performed by backfill_market_categories.py (run 2026-06-03, classified 11,001 Unknown markets). verify_market_titles.py runs daily but only verifies/updates titles — it does NOT perform category backfill. No ongoing automated category backfill exists; new markets enter with Unknown category until manually reclassified. |
+| `trades.market_category = 'Unknown'` historically | ~81% of trades | Denormalized column not kept in sync with markets.category since ingestion | Step 0b sync_trade_categories.py runs daily. Use `markets.category` via JOIN for authoritative values. STR-003 concurrent market count uses `markets.category`. |
+
+### Architecture Rule: trade_result field
+
+> **`trade_result` values are strings: `'won'`, `'lost'`, `'pending'` — NEVER integers 0/1.**
+>
+> Any query filtering on trade outcomes must use string comparison, not integer. Using `trade_result = 1` or `trade_result = 0` will silently return zero rows — no error is raised.
 
 ### Bot Exclusion History (resolved — documented for context)
 
-| Date | Bot type | Count | Action |
-|------|----------|-------|--------|
-| 2026-05-05 | `LP_ARTIFACT` | ~257 | Flagged via single-market position heuristic (>1000 positions, <3 distinct markets). `research_excluded=1`, ELO recalculated. |
-| 2026-05-06 | `ARB_BOT` | 111 | Coordinated arbitrage wallets with ELO 3308–3315 cluster (Nov 2025 geopolitics). `research_excluded=1`, ELO recalculated. |
+| Date | Bot type | Address | Count | Action |
+|------|----------|---------|-------|--------|
+| 2026-05-05 | `LP_ARTIFACT` | (multiple) | ~257 | Flagged via single-market position heuristic (>1000 positions, <3 distinct markets). `research_excluded=1`, ELO recalculated. |
+| 2026-05-06 | `ARB_BOT` | (multiple) | 111 | Coordinated arbitrage wallets with ELO 3308–3315 cluster (Nov 2025 geopolitics). `research_excluded=1`, ELO recalculated. |
+| 2026-06-10 | `single_market_concentration` | 0x44a1159b | 1 | `research_excluded=1` — 60 trades all in 1 market. |
+| 2026-06-10 | `LP_ARTIFACT` | 0xf0d3c90f | 1 | Two-sided market maker, geo_directionality_score=0.529. `bot_type=LP_ARTIFACT`. |
 
-Pool after both exclusions: **493 traders** (down from 857 on 2026-04-30). Pool has since grown substantially as new traders accumulate resolved trades — read live from `brain/integration-health.json`.
+Pool after 2026-05-06 exclusions: **493 traders** (down from 857 on 2026-04-30). Pool has since grown substantially as new traders accumulate resolved trades — read live from `brain/integration-health.json`.
 
-**Legendary tier impact:** 384 → 151 legendary traders (ELO > 2175) after ARB_BOT removal. The 3308–3315 cluster was the primary driver of the previous legendary count. Remaining 151 are legitimate.
+**Legendary tier impact (2026-05-06):** 384 → 151 legendary traders (comprehensive_elo > 2175) after ARB_BOT removal. The 3308–3315 cluster was the primary driver of the previous legendary count. Remaining 151 are legitimate.
 
 ---
 
@@ -264,95 +338,155 @@ The actual step order is defined in `first-repo/scripts/daily_maintenance.py`.
 Steps marked **(non-blocking)** log a WARNING on failure and continue; steps marked **(blocking)** abort maintenance on failure.
 
 ```
-06:00 UTC daily:
-  Step  0: update_research_exclusions.py       — refreshes research pool [blocking]
-  Step  1: promote_high_pnl_traders.py         — updates accuracy_pool flags [non-blocking]
-  Step  2: resolution_sweep.py                 — broad market resolution sweep [non-blocking]
-  Step  3: update_geo_elo.py                   — updates geo_elo_active scores [non-blocking]
-  Step  4: score_insider_signals.py            — scores insider_signals records [non-blocking]
-  Step  5: score_str003_signals.py             — scores open STR-003 signals [non-blocking]
-  Step  6: backfill_transaction_hashes.py      — fills tx hashes for Pool C trades [non-blocking]
-  Step  7: polygon_maker_taker.py              — labels maker/taker roles [non-blocking]
-  Step  8: verify_market_titles.py             — verifies and updates market titles only — category backfill is not automated [non-blocking]
-  Step  9: fast_resolution_check.py            — marks newly resolved markets [blocking]
-  Step 10: evaluate_new_trader_results.py      — evaluates recently resolved trader positions [non-blocking]
-  Step 11: requeue_resolved_market_traders.py  — queues ELO recalculation for resolved markets [blocking]
-  Step 12: apply_full_elo_modifiers.py         — applies ELO adjustments [blocking]
-  Step 13: resync_position_counts.py           — syncs position counts [blocking]
-  Step 14: write_integration_health.py         — writes brain/integration-health.json [blocking]
-  Post:    WAL checkpoint (PASSIVE)            — clears accumulated WAL pages
-  Post:    backfill_market_dates.py            — backfills end_date/resolution_date for geo markets [non-blocking]
+06:00 UTC daily (19 steps):
+  Step  0:  update_research_exclusions.py          [blocking]  — refreshes research pool
+  Step  0b: sync_trade_categories.py --incremental [non-blocking]  — syncs trades.market_category from markets.category (NEW Session #30)
+  Step  1:  promote_high_pnl_traders.py            [non-blocking]  — updates accuracy_pool flags
+  Step  2:  resolution_sweep.py --days 7           [non-blocking]  — broad market resolution sweep
+  Step  3:  update_geo_elo.py                      [non-blocking]  — updates geo_elo_active scores
+  Step  4:  score_insider_signals.py               [non-blocking]  — scores insider_signals records
+  Step  5:  score_str003_signals.py                [non-blocking]  — scores open STR-003 signals
+  Step  6:  backfill_transaction_hashes.py --tier pool_c [non-blocking]  — fills tx hashes for Pool C trades
+  Step  7:  polygon_maker_taker.py --backfill --limit 500 [non-blocking]  — labels maker/taker roles
+  Step  8:  verify_market_titles.py                [non-blocking]  — verifies and updates market titles only — does NOT backfill categories
+  Step  9:  fast_resolution_check.py               [blocking]  — marks newly resolved markets (50K ceiling)
+  Step 10:  evaluate_new_trader_results.py         [non-blocking]  — evaluates recently resolved trader positions
+  Step 10c: hydrate_stub_markets.py --limit 200    [non-blocking]  — populates positions data for stub markets (NEW Session #27)
+  Step 11:  requeue_resolved_market_traders.py     [blocking]  — queues ELO recalculation for resolved markets
+  Step 12:  apply_full_elo_modifiers.py            [blocking]  — applies ELO adjustments
+  Step 13:  resolve_legendary_markets.py --limit 50 [non-blocking]  — resolves outstanding legendary markets (NEW Session #29)
+  Step 14:  resync_position_counts.py              [blocking]  — syncs position counts
+  Step 15:  write_integration_health.py            [blocking]  — writes brain/integration-health.json
+  Step 16:  detect_arb_bots.py                     [non-blocking]  — detects arb bot patterns
+  Step 19:  snapshot_elo_scores.py                 [non-blocking]  — appends daily ELO snapshot for all Pool C traders (NEW Session #31)
+  Post:     WAL checkpoint (PASSIVE)               — clears accumulated WAL pages
+  Post:     backfill_market_dates.py --geo-only --limit 500  — backfills end_date/resolution_date for geo markets
 
 06:00 UTC Sundays only (appended to daily run):
-  Step 15: discover_leaderboard_traders.py     — scans top geo markets for new participants [non-blocking]
-  Post:    Trade dedup                         — removes duplicate trade rows
+  discover_leaderboard_traders.py  — scans top geo markets for new participants [non-blocking]
+  Trade dedup                       — removes duplicate trade rows
 
 03:00 UTC Sundays only (separate systemd timer: polymarket-sunday-elo.timer):
-  recalculate_comprehensive_elo.py             — full ELO recalculation (expensive, separate timer)
+  recalculate_comprehensive_elo.py  — full ELO recalculation (expensive, separate timer)
 ```
 
 > **Note:** `recalculate_comprehensive_elo.py` does NOT run inside `daily_maintenance.py`. It runs via a dedicated systemd timer (`polymarket-sunday-elo.timer`) at 03:00 UTC on Sundays to avoid contention with daily maintenance.
-
----
-
-## Section 10 — Canonical Agent Definitions
-
-> **CRITICAL:** All agent templates must use these definitions. Do not hardcode thresholds in templates — reference this section. When any value here changes, update ALL affected templates.
-
-### 10.1 — ELO Tier Thresholds
-
-| Tier | Metric | Threshold | Notes |
-|------|--------|-----------|-------|
-| LEGENDARY (geo) | `geo_elo` | >= 2175 AND `geo_accuracy_pool = 1` | Use for geopolitics/elections research and STR-003 signals. Primary accuracy metric. |
-| LEGENDARY (comprehensive) | `comprehensive_elo` | >= 2175 | No proven edge on contested markets (0.35-0.65). Do NOT use for signal generation. Use for bot detection and Pool B qualification only. |
-| ELITE | `comprehensive_elo` | > 1800 | With `research_excluded = 0 AND bot_type IS NULL` |
-| QUALIFIED | `comprehensive_elo` | > 1550 | With `research_excluded = 0 AND bot_type IS NULL` |
-
-### 10.2 — Research Pool Filters
-
-| Pool | Filter | Size (approx) | Use for |
-|------|--------|---------------|---------|
-| Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ~1,712 | All accuracy calculations, ELO research |
-| Pool C (geo) | `geo_accuracy_pool = 1` | ~402 (recovering — see Section 9 note) | geo_elo accuracy, STR-003 qualification |
-| ⚠️ WARNING | `research_excluded = 0` alone | ~15,083 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
-
-### 10.3 — Agent Output Paths
-
-| Agent | Primary output | Writes to findings.json? |
-|-------|---------------|--------------------------|
-| feedback-loop-agent | brain/agent-outputs/feedback-loop/ | YES — primary writer |
-| performance-analyst-agent | brain/agent-outputs/performance-analyst/ | YES — can write |
-| training-librarian-agent | brain/agent-outputs/training-librarian/ | YES — maintains/cleans |
-| research-agent | brain/agent-outputs/research/ | NO — signals via signals.json (type: finding_ready) |
-| quant-research-agent | brain/agent-outputs/quant-research/ | NO — siloed |
-| research-scout-agent | brain/research-scout/ | NO — external reference only |
-| signal-agent | brain/signals.json | NO — signal bus only |
-| backtest-agent | brain/agent-outputs/backtest-agent/ | NO — strategy validation |
-| legendary-positions-scan | brain/agent-outputs/positions-scan/ | NO — standalone research tool |
-
-### 10.4 — STR-003 Qualification Criteria (authoritative)
-```
-geo_elo_active >= 2175
-AND geo_directionality_score >= 0.7
-AND realized_pnl != 0.0 AND realized_pnl > -100000
-AND research_excluded = 0
-AND entry_price BETWEEN 0.10 AND 0.80
-AND market.category IN ('Geopolitics', 'Elections')
-AND >= 95% of trader's capital on one side
-```
-
-### 10.5 — Known Metric Limitations
-
-| Metric | Limitation | Impact |
-|--------|-----------|--------|
-| `comprehensive_elo` | 2.3x accumulation bias toward easy-market specialists | Do not use for signal generation on contested markets |
-| `geo_elo` | Pool C temporarily 402 (down from 477) — 809 traders have NULL geo_directionality_score due to hydration gap; will recover as hydrate_stub_markets.py populates positions data | Validate July 1 per RQ-CONTESTED-001 |
-| `research_excluded = 0` alone | Includes 13K+ leaderboard traders with <20 resolved trades | Always add `AND resolved_trades_count >= 20` |
-| `trades.market_category` | 81% Unknown — denormalized field | Always use `markets.category` via JOIN |
+>
+> **Daily backfill chain:** Step 0b sync_trade_categories → Step 9 fast_resolution_check (50K) → Step 10c hydrate_stub_markets (200/day) → Step 13 resolve_legendary_markets (50/day) → Post backfill_market_dates (500/day geo-only).
 
 ---
 
 ## Section 8 — Change Log
+
+### v2.8 — 2026-06-11 (Session #31)
+
+**Pool sizes (live DB query 2026-06-11):**
+- clean_pool: 18,530 (research_excluded=0)
+- true_research_pool: 3,796 (research_excluded=0, resolved_trades_count≥20, bot_type IS NULL)
+- clean_markets: 23,569
+- pool_c: 2,848 (geo_accuracy_pool=1)
+- legendary_base: 31 (geo_elo≥2175, research_excluded=0)
+- legendary_active: 16 (geo_elo_active≥2175, research_excluded=0)
+- legendary_clean: 9 (geo_elo_active≥2175, geo_accuracy_pool=1, research_excluded=0, bot_type IS NULL)
+- near_legendary_clean: 18 (geo_elo_active 1800–2174, geo_accuracy_pool=1, research_excluded=0, bot_type IS NULL)
+
+**Structural changes:**
+- Full contract rewrite top-to-bottom — all stale numbers replaced
+- Section 7 updated to full 19-step maintenance schedule (Steps 0b, 10c, 13, 19 documented)
+- Section 9 validation query extended: legendary_clean and near_legendary_clean added; expected ranges updated to live values
+- Section 10.2 pool sizes updated to live values
+- Section 10.3 trader-intelligence-agent output path added
+- Section 11 added: Trader Archetypes (4 archetype definitions from Session #30 profiling)
+- Section 12 added: Temporal State Layer (elo_snapshots table, snapshot_elo_scores.py)
+
+**Architecture rules added (Section 6c, Section 10):**
+- trades.market_category is a STALE SNAPSHOT — sync_trade_categories.py runs daily as Step 0b; always use markets.category via JOIN
+- trade_result values are strings 'won'/'lost'/'pending' — never integers
+- elo_snapshots table: append-only daily snapshots, PRIMARY KEY (snapshot_date, address)
+
+**Fixes and exclusions:**
+- manual_watchlist deadlock fixed: 14/17 traders unblocked, 612 trades scored (529W/83L)
+- 0x44a1159b excluded: research_excluded=1, single_market_concentration (60 trades, 1 market)
+- 0xf0d3c90f excluded: bot_type=LP_ARTIFACT (two-sided market maker, directionality=0.529)
+
+**STR-003 signal update:**
+- STR003-005 (Keiko Peru YES) scored RESOLVED_CORRECT 2026-06-11
+- Scored accuracy: 1/4 (25%) — 1 correct (005), 3 wrong (003, 006, 009)
+- Pre-registered research documented in Section 5 (RQ-POOL-QUALITY-001, RQ-EXT-001a/b/c, July 1 RQs)
+
+**Impact on agents:** All agents — update alert thresholds to new pool sizes. STR-003 signal generation must respect archetype weights (Section 11). Snapshot-based temporal queries should use elo_snapshots table (Section 12).
+
+---
+
+### v2.7 — 2026-06-10 (Session #30)
+
+**BREAKING — Pool size changes (update all agent alert thresholds)**
+- Pool C: 402 → 2,835 (sync_trade_categories.py backfill corrected 176,748 mismatches)
+- LEGENDARY active clean: 11 → 22 (post-recalc, post-exclusions)
+- NEAR_LEGENDARY clean: 21 traders (geo_elo_active 1800–2174)
+- ELITE clean: 1,394 traders (1400–1799, avg 20 trades — thin samples)
+
+**New script: sync_trade_categories.py**
+- Location: first-repo/scripts/sync_trade_categories.py
+- Purpose: syncs trades.market_category from authoritative markets.category
+- Daily maintenance: Step 0b (--incremental, non-blocking) — runs BEFORE update_geo_elo.py
+- Full sync completed 2026-06-10: +145,092 geo trades gained, -31,479 lost, net +113,613
+- Run --full-sync manually after any large Polymarket category reclassification event
+
+**Architecture rule (propagate to all agents):**
+trades.market_category is a STALE SNAPSHOT from ingestion time.
+markets.category is the AUTHORITATIVE current categorisation.
+sync_trade_categories.py --incremental runs daily (Step 0b) to keep these in sync.
+Never use trades.market_category as authoritative without confirming sync is current.
+
+**New infrastructure: trader profile store**
+- Location: trading-swarm/brain/trader-profiles/{full_address}.json (37 profiles)
+- Index: brain/trader-profiles/_index.json
+- Schema: archetype, tier, signal_weight, domain_strengths, domain_blindspots, trusted_domains, discounted_domains, behavioural_flags, notable_calls, watch_items
+- Generation script: trading-swarm/scripts/run_trader_profiling.py (Sonnet, API)
+- Weekly maintenance: trader-intelligence-agent (Monday 07:15 UTC)
+
+**New agent: trader-intelligence-agent**
+- Template: orchestrator/task_templates/trader-intelligence-agent.md (679 lines, Fable 5)
+- Cron wrapper: scripts/cron_wrappers/run_trader_intelligence.sh
+- Schedule: Monday 07:15 UTC (between feedback-loop 07:00 and positions-scan 07:30)
+- Tier: 3 (Sonnet)
+- Purpose: delta detection, archetype drift, new trader discovery, position intelligence
+
+**Trader archetype findings:**
+From profiling 37 LEGENDARY + NEAR_LEGENDARY traders:
+- GENUINE_FORECASTER: 4 — diverse markets, real directional calls, FULL weight
+- DOMAIN_SPECIALIST: 13 — genuine edge in 1-2 domains (Russia_UKR dominant), DOMAIN_ONLY
+- YIELD_HARVESTER: 17 — near-certainty positions, NOT forecasting, EXCLUDE
+- VOLUME_SPECIALIST: 3 — single-theme ELO, narrow applicability
+Raw ELO rank is a poor signal quality proxy. STR-003 must weight by archetype x domain.
+
+**Trader exclusions:**
+- 0x44a1159b: research_excluded=1, reason=single_market_concentration
+- 0xf0d3c90f: bot_type=LP_ARTIFACT (two-sided market maker, directionality=0.529)
+
+**system_observer.py fixes:**
+- Column corrected: t.geo_elo → t.geo_elo_active (canonical)
+- Threshold corrected: >= 2500 → >= 2175 for LEGENDARY badge
+- NEAR_LEGENDARY tier added: geo_elo_active 1800-2174, badge 🌟
+- Query WHERE extended to capture Pool C traders with comprehensive_elo < 2000
+
+**Pre-registered research:**
+- RQ-POOL-QUALITY-001: LEGENDARY pool quality filter (minimum market diversity). Filed: brain/strategy-notes/RQ-POOL-QUALITY-001.md. Implement: July 1 2026
+
+**STR-003 signal scoring:**
+- STR003-006 (López Aliaga YES): WRONG — resolved_at 2026-06-04
+- STR003-009 (Graham SC NO): WRONG — Graham won 59.1%, resolved_at 2026-06-09
+- STR003-005 (Keiko Peru YES): PENDING at close of session (scored CORRECT 2026-06-11)
+
+**Market backfill hygiene (confirmed functioning):**
+Daily chain: Step 0b sync_trade_categories → Step 9 fast_resolution_check (50K) →
+Step 10c hydrate_stub_markets (200/day, ~3338 remaining) → Step 13 resolve_legendary_markets
+(50/day) → Post backfill_market_dates (500/day geo-only)
+
+---
+
+### Historical changelog (v1.0 – v2.6)
 
 | Date | Change | Impact on agents |
 |------|--------|-----------------|
@@ -378,8 +512,8 @@ AND >= 95% of trader's capital on one side
 | 2026-06-06 | v2.2: Section 9 expected ranges updated to reflect post-audit pool sizes. Pool C 477 (was 272), LEGENDARY active 15 (was 13), clean markets 17,447. | All agents running startup validation |
 | 2026-06-06 | v2.3: Section 10 added — Canonical Agent Definitions. Single source of truth for ELO thresholds, pool filters, output paths, STR-003 criteria, and known metric limitations. | All agents |
 | 2026-06-06 | v2.4: Section 9 updated — 195 external_seed traders added from vgregoire/polymarket-users parquet. Three Tier 1 directional traders added via add_watched_trader.py (Nocthyra, Calythius, anonymous). /holders endpoint identified as superior discovery mechanism for resolved markets — Layer 3 implementation pending. | All agents running startup validation |
-| 2026-06-09 | v2.6: legendary_positions_scan.py added. Weekly Monday 07:30 UTC cron. Covers all open geo/elections markets with LEGENDARY trader positions, regardless of resolution date. Filters: stale prices excluded, overdue markets excluded (>7 day grace). Training-librarian Responsibility 9 added. |
 | 2026-06-08 | v2.5: Section 9 updated — Pool C temporarily 402 (down from ~477). geo_directionality_score recalculated from clean state; 809 traders with geo_elo have NULL directionality due to incomplete positions table coverage for newly hydrated markets. Pool C will recover and grow as hydrate_stub_markets.py pipeline populates positions data. LEGENDARY active 11 (down from 15, same cause). geo_legendary total (geo_elo >= 2175): 44. Three scoring pipeline blockers fixed for external_seed traders. calculate_geo_elo.py SCL-002 propagation fixed. | All agents running startup validation |
+| 2026-06-09 | v2.6: legendary_positions_scan.py added. Weekly Monday 07:30 UTC cron. Covers all open geo/elections markets with LEGENDARY trader positions, regardless of resolution date. Filters: stale prices excluded, overdue markets excluded (>7 day grace). Training-librarian Responsibility 9 added. | All agents |
 
 ---
 
@@ -397,7 +531,8 @@ SELECT
   (SELECT COUNT(*)
    FROM traders
    WHERE research_excluded = 0
-     AND resolved_trades_count >= 20)                    AS true_research_pool,
+     AND resolved_trades_count >= 20
+     AND bot_type IS NULL)                               AS true_research_pool,
 
   (SELECT COUNT(*)
    FROM markets
@@ -419,21 +554,37 @@ SELECT
    WHERE geo_elo_active >= 2175
      AND research_excluded = 0)                         AS legendary_active,
 
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE geo_elo_active >= 2175
+     AND geo_accuracy_pool = 1
+     AND research_excluded = 0
+     AND bot_type IS NULL)                              AS legendary_clean,
+
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE geo_elo_active BETWEEN 1800 AND 2174
+     AND geo_accuracy_pool = 1
+     AND research_excluded = 0
+     AND bot_type IS NULL)                              AS near_legendary_clean,
+
   (SELECT journal_mode
    FROM pragma_journal_mode())                          AS wal_mode;
 ```
 
-**Expected results (as of 2026-06-08):**
+**Expected results (as of 2026-06-11):**
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
-| `clean_pool` | ≈ 15,083 (grows daily as traders qualify). **2026-06-06: 195 traders added via external_seed (vgregoire/polymarket-users parquet). These are directional politics specialists with pnl_taker_politics > $10K, frac_both_sides < 0.25, frac_maker < 0.3, frac_politics > 0.5, n_markets >= 15, last_trade >= 2025-06-01. Trade histories pending backfill. ELO scores will populate over next 24-48 hours.** | < 10,000 (unexpected shrinkage — check integration-health.json alerts array) |
-| `true_research_pool` | ≈ 1,712 (research_excluded=0 AND resolved_trades_count>=20). **2026-06-06: 195 external_seed traders not yet counted here — trade histories pending backfill, resolved_trades_count will not reach ≥20 threshold until backfill completes.** | < 1,500 (unexpected shrinkage) |
-| `clean_markets` | ≈ 17,447 (grows as markets resolve) | < 16,000 (markets missing) |
-| `pool_c` | ≈ 402 (geo_accuracy_pool=1). **2026-06-08: temporarily reduced from ~477. geo_directionality_score was recalculated from a clean state on 2026-06-08; 809 traders with geo_elo have NULL directionality due to incomplete positions table coverage for newly hydrated markets. Pool C will recover and grow beyond 477 as hydrate_stub_markets.py pipeline populates positions data.** | < 350 (unexpected shrinkage beyond hydration shortfall) |
-| `legendary_base` | ≈ 44 (geo_elo >= 2175, research_excluded=0) | < 30 or > 200 (tier contamination or mass exclusion) |
-| `legendary_active` | ≈ 11 (geo_elo_active >= 2175, research_excluded=0). **2026-06-08: temporarily down from 15 — same cause as Pool C reduction. geo_directionality_score NULL for 809 traders due to hydration gap; affected traders' geo_elo_active will recover as positions data is populated.** | < 5 (too few for STR-003 signals) or > 100 (recency decay not applied) |
-| `wal_mode` | `wal` | ≠ `wal` (WAL disabled — risk of read contention) |
+| `clean_pool` | ≈ 18,530 | < 15,000 |
+| `true_research_pool` | ≈ 3,796 | < 3,000 |
+| `clean_markets` | ≈ 23,569 | < 20,000 |
+| `pool_c` | ≈ 2,848 | < 2,500 |
+| `legendary_base` | ≈ 31 | < 15 or > 200 |
+| `legendary_active` | ≈ 16 | < 5 or > 100 |
+| `legendary_clean` | ≈ 9 | < 5 |
+| `near_legendary_clean` | ≈ 18 | < 5 |
+| `wal_mode` | `wal` | ≠ `wal` |
 
 If any alert condition is triggered, write a `contract_violation` signal
 to `brain/signals.json` and halt — do not proceed with research queries
@@ -441,74 +592,170 @@ on a database that fails the contract check.
 
 ---
 
-## Changelog v2.7 — 2026-06-10 (Session #30)
+## Section 10 — Canonical Agent Definitions
 
-### BREAKING — Pool size changes (update all agent alert thresholds)
-- Pool C: 402 → 2,835 (sync_trade_categories.py backfill corrected 176,748 mismatches)
-- LEGENDARY active clean: 11 → 22 (post-recalc, post-exclusions)
-- NEAR_LEGENDARY clean: 21 traders (geo_elo_active 1800–2174)
-- ELITE clean: 1,394 traders (1400–1799, avg 20 trades — thin samples)
+> **CRITICAL:** All agent templates must use these definitions. Do not hardcode thresholds in templates — reference this section. When any value here changes, update ALL affected templates.
 
-### New script: sync_trade_categories.py
-- Location: first-repo/scripts/sync_trade_categories.py
-- Purpose: syncs trades.market_category from authoritative markets.category
-- Daily maintenance: Step 0b (--incremental, non-blocking) — runs BEFORE update_geo_elo.py
-- Full sync completed 2026-06-10: +145,092 geo trades gained, -31,479 lost, net +113,613
-- Run --full-sync manually after any large Polymarket category reclassification event
+### 10.1 — ELO Tier Thresholds
 
-### ARCHITECTURE RULE (new — propagate to all agents)
-trades.market_category is a STALE SNAPSHOT from ingestion time.
-markets.category is the AUTHORITATIVE current categorisation.
-sync_trade_categories.py --incremental runs daily (Step 0b) to keep these in sync.
-Never use trades.market_category as authoritative without confirming sync is current.
+| Tier | Metric | Threshold | Notes |
+|------|--------|-----------|-------|
+| LEGENDARY (geo) | `geo_elo_active` | >= 2175 AND `geo_accuracy_pool = 1` | **Primary metric.** Use for geopolitics/elections research and STR-003 signals. `geo_elo_active` is the recency-decayed field — not base `geo_elo`. |
+| LEGENDARY (comprehensive) | `comprehensive_elo` | >= 2175 | No proven edge on contested markets (0.35-0.65). Do NOT use for signal generation. Use for bot detection and Pool B qualification only. |
+| ELITE | `comprehensive_elo` | > 1800 | With `research_excluded = 0 AND bot_type IS NULL` |
+| QUALIFIED | `comprehensive_elo` | > 1550 | With `research_excluded = 0 AND bot_type IS NULL` |
 
-### New infrastructure: trader profile store
-- Location: trading-swarm/brain/trader-profiles/{full_address}.json (37 profiles)
-- Index: brain/trader-profiles/_index.json
-- Schema: archetype, tier, signal_weight, domain_strengths, domain_blindspots,
-  trusted_domains, discounted_domains, behavioural_flags, notable_calls, watch_items
-- Generation script: trading-swarm/scripts/run_trader_profiling.py (Sonnet, API)
-- Weekly maintenance: trader-intelligence-agent (Monday 07:15 UTC)
+### 10.2 — Research Pool Filters
 
-### New agent: trader-intelligence-agent
-- Template: orchestrator/task_templates/trader-intelligence-agent.md (679 lines, Fable 5)
-- Cron wrapper: scripts/cron_wrappers/run_trader_intelligence.sh
-- Schedule: Monday 07:15 UTC (between feedback-loop 07:00 and positions-scan 07:30)
-- Tier: 3 (Sonnet)
-- Purpose: delta detection, archetype drift, new trader discovery, position intelligence
+| Pool | Filter | Size (approx) | Use for |
+|------|--------|---------------|---------|
+| Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ≈ 3,796 | All accuracy calculations, ELO research |
+| Pool C (geo) | `geo_accuracy_pool = 1` | ≈ 2,848 | geo_elo accuracy, STR-003 qualification |
+| ⚠️ WARNING | `research_excluded = 0` alone | ≈ 18,530 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
 
-### Trader archetype findings (Session #30)
-From profiling 37 LEGENDARY + NEAR_LEGENDARY traders:
-- GENUINE_FORECASTER: 4 — diverse markets, real directional calls, FULL weight
-- DOMAIN_SPECIALIST: 13 — genuine edge in 1-2 domains (Russia_UKR dominant), DOMAIN_ONLY
-- YIELD_HARVESTER: 17 — near-certainty positions, NOT forecasting, EXCLUDE
-- VOLUME_SPECIALIST: 3 — single-theme ELO, narrow applicability
-Raw ELO rank is a poor signal quality proxy. STR-003 must weight by archetype x domain.
+### 10.3 — Agent Output Paths
 
-### Trader exclusions (Session #30)
-- 0x44a1159b: research_excluded=1, reason=single_market_concentration
-- 0xf0d3c90f: bot_type=LP_ARTIFACT (two-sided market maker, directionality=0.529)
+| Agent | Primary output | Writes to findings.json? |
+|-------|---------------|--------------------------|
+| feedback-loop-agent | brain/agent-outputs/feedback-loop/ | YES — primary writer |
+| performance-analyst-agent | brain/agent-outputs/performance-analyst/ | YES — can write |
+| training-librarian-agent | brain/agent-outputs/training-librarian/ | YES — maintains/cleans |
+| research-agent | brain/agent-outputs/research/ | NO — signals via signals.json (type: finding_ready) |
+| quant-research-agent | brain/agent-outputs/quant-research/ | NO — siloed |
+| research-scout-agent | brain/research-scout/ | NO — external reference only |
+| signal-agent | brain/signals.json | NO — signal bus only |
+| backtest-agent | brain/agent-outputs/backtest-agent/ | NO — strategy validation |
+| legendary-positions-scan | brain/agent-outputs/positions-scan/ | NO — standalone research tool |
+| trader-intelligence-agent | brain/agent-outputs/trader-intelligence/ | NO — writes brain/trader-profiles/{address}.json |
 
-### system_observer.py fixes (Session #30)
-- Column corrected: t.geo_elo → t.geo_elo_active (canonical)
-- Threshold corrected: >= 2500 → >= 2175 for LEGENDARY badge
-- NEAR_LEGENDARY tier added: geo_elo_active 1800-2174, badge 🌟
-- Query WHERE extended to capture Pool C traders with comprehensive_elo < 2000
+### 10.4 — STR-003 Qualification Criteria (authoritative)
+```
+geo_elo_active >= 2175
+AND geo_directionality_score >= 0.7
+AND realized_pnl != 0.0 AND realized_pnl > -100000
+AND research_excluded = 0
+AND entry_price BETWEEN 0.10 AND 0.80
+AND market.category IN ('Geopolitics', 'Elections')
+AND >= 95% of trader's capital on one side
+AND archetype NOT IN ('YIELD_HARVESTER')    -- see Section 11
+AND signal_weight != 'EXCLUDE'              -- see Section 11
+```
 
-### Pre-registered research (Session #30)
-- RQ-POOL-QUALITY-001: LEGENDARY pool quality filter (minimum market diversity)
-  Filed: brain/strategy-notes/RQ-POOL-QUALITY-001.md | Implement: July 1 2026
+### 10.5 — Known Metric Limitations
 
-### STR-003 signal scoring (Session #30)
-- STR003-006 (López Aliaga YES): WRONG — eliminated R1, resolved_at 2026-06-04
-- STR003-009 (Graham SC NO): WRONG — Graham won 59.1%, resolved_at 2026-06-09
-- STR003-005 (Keiko Peru YES): PENDING — Sánchez leading 50.055% at 96.87% counted
-- STR003-007 (Iran regime fall NO): ACTIVE — resolves June 30
-- STR003-008 (European security guarantee NO): ACTIVE — resolves June 30
-Signal ID note: Graham SC = STR003-009. STR003-007 = Iran regime fall (active).
+| Metric | Limitation | Impact |
+|--------|-----------|--------|
+| `comprehensive_elo` | 2.3x accumulation bias toward easy-market specialists | Do not use for signal generation on contested markets |
+| `geo_elo_active` | legendary_clean = 9; near_legendary_clean = 18. Pool quality filter (RQ-POOL-QUALITY-001) pending July 1 to enforce min market diversity. | Validate pool quality before July 1 RQs run |
+| `research_excluded = 0` alone | Includes 13K+ leaderboard traders with <20 resolved trades | Always add `AND resolved_trades_count >= 20` |
+| `trades.market_category` | Stale snapshot from ingestion — daily sync keeps it current but use `markets.category` via JOIN for authoritative values | Always JOIN to markets table |
+| `trade_result` | String field: 'won'/'lost'/'pending' — integer comparisons return zero rows silently | Use string literals only |
 
-### Market backfill hygiene (confirmed functioning)
-Daily chain: Step 0b sync_trade_categories → Step 9 fast_resolution_check (50K) →
-Step 10c hydrate_stub_markets (200/day, 3338 remaining) → Step 13 resolve_legendary_markets
-(50/day) → Post backfill_market_dates (500/day geo-only)
-No gaps remaining after sync_trade_categories added today.
+---
+
+## Section 11 — Trader Archetypes
+
+From profiling 37 LEGENDARY + NEAR_LEGENDARY traders (Session #30, 2026-06-10).
+Profiles stored in `brain/trader-profiles/{address}.json` (37 files + `_index.json`).
+Maintained weekly by trader-intelligence-agent (Monday 07:15 UTC).
+
+**Raw ELO rank is a poor signal quality proxy. STR-003 must weight signals by archetype × domain.**
+
+### Archetype Definitions
+
+| Archetype | Count | Signal Weight | Description |
+|-----------|-------|---------------|-------------|
+| `GENUINE_FORECASTER` | 4 | **FULL** | Diverse markets, real directional calls across multiple domains. Highest quality signal source. |
+| `DOMAIN_SPECIALIST` | 13 | **DOMAIN_ONLY** | Genuine edge in 1-2 specific domains (Russia/Ukraine dominant in current pool). Signal weight applies within trusted domains only — ignore signals outside those domains. |
+| `YIELD_HARVESTER` | 17 | **EXCLUDE** | Takes near-certainty positions at 0.92–0.99 probability. Not forecasting — capturing residual yield. High ELO is a measurement artefact of near-certainty accuracy, not predictive skill. |
+| `VOLUME_SPECIALIST` | 3 | **NARROW** | Single-theme high ELO with narrow applicability. Evaluate individually before including in any signal. |
+
+### Signal Generation Rules
+
+- **YIELD_HARVESTERs** must NEVER contribute to STR-003 signals. Their positions do not carry predictive information.
+- **EXCLUDE-weight** traders must be filtered out before any signal aggregation step.
+- **DOMAIN_SPECIALIST** signals are valid only in `trusted_domains` from their profile — consult `brain/trader-profiles/{address}.json` before including.
+- **GENUINE_FORECASTERs** carry full weight across all qualifying markets.
+
+### Archetype Field in trader-profiles
+
+Each profile JSON includes:
+```json
+{
+  "archetype": "DOMAIN_SPECIALIST",
+  "signal_weight": "DOMAIN_ONLY",
+  "trusted_domains": ["Russia_UKR", "Elections_LatAm"],
+  "discounted_domains": ["Economics", "Science"],
+  "behavioural_flags": []
+}
+```
+
+The `signal_weight` field is the canonical gate for inclusion in STR-003. Always read the profile before including a LEGENDARY trader in a signal.
+
+---
+
+## Section 12 — Temporal State Layer
+
+As of 2026-06-11, an immutable daily snapshot table exists for tracking ELO evolution over time.
+
+### elo_snapshots Table
+
+```
+Table: elo_snapshots
+Purpose: Append-only daily snapshots of all Pool C traders (geo_accuracy_pool=1)
+Updated by: snapshot_elo_scores.py — Step 19 of daily_maintenance.py (non-blocking)
+```
+
+**Schema:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `snapshot_date` | TEXT | ISO date string (YYYY-MM-DD) |
+| `address` | TEXT | Trader wallet address |
+| `geo_elo` | REAL | Base geo ELO at snapshot time |
+| `geo_elo_active` | REAL | Recency-decayed geo ELO at snapshot time |
+| `comprehensive_elo` | REAL | Comprehensive ELO at snapshot time |
+| `geo_accuracy_pool` | INTEGER | Pool C membership flag (1/0) |
+| `research_excluded` | INTEGER | Research exclusion flag (1/0) |
+| `bot_type` | TEXT | Bot classification or NULL |
+| `geo_resolved_trades_count` | INTEGER | Resolved geo trades at snapshot time |
+| `geo_directionality_score` | REAL | Directionality score at snapshot time |
+| `tier` | TEXT | LEGENDARY / NEAR_LEGENDARY / ELITE / etc. |
+| `archetype` | TEXT | Trader archetype at snapshot time (from trader-profiles) |
+
+**PRIMARY KEY:** `(snapshot_date, address)`
+
+### Critical Rules
+
+> **APPEND-ONLY — never UPDATE or DELETE existing rows.** The elo_snapshots table is a historical record. Any correction to a past snapshot must be documented in a decision record, not applied retroactively.
+>
+> **One row per trader per day.** snapshot_elo_scores.py is idempotent — running twice on the same day inserts once (INSERT OR IGNORE).
+
+### Query Pattern for Temporal Analysis
+
+```python
+# Get ELO trajectory for a trader
+cursor.execute("""
+    SELECT snapshot_date, geo_elo_active, tier, archetype
+    FROM elo_snapshots
+    WHERE address = ?
+    ORDER BY snapshot_date ASC
+""", (address,))
+
+# Get all LEGENDARY traders on a specific date
+cursor.execute("""
+    SELECT address, geo_elo_active, archetype
+    FROM elo_snapshots
+    WHERE snapshot_date = ?
+      AND tier = 'LEGENDARY'
+      AND research_excluded = 0
+    ORDER BY geo_elo_active DESC
+""", (target_date,))
+```
+
+### Use Cases
+
+- Track individual trader ELO drift over weeks/months
+- Audit which traders were LEGENDARY at signal registration time
+- Validate that archetype classifications are stable vs. drifting
+- Input for RQ1.1 (ELO in period T predicts Brier in T+1) — Phase 5 gate
