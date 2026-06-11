@@ -441,11 +441,14 @@
         "trades_52_days_old",
         "first_genuine_legendary_geo_elo_signal"
       ],
-      "outcome_correct": null,
-      "resolved_at": null,
-      "scored_at": null,
+      "outcome_correct": 1,
+      "resolved_at": "2026-06-07",
+      "scored_at": "2026-06-11",
       "mutual_exclusivity_note": "Same-election conflict: STR003-005 (Keiko YES) and STR003-006 (L\u00f3pez Aliaga YES) cannot both resolve correct. Trader holds both positions simultaneously \u2014 possible multi-scenario bet on first-round dynamics. Signal-agent should implement inter-signal conflict detection for same-election markets in future.",
-      "rescan_2026-06-08": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB shows resolved=0. Position still open: ~$3,836 YES (4 sub-positions, 8,611 total shares at avg $0.45). geo_elo_active updated to 3539.2 (natural decay from 3580.33). geo_resolved_trades_count=723 still well above 10. Upgrade condition not met \u2014 single trader only. ACTION REQUIRED: Oscar to verify Peru election outcome on Polymarket and update outcome_correct/resolved_at/scored_at."
+      "rescan_2026-06-08": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB shows resolved=0. Position still open: ~$3,836 YES (4 sub-positions, 8,611 total shares at avg $0.45). geo_elo_active updated to 3539.2 (natural decay from 3580.33). geo_resolved_trades_count=723 still well above 10. Upgrade condition not met \u2014 single trader only. ACTION REQUIRED: Oscar to verify Peru election outcome on Polymarket and update outcome_correct/resolved_at/scored_at.",
+      "status": "RESOLVED_CORRECT",
+      "market_price_at_scoring": 0.97,
+      "notes": " | CORRECT: Keiko Fujimori won Peru runoff. Polymarket 97% YES at scoring ($98M volume). ONPE official proclamation pending but market effectively resolved. Counter-signal from 0xcd91a549 (Keiko NO @ 0.39 on June 6) was WRONG. 0xecaa8806 thesis vindicated on Keiko leg despite Aliaga leg failing."
     },
     {
       "signal_id": "STR003-006",
