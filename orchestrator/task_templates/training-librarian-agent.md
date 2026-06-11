@@ -1123,6 +1123,76 @@ is required for attribution tracking across agents.
     identified keep recurring, your gap analysis method
     needs improving
 
+
+### Responsibility 10 — Integration Contract Live Validation (run every week)
+
+The integration contract is the bridge between first-repo and trading-swarm. Its Section 9
+expected values must match live DB reality. This responsibility validates that.
+
+Run the Section 9 validation query against the live DB:
+
+```python
+import sqlite3, json
+from datetime import datetime
+
+DB_PATH = "/home/parison/projects/first-repo/data/polymarket_tracker.db"
+CONTRACT_PATH = "/home/parison/trading-swarm/brain/integration-contract.md"
+
+conn = sqlite3.connect(DB_PATH, timeout=30)
+conn.execute("PRAGMA journal_mode=WAL")
+cur = conn.cursor()
+
+checks = {
+    "clean_pool":         ("SELECT COUNT(*) FROM traders WHERE research_excluded = 0", 15000, None),
+    "true_research_pool": ("SELECT COUNT(*) FROM traders WHERE research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL", 3000, None),
+    "clean_markets":      ("SELECT COUNT(*) FROM markets WHERE resolved = 1 AND (trade_gap_flag = 0 OR trade_gap_flag IS NULL)", 20000, None),
+    "pool_c":             ("SELECT COUNT(*) FROM traders WHERE geo_accuracy_pool = 1", 2500, None),
+    "legendary_base":     ("SELECT COUNT(*) FROM traders WHERE geo_elo >= 2175 AND research_excluded = 0", 15, 200),
+    "legendary_active":   ("SELECT COUNT(*) FROM traders WHERE geo_elo_active >= 2175 AND research_excluded = 0", 5, 100),
+    "legendary_clean":    ("SELECT COUNT(*) FROM traders WHERE geo_elo_active >= 2175 AND geo_accuracy_pool = 1 AND research_excluded = 0 AND bot_type IS NULL", 5, None),
+}
+
+violations = []
+results = {}
+for metric, (sql, min_val, max_val) in checks.items():
+    cur.execute(sql)
+    val = cur.fetchone()[0]
+    results[metric] = val
+    if val < min_val:
+        violations.append(f"{metric}={val} below threshold {min_val}")
+    if max_val and val > max_val:
+        violations.append(f"{metric}={val} above threshold {max_val}")
+
+cur.execute("SELECT journal_mode FROM pragma_journal_mode()")
+wal = cur.fetchone()[0]
+if wal != "wal":
+    violations.append(f"WAL mode disabled: {wal}")
+
+conn.close()
+```
+
+If violations exist: write a contract_violation signal to brain/signals.json:
+```json
+{
+  "type": "contract_violation",
+  "subtype": "section_9_validation",
+  "date": "YYYY-MM-DD",
+  "violations": ["list of violations"],
+  "results": {"metric": value}
+}
+```
+
+If all clear: append one line to brain/agent-outputs/training-librarian/contract-checks.log:
+```
+YYYY-MM-DD PASS: clean_pool=N true_research_pool=N pool_c=N legendary_clean=N
+```
+
+Also verify: contract version header matches most recent Section 8 changelog entry.
+If they diverge, flag as a contract_violation with subtype "version_mismatch".
+
+**Rule:** Never update the contract numbers yourself. Flag violations only — Oscar
+updates the contract after investigating why numbers drifted.
+
 ## Definition of Done
 
 - [ ] Reference library audit completed
