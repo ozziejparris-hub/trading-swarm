@@ -24,3 +24,4 @@ __pycache__/
 
 # Worktrees are now in /tmp — ignore any remnants here
 worktrees/
+brain/mythos_profiling_input.json
