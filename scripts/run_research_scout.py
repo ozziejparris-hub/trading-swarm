@@ -60,7 +60,7 @@ def call_claude_cli(prompt_text: str) -> list[dict]:
     env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
     try:
         result = subprocess.run(
-            ["claude", "--print", "--allowed-tools", "WebSearch", "--", prompt_text],
+            ["/home/parison/.local/bin/claude", "--print", "--allowed-tools", "WebSearch", "--", prompt_text],
             capture_output=True,
             text=True,
             timeout=120,
