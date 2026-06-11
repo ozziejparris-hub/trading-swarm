@@ -475,7 +475,8 @@
       "resolved_at": null,
       "scored_at": null,
       "mutual_exclusivity_note": "Same-election conflict: STR003-005 (Keiko YES) and STR003-006 (L\u00f3pez Aliaga YES) cannot both resolve correct. Trader holds both positions simultaneously \u2014 possible multi-scenario bet on first-round dynamics. Signal-agent should implement inter-signal conflict detection for same-election markets in future.",
-      "rescan_2026-06-08": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB shows resolved=0. Position still open: ~$4,958 YES (2 sub-positions: 10,294 shares at $0.25 + 9,937 shares at $0.24 = 20,231 total shares). geo_elo_active updated to 3539.2 (natural decay). Upgrade condition not met \u2014 single trader only. Note: trader also holds Jorge Nieto NO ($1,453) \u2014 below $2,000 minimum, not a registrable signal but confirms Peru election spread thesis. ACTION REQUIRED: Oscar to verify Peru election outcome on Polymarket."
+      "rescan_2026-06-08": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB shows resolved=0. Position still open: ~$4,958 YES (2 sub-positions: 10,294 shares at $0.25 + 9,937 shares at $0.24 = 20,231 total shares). geo_elo_active updated to 3539.2 (natural decay). Upgrade condition not met \u2014 single trader only. Note: trader also holds Jorge Nieto NO ($1,453) \u2014 below $2,000 minimum, not a registrable signal but confirms Peru election spread thesis. ACTION REQUIRED: Oscar to verify Peru election outcome on Polymarket.",
+      "status": "RESOLVED_WRONG"
     },
     {
       "signal_id": "STR003-001",
@@ -498,7 +499,8 @@
       "resolved_at": null,
       "scored_at": null,
       "rescan_2026-06-01": "Market unresolved (resolves Sept 1 2026). Position intact: ~$3,475 NO across two open positions. Trader geo_elo=1461.5 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=3 < 10). Signal retained for outcome tracking.",
-      "rescan_2026-06-08": "MEDIUM_RETAINED \u2014 market unresolved (resolves Sept 1 2026, 85 days). Position intact: 952 shares ($336) + 10,931 shares ($3,139) = $3,475 total NO. Trader profile unchanged: geo_elo=1461.5, geo_elo_active=845.9 (heavily decayed, inactive), directionality=NULL. Fails geo_elo >= 2175 and directionality >= 0.7 thresholds. thin sample \u2014 resolved_trades_count=3 globally, geo_resolved_trades_count=91. Retained for outcome tracking only, not actionable."
+      "rescan_2026-06-08": "MEDIUM_RETAINED \u2014 market unresolved (resolves Sept 1 2026, 85 days). Position intact: 952 shares ($336) + 10,931 shares ($3,139) = $3,475 total NO. Trader profile unchanged: geo_elo=1461.5, geo_elo_active=845.9 (heavily decayed, inactive), directionality=NULL. Fails geo_elo >= 2175 and directionality >= 0.7 thresholds. thin sample \u2014 resolved_trades_count=3 globally, geo_resolved_trades_count=91. Retained for outcome tracking only, not actionable.",
+      "status": "ACTIVE_BELOW_THRESHOLD"
     },
     {
       "signal_id": "STR003-003",
@@ -518,7 +520,8 @@
       "outcome_correct": 0,
       "resolved_at": "2026-04-04T18:33:50Z",
       "scored_at": "2026-05-31T12:12:53.855083+00:00",
-      "notes": "Trump nominated Kevin Warsh on April 4 2026. Signal direction NO was WRONG."
+      "notes": "Trump nominated Kevin Warsh on April 4 2026. Signal direction NO was WRONG.",
+      "status": "RESOLVED_WRONG"
     },
     {
       "signal_id": "STR003-004",
@@ -550,7 +553,8 @@
       "resolved_at": null,
       "scored_at": null,
       "rescan_2026-06-01": "APPROACHING RESOLUTION \u2014 resolves June 30 2026 (29 days). Position intact: NO 18,472 shares at $7,191. Counter-signal (YES $12,967) also still open. Trader geo_elo=1554.0 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10). Priority: record outcome in strategy-registry.md when market resolves.",
-      "rescan_2026-06-08": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (22 days). Position intact: 18,471 NO shares at $7,191 (last_updated 2026-06-05). Trader profile: geo_elo=1554.0, geo_elo_active=842.5 (heavily decayed, inactive), fails geo_elo >= 2175 threshold. Counter-signal environment intensified \u2014 multiple large YES positions now total $200K+: 0xd69da312 YES $91,980+$35,287, 0x5416aae YES $60,887+$22,789. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10, geo_resolved_trades_count=225). Priority: record outcome in strategy-registry.md when market resolves June 30."
+      "rescan_2026-06-08": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (22 days). Position intact: 18,471 NO shares at $7,191 (last_updated 2026-06-05). Trader profile: geo_elo=1554.0, geo_elo_active=842.5 (heavily decayed, inactive), fails geo_elo >= 2175 threshold. Counter-signal environment intensified \u2014 multiple large YES positions now total $200K+: 0xd69da312 YES $91,980+$35,287, 0x5416aae YES $60,887+$22,789. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10, geo_resolved_trades_count=225). Priority: record outcome in strategy-registry.md when market resolves June 30.",
+      "status": "ACTIVE"
     },
     {
       "signal_id": "STR003-009",
