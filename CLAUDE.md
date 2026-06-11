@@ -14,11 +14,10 @@ Owner: Oscar (ozziejparris@gmail.com). Server: UM890 Pro running Ubuntu, accessi
 |-------|--------|-------------|
 | Phase 0 — Infrastructure | ✅ Complete | Server hardened, systemd services, CI pipeline, orchestrator loop |
 | Phase 1 — Server Setup | ✅ Complete | All services deployed, model routing validated, benchmarks done |
-| Phase 2 — First Light | 🔜 Upcoming | Quant-research validates RQ1.1 + RQ3.2; signal-agent goes live |
-| Phase 3 — Self-Improvement | ⏳ Pending | Feedback-loop agent runs 4+ weekly cycles |
-| Phase 4 — Paper Trading | ⏳ Pending | Kelly alignment signals, full backtest suite passes |
-| Phase 5 — Integration | ⏳ Pending | All 4 integration gate criteria met (see below) |
-| Phase 6 — Live Trading | ⏳ Pending | Limit orders only, starts with minimal capital |
+| Phase 5 — Validation Gates | 🔄 CURRENT | All 4 integration gates met (2 of 4 complete as of June 2026) |
+| Phase 6 — Paper Trading / Shadow Book | ⏳ Pending | All 4 gates met + v2 signal cohort ≥10 resolved with positive market-relative edge |
+| Phase 7 — Live Pilot | ⏳ Pending | Phase 6 exit criteria met; V2 CLOB execution layer built; kill switch tested |
+| Phase 8 — Scaled Operation | ⏳ Pending | Multi-book, RL sizing, full self-improving loop governing real capital |
 
 > **WARNING: The `trading-swarm` systemd service has NOT been started yet.** The system is waiting for a 48-hour parallel run of the polymarket observer/monitoring services before the orchestrator goes live. Do not `systemctl start trading-swarm` without Oscar's explicit instruction.
 
@@ -81,14 +80,14 @@ Key principle: **agents cannot self-report success — files either exist or the
 
 ---
 
-## Phase 5 Integration Gate — All 4 Required Before Live Trading
+## Phase 5 Validation Gates — All 4 Required Before Phase 6
 
 1. **feedback-loop-agent** has completed 4+ weekly validation runs
 2. **findings.json** contains 3+ HIGH-confidence findings (each from min 20 resolved markets)
 3. **Pre-resolution accuracy** ≥60% across 10+ markets (STR-002 strategy)
 4. **RQ1.1** (ELO in period T predicts Brier in T+1) **and RQ3.2** (elite consensus outperforms market price) both passed
 
-None of these are met yet. Do not skip or lower these gates.
+Gates 1 and 2 are met (June 2026). Gates 3 and 4 pending. Do not skip or lower these gates.
 
 ---
 
