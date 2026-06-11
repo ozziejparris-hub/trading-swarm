@@ -199,22 +199,6 @@
       },
       "approved_by": "Oscar",
       "approved_at": "2026-05-25T00:00:00Z"
-    },
-    {
-      "from": "quant-research-agent",
-      "to": "orchestrator",
-      "type": "rq1_1_insufficient_n",
-      "payload": {
-        "qualifying_n": 10,
-        "minimum_required": 30,
-        "period_1_end": "2026-04-01",
-        "period_2_start": "2026-04-01",
-        "period_2_end": "2026-06-01",
-        "reason": "Only 10 traders meet both period \u226520-position requirements. Period 2 has not accumulated enough resolved markets. Reschedule for July 1 2026.",
-        "next_run": "2026-07-01"
-      },
-      "timestamp": "2026-05-27T17:41:38.329744+00:00",
-      "status": "pending"
     }
   ],
   "rescan_log": [
@@ -578,5 +562,6 @@
       "actual_result": "Graham won GOP primary 59.1%, no runoff needed",
       "notes": "WRONG: Graham won outright 59.1% June 9. Market was 0.99 YES \u2014 2 LEGENDARY NO was contrarian call that failed. Trump endorsement + Tim Scott/Gov McMaster backing underweighted by LEGENDARY traders. ID NOTE: informally referenced as STR003-007 in 2026-06-10-str003-scoring.md, but STR003-007 was already assigned to Iran regime (June 9 session); renumbered STR003-009."
     }
-  ]
+  ],
+  "active_signals": []
 }
