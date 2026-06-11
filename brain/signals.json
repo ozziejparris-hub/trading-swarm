@@ -455,7 +455,7 @@
         "first_genuine_legendary_geo_elo_signal"
       ],
       "notes": "Market category is 'Unknown' in DB (should be Elections \u2014 data quality issue per Section 6c). Market is unambiguously a 2026 Peruvian presidential election market. Larger position than STR003-005 Keiko \u2014 primary conviction bet.",
-      "outcome_correct": null,
+      "outcome_correct": 0,
       "resolved_at": null,
       "scored_at": null,
       "mutual_exclusivity_note": "Same-election conflict: STR003-005 (Keiko YES) and STR003-006 (L\u00f3pez Aliaga YES) cannot both resolve correct. Trader holds both positions simultaneously \u2014 possible multi-scenario bet on first-round dynamics. Signal-agent should implement inter-signal conflict detection for same-election markets in future.",
