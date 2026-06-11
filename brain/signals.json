@@ -403,7 +403,7 @@
       "outcome_correct": null,
       "resolved_at": null,
       "scored_at": null,
-      "notes": "Signal largely validated — market moved from 32% YES at entry to 1.25% YES currently. 7 LEGENDARY traders entered NO at avg 0.678 across price range 0.53-0.96. Discovered via legendary_positions_scan.py retrospective analysis. Will formally score on June 30 resolution."
+      "notes": "Signal largely validated \u2014 market moved from 32% YES at entry to 1.25% YES currently. 7 LEGENDARY traders entered NO at avg 0.678 across price range 0.53-0.96. Discovered via legendary_positions_scan.py retrospective analysis. Will formally score on June 30 resolution."
     },
     {
       "signal_id": "STR003-008",
@@ -548,6 +548,28 @@
       "scored_at": null,
       "rescan_2026-06-01": "APPROACHING RESOLUTION \u2014 resolves June 30 2026 (29 days). Position intact: NO 18,472 shares at $7,191. Counter-signal (YES $12,967) also still open. Trader geo_elo=1554.0 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10). Priority: record outcome in strategy-registry.md when market resolves.",
       "rescan_2026-06-08": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (22 days). Position intact: 18,471 NO shares at $7,191 (last_updated 2026-06-05). Trader profile: geo_elo=1554.0, geo_elo_active=842.5 (heavily decayed, inactive), fails geo_elo >= 2175 threshold. Counter-signal environment intensified \u2014 multiple large YES positions now total $200K+: 0xd69da312 YES $91,980+$35,287, 0x5416aae YES $60,887+$22,789. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10, geo_resolved_trades_count=225). Priority: record outcome in strategy-registry.md when market resolves June 30."
+    },
+    {
+      "signal_id": "STR003-009",
+      "type": "str003_resolved",
+      "market_id": "0x92197207636b8e30492f9d25e0833677914a178ff91113980f6f0fc8f0392746",
+      "market_title": "Will Lindsey Graham be the Republican nominee for Senate in South Carolina?",
+      "resolution_date": "2026-07-31T00:00:00Z",
+      "actual_resolution_date": "2026-06-09",
+      "direction": "NO",
+      "legendary_traders": 2,
+      "avg_entry_price": null,
+      "total_capital": 129.94,
+      "signal_date": "2026-06-09",
+      "registered_at": "2026-06-09",
+      "confidence": "MEDIUM",
+      "signal_credibility_score": 43.2,
+      "status": "RESOLVED_WRONG",
+      "outcome_correct": 0,
+      "resolved_at": "2026-06-09",
+      "scored_at": "2026-06-10",
+      "actual_result": "Graham won GOP primary 59.1%, no runoff needed",
+      "notes": "WRONG: Graham won outright 59.1% June 9. Market was 0.99 YES \u2014 2 LEGENDARY NO was contrarian call that failed. Trump endorsement + Tim Scott/Gov McMaster backing underweighted by LEGENDARY traders. ID NOTE: informally referenced as STR003-007 in 2026-06-10-str003-scoring.md, but STR003-007 was already assigned to Iran regime (June 9 session); renumbered STR003-009."
     }
   ]
 }

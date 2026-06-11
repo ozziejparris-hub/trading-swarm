@@ -1,0 +1,74 @@
+{
+  "date": "2026-06-10",
+  "markets_checked": 48,
+  "signals_found": 6,
+  "signals": [
+    {
+      "market": "US x Iran permanent peace deal by June 15, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4558,
+      "market_price_pct": 0.05,
+      "gap_pt": 40.6,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9878,
+      "market_price_pct": 0.18,
+      "gap_pt": 80.8,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Iran closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0974,
+      "market_price_pct": 0.999,
+      "gap_pt": 90.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Will Donald Trump announce that the United States blockade of the Strait of Hormuz has been lifted by June 15, 2026?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.17,
+      "gap_pt": 17.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.8855,
+      "market_price_pct": 0.014,
+      "gap_pt": 87.1,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 8?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0295,
+      "gap_pt": 97.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    }
+  ],
+  "scan_timestamp": "2026-06-10T08:51:28.102795+00:00"
+}
