@@ -136,13 +136,14 @@
     {
       "type": "contract_fresh",
       "from": "code-hygiene-agent",
-      "status": "pending",
+      "status": "processed",
       "timestamp": "2026-06-12T20:04:35.410779Z",
       "payload": {
         "message": "Integration contract Section 8 is current. All schema-critical commits (unified_elo_system, update_research_exclusions, database) through 2026-06-11 have corresponding change-log entries.",
         "last_verified": "2026-06-12",
         "next_check": "2026-06-19"
-      }
+      },
+      "processed_at": "2026-06-12T20:09:55.171276"
     }
   ],
   "pending": [
@@ -398,7 +399,11 @@
       "outcome_correct": null,
       "resolved_at": null,
       "scored_at": null,
-      "notes": "Signal largely validated \u2014 market moved from 32% YES at entry to 1.25% YES currently. 7 LEGENDARY traders entered NO at avg 0.678 across price range 0.53-0.96. Discovered via legendary_positions_scan.py retrospective analysis. Will formally score on June 30 resolution."
+      "notes": "Signal largely validated \u2014 market moved from 32% YES at entry to 1.25% YES currently. 7 LEGENDARY traders entered NO at avg 0.678 across price range 0.53-0.96. Discovered via legendary_positions_scan.py retrospective analysis. Will formally score on June 30 resolution.",
+      "event_cluster": "iran_regime_june2026",
+      "correlated_with": [
+        "STR003-008"
+      ]
     },
     {
       "signal_id": "STR003-008",
@@ -415,7 +420,11 @@
       "outcome_correct": null,
       "resolved_at": null,
       "scored_at": null,
-      "notes": "2 LEGENDARY traders, 100% NO. Lower conviction than STR003-007. Resolves June 30."
+      "notes": "2 LEGENDARY traders, 100% NO. Lower conviction than STR003-007. Resolves June 30.",
+      "event_cluster": "europe_security_june2026",
+      "correlated_with": [
+        "STR003-007"
+      ]
     },
     {
       "signal_id": "STR003-005",
@@ -443,7 +452,11 @@
       "rescan_2026-06-08": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB shows resolved=0. Position still open: ~$3,836 YES (4 sub-positions, 8,611 total shares at avg $0.45). geo_elo_active updated to 3539.2 (natural decay from 3580.33). geo_resolved_trades_count=723 still well above 10. Upgrade condition not met \u2014 single trader only. ACTION REQUIRED: Oscar to verify Peru election outcome on Polymarket and update outcome_correct/resolved_at/scored_at.",
       "status": "RESOLVED_CORRECT",
       "market_price_at_scoring": 0.97,
-      "notes": " | CORRECT: Keiko Fujimori won Peru runoff. Polymarket 97% YES at scoring ($98M volume). ONPE official proclamation pending but market effectively resolved. Counter-signal from 0xcd91a549 (Keiko NO @ 0.39 on June 6) was WRONG. 0xecaa8806 thesis vindicated on Keiko leg despite Aliaga leg failing."
+      "notes": " | CORRECT: Keiko Fujimori won Peru runoff. Polymarket 97% YES at scoring ($98M volume). ONPE official proclamation pending but market effectively resolved. Counter-signal from 0xcd91a549 (Keiko NO @ 0.39 on June 6) was WRONG. 0xecaa8806 thesis vindicated on Keiko leg despite Aliaga leg failing.",
+      "event_cluster": "peru_presidential_2026",
+      "correlated_with": [
+        "STR003-006"
+      ]
     },
     {
       "signal_id": "STR003-006",
@@ -471,7 +484,11 @@
       "scored_at": null,
       "mutual_exclusivity_note": "Same-election conflict: STR003-005 (Keiko YES) and STR003-006 (L\u00f3pez Aliaga YES) cannot both resolve correct. Trader holds both positions simultaneously \u2014 possible multi-scenario bet on first-round dynamics. Signal-agent should implement inter-signal conflict detection for same-election markets in future.",
       "rescan_2026-06-08": "OVERDUE \u2014 resolution_date 2026-06-07 passed, DB shows resolved=0. Position still open: ~$4,958 YES (2 sub-positions: 10,294 shares at $0.25 + 9,937 shares at $0.24 = 20,231 total shares). geo_elo_active updated to 3539.2 (natural decay). Upgrade condition not met \u2014 single trader only. Note: trader also holds Jorge Nieto NO ($1,453) \u2014 below $2,000 minimum, not a registrable signal but confirms Peru election spread thesis. ACTION REQUIRED: Oscar to verify Peru election outcome on Polymarket.",
-      "status": "RESOLVED_WRONG"
+      "status": "RESOLVED_WRONG",
+      "event_cluster": "peru_presidential_2026",
+      "correlated_with": [
+        "STR003-005"
+      ]
     },
     {
       "signal_id": "STR003-001",
@@ -495,7 +512,8 @@
       "scored_at": null,
       "rescan_2026-06-01": "Market unresolved (resolves Sept 1 2026). Position intact: ~$3,475 NO across two open positions. Trader geo_elo=1461.5 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=3 < 10). Signal retained for outcome tracking.",
       "rescan_2026-06-08": "MEDIUM_RETAINED \u2014 market unresolved (resolves Sept 1 2026, 85 days). Position intact: 952 shares ($336) + 10,931 shares ($3,139) = $3,475 total NO. Trader profile unchanged: geo_elo=1461.5, geo_elo_active=845.9 (heavily decayed, inactive), directionality=NULL. Fails geo_elo >= 2175 and directionality >= 0.7 thresholds. thin sample \u2014 resolved_trades_count=3 globally, geo_resolved_trades_count=91. Retained for outcome tracking only, not actionable.",
-      "status": "ACTIVE_BELOW_THRESHOLD"
+      "status": "ACTIVE_BELOW_THRESHOLD",
+      "event_cluster": "us_governor_2026"
     },
     {
       "signal_id": "STR003-003",
@@ -516,7 +534,8 @@
       "resolved_at": "2026-04-04T18:33:50Z",
       "scored_at": "2026-05-31T12:12:53.855083+00:00",
       "notes": "Trump nominated Kevin Warsh on April 4 2026. Signal direction NO was WRONG.",
-      "status": "RESOLVED_WRONG"
+      "status": "RESOLVED_WRONG",
+      "event_cluster": "us_fed_chair_2026"
     },
     {
       "signal_id": "STR003-004",
@@ -549,7 +568,8 @@
       "scored_at": null,
       "rescan_2026-06-01": "APPROACHING RESOLUTION \u2014 resolves June 30 2026 (29 days). Position intact: NO 18,472 shares at $7,191. Counter-signal (YES $12,967) also still open. Trader geo_elo=1554.0 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10). Priority: record outcome in strategy-registry.md when market resolves.",
       "rescan_2026-06-08": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (22 days). Position intact: 18,471 NO shares at $7,191 (last_updated 2026-06-05). Trader profile: geo_elo=1554.0, geo_elo_active=842.5 (heavily decayed, inactive), fails geo_elo >= 2175 threshold. Counter-signal environment intensified \u2014 multiple large YES positions now total $200K+: 0xd69da312 YES $91,980+$35,287, 0x5416aae YES $60,887+$22,789. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10, geo_resolved_trades_count=225). Priority: record outcome in strategy-registry.md when market resolves June 30.",
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "event_cluster": "russia_ukraine_june2026"
     },
     {
       "signal_id": "STR003-009",
@@ -571,7 +591,8 @@
       "resolved_at": "2026-06-09",
       "scored_at": "2026-06-10",
       "actual_result": "Graham won GOP primary 59.1%, no runoff needed",
-      "notes": "WRONG: Graham won outright 59.1% June 9. Market was 0.99 YES \u2014 2 LEGENDARY NO was contrarian call that failed. Trump endorsement + Tim Scott/Gov McMaster backing underweighted by LEGENDARY traders. ID NOTE: informally referenced as STR003-007 in 2026-06-10-str003-scoring.md, but STR003-007 was already assigned to Iran regime (June 9 session); renumbered STR003-009."
+      "notes": "WRONG: Graham won outright 59.1% June 9. Market was 0.99 YES \u2014 2 LEGENDARY NO was contrarian call that failed. Trump endorsement + Tim Scott/Gov McMaster backing underweighted by LEGENDARY traders. ID NOTE: informally referenced as STR003-007 in 2026-06-10-str003-scoring.md, but STR003-007 was already assigned to Iran regime (June 9 session); renumbered STR003-009.",
+      "event_cluster": "us_senate_sc_2026"
     }
   ],
   "active_signals": []
