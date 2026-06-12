@@ -376,6 +376,20 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
 
 ---
 
+## Section 6d — Structural Break: April 28 2026
+
+**All calibrations must be reported pre/post April 28 2026.**
+
+April 28 2026 is a hard structural-break date for this system. Polymarket migrated to the V2 CLOB exchange, introduced pUSD collateral, launched publicly in the US (CFTC-regulated), and experienced a sharp-money influx. The platform that existed before April 28 is materially different from the one that exists after it.
+
+Implications:
+- Any accuracy calibration spanning this date is suspect — do not pool pre/post data without explicit regime adjustment
+- 2025-H2 data (25% LEGENDARY accuracy on contested markets) reflects the old regime and should not be used for forward calibrations
+- All RQ results should note whether their data window spans the break date
+- The external parquet dataset (vgregoire/polymarket-users) covers V1/older data — treat as pre-break
+
+This is not a data quality issue to be fixed — it is a permanent structural feature of the dataset.
+
 ## Section 8 — Change Log
 
 ### v2.8 — 2026-06-11 (Session #31)

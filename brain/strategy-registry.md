@@ -479,6 +479,8 @@ Notes:                  First live signals generated 2026-03-28.
 
 ---
 
+
+> **⚠️ RE-SPECIFICATION REQUIRED (2026-06-12):** STR-004 was registered using comprehensive_elo LEGENDARY definition with no archetype filter. 17/37 profiled LEGENDARY/near-LEGENDARY traders are YIELD_HARVESTERs whose capital carries no predictive signal. Accumulating more cases under the current specification builds noise, not evidence. STR-004 must be re-registered under geo_elo_active + archetype weights (GENUINE_FORECASTER + DOMAIN_SPECIALIST only) before any new cases are scored. Decision: Fable strategic roadmap 2026-06-12.
 ## Retired Strategies
 
 None yet.
