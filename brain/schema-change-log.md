@@ -155,6 +155,20 @@ MIXED_SIGNAL flag added: both_sides_ratio > 0.3 indicates LEGENDARY traders hold
 
 ---
 
+### SCL-009 — order_book_snapshots table + clob_token_id columns
+**Date:** 2026-06-12
+**Type:** New table + new columns
+**Description:**
+Two new columns on markets table: clob_token_id_yes TEXT, clob_token_id_no TEXT.
+Stores Polymarket CLOB outcome token IDs for YES and NO sides.
+Fetched from Gamma API via conditionIds lookup (api_id not reliable for all markets).
+New table order_book_snapshots captures top-10 bid/ask levels for active signal markets.
+Purpose: Phase 6 paper trading fill simulator needs real book history; cannot be backfilled.
+**Affected:** markets table, new order_book_snapshots table. No downstream scripts consume
+these columns yet — pure data capture. PROPAGATION: N/A (new columns, no existing queries break).
+
+---
+
 ## Pending verification items
 These templates have not been fully audited against all SCL entries:
 - backtest-agent.md — SCL-001, SCL-002, SCL-004 unverified
