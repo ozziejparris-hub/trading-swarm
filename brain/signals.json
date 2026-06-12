@@ -132,6 +132,17 @@
       "timestamp": "2026-06-05T21:22:22Z",
       "status": "processed",
       "processed_at": "2026-06-05T21:31:12.088773"
+    },
+    {
+      "type": "contract_fresh",
+      "from": "code-hygiene-agent",
+      "status": "pending",
+      "timestamp": "2026-06-12T20:04:35.410779Z",
+      "payload": {
+        "message": "Integration contract Section 8 is current. All schema-critical commits (unified_elo_system, update_research_exclusions, database) through 2026-06-11 have corresponding change-log entries.",
+        "last_verified": "2026-06-12",
+        "next_check": "2026-06-19"
+      }
     }
   ],
   "pending": [
