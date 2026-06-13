@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.8 — 2026-06-11
+**Version:** v2.9 — 2026-06-13
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -359,6 +359,7 @@ Steps marked **(non-blocking)** log a WARNING on failure and continue; steps mar
   Step 15:  write_integration_health.py            [blocking]  — writes brain/integration-health.json
   Step 16:  detect_arb_bots.py                     [non-blocking]  — detects arb bot patterns
   Step 19:  snapshot_elo_scores.py                 [non-blocking]  — appends daily ELO snapshot for all Pool C traders (NEW Session #31)
+  Step 20:  snapshot_order_books.py                [non-blocking]  — captures CLOB order book depth + YES price for all active signal markets. Also fires at signal registration (snapshot_type='registration') via register_signal.py.
   Post:     WAL checkpoint (PASSIVE)               — clears accumulated WAL pages
   Post:     backfill_market_dates.py --geo-only --limit 500  — backfills end_date/resolution_date for geo markets
 
@@ -391,6 +392,32 @@ Implications:
 This is not a data quality issue to be fixed — it is a permanent structural feature of the dataset.
 
 ## Section 8 — Change Log
+
+### v2.9 — 2026-06-13
+
+**Pool sizes (live DB query 2026-06-13):**
+- clean_pool: 18,910 (research_excluded=0)
+- true_research_pool: 3,837 (research_excluded=0, resolved_trades_count≥20, bot_type IS NULL)
+- clean_markets: 24,184
+- pool_c: 2,851 (geo_accuracy_pool=1) — was 2,848
+- legendary_base: 48 (geo_elo≥2175, research_excluded=0)
+- legendary_active: 25 (geo_elo_active≥2175, research_excluded=0)
+- legendary_clean: 18 (geo_elo_active≥2175, geo_accuracy_pool=1, research_excluded=0, bot_type IS NULL)
+- near_legendary_clean: 21 (geo_elo_active 1800–2174, geo_accuracy_pool=1, research_excluded=0, bot_type IS NULL)
+
+**Structural changes:**
+- Signal registration utility (register_signal.py) documented — Section 13 added
+- Canonical 20-field signal schema formalised — market_price_at_registration and trader_archetypes_at_registration required fields
+- Market-relative edge scoring defined: edge_at_entry formula, forward-only, null for legacy signals 001-009
+- Order book capture infrastructure documented — Section 14 added (SCL-009: order_book_snapshots table, markets.clob_token_id_yes/no columns)
+- Offsite backup infrastructure documented — Section 15 added (1TB USB /mnt/backup, 02:00 UTC daily)
+- Provisional scoring rule added (Polymarket price >0.95 AND volume >$10M)
+- Step 20 snapshot_order_books.py added to Section 7 maintenance schedule
+- Section 9 expected ranges updated to live 2026-06-13 values
+
+**Impact on agents:** Signal-agent must use register_signal.py — direct writes to signals.json prohibited. All agents reading Section 9 thresholds should update alert logic to 2026-06-13 values.
+
+---
 
 ### v2.8 — 2026-06-11 (Session #31)
 
@@ -586,18 +613,18 @@ SELECT
    FROM pragma_journal_mode())                          AS wal_mode;
 ```
 
-**Expected results (as of 2026-06-11):**
+**Expected results (as of 2026-06-13):**
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
-| `clean_pool` | ≈ 18,530 | < 15,000 |
-| `true_research_pool` | ≈ 3,796 | < 3,000 |
-| `clean_markets` | ≈ 23,569 | < 20,000 |
-| `pool_c` | ≈ 2,848 | < 2,500 |
-| `legendary_base` | ≈ 31 | < 15 or > 200 |
-| `legendary_active` | ≈ 16 | < 5 or > 100 |
-| `legendary_clean` | ≈ 9 | < 5 |
-| `near_legendary_clean` | ≈ 18 | < 5 |
+| `clean_pool` | ≈ 18,910 | < 15,000 |
+| `true_research_pool` | ≈ 3,837 | < 3,000 |
+| `clean_markets` | ≈ 24,184 | < 20,000 |
+| `pool_c` | ≈ 2,851 | < 2,500 |
+| `legendary_base` | ≈ 48 | < 15 or > 200 |
+| `legendary_active` | ≈ 25 | < 5 or > 100 |
+| `legendary_clean` | ≈ 18 | < 5 |
+| `near_legendary_clean` | ≈ 21 | < 5 |
 | `wal_mode` | `wal` | ≠ `wal` |
 
 If any alert condition is triggered, write a `contract_violation` signal
@@ -623,9 +650,9 @@ on a database that fails the contract check.
 
 | Pool | Filter | Size (approx) | Use for |
 |------|--------|---------------|---------|
-| Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ≈ 3,796 | All accuracy calculations, ELO research |
-| Pool C (geo) | `geo_accuracy_pool = 1` | ≈ 2,848 | geo_elo accuracy, STR-003 qualification |
-| ⚠️ WARNING | `research_excluded = 0` alone | ≈ 18,530 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
+| Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ≈ 3,837 | All accuracy calculations, ELO research |
+| Pool C (geo) | `geo_accuracy_pool = 1` | ≈ 2,851 | geo_elo accuracy, STR-003 qualification |
+| ⚠️ WARNING | `research_excluded = 0` alone | ≈ 18,910 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
 
 ### 10.3 — Agent Output Paths
 
@@ -660,7 +687,7 @@ AND signal_weight != 'EXCLUDE'              -- see Section 11
 | Metric | Limitation | Impact |
 |--------|-----------|--------|
 | `comprehensive_elo` | 2.3x accumulation bias toward easy-market specialists | Do not use for signal generation on contested markets |
-| `geo_elo_active` | legendary_clean = 9; near_legendary_clean = 18. Pool quality filter (RQ-POOL-QUALITY-001) pending July 1 to enforce min market diversity. | Validate pool quality before July 1 RQs run |
+| `geo_elo_active` | legendary_clean = 18; near_legendary_clean = 21. Pool quality filter (RQ-POOL-QUALITY-001) pending July 1 to enforce min market diversity. | Validate pool quality before July 1 RQs run |
 | `research_excluded = 0` alone | Includes 13K+ leaderboard traders with <20 resolved trades | Always add `AND resolved_trades_count >= 20` |
 | `trades.market_category` | Stale snapshot from ingestion — daily sync keeps it current but use `markets.category` via JOIN for authoritative values | Always JOIN to markets table |
 | `trade_result` | String field: 'won'/'lost'/'pending' — integer comparisons return zero rows silently | Use string literals only |
@@ -773,3 +800,127 @@ cursor.execute("""
 - Audit which traders were LEGENDARY at signal registration time
 - Validate that archetype classifications are stable vs. drifting
 - Input for RQ1.1 (ELO in period T predicts Brier in T+1) — Phase 5 gate
+
+---
+
+## Section 13 — Signal Registration Protocol
+
+All STR-003 signals MUST be registered via:
+
+```bash
+python3 /home/parison/projects/first-repo/scripts/register_signal.py
+```
+
+**Direct writes to signals.json are PROHIBITED.** They cause schema drift.
+
+The utility atomically:
+- Fetches `market_price_at_registration` from CLOB at exact registration moment
+- Captures registration order-book snapshot (`snapshot_type='registration'`)
+- Looks up trader `geo_elo_active` and `archetype` at registration (point-in-time)
+- Computes `signal_credibility_score`
+- Generates next sequential `signal_id`
+- Validates 20-field canonical schema
+- Writes atomically under file lock
+
+### Canonical Signal Schema (20 required fields)
+
+```
+signal_id, strategy, status, market_id, market_title, direction, registered_at,
+key_traders, trader_elos_at_registration, trader_archetypes_at_registration,
+market_price_at_registration, event_cluster, correlated_with, legendary_count,
+signal_credibility_score, signal_credibility_tier, outcome_correct, edge_at_entry,
+resolved_at, scored_at, notes
+```
+
+**`market_price_at_registration`: MANDATORY.** Captured at registration moment only.
+Capturing it later = hindsight contamination = `edge_at_entry` is meaningless.
+Source: CLOB `/markets/{condition_id}` → `tokens[outcome='Yes'].price`
+
+**`edge_at_entry`:** forward-only metric. Null for legacy signals (001-009) that predate
+the registration utility. Computed at scoring time:
+```
+YES signal: edge = outcome_correct - market_price_at_registration
+NO signal:  edge = outcome_correct - (1 - market_price_at_registration)
+```
+Positive edge = signal correctly identified underpriced side.
+Near-zero edge = market already knew; signal adds no information.
+
+**Provisional scoring rule:** A signal may be scored provisionally when Polymarket
+price > 0.95 AND volume > $10M AND oracle resolution is delayed. Provisional scores
+must be flagged `provisional: true` in signals.json and confirmed/revised at official
+oracle resolution.
+
+---
+
+## Section 14 — Order Book Capture Infrastructure
+
+```
+Table: order_book_snapshots
+Purpose: Historical CLOB book depth for Phase 6 paper trading fill simulation.
+```
+
+> **Book history CANNOT be backfilled — every missed day is permanently lost.**
+
+### Schema
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `market_id` | TEXT | Polymarket market_id |
+| `snapshot_ts` | TEXT | ISO datetime of snapshot |
+| `signal_id` | TEXT | Associated signal (NULL for daily snapshots) |
+| `snapshot_type` | TEXT | `'registration'` or `'daily'` |
+| `direction` | TEXT | YES or NO |
+| `token_id` | TEXT | CLOB token ID for this side |
+| `bids_json` | TEXT | JSON array of bid levels |
+| `asks_json` | TEXT | JSON array of ask levels |
+| `mid_price` | REAL | Arithmetic mean of best bid/ask |
+| `spread` | REAL | Best ask − best bid |
+| `bid_depth_10` | REAL | Total bid volume within 10 ticks |
+| `ask_depth_10` | REAL | Total ask volume within 10 ticks |
+| `clob_market_price_yes` | REAL | Authoritative YES price from CLOB `/markets/{condition_id}` |
+
+**PRIMARY KEY:** `(market_id, snapshot_ts, direction)`
+
+**`clob_market_price_yes`:** authoritative YES price from CLOB `/markets/{condition_id}`.
+This is the correct price for market-relative calculations.
+
+**`mid_price`:** arithmetic mean of best bid/ask. **UNRELIABLE for near-resolved markets**
+where book is empty (bid=0.001, ask=0.999 gives mid=0.5 with no information).
+Always use `clob_market_price_yes` for price-based analysis.
+
+### markets Table Additions (SCL-009)
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `clob_token_id_yes` | TEXT | YES outcome token ID for CLOB book endpoint |
+| `clob_token_id_no` | TEXT | NO outcome token ID for CLOB book endpoint |
+
+Populated by: `scripts/backfill_clob_token_ids.py`
+
+**Lookup:** CLOB `/markets/{condition_id}` primary (exact match).
+Gamma `conditionIds` fallback with match verification — Gamma silently returns
+unrelated markets for unrecognised IDs; always verify returned `conditionId` matches.
+
+---
+
+## Section 15 — Backup Infrastructure
+
+**Offsite backup:** 1TB USB drive mounted at `/mnt/backup`
+(`LABEL=polymarket-backup`, ext4, added to `/etc/fstab` with `nofail` flag).
+
+**Script:** `/home/parison/projects/first-repo/scripts/backup_offsite.sh`
+**Schedule:** 02:00 UTC daily (crontab)
+
+### What It Backs Up
+
+| Item | Method | Destination |
+|------|--------|-------------|
+| `polymarket_tracker.db` | WAL checkpoint + gzip | `/mnt/backup/polymarket-backups/{date}/` |
+| `brain/` | incremental rsync (`--delete`) | `/mnt/backup/polymarket-backups/brain-latest/` |
+
+**Retention:** 14 days of DB snapshots. Brain is always current (rsync --delete).
+**Log:** `/home/parison/trading-swarm/logs/backup_offsite.log`
+
+> **The DB and elo_snapshots history are IRREPLACEABLE.** The external parquet dataset
+> covers only V1/older data. Gamma backfill has known caps. If the DB is lost, years
+> of trade history and all temporal snapshots are gone permanently.
