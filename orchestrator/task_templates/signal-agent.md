@@ -104,66 +104,79 @@ This ensures Monday's run produces actionable intelligence even without STR-003 
 
 ## Signal Registration (MANDATORY for every new STR-003 signal)
 
-When a new STR-003 signal qualifies, you MUST register it in signals.json
-under the str003_signals list with these exact fields:
+**NEVER hand-assemble a signal record and write it directly to signals.json.**
+Direct writes cause schema drift — this is what produced the 001-006 vs 007-009
+bifurcation. The canonical registration utility handles all fields atomically.
+
+When a new STR-003 signal qualifies, register it by running:
+
+```bash
+python3 /home/parison/projects/first-repo/scripts/register_signal.py \
+    --market-id <exact market_id from DB> \
+    --direction YES|NO \
+    --traders <comma-separated trader addresses> \
+    --event-cluster <cluster_name e.g. iran_june2026> \
+    --correlated-with <comma-separated signal IDs if correlated, else omit> \
+    --notes "<brief rationale for the signal>"
+```
+
+Always run with --dry-run first to verify the output before writing:
+
+```bash
+python3 /home/parison/projects/first-repo/scripts/register_signal.py \
+    --market-id 0x... \
+    --direction NO \
+    --traders 0xabc,0xdef \
+    --event-cluster iran_june2026 \
+    --dry-run
+```
+
+What the utility does automatically (do NOT replicate manually):
+- Fetches market_price_at_registration from CLOB at the exact registration moment
+- Captures a registration order-book snapshot
+- Looks up each trader's geo_elo_active and archetype at registration time
+- Computes signal_credibility_score and tier
+- Generates the next sequential signal_id (STR003-NNN)
+- Stamps registered_at timestamp
+- Validates all 20 canonical schema fields
+- Writes to signals.json atomically under file lock
+
+The canonical signal schema (produced by the utility, never hand-written):
 ```json
 {
   "signal_id": "STR003-NNN",
-  "type": "str003_active",
-  "market_id": "<exact market_id from DB>",
-  "market_title": "<exact title from DB>",
-  "resolution_date": "<resolution_date from markets table or null>",
+  "strategy": "STR-003",
+  "status": "ACTIVE",
+  "market_id": "<from DB>",
+  "market_title": "<from DB>",
   "direction": "YES or NO",
-  "key_trader": "<trader_address>",
-  "trader_geo_elo": <geo_elo value>,
-  "trader_comprehensive_elo": <comprehensive_elo value>,
-  "position_size": <dollars>,
-  "signal_date": "<today ISO date>",
-  "confidence": "HIGH/MEDIUM/LOW",
-  "flags": [],
+  "registered_at": "<ISO timestamp at registration>",
+  "key_traders": ["<address1>", "<address2>"],
+  "trader_elos_at_registration": {"<address>": "<geo_elo_active>"},
+  "trader_archetypes_at_registration": {"<address>": "GENUINE_FORECASTER"},
+  "market_price_at_registration": 0.322,
+  "event_cluster": "iran_june2026",
+  "correlated_with": [],
+  "legendary_count": 2,
+  "signal_credibility_score": 80.0,
+  "signal_credibility_tier": "HIGH",
   "outcome_correct": null,
+  "edge_at_entry": null,
   "resolved_at": null,
-  "scored_at": null
+  "scored_at": null,
+  "notes": "<rationale>"
 }
 ```
 
-CRITICAL: market_id must be the exact value from the markets table.
-CRITICAL: resolution_date must be populated from markets.resolution_date if available.
-Without these fields, score_str003_signals.py cannot auto-score the signal.
-Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL forever.
+CRITICAL: market_price_at_registration MUST be captured at registration time.
+Capturing it later introduces hindsight contamination — the edge metric becomes meaningless.
+The utility enforces this by fetching the price as its second step, before anything else.
+
+Failure to use register_signal.py = stale schema = scoring failures = strategy stays
+EXPERIMENTAL forever.
 
 ## Your Task
 {TASK_DESCRIPTION}
-
-## Signal Registration (MANDATORY for every new STR-003 signal)
-
-When a new STR-003 signal qualifies, you MUST register it in signals.json
-under the str003_signals list with these exact fields:
-```json
-{
-  "signal_id": "STR003-NNN",
-  "type": "str003_active",
-  "market_id": "<exact market_id from DB>",
-  "market_title": "<exact title from DB>",
-  "resolution_date": "<resolution_date from markets table or null>",
-  "direction": "YES or NO",
-  "key_trader": "<trader_address>",
-  "trader_geo_elo": <geo_elo value>,
-  "trader_comprehensive_elo": <comprehensive_elo value>,
-  "position_size": <dollars>,
-  "signal_date": "<today ISO date>",
-  "confidence": "HIGH/MEDIUM/LOW",
-  "flags": [],
-  "outcome_correct": null,
-  "resolved_at": null,
-  "scored_at": null
-}
-```
-
-CRITICAL: market_id must be the exact value from the markets table.
-CRITICAL: resolution_date must be populated from markets.resolution_date if available.
-Without these fields, score_str003_signals.py cannot auto-score the signal.
-Failure to register = the signal never gets scored = strategy stays EXPERIMENTAL forever.
 
 ## Signal Types You Look For
 1. Single legendary directional (STR-003 — EXPERIMENTAL) — a single
