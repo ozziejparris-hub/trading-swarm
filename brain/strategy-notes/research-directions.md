@@ -548,6 +548,11 @@ with accumulated knowledge rather than from zero.
 - 2026-06-05: Pool C geo/elections full-year: 70.7% accuracy (n=444 resolved 2026 markets). Durable — not a short-window artifact.
 - 2026-06-05: LH-001 blocking item 2 FAILS — 4/7 insider_signals correct (57.1%), below 60% threshold. Remains watchlist trigger only.
 - 2026-06-06: STR003-005/006 mutual exclusivity gap identified — same trader holds YES on both Peru presidential candidates. STR-003 needs an inter-signal mutual exclusivity check for same-election markets. Score June 7.
+- 2026-06-13: STR003-005/006 (Peru elections) scored June 7 — both signals WRONG (0/2 correct). STR-003 running accuracy: 1/4 resolved signals correct (25%). LOW confidence at n=4. Stop criterion is <50% over 10 signals — not triggered, continue accumulating. The mutual exclusivity issue meant these were counted as 2 distinct wrong signals on the same election; one wrong was inevitable by construction.
+- 2026-06-13: STR-003 out-of-sample accuracy at 4 resolved signals: 1/4 (25%), below 60% pass criterion. n=4 is too small for conclusions. LEGENDARY tier (n=2) at 50%, UNKNOWN tier (n=2) at 0%. Do not change strategy status yet — minimum 10 signals required.
+- 2026-06-13: RQ0 monthly gate due 2026-06-13 (per compounding note 2026-05-13). Gate covers wash trading (RQ0.1) and bot detection (RQ0.2). The 39 new traders above ELO 3,500 flagged May 18 remain unclassified. RQ0 should prioritise this cluster.
+- 2026-06-13: DB pool growth confirmed — clean_pool=18,759 (threshold 15,000), true_research_pool=3,837 (threshold 3,000), pool_c=2,851, legendary_clean=18. Integration contract Section 9 all pass.
+- 2026-06-13: Signal Credibility Index now annotating positions scan output (June 9 scan: 5 markets; MEDIUM tier predominates, no HIGH; 1 MIXED_SIGNAL: China tariff market). SCI is annotation-only until validated on ≥20 resolved markets per RQ-SCI-001 criteria.
 
 
 ## Formal Research Questions

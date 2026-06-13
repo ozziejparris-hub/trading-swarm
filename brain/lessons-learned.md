@@ -483,8 +483,47 @@ This document grows more valuable every week.
   candidate's YES bet scores correctly, it suggests the signal has value even for
   multi-candidate hedges; if both are wrong (both lose), the strategy is exploiting
   price inefficiency in a different way than the 95% directional conviction thesis assumes.
-  Score June 7 2026.
+  **ANSWERED 2026-06-13:** Both signals wrong (0/2). Neither Keiko nor López Aliaga won.
+  The "one of them will win" hedge produced two wrong signals — this is the worst outcome.
+  The trader was hedging against the market, not predicting; the market was correct.
 
 - What is the mutual exclusivity rate among STR-003 YES signals? How often does the same
   trader hold YES positions on multiple mutually exclusive outcomes in the same event?
   This affects how signal accuracy is calculated for multi-outcome electoral markets.
+
+---
+
+## Lessons added 2026-06-13
+
+### Strategy Insights
+- 2026-06-13 STR003-005/006 FAILED: Peru presidential election signals (June 7 resolution). Both
+  signals WRONG — 0/2 correct. Root cause: geo_elo top trader held YES on both Keiko Fujimori AND
+  López Aliaga simultaneously (both-candidates hedge). The 95% directional threshold applies
+  per-market and doesn't detect mutual exclusivity at the election level. STR-003 running accuracy
+  after 4 resolved signals: 1/4 (25%). n=4 is below the stop criterion (10 signals), continue
+  accumulating. Key lesson: a geo_elo 3,580 (#1 in pool) trader can still produce structurally
+  worthless signals in multi-candidate elections. The mutual exclusivity check is essential.
+  (Source: findings 2026-06-13-STR003-ACC-004, research-directions compounding notes)
+
+### System Architecture Lessons
+- 2026-06-13: Integration contract Section 9 validated against live DB — all metrics pass.
+  clean_pool=18,759 (threshold 15,000), true_research_pool=3,837 (threshold 3,000),
+  pool_c=2,851, legendary_clean=18. DB pool is growing: research pool +837 above minimum.
+  No contract violations. (Source: training-librarian Responsibility 10, 2026-06-13)
+
+- 2026-06-13: market-builder CLOB V2 fix confirmed present (week-4 open issue resolved).
+  The template now includes a ⚠️ warning block at line 14 covering all 5 V2 breaking
+  changes (V1 signing deprecated, pUSD collateral, keyset max=100, no transactionHash,
+  EIP-712 domain version bump). Any market-builder-agent spawned from the current template
+  will be correctly warned. (Source: training-librarian template audit 2026-06-13)
+
+- 2026-06-13: SCI (Signal Credibility Index) live in positions scan as annotation-only.
+  First positions scan with SCI (June 9): 5 markets reported, all MEDIUM or LOW tier.
+  No HIGH conviction signals (≥4 LEGENDARY, gap ≥30pt) in the current scan. MIXED_SIGNAL:
+  China tariff market (both_sides_ratio=0.443) — flag for Oscar review.
+  (Source: 2026-06-09-positions-scan.json, RQ-SCI-001 pre-registration)
+
+### Open Questions (updated)
+- Closed: STR003-005/006 Peru outcome confirmed (see Strategy Insights above).
+- Still open: What is the mutual exclusivity rate among STR-003 YES signals?
+- Urgent: RQ0 monthly gate due 2026-06-13 — 39 traders above ELO 3,500 still unclassified (May 18 flag).

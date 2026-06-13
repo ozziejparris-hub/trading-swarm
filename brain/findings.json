@@ -885,7 +885,10 @@
       },
       "actionable": false,
       "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-08-16T07:00:01Z"
+      "expires_at": "2026-08-16T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-08-ELO-ELITE-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-18-ELO-QUALIFIED-001",
@@ -995,7 +998,10 @@
       },
       "actionable": false,
       "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-08-23T07:00:01Z"
+      "expires_at": "2026-08-23T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-08-ELO-LEGENDARY-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-25-ELO-ELITE-001",
@@ -1014,7 +1020,10 @@
       },
       "actionable": false,
       "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-08-23T07:00:01Z"
+      "expires_at": "2026-08-23T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-08-ELO-ELITE-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-25-ELO-QUALIFIED-001",
@@ -1033,7 +1042,10 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-08-23T07:00:01Z"
+      "expires_at": "2026-08-23T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-08-ELO-QUALIFIED-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-05-26-GEO-ELO-003-OOS-001",
@@ -1131,7 +1143,8 @@
       "source": "performance-analyst-agent",
       "phase5_gate2": true,
       "notes": "Qualifies for Phase 5 Gate 2 (HIGH confidence, n >= 20). 7d window had 0 geo market resolutions \u2014 result based on 8-30 day lookback. Comprehensive_elo Legendary tier shows 35.92% accuracy (contamination suspected \u2014 FLAG-001). geo_elo is the authoritative accuracy metric for geopolitics.",
-      "expires_at": "2026-09-01T00:00:00Z"
+      "expires_at": "2026-09-01T00:00:00Z",
+      "summary": "geo_elo Pool C achieves 86.36% directional accuracy and Brier 0.1222 on 22 resolved geopolitics/elections markets in 30-day window ending 2026-06-01 \u2014 cleanest and strongest signal to date"
     },
     {
       "id": "2026-06-01-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -1172,7 +1185,10 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-08-30T07:00:01Z"
+      "expires_at": "2026-08-30T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-08-ELO-QUALIFIED-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-03-ELO-VS-MARKET-001",
@@ -1330,7 +1346,10 @@
       "actionable": false,
       "action_recommendation": "Monitor STR003-005 and STR003-006 (Peru markets, resolve June 7 2026). Score immediately after resolution.",
       "expires_at": "2026-09-03T21:21:49Z",
-      "notes": "STR003-003 (Warsh NO) scored WRONG previously. STR003-005 (Keiko YES) and STR003-006 (Aliaga YES) resolve June 7. No signals resolved in past 7 days."
+      "notes": "STR003-003 (Warsh NO) scored WRONG previously. STR003-005 (Keiko YES) and STR003-006 (Aliaga YES) resolve June 7. No signals resolved in past 7 days.",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-08-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-08-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -1410,13 +1429,13 @@
     },
     {
       "id": "2026-06-09-POSITIONS-ANALYSIS-001",
-      "title": "LEGENDARY trader consensus overcounts conviction — net position filter needed",
+      "title": "LEGENDARY trader consensus overcounts conviction \u2014 net position filter needed",
       "confidence": "MEDIUM",
       "actionable": true,
-      "source": "manual analysis — legendary_positions_scan.py + Iran regime trade data",
+      "source": "manual analysis \u2014 legendary_positions_scan.py + Iran regime trade data",
       "finding": "Analysis of 7 LEGENDARY traders on Iran regime fall June 30 market reveals positions_scan.py overcounts consensus. Of 7 traders: 3 have genuine open NO positions (SirHarryOakes $11K, randomWalkingShrimp $310, Giorgio2 $540); 1 was on YES side and cut losses (N0stradumba55); 1 news-traded with net zero position (anonymous 0xec05c); 1 is a late follower at high price (CompulsiveGambler); 1 exited for profit (Spirit of Ukraine). Raw trader count of 7 misrepresents genuine conviction of 3.",
       "action_recommendation": "Add net_position filter to legendary_positions_scan.py: calculate sum(BUY shares) - sum(SELL shares) per trader per market. Only count traders with net_position > 0 in consensus. This is a script fix, not a formula change.",
-      "confidence_rationale": "Single market analysis — needs validation across 5+ markets before changing system",
+      "confidence_rationale": "Single market analysis \u2014 needs validation across 5+ markets before changing system",
       "expires_at": "2026-09-09"
     },
     {
@@ -1496,6 +1515,69 @@
         "geo_directionality subset n=2/6 for ELITE/QUALIFIED tiers \u2014 too small for conclusions.",
         "Max ELO 5464 suggests possible outlier; verify trader has plausible geo trade history."
       ]
+    },
+    {
+      "id": "2026-06-12-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-12T06:00:29Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-12T06:00:29Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-13-STR003-ACC-004",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
+    },
+    {
+      "id": "2026-06-13-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-13T06:00:30Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-13T06:00:30Z"
     }
   ]
 }

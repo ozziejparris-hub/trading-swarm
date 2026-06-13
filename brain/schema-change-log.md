@@ -30,10 +30,10 @@ Using condition_id as a join key silently returns 0 rows for ~53% of markets inc
 **Affected templates (requiring fix):**
 - [x] feedback-loop-agent.md — fixed 2026-06-06
 - [x] performance-analyst-agent.md — fixed 2026-06-06
-- [ ] integration-test-agent.md — verify no condition_id join keys
-- [ ] backtest-agent.md — verify no condition_id join keys
-- [ ] quant-research.md — verify no condition_id join keys
-- [ ] market-intelligence-agent.md — verify no condition_id join keys
+- [x] integration-test-agent.md — verified 2026-06-13 (no condition_id join keys; pool size check only)
+- [x] backtest-agent.md — verified 2026-06-13 (no SQL queries; Rule 3 specifies correct Pool B filter)
+- [x] quant-research.md — verified 2026-06-13 (correct column names; no condition_id join)
+- [x] market-intelligence-agent.md — verified 2026-06-13 (JOIN keys fixed 2026-06-06 per SCL-004)
 **Reference:** integration-contract.md Section 2
 
 ---
@@ -51,9 +51,9 @@ Any query referencing these columns will throw "no such column" errors.
 - [x] signal-agent.md — accuracy_pool removed 2026-06-06
 - [x] integration-contract.md Section 3 — documented 2026-06-06
 - [x] scripts/calculate_geo_elo.py — accuracy_pool → geo_accuracy_pool fixed 2026-06-08
-- [ ] backtest-agent.md — verify no references
-- [ ] quant-research.md — verify no references
-- [ ] feedback-loop-agent.md — verify no references
+- [x] backtest-agent.md — verified 2026-06-13 (no SQL queries; no dropped column references)
+- [x] quant-research.md — verified 2026-06-13 (no dropped column references)
+- [x] feedback-loop-agent.md — verified 2026-06-13 (no geo_elo_oos, accuracy_pool, copyable_edge references)
 **Reference:** integration-contract.md Section 3
 
 ---
@@ -95,9 +95,9 @@ JOIN trades t ON t.market_id = m.condition_id
 The condition_id column in the markets table is NULL for 53% of rows. Using it as a JOIN key drops all those trades silently.
 **Affected templates requiring fix:**
 - [x] market-intelligence-agent.md — 3 queries fixed 2026-06-06
-- [ ] backtest-agent.md — verify JOIN keys
-- [ ] quant-research.md — verify JOIN keys
-- [ ] feedback-loop-agent.md — verify JOIN keys
+- [x] backtest-agent.md — verified 2026-06-13 (no JOIN queries; process template only)
+- [x] quant-research.md — verified 2026-06-13 (no explicit JOIN queries; references integration-contract.md)
+- [ ] feedback-loop-agent.md — PENDING OSCAR REVIEW: Step 1 has condition_id vs market_id semantic conflict flagged 2026-06-06; requires Oscar to confirm signal payload values before changing
 **Reference:** integration-contract.md Section 2 + Section 10 JOIN KEY WARNING
 
 ---
@@ -170,9 +170,7 @@ these columns yet — pure data capture. PROPAGATION: N/A (new columns, no exist
 ---
 
 ## Pending verification items
-These templates have not been fully audited against all SCL entries:
-- backtest-agent.md — SCL-001, SCL-002, SCL-004 unverified
-- integration-test-agent.md — SCL-001 unverified
-- quant-research.md — SCL-001, SCL-002, SCL-004 partially verified
+Last full audit: 2026-06-13 (training-librarian-agent)
 
-Training-librarian should check these in the next weekly audit (June 13).
+All SCL-001 through SCL-009 items are verified COMPLETE except:
+- **feedback-loop-agent.md (SCL-004):** condition_id → market_id semantic conflict in Step 1 signal payload lookup. PENDING OSCAR REVIEW. Flagged 2026-06-06. Requires confirmation of what value is stored in signal.payload.market_id before changing WHERE clause.
