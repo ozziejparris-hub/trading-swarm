@@ -405,7 +405,9 @@
         "STR003-008"
       ],
       "non_scorable_for_validation": true,
-      "non_scorable_reason": "Registered 2026-06-09 after market had already moved from 0.32 to 0.0125 YES price (32pp move). Retrospective discovery \u2014 hindsight contamination per Fable roadmap \u00a75.1.3."
+      "non_scorable_reason": "Registered 2026-06-09 after market had already moved from 0.32 to 0.0125 YES price (32pp move). Retrospective discovery \u2014 hindsight contamination per Fable roadmap \u00a75.1.3.",
+      "market_price_at_first_capture": 0.007,
+      "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time."
     },
     {
       "signal_id": "STR003-008",
@@ -426,7 +428,9 @@
       "event_cluster": "europe_security_june2026",
       "correlated_with": [
         "STR003-007"
-      ]
+      ],
+      "market_price_at_first_capture": 0.0125,
+      "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time."
     },
     {
       "signal_id": "STR003-005",
