@@ -932,6 +932,23 @@ OPEN AUDIT ITEM: Historical synthetic-resolution closes (early system, pre-API-r
 events) used different logic. A retrospective audit comparing historical resolutions against
 UMA winner outcomes is pending (separate session).
 
+
+
+### API Authentication Note (audited 2026-06-14)
+POLYMARKET_API_KEY is loaded from ~/.env_trading and sent as Bearer/X-API-Key headers
+on Gamma API requests. Gamma is a public API and ignores these headers — zero auth
+failures observed in monitoring logs. No action needed.
+
+V3 migration (June 1, 2026): old V1/V2 keys for authenticated order placement are
+dead. Our read stack (Gamma, CLOB, Data API) is entirely public/unauthenticated and
+unaffected. V3 key requirement is a Phase 7 concern (order placement only).
+
+Offset pagination in polymarket_client.py hits gamma-api.polymarket.com/markets —
+Gamma's own endpoint, not Polymarket V3 REST API. Gamma offset pagination works.
+Data API (data-api.polymarket.com/trades) also unaffected by V3 changes.
+
+Audit conclusion: all read endpoints functioning correctly post-V3 migration.
+
 ## Section 15 — Backup Infrastructure
 
 **Offsite backup:** 1TB USB drive mounted at `/mnt/backup`
