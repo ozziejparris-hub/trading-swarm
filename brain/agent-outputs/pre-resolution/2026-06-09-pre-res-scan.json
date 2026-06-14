@@ -1,0 +1,129 @@
+{
+  "date": "2026-06-09",
+  "markets_checked": 46,
+  "signals_found": 11,
+  "signals": [
+    {
+      "market": "Will Pamela Evette win the 2026 South Carolina Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.91,
+      "gap_pt": 91.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Shenna Bellows win the 2026 Maine Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0099,
+      "gap_pt": 99.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Troy Jackson win the 2026 Maine Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.45,
+      "gap_pt": 55.0,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Nirav Shah win the 2026 Maine Governor Democratic primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.48,
+      "gap_pt": 52.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Robert Charles win the 2026 Maine Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.48,
+      "gap_pt": 52.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Ben Midgley win the 2026 Maine Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.13,
+      "gap_pt": 87.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "US x Iran permanent peace deal by June 15, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4533,
+      "market_price_pct": 0.07,
+      "gap_pt": 38.3,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9878,
+      "market_price_pct": 0.18,
+      "gap_pt": 80.8,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Iran closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.2986,
+      "market_price_pct": 0.999,
+      "gap_pt": 70.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.8855,
+      "market_price_pct": 0.014,
+      "gap_pt": 87.1,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 8?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9741,
+      "market_price_pct": 0.0295,
+      "gap_pt": 94.5,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    }
+  ],
+  "scan_timestamp": "2026-06-09T08:24:57.445225+00:00"
+}

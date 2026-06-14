@@ -1,0 +1,74 @@
+{
+  "date": "2026-06-08",
+  "markets_checked": 35,
+  "signals_found": 6,
+  "signals": [
+    {
+      "market": "Will Pamela Evette win the 2026 South Carolina Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.28,
+      "gap_pt": 28.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Shenna Bellows win the 2026 Maine Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0099,
+      "gap_pt": 99.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Troy Jackson win the 2026 Maine Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.28,
+      "gap_pt": 72.0,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Robert Charles win the 2026 Maine Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.48,
+      "gap_pt": 52.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Ben Midgley win the 2026 Maine Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.13,
+      "gap_pt": 87.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-09"
+    },
+    {
+      "market": "Will Nancy Mace win the 2026 South Carolina Governor Republican primary election?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.5943,
+      "market_price_pct": 0.11,
+      "gap_pt": 48.4,
+      "elite_traders": 1,
+      "legendary_traders": 1,
+      "resolution_date": "2026-06-09"
+    }
+  ],
+  "scan_timestamp": "2026-06-08T08:24:20.990797+00:00"
+}

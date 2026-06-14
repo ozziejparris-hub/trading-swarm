@@ -1,0 +1,107 @@
+{
+  "date": "2026-06-14",
+  "markets_checked": 54,
+  "signals_found": 9,
+  "signals": [
+    {
+      "market": "US x Iran permanent peace deal by June 15, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5967,
+      "market_price_pct": 0.251,
+      "gap_pt": 34.6,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9993,
+      "market_price_pct": 0.18,
+      "gap_pt": 81.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Iran closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0986,
+      "market_price_pct": 0.999,
+      "gap_pt": 90.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 8?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0295,
+      "gap_pt": 97.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.2168,
+      "market_price_pct": 0.976,
+      "gap_pt": 75.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed decrease interest rates by 25 bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.3638,
+      "market_price_pct": 0.004,
+      "gap_pt": 36.0,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will there be no change in Fed interest rates after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6722,
+      "market_price_pct": 0.991,
+      "gap_pt": 31.9,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9327,
+      "market_price_pct": 0.002,
+      "gap_pt": 93.1,
+      "elite_traders": 11,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed increase interest rates by 50+ bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6873,
+      "market_price_pct": 0.002,
+      "gap_pt": 68.5,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    }
+  ],
+  "scan_timestamp": "2026-06-14T11:32:03.968654+00:00"
+}
