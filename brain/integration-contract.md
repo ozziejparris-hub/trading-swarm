@@ -903,6 +903,35 @@ unrelated markets for unrecognised IDs; always verify returned `conditionId` mat
 
 ---
 
+
+
+### 14b — Resolution Semantics (UMA Oracle)
+
+Polymarket resolves via the UMA Optimistic Oracle, NOT by price. Critical distinction:
+
+- **ended** (past end_date, price ~0.99): trading stopped or near-stopped, but NOT resolved.
+  A market can sit in this state for hours (undisputed) to days (disputed: 24-48h debate +
+  ~48h UMA vote).
+- **resolved/finalized** (closed=true AND a token has winner=true): UMA has finalized.
+  ONLY THIS state is authoritative for scoring.
+
+SCORING RULE: Never infer resolution from price. A market at 0.99 is NOT resolved.
+Score ONLY when CLOB /markets/{condition_id} returns closed=true AND a token has winner=true.
+The winning token outcome (Yes/No) is the ground truth.
+
+PROVISIONAL EXCEPTION (existing rule, Section 13): price>0.95 + vol>$10M may be scored
+provisional:true and flagged, then confirmed/revised at oracle finalization. Used for Peru
+STR003-005. This is the ONLY case where pre-finalization price informs a score, and it is
+always explicitly flagged.
+
+Resolution scripts (fast_resolution_check.py recent_overdue + stale passes) correctly check
+closed AND winner token before marking resolved — they will NOT false-resolve an ended-but-
+unfinalized market.
+
+OPEN AUDIT ITEM: Historical synthetic-resolution closes (early system, pre-API-redemption-
+events) used different logic. A retrospective audit comparing historical resolutions against
+UMA winner outcomes is pending (separate session).
+
 ## Section 15 — Backup Infrastructure
 
 **Offsite backup:** 1TB USB drive mounted at `/mnt/backup`
