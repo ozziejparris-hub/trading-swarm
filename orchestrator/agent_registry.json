@@ -11,7 +11,7 @@
       "worktree": "/tmp/trading-swarm-worktrees/signal-202606042140",
       "log": "/home/parison/trading-swarm/logs/agent_logs/signal-202606042140.log",
       "started_at": "2026-06-04T21:40:57.491789",
-      "status": "respawning",
+      "status": "failed",
       "retries": 1,
       "pr": null,
       "verified": false
