@@ -144,6 +144,41 @@
         "next_check": "2026-06-19"
       },
       "processed_at": "2026-06-12T20:09:55.171276"
+    },
+    {
+      "type": "integration_test_critical",
+      "from": "integration-test-agent",
+      "status": "pending",
+      "timestamp": "2026-06-14T23:07:26.999048+00:00",
+      "payload": {
+        "report": "brain/agent-outputs/integration-test/2026-06-14-sunday-report.md",
+        "pass_rate": "86.7%",
+        "total_tests": 45,
+        "failed_tests": 6,
+        "critical_failures": [
+          {
+            "test": "ci_pipeline_passes",
+            "consecutive_sundays": 7,
+            "detail": "Lint: 8xF541 in calculate_geo_elo.py + NEW 1xE722 in run_trader_profiling.py:271. 27/27 tests pass.",
+            "fix": "Remove f-prefix from 8 literal strings in calculate_geo_elo.py; change bare except to except Exception: at run_trader_profiling.py:271"
+          }
+        ],
+        "high_failures": [
+          {
+            "test": "signal-agent_output_recent",
+            "consecutive_sundays": "5+",
+            "age_hours": 158.9,
+            "detail": "Peru signals STR003-005/006 unscored (resolved June 7)"
+          },
+          {
+            "test": "quant-research-agent_output_recent",
+            "consecutive_sundays": 3,
+            "age_hours": 149.7,
+            "detail": "RQ-GEO-ELO-001 Phase 1 approved but not executed"
+          }
+        ],
+        "escalation_message": "Sunday integration test: 6 failures (86.7% pass rate). CI lint blocked 7th consecutive Sunday \u2014 now 2 lint files. Signal-agent dark 158.9h. Quant-research 3rd consecutive Sunday (systemic). See full report."
+      }
     }
   ],
   "pending": [
