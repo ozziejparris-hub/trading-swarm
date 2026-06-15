@@ -3,6 +3,18 @@
     {
       "from": "performance-analyst-agent",
       "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
+        "message": "📊 *Weekly Performance Report — 2026-06-15*\n─────────────────────────────\nBrier (Geo 30d): 0.2213 ✅ BEST ON RECORD (↑ from 0.24)\nBrier (Elections 30d): 0.2714 ↑ improving (was 0.30)\nCombined accuracy: 69.1% on 265 markets (↑ from 65%)\n\n✅ Legendary pool RECOVERED: 13→24 active (contract violation cleared)\n✅ True research pool: 1,738→3,902 traders\n\n🚨 Flags: [1 critical — CI 7th week] [2 high — signal/quant dark]\nTop flag: CI lint blocked 49 days (9 trivial fixes); signal-agent dark 175h+ with June 30 cluster pending\n\nGate 3 risk: 1/4 signals correct (25%) — June 30 cluster is next scoring event\nGate 4 blocked: RQ-GEO-ELO-001 not started (3rd Sunday, July 1 deadline at risk)\n\nFull report: brain/agent-outputs/performance-analyst/2026-06-15-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260615"
+      },
+      "timestamp": "2026-06-15T06:45:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
       "type": "contract_violation",
       "confidence": "HIGH",
       "payload": {
@@ -148,7 +160,7 @@
     {
       "type": "integration_test_critical",
       "from": "integration-test-agent",
-      "status": "pending",
+      "status": "processed",
       "timestamp": "2026-06-14T23:07:26.999048+00:00",
       "payload": {
         "report": "brain/agent-outputs/integration-test/2026-06-14-sunday-report.md",
@@ -178,7 +190,8 @@
           }
         ],
         "escalation_message": "Sunday integration test: 6 failures (86.7% pass rate). CI lint blocked 7th consecutive Sunday \u2014 now 2 lint files. Signal-agent dark 158.9h. Quant-research 3rd consecutive Sunday (systemic). See full report."
-      }
+      },
+      "processed_at": "2026-06-14T23:09:56.891288"
     }
   ],
   "pending": [
