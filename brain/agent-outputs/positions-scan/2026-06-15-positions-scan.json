@@ -1,0 +1,14 @@
+{
+  "scan_date": "2026-06-15",
+  "scan_timestamp": "2026-06-15T07:36:38.897927+00:00",
+  "filters": {
+    "min_traders": 2,
+    "min_gap_pt": 15.0
+  },
+  "markets_scanned": 8,
+  "markets_in_report": 0,
+  "skipped_no_price": 0,
+  "skipped_stale_price": 7,
+  "skipped_overdue": 0,
+  "markets": []
+}

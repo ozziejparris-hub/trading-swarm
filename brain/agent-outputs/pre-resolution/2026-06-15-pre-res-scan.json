@@ -1,0 +1,151 @@
+{
+  "date": "2026-06-15",
+  "markets_checked": 67,
+  "signals_found": 13,
+  "signals": [
+    {
+      "market": "US x Iran permanent peace deal by June 15, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5971,
+      "market_price_pct": 0.859,
+      "gap_pt": 26.2,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9993,
+      "market_price_pct": 0.121,
+      "gap_pt": 87.8,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Iran closes its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0986,
+      "market_price_pct": 0.999,
+      "gap_pt": 90.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Will Donald Trump announce that the United States blockade of the Strait of Hormuz has been lifted by June 15, 2026?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.3245,
+      "market_price_pct": 0.998,
+      "gap_pt": 67.4,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Israel closes its airspace by June 8?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0295,
+      "gap_pt": 97.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-15"
+    },
+    {
+      "market": "Will Iran close its airspace by June 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.01,
+      "gap_pt": 99.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-16"
+    },
+    {
+      "market": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.2168,
+      "market_price_pct": 0.997,
+      "gap_pt": 78.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed decrease interest rates by 25 bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.3638,
+      "market_price_pct": 0.003,
+      "gap_pt": 36.1,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will there be no change in Fed interest rates after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6722,
+      "market_price_pct": 0.996,
+      "gap_pt": 32.4,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9327,
+      "market_price_pct": 0.002,
+      "gap_pt": 93.1,
+      "elite_traders": 11,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed increase interest rates by 50+ bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6873,
+      "market_price_pct": 0.002,
+      "gap_pt": 68.5,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will Ivan Cepeda Castro win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8973,
+      "market_price_pct": 0.11,
+      "gap_pt": 78.7,
+      "elite_traders": 12,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Daniel Quintero win the 2026 Colombian presidential election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    }
+  ],
+  "scan_timestamp": "2026-06-15T08:33:01.157219+00:00"
+}
