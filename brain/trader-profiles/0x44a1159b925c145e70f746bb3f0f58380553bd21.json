@@ -1,0 +1,49 @@
+{
+  "address": "0x44a1159b925c145e70f746bb3f0f58380553bd21",
+  "profile_date": "2026-06-15",
+  "geo_elo_active": 2299.61,
+  "tier": "LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile 2026-06-15. Geo trade distribution: 5 contested (0.10-0.80) vs 55 near-certain (>=0.90) out of 87 total geo trades across 15 distinct geo markets. Near-certain dominance (63% of geo trades) is consistent with YIELD_HARVESTER pattern. However, confidence is LOW because: (1) most trades show 'pending' status despite months-old events, suggesting evaluation backlog (likely manual_watchlist pipeline issue); (2) resolved_trades_count=10 is below Pool B minimum of 20 despite 87 geo trades in the system; (3) integration-contract v2.7 flagged this address for research_excluded=1 due to 'single_market_concentration' but current DB shows research_excluded=0 \u2014 discrepancy requires Oscar investigation. Assignment based on visible pattern only. Human review required before any use in signal generation.",
+  "primary_domain": "Europe",
+  "domain_strengths": [
+    "Europe",
+    "Trump_US"
+  ],
+  "domain_blindspots": [],
+  "domain_summary": "Observable geo trades include Romania PM speculation (NO at 0.88-0.94), Hungarian elections, Iranian regime (NO at 0.98-0.99), and US Fed chair speculation. Most positions are near-certainty. Europe domain has highest concentration. Limited visibility due to pending trade evaluation backlog.",
+  "trusted_domains": [],
+  "discounted_domains": [],
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "YIELD_HARVESTER archetype (provisional, LOW confidence). Even if archetype upgrades on human review, realized_pnl=-2189 raises additional questions. Excluded from STR-003 until human review confirms classification and DB evaluation backlog is resolved.",
+  "behavioural_flags": [
+    "DB_EVALUATION_BACKLOG: resolved_trades_count=10 despite 87 geo trades \u2014 most trades pending evaluation, likely manual_watchlist pipeline issue",
+    "CONTRACT_DISCREPANCY: integration-contract v2.7 marked research_excluded=1 for single_market_concentration, but current DB shows research_excluded=0 and 15 distinct geo markets \u2014 requires Oscar investigation",
+    "NEGATIVE_PNL: realized_pnl=-2189 with largely pending trade evaluation \u2014 cannot assess true financial performance"
+  ],
+  "risk_patterns": [
+    "High volume of pending-status trades across resolved events \u2014 suggests data pipeline issue"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Multiple positions in pending status across Romania (PM speculation), Iran, and Hungary. Cannot distinguish open positions from evaluation-backlogged resolved positions until pipeline issue is resolved.",
+  "watch_items": [
+    "CRITICAL: Resolve integration-contract discrepancy \u2014 was research_excluded set to 0 after the v2.7 exclusion? Oscar must clarify.",
+    "Resolve DB evaluation backlog: why are May 2026 events still 'pending' in resolved_trades_count?",
+    "Once evaluation backlog clears, re-run archetype classification with actual resolved trade results",
+    "Verify geo_elo calculation validity \u2014 87 pending geo trades inflate geo_elo without verified win/loss record"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "Newly discovered LEGENDARY-tier trader (geo_elo_active=2299.6) with significant data quality issues. Trade pattern shows near-certainty dominance (63% of geo entries >= 0.90) consistent with YIELD_HARVESTER, but reliability is undermined by a DB evaluation backlog leaving most trades in 'pending' status despite events resolving months ago. An integration-contract discrepancy (v2.7 marked research_excluded=1 but DB shows 0) requires Oscar investigation before this trader can be considered for any research or signal use. Archetype assignment is provisional and conservative. Do not include in STR-003 or any signal generation until human review complete.",
+  "data_snapshot": {
+    "geo_elo": 2551.58,
+    "geo_elo_active": 2299.61,
+    "geo_resolved_trades_count": 60,
+    "resolved_trades_count": 10,
+    "distinct_geo_markets": 15,
+    "geo_contested_entries": 5,
+    "geo_near_certain_entries": 55,
+    "directionality": 1.0,
+    "pnl": -2188.84
+  }
+}

@@ -2,7 +2,7 @@
   "address": "0xe78e4a3e1b794c710a853c29f096fcea31093c5b",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1865.1575,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "The dominant pattern across both resolved and open trades is near-certainty NO positions \u2014 buying NO at 0.983-0.999 on long-tail candidates and unlikely outcomes to collect small premiums. The Trump Fed chair nomination cluster (8+ trades all at 0.992-0.999) is a textbook yield-harvesting sweep across mutually exclusive low-probability outcomes. Directionality of 1.0 reflects consistent one-sided positioning, but the positions themselves are not genuine forecasting \u2014 they are premium collection on obvious eliminations.",
@@ -31,7 +31,8 @@
     "Directionality of 1.0 \u2014 no genuine two-sided market engagement",
     "Cluster trading: multiple simultaneous low-odds positions in the same event resolved batch",
     "One notable contested-price YES bet (Mamdani at 0.967) resulted in a loss \u2014 suggests occasional overconfidence near resolution",
-    "Small position sizing on most open trades (18-50 shares) with one larger outlier (James Solomon 229 shares at 0.80)"
+    "Small position sizing on most open trades (18-50 shares) with one larger outlier (James Solomon 229 shares at 0.80)",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1829.59, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Near-certainty position losses: Mamdani 0.967 YES lost \u2014 tail risk on apparent sure-things",
@@ -81,7 +82,7 @@
   "summary": "This trader presents strong surface-level statistics (high win rate, diverse market coverage) that are almost entirely attributable to systematic yield-harvesting via near-certainty NO sweeps on long-tail candidates. With only $35 realized PnL across 24 trades, the structural strategy is confirmed as low-margin premium collection rather than genuine forecasting. The three contested-price entries (Trump approval, Magyar PM, Bolsonaro) are the only trades worth treating as real signals, and two of those lost. Copy-following this trader on yield-harvest positions is inadvisable; the Bolsonaro and NC Senate open positions are the only live signals worth monitoring.",
   "data_snapshot": {
     "geo_elo": 2077.506589595376,
-    "geo_elo_active": 1865.1575,
+    "geo_elo_active": 1829.59,
     "resolved_trades": 24,
     "distinct_markets": 27,
     "directionality": 1.0,

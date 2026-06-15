@@ -2,7 +2,7 @@
   "address": "0x197040709ae61627d3685a8d6ce1f9e82e6b398d",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1904.3539,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "Directionality of 1.0 and open positions dominated by near-certainty entries (0.97-0.999 for obvious outcomes, 0.01-0.02 for near-impossible outcomes) are classic yield-harvesting signatures. The open book shows systematic collection of small premiums on highly probable outcomes: SNP winning Scottish Parliament seats at 0.997, Zelenskyy-Putin no-meeting at 0.989, Heather Humphreys not winning Irish presidency at 0.975. The recent catastrophic loss on Mamdani YES at 0.87-0.938 (bought a near-certainty that failed) confirms the archetype: occasional large losses when the harvested tail event materialises.",
@@ -33,7 +33,8 @@
     "Near-certainty portfolio construction: majority of open positions entered at >0.87 or <0.05 price levels",
     "Sunk-cost doubling: multiple identical Mamdani entries at 0.938 suggesting repeated reinvestment despite no price improvement",
     "Asymmetric position structure: small long-shot longs (Glucksmann 2.3%, Whitmer 2.1%) alongside heavy near-certainty shorts \u2014 optionality hunting on tails",
-    "Possible stale positions: Sinn F\u00e9in 2024 Irish election at 0.001 (already resolved market) still listed as open"
+    "Possible stale positions: Sinn F\u00e9in 2024 Irish election at 0.001 (already resolved market) still listed as open",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1857.27, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Mamdani blowup: concentrated 13+ trade loss at high prices illustrates catastrophic tail risk from yield-harvesting strategy",
@@ -91,7 +92,7 @@
   "summary": "This trader is a textbook yield-harvester operating across geopolitics and European elections, extracting small premiums from near-certain outcomes rather than making genuine probabilistic forecasts. The directionality score of 1.0 and the concentration of open positions at price extremes (>0.87 or <0.05) confirm this is a premium-collection strategy, not a forecasting one. The Mamdani debacle \u2014 13+ trades at 0.87-0.938 on a position that resolved adversely \u2014 illustrates the catastrophic tail risk embedded in this approach and explains the significant decay in geo_elo_active (2033 base vs. 1904 active). Domain accuracy figures, especially the 76% 'Other' category, are likely artifacts of near-certainty positioning and should not be interpreted as genuine forecasting skill.",
   "data_snapshot": {
     "geo_elo": 2033.1913852723294,
-    "geo_elo_active": 1904.3539,
+    "geo_elo_active": 1857.27,
     "resolved_trades": 55,
     "distinct_markets": 32,
     "directionality": 1.0,

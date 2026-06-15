@@ -2,7 +2,7 @@
   "address": "0xc9ad18bc5d11639af167cc879fbc1333e22e79d0",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1865.3777,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "Despite trading 86 distinct markets with apparent diversity, the open positions reveal a dominant pattern of near-certainty NO trades at 0.97-0.999 price levels (e.g., US declares war on Iran at 0.998, Israel strikes Iran at 0.994, Putin meets Zelenskyy at 0.992). The directionality of 0.97 confirms nearly all trades go the same direction. Recent resolved trades show multiple losses precisely on near-certainty positions (Israel-Hamas ceasefire NO at 0.954, 0.95), exposing the classic yield-harvesting blowup risk where rare events wipe accumulated gains.",
@@ -34,7 +34,8 @@
     "Doubling-down pattern: multiple entries in same market (Epstein files: 7 trades, Israel-Hamas ceasefire: 5 trades) including averaging into losing positions",
     "Mixed direction within same market: held both YES at 0.96 and NO at 0.10 for Epstein files \u2014 possible hedging or LP artifact on single market",
     "Catastrophic recent resolved stretch: 15 consecutive losses with no wins recorded in recent history",
-    "Near-certainty buys on volatile geopolitical events (ceasefire NO at 0.95) \u2014 classic yield-harvester vulnerability"
+    "Near-certainty buys on volatile geopolitical events (ceasefire NO at 0.95) \u2014 classic yield-harvester vulnerability",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1833.35, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Sunk-cost re-entry: repeated trades in same losing market (Epstein files, Israel-Hamas ceasefire) at worsening prices",
@@ -92,7 +93,7 @@
   "summary": "This trader presents as a yield harvester masquerading as a broad geopolitical forecaster. While the 86-market breadth and positive realized PnL suggest sophistication, the 0.97 directionality, clustering of open positions at 0.97-0.999, and a string of 15 consecutive recent losses all point to a trader systematically collecting small premiums on 'obvious' outcomes rather than genuine forecasting. The strategy is structurally vulnerable to tail events, as demonstrated by losing near-certainty ceasefire NO positions. Genuine signal exists only in isolated cases (Fujimori, Nasralla) at contested price levels; do not follow this trader's near-certainty positions as forecasting intelligence.",
   "data_snapshot": {
     "geo_elo": 1991.5783199442383,
-    "geo_elo_active": 1865.3777,
+    "geo_elo_active": 1833.35,
     "resolved_trades": 93,
     "distinct_markets": 86,
     "directionality": 0.9726651034993432,

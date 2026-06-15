@@ -2,7 +2,7 @@
   "address": "0x821ebe19a8979904476f3ab6d23879dbccf6e7a9",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1889.6049,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "This trader exclusively buys NO at 0.992-0.999 prices across near-certain political outcomes \u2014 third-party election wins, obscure balance-of-power configurations, and long-shot candidacies. Directionality of 1.0 confirms they never take the other side. All entries are in the 0.992-0.999 range, well past the near-certainty threshold of 0.95, indicating pure premium collection rather than genuine forecasting.",
@@ -29,7 +29,8 @@
     "Multiple duplicate trades on the same market (e.g. 6 trades on Wyoming Presidential at identical prices)",
     "Positions sized uniformly small (8-76 shares), suggesting systematic small-lot harvesting",
     "Active across many markets but all with identical structural characteristics",
-    "No evidence of exiting positions early or adjusting based on new information"
+    "No evidence of exiting positions early or adjusting based on new information",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1853.57, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Near-certainty trades can suffer total loss on tail events \u2014 Wyoming at 0.998 resolved as a loss, demonstrating real downside",
@@ -72,7 +73,7 @@
   "summary": "This trader is a textbook yield harvester with zero genuine forecasting signal \u2014 every single trade is a NO position at 0.992-0.999 on near-certain outcomes. The high raw geo_elo (2408) is misleading and purely volume-driven; the recency-decayed active ELO (1889) is more honest and sits well below LEGENDARY threshold. Realized PnL is actually slightly negative despite trading only near-certainties, confirming the strategy generates no net alpha. This address should be excluded from all signal generation pipelines as it provides no information about contested probability assessments.",
   "data_snapshot": {
     "geo_elo": 2408.415999999999,
-    "geo_elo_active": 1889.6049,
+    "geo_elo_active": 1853.57,
     "resolved_trades": 80,
     "distinct_markets": 28,
     "directionality": 1.0,

@@ -2,7 +2,7 @@
   "address": "0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33",
   "profile_date": "2026-06-10",
   "geo_elo_active": 2011.912,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "Virtually every visible trade involves buying NO at 0.93-0.999 or YES at 0.978+, i.e. near-certainty positions collecting tiny premiums on highly improbable outcomes. Directionality of 1.0 confirms no genuine two-sided forecasting. Despite 42 resolved trades across 20 markets, the pattern is systematic yield extraction \u2014 selling risk on extreme long-shots \u2014 rather than forecasting contested outcomes.",
@@ -30,7 +30,8 @@
     "Multiple simultaneous positions on the same market at marginally different prices suggest systematic sweep or DCA into near-zero-risk positions",
     "Small position sizes (25-150 shares) consistent with yield harvesting rather than conviction sizing",
     "Many open positions in distant-future markets (2028 elections) where liquidity is thin and mispricing risk is elevated",
-    "Realized PnL of $0.65 on 42 trades is negligibly small \u2014 confirms near-zero-edge strategy"
+    "Realized PnL of $0.65 on 42 trades is negligibly small \u2014 confirms near-zero-edge strategy",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1981.16, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Occasional losses on near-certainty positions (e.g. 'Democrats and Republicans both lose' NO at 0.997 lost) reveal tail-event exposure",
@@ -72,7 +73,7 @@
   "summary": "This trader is a pure yield harvester with no detectable forecasting signal: every trade is placed at near-certainty prices (0.93-0.999), generating a total realized PnL of $0.65 across 42 trades. The 1.0 directionality score confirms this is a one-strategy operation \u2014 collecting small premiums on politically improbable outcomes \u2014 not genuine geopolitical prediction. Occasional losses on sub-1% outcomes confirm meaningful tail exposure embedded in the strategy. This trader's positioning carries zero informational value for STR-003 signal generation and should be fully excluded from the intelligence feed.",
   "data_snapshot": {
     "geo_elo": 2011.912000000001,
-    "geo_elo_active": 2011.912,
+    "geo_elo_active": 1981.16,
     "resolved_trades": 42,
     "distinct_markets": 20,
     "directionality": 1.0,

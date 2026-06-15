@@ -2,7 +2,7 @@
   "address": "0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f",
   "profile_date": "2026-06-10",
   "geo_elo_active": 2092.997,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "GENUINE_FORECASTER",
   "archetype_confidence": "MEDIUM",
   "archetype_reasoning": "This trader operates across 74 distinct geo markets with solid win rates in Russia/UKR (66.3%), Iran/ME (72%), Europe (67.2%), and Trump/US (65.8%), suggesting real multi-domain forecasting ability rather than niche repetition. Directionality of 0.918 indicates strong directional conviction rather than LP behavior. However, open positions show a notable mix of near-certainty yield-harvesting trades (YES at 0.997, NO at 0.999) alongside genuinely contested entries, creating a hybrid profile that slightly dilutes the pure forecaster classification.",
@@ -32,7 +32,8 @@
     "Near-certainty yield harvesting in open positions: multiple NO positions at 0.987-0.999 on Iran-related military events",
     "Entry at contested prices in some markets (0.26, 0.48, 0.49 on ceasefire) alongside high-conviction late entries (0.77) \u2014 inconsistent entry discipline",
     "Government shutdown trades at 0.97 and 0.982 resulted in losses \u2014 chasing near-certainty and getting burned by tail events",
-    "NYC Mamdani NO trades at 0.051-0.055 are borderline yield-harvesting wins, not genuine forecasting"
+    "NYC Mamdani NO trades at 0.051-0.055 are borderline yield-harvesting wins, not genuine forecasting",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=2081.61, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Sunk-cost or averaging behavior: multiple ceasefire positions across wide price range suggests reluctance to cut losing thesis",
@@ -89,7 +90,7 @@
   "summary": "A capable multi-domain forecaster with real edge in Iran/ME and Europe, demonstrated by 72% and 67.2% accuracy on substantial trade samples. The $5,400 positive PnL and 74-market breadth confirm genuine forecasting ability rather than lucky specialization. However, the trader has a persistent yield-harvesting tendency \u2014 particularly visible in near-certainty open positions and the government shutdown losses \u2014 which contaminates the signal and introduces correlated tail risk. Best used as a PARTIAL signal source: weight directional calls in Iran/ME and Europe at contested prices (0.10-0.80), disregard China/Asia entirely, and flag near-certainty positions as unreliable indicators of forecasting skill.",
   "data_snapshot": {
     "geo_elo": 2304.5085438882675,
-    "geo_elo_active": 2092.997,
+    "geo_elo_active": 2081.61,
     "resolved_trades": 145,
     "distinct_markets": 74,
     "directionality": 0.9178947918090494,

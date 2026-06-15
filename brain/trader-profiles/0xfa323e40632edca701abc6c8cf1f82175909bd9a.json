@@ -1,0 +1,104 @@
+{
+  "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+  "profile_date": "2026-06-15",
+  "geo_elo_active": 1944.49,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Initial profile 2026-06-15. 240 resolved trades across 408 distinct markets. Contested-price share: 60% (0.10-0.80), avg price 0.57 \u2014 genuine directional betting pattern, not yield-harvesting. Overall accuracy: 72.9% (175W/65L). By category: Geopolitics 77% (86 resolved), Elections 74% (34 resolved), Unknown 70% (120 resolved). Active through June 7 2026 (last trade). Diverse markets: US Fed chair nominations, Ukraine ceasefire, Venezuela, Romania, Iran. Confidence is MEDIUM not HIGH because: (1) realized_pnl=$0.00 exactly is anomalous for 240 resolved trades with 72.9% accuracy \u2014 triggers STR-003 pnl exclusion filter and requires investigation; (2) category 'Unknown' for 50% of resolved trades means domain assessment is incomplete; (3) recent Feb 2026 cluster of losses on Fed nomination near-certainty entries suggests some yield-harvesting behavior at market peaks. Assignment as GENUINE_FORECASTER is based on the dominant 60% contested-price pattern and multi-domain accuracy.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US",
+    "Geopolitics"
+  ],
+  "domain_blindspots": [
+    "Category 'Unknown' covers 50% of resolved trades \u2014 domain assessment incomplete"
+  ],
+  "domain_summary": "Most visible resolved trades are in Trump/US politics (Fed chair nominations, Epstein files, Venezuela policy) and Geopolitics (Ukraine ceasefire, Iran). Trump_US accuracy appears high based on observable trades. Geopolitics accuracy 77% on 86 resolved (moderate sample). Active across diverse themes with genuine directional calls at contested prices. Last active June 7 2026.",
+  "trusted_domains": [
+    "Trump_US",
+    "Geopolitics"
+  ],
+  "discounted_domains": [],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Conservative assignment pending human review. realized_pnl=$0.00 exactly triggers STR-003 exclusion filter (pnl != 0.0 AND pnl > -100000) \u2014 this trader cannot contribute to STR-003 signals in current state. The $0 PNL anomaly (72.9% accuracy on 240 resolved trades with $0 realized) is unexplained \u2014 likely either: (a) account never redeemed winnings, or (b) data pipeline issue. Until clarified, maintaining MINIMAL weight. Would be strong PARTIAL or FULL candidate after PNL investigation resolves.",
+  "behavioural_flags": [
+    "PNL_ANOMALY: realized_pnl=$0.00 exactly with 240 resolved trades and 72.9% accuracy \u2014 STR-003 pnl filter exclusion. Requires investigation.",
+    "INACTIVE_SINCE: last trade 2026-06-07, most recent resolved trades from Feb 2026 \u2014 4+ month gap between last resolved and last placed trade (658 trades still pending)",
+    "NEAR_CERTAIN_CLUSTER: Feb 2026 entries on Kevin Hassett NO at 1.00 (lost) suggests occasional yield-harvesting behavior at market extremes"
+  ],
+  "risk_patterns": [
+    "$0 PNL anomaly \u2014 possible non-redemption account or data issue"
+  ],
+  "notable_calls": [
+    {
+      "market": "Russia x Ukraine ceasefire by March 31, 2026?",
+      "side": "YES",
+      "entry_price": 0.12,
+      "result": "lost",
+      "significance": "Contested directional call at 0.12 \u2014 early ceasefire bet that didn't materialize"
+    },
+    {
+      "market": "Will Trump nominate Kevin Warsh as the next Fed chair?",
+      "side": "YES",
+      "entry_price": 0.49,
+      "result": "lost",
+      "significance": "Contested mid-price Fed chair call at 0.49"
+    },
+    {
+      "market": "Will there be no change in Fed interest rates after the April 2026 meeting?",
+      "side": "NO",
+      "entry_price": 0.3,
+      "result": "lost",
+      "significance": "Counter-consensus rate call at 0.30"
+    },
+    {
+      "market": "Will Trump nominate Kevin Hassett as the next Fed chair?",
+      "side": "No",
+      "entry_price": 0.46,
+      "result": "won",
+      "significance": "Correctly bet NO on Hassett at contested price (Dec 2025)"
+    }
+  ],
+  "open_positions_summary": "658 trades currently pending (unresolved). Last trade placed June 7 2026. Cannot identify specific open positions without deeper pending trade analysis \u2014 would require separate query on pending trade direction and market end dates.",
+  "watch_items": [
+    "PRIORITY: Investigate $0 realized_pnl anomaly \u2014 is this a non-redemption account? If confirmed as data issue, may upgrade signal_weight to PARTIAL immediately",
+    "Human review required before including in STR-003 signal generation",
+    "Monitor Feb 2026 loss cluster context \u2014 Fed nomination near-certainty losses at 1.00 suggest positioning error or market mechanics misunderstanding",
+    "Re-profile after category 'Unknown' trades are reclassified by sync_trade_categories.py \u2014 domain picture likely clearer once accurate"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "Newly discovered NEAR_LEGENDARY trader (geo_elo_active=1944.5) with genuine forecaster characteristics: 60% contested entries, 72.9% win rate across 240 resolved trades, and multi-domain activity (US Fed, Ukraine, Iran). This is one of the most promising new entrants to the pool and may warrant PARTIAL or FULL signal weight after human review. The blocking issue is a $0 realized_pnl despite 240 resolved trades and strong accuracy \u2014 this triggers the STR-003 pnl exclusion filter and requires investigation before the trader can contribute to signals. Last active June 7 2026 (still placing trades). Human review required.",
+  "data_snapshot": {
+    "geo_elo": 1997.61,
+    "geo_elo_active": 1944.49,
+    "geo_resolved_trades_count": 68,
+    "resolved_trades_count": 83,
+    "distinct_markets_all": 83,
+    "all_resolved": 240,
+    "all_wins": 175,
+    "all_accuracy_pct": 72.9,
+    "contested_entries_all": 143,
+    "near_certain_entries_all": 44,
+    "avg_price_resolved": 0.585,
+    "directionality": 0.928,
+    "pnl": 0.0,
+    "category_breakdown": {
+      "Unknown": {
+        "total": 120,
+        "accuracy": 70.0,
+        "contested": 75
+      },
+      "Geopolitics": {
+        "total": 86,
+        "accuracy": 76.7,
+        "contested": 55
+      },
+      "Elections": {
+        "total": 34,
+        "accuracy": 73.5,
+        "contested": 13
+      }
+    }
+  }
+}

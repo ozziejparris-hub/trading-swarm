@@ -2,7 +2,7 @@
   "address": "0x7a3b6452a73cfdada92a9bcd6c13cd9dd7782138",
   "profile_date": "2026-06-10",
   "geo_elo_active": 2030.6658,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "VOLUME_SPECIALIST",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "This trader is almost entirely concentrated in a single repeating theme: Russia-Ukraine ceasefire markets, with only 4 distinct geo markets total. The recent resolved trades are exclusively from one market ('Russia x Ukraine ceasefire before July?'), with multiple YES and NO entries at various prices \u2014 suggesting repeated re-entry and position layering on a single question. The high win rate in Russia_UKR (74.6%) is driven by volume repetition on the same thematic bet rather than diverse forecasting skill.",
@@ -31,7 +31,8 @@
     "Holds both YES and NO positions in same market simultaneously (ceasefire before July had both sides), suggesting LP-like hedging or sunk-cost averaging",
     "Two open positions are near-certainty entries (No at 0.995 and 0.999) \u2014 classic yield harvesting on obvious outcomes",
     "Recent resolved batch shows mass losses on the ceasefire before July market, with wins only on late near-certainty No entries",
-    "Realized PnL is 0.0 \u2014 unusual, may indicate offsetting wins/losses or data gap"
+    "Realized PnL is 0.0 \u2014 unusual, may indicate offsetting wins/losses or data gap",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1999.63, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Sunk-cost doubling: multiple re-entries on the same losing market direction (Yes ceasefire) and then switching to No after market moved",
@@ -81,7 +82,7 @@
   "summary": "This trader has built a respectable ELO and win rate almost entirely through repetitive positioning on Russia-Ukraine ceasefire timing markets, including near-certainty entries that inflate win counts without genuine forecasting merit. The simultaneous YES and NO positions on the same market and mass losses on the July ceasefire batch reveal a strategy mixing liquidity provision, sunk-cost averaging, and late-entry yield harvesting rather than disciplined forecasting. The only genuinely informative signals are the mid-price No entries at 0.70 on the July ceasefire market and the small speculative Zelenskyy positions. Outside Russia-Ukraine ceasefire markets, this trader should be treated as noise.",
   "data_snapshot": {
     "geo_elo": 2102.2771093023925,
-    "geo_elo_active": 2030.6658,
+    "geo_elo_active": 1999.63,
     "resolved_trades": 55,
     "distinct_markets": 4,
     "directionality": 0.6641721023881227,

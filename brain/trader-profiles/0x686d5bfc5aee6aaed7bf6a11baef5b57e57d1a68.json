@@ -2,7 +2,7 @@
   "address": "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1884.6492,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "VOLUME_SPECIALIST",
   "archetype_confidence": "MEDIUM",
   "archetype_reasoning": "This trader concentrates heavily on single markets \u2014 most recently placing 11 separate YES trades on the Graham Platner Maine Senate primary, buying at prices ranging from 0.48 to 0.89. Directionality of 1.0 confirms they almost exclusively take one side across trades. The pattern of averaging into a single market theme with repeated entries resembles volume specialization rather than broad genuine forecasting, though the 33 distinct markets suggests some breadth.",
@@ -31,7 +31,8 @@
     "Bought Mamdani YES at 0.943 \u2014 near-certainty price for a contested outcome, a clear misjudgment of pricing",
     "Open positions dominated by extreme long-shots at 0.2-2.6 cents (French presidential candidates, obscure primaries)",
     "Directionality of 1.0 \u2014 never takes NO side except on resolved positions, extremely one-directional",
-    "Entry at both contested and near-certainty prices suggests inconsistent methodology"
+    "Entry at both contested and near-certainty prices suggests inconsistent methodology",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1913.83, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Sunk-cost averaging: repeatedly buying into losing/uncertain positions in same market",
@@ -80,7 +81,7 @@
   "summary": "A moderately capable trader with genuine edge in Trump_US markets (60% over 50 trades) but significant behavioral noise from averaging into single markets and chasing near-certainty prices on contested outcomes. The 1.0 directionality and open book of lottery-ticket positions suggest a speculative streak that undermines forecasting credibility. Realized PnL of ~$390 is modest relative to trade volume, consistent with a trader who wins often but over-extends. Best used as a DOMAIN_ONLY signal source for Trump_US political calls, with heavy discounting applied to any entries above 0.85 or below 0.05.",
   "data_snapshot": {
     "geo_elo": 1891.9206119316975,
-    "geo_elo_active": 1884.6492,
+    "geo_elo_active": 1913.83,
     "resolved_trades": 110,
     "distinct_markets": 33,
     "directionality": 1.0,

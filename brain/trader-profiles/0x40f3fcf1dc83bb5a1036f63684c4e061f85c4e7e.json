@@ -2,7 +2,7 @@
   "address": "0x40f3fcf1dc83bb5a1036f63684c4e061f85c4e7e",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1872.7563,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "DOMAIN_SPECIALIST",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "This trader has extraordinary accuracy in Russia_UKR (86%, 758W/123L) and solid performance in Trump_US (68.8%, 264W/120L), but catastrophically poor accuracy in 'Other' markets (12.6%, 49W/339L). The extreme divergence between domain performance and outside-domain performance is the defining signature of a domain specialist operating well beyond their edge. The recent resolved trades show a concentrated losing streak on a single Harris market at contested prices (~0.69-0.73), suggesting overconfidence extending into unfamiliar political territory.",
@@ -28,7 +28,8 @@
     "Heavy concentration in single-market repeated trades \u2014 recent data shows 15 consecutive positions on the same Harris market",
     "Directionality of 0.767 suggests meaningful but not extreme directional bias",
     "Appears to scale into positions rather than taking single large entries (multiple similar-price entries on same market)",
-    "Extremely limited distinct geo markets (only 5) for a trader with 1,653 resolved trades \u2014 indicative of deep specialisation"
+    "Extremely limited distinct geo markets (only 5) for a trader with 1,653 resolved trades \u2014 indicative of deep specialisation",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1844.13, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Sunk-cost behaviour likely: 15 consecutive losing trades on the same Harris market at near-identical prices suggests doubling down rather than reassessing",
@@ -63,7 +64,7 @@
   "summary": "This trader is a genuine Russia-Ukraine specialist with an impressive 86% win rate across 881 trades in that domain, representing authentic forecasting edge that should be taken seriously. However, their 'Other' domain accuracy of 12.6% \u2014 with 339 losses \u2014 is so poor it nearly qualifies as anti-signal, and the recent Harris market losing streak (15 consecutive losses) suggests a harmful pattern of trading outside their competence. The gap between raw ELO (3481) and active ELO (1872) flags meaningful recent decay. Signal weight should be reserved exclusively for Russia_UKR and Trump_US positions; all other domain activity from this address should be actively discounted or faded.",
   "data_snapshot": {
     "geo_elo": 3481.2553097565415,
-    "geo_elo_active": 1872.7563,
+    "geo_elo_active": 1844.13,
     "resolved_trades": 1653,
     "distinct_markets": 5,
     "directionality": 0.766961794744216,

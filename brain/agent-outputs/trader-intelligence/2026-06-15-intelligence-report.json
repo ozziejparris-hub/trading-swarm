@@ -1,0 +1,304 @@
+{
+  "report_date": "2026-06-15",
+  "profiles_updated": [
+    {
+      "address": "0x44a1159b925c145e70f746bb3f0f58380553bd21",
+      "new_resolved_trades": 0,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "what_changed": "Initial profile created (new LEGENDARY qualifier, no prior profile). YIELD_HARVESTER provisional archetype. Integration contract discrepancy flagged."
+    },
+    {
+      "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+      "new_resolved_trades": 0,
+      "data_depth": "moderate",
+      "archetype_unchanged": true,
+      "what_changed": "Initial profile created (new NEAR_LEGENDARY qualifier, no prior profile). GENUINE_FORECASTER provisional archetype, MINIMAL weight pending PNL investigation."
+    },
+    {
+      "address": "0x9aa516edbff6688595987727b4edc530cff14010",
+      "new_resolved_trades": 0,
+      "data_depth": "n/a",
+      "archetype_unchanged": true,
+      "what_changed": "Tier corrected NEAR_LEGENDARY \u2192 LEGENDARY (geo_elo_active was 2268.5 at June 10 profiling, already above 2175 threshold \u2014 initial profiling error). Current geo_elo_active=2225.2. YIELD_HARVESTER/EXCLUDE unchanged."
+    },
+    {
+      "address": "0xe0bc6311306558d71f68fc085c26f0337996ad7c",
+      "new_resolved_trades": 0,
+      "data_depth": "n/a",
+      "archetype_unchanged": true,
+      "what_changed": "Tier demoted LEGENDARY \u2192 NEAR_LEGENDARY. geo_elo_active declined from 2192.1 (June 10) to 2150.3 (June 15) \u2014 genuine ELO decay. YIELD_HARVESTER/EXCLUDE unchanged. No signal impact."
+    }
+  ],
+  "tier_corrections_batch": {
+    "description": "13 additional profiles had tier field updated ELITE \u2192 NEAR_LEGENDARY following Sunday June 15 ELO recalculation. All are YIELD_HARVESTER or DOMAIN_SPECIALIST archetypes already in pool. No signal weight changes.",
+    "updated_addresses": [
+      "0x7a3b6452a73cfdada92a9bcd6c13cd9dd7782138",
+      "0x197040709ae61627d3685a8d6ce1f9e82e6b398d",
+      "0x6014e4a02567f009a02e94c57785f4f970c5f9a4",
+      "0xe78e4a3e1b794c710a853c29f096fcea31093c5b",
+      "0xc9ad18bc5d11639af167cc879fbc1333e22e79d0",
+      "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68",
+      "0x821ebe19a8979904476f3ab6d23879dbccf6e7a9",
+      "0xaf409e50577bd9cba48378656548a2d28d1a5662",
+      "0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33",
+      "0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f",
+      "0xdde1a0257ddcc19522df5128049ce5619944f1d7",
+      "0x40f3fcf1dc83bb5a1036f63684c4e061f85c4e7e",
+      "0x4ecefb5b148a5a2c5af162e0b26cb29af82c1df7"
+    ]
+  },
+  "archetype_drift_flags": [],
+  "new_traders_qualified": [
+    {
+      "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1944.5,
+      "geo_elo": 1997.6,
+      "provisional_archetype": "GENUINE_FORECASTER",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "Most promising new entrant in the pool. 240 resolved trades across 408 distinct markets with 72.9% accuracy, 60% contested entries, avg price 0.57. Active through June 7 2026 in Trump_US (Fed nominations, Epstein, Venezuela) and Geopolitics (Ukraine ceasefire). Would be a strong PARTIAL-weight signal contributor except for one blocking issue: realized_pnl=$0.00 exactly triggers the STR-003 pnl exclusion filter and requires Oscar investigation before this trader can contribute to any signals. Provisional weight MINIMAL.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "blocking_item": "realized_pnl=$0.00 \u2014 investigate whether this is a non-redemption account or data pipeline issue. If resolved to a legitimate positive PNL, this trader should be promoted to PARTIAL weight immediately."
+    },
+    {
+      "address": "0x44a1159b925c145e70f746bb3f0f58380553bd21",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2299.6,
+      "geo_elo": 2551.6,
+      "provisional_archetype": "YIELD_HARVESTER",
+      "archetype_confidence": "LOW",
+      "first_read": "LEGENDARY-tier address (geo_elo_active=2299.6) that surfaces an integration contract discrepancy: v2.7 marked this trader research_excluded=1 for 'single_market_concentration' but the current DB shows research_excluded=0 and 15 distinct geo markets. The geo trade pattern is predominantly near-certainty (63% of 87 geo trades at >= 0.90) consistent with YIELD_HARVESTER, but reliability is undermined by a DB evaluation backlog \u2014 most trades show 'pending' despite events resolving months ago. resolved_trades_count=10 (below Pool B minimum of 20). Do NOT include in any signal use until Oscar resolves the contract discrepancy and the evaluation pipeline catches up.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "blocking_item": "Integration contract v2.7 discrepancy: research_excluded=1 \u2192 0. Was exclusion deliberately reversed? If exclusion was correct, this address should not be in Pool C at all. Oscar must clarify."
+    }
+  ],
+  "emerging_consensus": [
+    {
+      "market": "NATO x Russia military clash by June 30, 2026?",
+      "market_id": null,
+      "direction": "No",
+      "resolution_date": "2026-06-30",
+      "days_to_resolution": 15,
+      "traders": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "trusted_domain": "Russia_UKR",
+          "in_trusted_domain": true,
+          "avg_price": 0.95,
+          "net_shares": 8648
+        },
+        {
+          "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "trusted_domain": "Russia_UKR",
+          "in_trusted_domain": true,
+          "avg_price": 0.96,
+          "net_shares": 125
+        }
+      ],
+      "interpretation": "Two Russia_UKR specialists (VOLUME_SPECIALIST + DOMAIN_SPECIALIST, both DOMAIN_ONLY) hold NO on NATO/Russia clash by June 30. Both entries at near-certainty prices (0.95, 0.96) \u2014 this is NOT a contested directional call and does not qualify for STR-003. However, both traders' trusted domain is Russia_UKR, and the alignment reflects their consistent thesis that the Ukraine conflict will not escalate to direct NATO-Russia engagement. Market price is also near-certainty on this market. Low signal value for our purposes.",
+      "str003_eligible": false,
+      "str003_reason": "Near-certainty entry prices (0.95, 0.96) below STR-003 threshold; no GENUINE_FORECASTER in position"
+    },
+    {
+      "market": "European country agrees to give Ukraine security guarantee by June 30?",
+      "market_id": null,
+      "direction": "No",
+      "resolution_date": "2026-06-30",
+      "days_to_resolution": 15,
+      "traders": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "trusted_domain": "Russia_UKR",
+          "in_trusted_domain": true,
+          "avg_price": 0.77,
+          "net_shares": 1308,
+          "contested": true
+        }
+      ],
+      "note": "Single trader (VOLUME_SPECIALIST) at contested price 0.77. Not a multi-trader consensus but aligns with active STR003-008 (European security guarantee NO). DOMAIN_ONLY signal in trusted domain. Corroborating evidence for existing signal.",
+      "str003_eligible": false,
+      "str003_reason": "Single trader only, VOLUME_SPECIALIST not strong enough for standalone signal. Corroborates existing STR003-008."
+    }
+  ],
+  "direction_reversals": [
+    {
+      "trader": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+      "market": "Russia x Ukraine ceasefire by June 30, 2026?",
+      "market_id": null,
+      "archetype": "DOMAIN_SPECIALIST",
+      "signal_weight": "DOMAIN_ONLY",
+      "trusted_domain": "Russia_UKR",
+      "from": "Yes",
+      "to": "No (dominant)",
+      "old_leg": {
+        "direction": "Yes",
+        "avg_price": 0.04,
+        "shares": 1560,
+        "note": "Low-price early ceasefire bet \u2014 possibly speculative"
+      },
+      "new_leg": {
+        "direction": "No",
+        "avg_price": 0.97,
+        "shares": 3472,
+        "note": "Near-certainty NO, dominant position"
+      },
+      "interpretation": "Russia_UKR DOMAIN_SPECIALIST holds both YES (0.04, 1560 shares) and NO (0.97, 3472 shares) on same market \u2014 technically bidirectional, not a clean reversal. However, the dominant capital exposure (3472 shares NO at 0.97) reflects strong conviction against ceasefire by June 30. The small YES position at 0.04 is either residual or a speculative hedge. Net thesis: NO ceasefire by June 30. Aligns with active STR003-004 signal. Data depth: moderate.",
+      "data_depth": "moderate"
+    }
+  ],
+  "approaching_resolutions": [
+    {
+      "market": "Will Keiko Fujimori win the 2026 Peruvian presidential election?",
+      "market_id": null,
+      "end_date": "2026-06-07",
+      "days_remaining": -8,
+      "status": "OVERDUE \u2014 end_date past, pending UMA oracle finalization",
+      "positions": [
+        {
+          "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+          "archetype": "GENUINE_FORECASTER",
+          "signal_weight": "FULL",
+          "direction": "Yes",
+          "avg_price": 0.47,
+          "shares": 8611
+        }
+      ],
+      "cross_ref_str003": "STR003-005 RESOLVED_CORRECT (Keiko YES). GENUINE_FORECASTER held 8611 shares YES at 0.47 \u2014 position should score as a WIN when UMA finalization reaches our DB.",
+      "action": "Market pending DB resolution. score_str003_signals.py should catch this in next daily maintenance run."
+    },
+    {
+      "market": "Will Rafael L\u00f3pez Aliaga win the 2026 Peruvian presidential election?",
+      "market_id": null,
+      "end_date": "2026-06-07",
+      "days_remaining": -8,
+      "status": "OVERDUE \u2014 end_date past, pending UMA oracle finalization",
+      "positions": [
+        {
+          "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+          "archetype": "GENUINE_FORECASTER",
+          "signal_weight": "FULL",
+          "direction": "Yes",
+          "avg_price": 0.24,
+          "shares": 20231
+        }
+      ],
+      "cross_ref_str003": "STR003-006 RESOLVED_WRONG (L\u00f3pez Aliaga YES). GENUINE_FORECASTER held 20231 shares YES at 0.24 \u2014 a significant loss. This is a larger position than the Keiko bet, meaning the GENUINE_FORECASTER's Peru net result is likely negative despite the Keiko win.",
+      "action": "Market pending DB resolution. Next daily maintenance should score this as LOST for the trader."
+    },
+    {
+      "market": "Multiple June 30 active signal markets",
+      "market_id": null,
+      "end_date": "2026-06-30",
+      "days_remaining": 15,
+      "status": "ACTIVE \u2014 15 days to resolution",
+      "positions": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "direction": "No",
+          "market": "NATO x Russia clash",
+          "avg_price": 0.95,
+          "shares": 8648
+        },
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "direction": "No",
+          "market": "European security guarantee",
+          "avg_price": 0.77,
+          "shares": 1308
+        },
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "direction": "No",
+          "market": "Kharg Island control",
+          "avg_price": 0.82,
+          "shares": 5918
+        },
+        {
+          "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+          "archetype": "DOMAIN_SPECIALIST",
+          "direction": "No",
+          "market": "NATO x Russia clash",
+          "avg_price": 0.96,
+          "shares": 125
+        }
+      ],
+      "cross_ref_str003": "Active signals STR003-004 (Putin invasion NO), STR003-007 (Iran regime fall NO), STR003-008 (European security guarantee NO) all resolve June 30. VOLUME_SPECIALIST holds NO on European security guarantee (0.77, 1308 shares) \u2014 direct alignment with STR003-008. Neither trader is the original STR003 signal source but their corroborating positions strengthen confidence in the NO direction for STR003-008.",
+      "action": "All three June 30 STR-003 signals approaching resolution window. Monitor daily maintenance for resolution flags."
+    }
+  ],
+  "tier_demotion_reviews": [
+    {
+      "address": "0xe0bc6311306558d71f68fc085c26f0337996ad7c",
+      "stored_tier_before_this_run": "LEGENDARY",
+      "current_geo_elo_active": 2150.26,
+      "archetype": "YIELD_HARVESTER",
+      "signal_weight": "EXCLUDE",
+      "note": "Genuine ELO decay: 2192.1 (June 10) \u2192 2150.3 (June 15). Now NEAR_LEGENDARY. Zero signal impact (YIELD_HARVESTER/EXCLUDE). Profile tier field updated."
+    },
+    {
+      "address": "0x89cb24d0fed5df730e09d4a33451e72e648c46cb",
+      "stored_tier": "ELITE",
+      "current_geo_elo_active": 1794.3,
+      "archetype": "YIELD_HARVESTER",
+      "signal_weight": "EXCLUDE",
+      "note": "Dropped below 1800 (NEAR_LEGENDARY threshold). Was stored as ELITE, now 1794.3. Not a formal demotion review (template only covers profiled NEAR_LEGENDARY \u2192 below 1800), but noting for awareness. YIELD_HARVESTER/EXCLUDE \u2014 zero signal impact. Profile tier remains ELITE."
+    },
+    {
+      "address": "0x9f5fb07d75c818b583f199cc8b2e215654f33181",
+      "stored_tier": "ELITE",
+      "current_geo_elo_active": 1796.12,
+      "archetype": "YIELD_HARVESTER",
+      "signal_weight": "EXCLUDE",
+      "note": "Dropped below 1800. Same situation as above \u2014 was stored ELITE, now 1796.1. No signal impact."
+    }
+  ],
+  "pool_health": {
+    "legendary_clean": 17,
+    "near_legendary_clean": 20,
+    "profiles_current": 39,
+    "profiles_stale": 0,
+    "profiles_with_tier_correction": 15,
+    "note": "39 profiles total (37 original + 2 new). Zero profiles stale on delta-trade basis (no new resolved trades since June 10 profiling). 15 profiles had tier fields corrected following Sunday ELO recalculation. Pool sizes: legendary_clean=17 (within expected range), near_legendary_clean=20 (within expected range). Contract validation: PASSED."
+  },
+  "action_items": [
+    "HUMAN REVIEW REQUIRED \u2014 0xfa323e40632edc (NEAR_LEGENDARY, provisional GENUINE_FORECASTER): Investigate $0 realized_pnl anomaly. This is the highest-value new entrant (72.9% accuracy, 240 resolved, 60% contested entries) \u2014 if PNL issue resolves, should immediately upgrade to PARTIAL signal weight and consider for STR-003 qualification in trusted domains.",
+    "HUMAN REVIEW REQUIRED \u2014 0x44a1159b925c14 (LEGENDARY, provisional YIELD_HARVESTER): Oscar must resolve integration-contract v2.7 discrepancy \u2014 was research_excluded=1 \u2192 0 reversal intentional? If this trader was correctly excluded, Pool C membership (geo_accuracy_pool=1) may also need review. Do not include in any signal generation until clarified.",
+    "OVERDUE MARKET RESOLUTION \u2014 0xecaa8806 (GENUINE_FORECASTER, FULL): Peru election positions (end_date 2026-06-07, 8 days overdue) are still pending in DB. Markets should resolve via next daily maintenance. Net position outcome likely negative (20,231 shares L\u00f3pez Aliaga YES at 0.24 = LOST outweighs 8,611 shares Keiko YES at 0.47 = WIN). Watch for significant PNL impact on pool's top-rated GENUINE_FORECASTER.",
+    "JUNE 30 SIGNAL MONITORING \u2014 3 active STR-003 signals (STR003-004 Putin NO, STR003-007 Iran regime NO, STR003-008 European security guarantee NO) resolve in 15 days. VOLUME_SPECIALIST (0xd44e974a) holds corroborating NO positions in all three related markets including a contested-price NO at 0.77 on the security guarantee market. Monitor daily maintenance for resolution flags from June 29.",
+    "TIER CORRECTIONS BATCH \u2014 15 profiles had tier field updated today following Sunday ELO recalculation (1 NEAR_LEGENDARY\u2192LEGENDARY, 1 LEGENDARY\u2192NEAR_LEGENDARY, 13 ELITE\u2192NEAR_LEGENDARY). All were tier-only updates; no archetype or signal weight changes. All are YIELD_HARVESTER/EXCLUDE or DOMAIN_SPECIALIST \u2014 no STR-003 signal implications."
+  ],
+  "run_metadata": {
+    "agent": "trader-intelligence-agent",
+    "run_date": "2026-06-15",
+    "profiles_scanned": 37,
+    "profiles_with_new_resolved_trades": 0,
+    "new_qualifiers_profiled": 2,
+    "tier_fields_updated": 15,
+    "contract_version_read": "v2.9 (2026-06-13)",
+    "schema_change_log_read": "SCL-001 through SCL-009 (all COMPLETE)",
+    "contract_validation": "PASSED \u2014 all pool sizes within expected ranges",
+    "pool_sizes_at_run": {
+      "clean_pool": 22229,
+      "true_research_pool": 3902,
+      "clean_markets": 24494,
+      "pool_c": 2878,
+      "legendary_base": 48,
+      "legendary_active": 24,
+      "legendary_clean": 17,
+      "near_legendary_clean": 20,
+      "wal_mode": "wal"
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "address": "0x6014e4a02567f009a02e94c57785f4f970c5f9a4",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1953.6454,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "This trader exhibits textbook yield-harvesting behaviour: directionality of 1.0 (always buys the same side) and virtually all entries are at near-certainty prices (0.95+). The recent resolved trades show entries at 0.966-0.998, collecting tiny premiums on highly probable outcomes. Open positions follow the same pattern \u2014 systematically selling longshot 2028 candidates at 0.92-0.994, not genuine forecasting.",
@@ -29,7 +29,8 @@
     "All entries at 0.90+ prices \u2014 no contested market participation",
     "Repeats same market multiple times (Judy Shelton: 6 trades; Scott Bessent: 2 trades) suggesting incremental yield accumulation rather than conviction updates",
     "One anomalous near-certainty YES position on Tim Walz VP (0.966) \u2014 inconsistent with overall NO bias, possibly a data artifact or legacy position",
-    "Open positions scatter across 2028 candidates indiscriminately, suggesting portfolio-style premium collection rather than genuine views"
+    "Open positions scatter across 2028 candidates indiscriminately, suggesting portfolio-style premium collection rather than genuine views",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1916.39, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Low accuracy (51-52%) on near-certainty trades signals tail risk \u2014 unexpected resolutions are wiping out accumulated yield",
@@ -71,7 +72,7 @@
   "summary": "This trader is a pure yield harvester with zero genuine forecasting signal. Directionality of 1.0 and near-universal entries above 0.95 confirm this is premium collection, not prediction. Critically, the strategy is barely profitable \u2014 3.54 USDC net on 44 trades \u2014 because unexpected resolutions (Bessent nomination, Judy Shelton outcome uncertainty) are eroding accumulated yield. No weight should be assigned to any of this trader's positions in STR-003 signal generation.",
   "data_snapshot": {
     "geo_elo": 2030.344,
-    "geo_elo_active": 1953.6454,
+    "geo_elo_active": 1916.39,
     "resolved_trades": 44,
     "distinct_markets": 18,
     "directionality": 1.0,

@@ -2,7 +2,7 @@
   "address": "0xdde1a0257ddcc19522df5128049ce5619944f1d7",
   "profile_date": "2026-06-10",
   "geo_elo_active": 2128.4276,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "The dominant pattern in recent resolved trades is mass near-certainty buying of YES on 'Will Trump visit China by March 31?' at prices of 0.012-0.014 \u2014 classic yield harvesting on near-certain NO outcomes (which correctly resolved NO, meaning these YES bets lost or were near-zero recoveries). Wait \u2014 the YES trades at 0.012-0.014 WON, meaning the market resolved YES despite low probability implied at entry. However, the open positions show consistent NO-side bets at prices like 0.94 and 0.87 (equivalent to buying NO cheaply), plus 'Iran Strike on Israel' YES at 0.965 \u2014 these are near-certainty premium collection plays. The trader systematically enters positions at near-certain prices (sub-0.05 for YES or above 0.90 for NO) to harvest small premiums, with the one genuine directional call at 0.37 being a loss.",
@@ -29,7 +29,8 @@
     "High directionality (0.969) consistent with one-sided near-certainty position taking",
     "Only 3 distinct geo markets across 34 resolved trades \u2014 extreme concentration",
     "Open positions in Iran_ME skew heavily toward NO at high prices (0.94, 0.87) \u2014 classic near-certainty premium collection",
-    "One anomalous YES at 0.965 on 'Iran Strike on Israel' alongside NO at 0.033 on same market \u2014 possible LP artifact or hedging"
+    "One anomalous YES at 0.965 on 'Iran Strike on Israel' alongside NO at 0.033 on same market \u2014 possible LP artifact or hedging",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=2095.89, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Single directional bet at contested price (0.37) resulted in a loss \u2014 suggests limited genuine forecasting capability at contested prices",
@@ -71,7 +72,7 @@
   "summary": "This trader's impressive win rate and ELO are almost entirely products of near-certainty position harvesting at prices below 0.02 or above 0.93, not genuine forecasting. The record across 34 trades spans only 3 markets, and the sole contested-price directional call (Trump China visit at 0.37) was a loss. Open positions continue the same pattern: collecting small premiums on near-certain outcomes in Iran_ME. Until this trader demonstrates consistent edge at contested prices across diverse markets, their signals should be discounted heavily for STR-003 purposes.",
   "data_snapshot": {
     "geo_elo": 2379.8969714261016,
-    "geo_elo_active": 2128.4276,
+    "geo_elo_active": 2095.89,
     "resolved_trades": 34,
     "distinct_markets": 3,
     "directionality": 0.9686773325090398,

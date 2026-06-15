@@ -2,7 +2,7 @@
   "address": "0xaf409e50577bd9cba48378656548a2d28d1a5662",
   "profile_date": "2026-06-10",
   "geo_elo_active": 1959.4089,
-  "tier": "ELITE",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "Virtually all resolved trades and most open positions involve buying NO (or YES) at 0.95+ prices \u2014 near-certainty entries collecting small premiums rather than making genuine probabilistic calls. Directionality of 1.0 across only 2 distinct markets confirms extreme concentration rather than forecasting breadth. The Trump-China visit cluster (13+ trades on same market at 0.97-0.999) is the clearest signature of systematic yield harvesting on obvious near-term outcomes.",
@@ -30,7 +30,8 @@
     "Directionality of 1.0 \u2014 never takes the other side, no hedging or calibration",
     "Small position sizes ($10-80 range) consistent with yield harvesting rather than conviction sizing",
     "Expanding into Iran_ME markets with same near-certainty strategy \u2014 no domain knowledge signal",
-    "Both YES and NO open on Trump-China visit (May 31 YES at 0.994, June 30 YES at 0.969) after losing March/April NO bets \u2014 possible sunk-cost recovery attempt"
+    "Both YES and NO open on Trump-China visit (May 31 YES at 0.994, June 30 YES at 0.969) after losing March/April NO bets \u2014 possible sunk-cost recovery attempt",
+    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1929.46, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Tail risk exposure: buying NO at 0.997-0.999 creates catastrophic loss for tiny premium \u2014 exactly what happened with Trump-China March visit",
@@ -74,7 +75,7 @@
   "summary": "This trader is a near-pure yield harvester operating across a tiny number of markets with no demonstrated genuine forecasting ability. The 88% accuracy across both domains is an artifact of entering at 0.95-0.999 prices rather than genuine predictive skill, and the three visible losses all occurred at near-certainty entry points confirming the strategy's tail risk profile. The Trump-China visit cluster \u2014 13+ trades on a single market \u2014 and a directionality of 1.0 across only 2 markets make this trader's signals meaningless for STR-003 signal generation. The only position worth watching is the contrarian Khamenei YES at 0.344, which stands apart from the rest of the portfolio as the sole evidence this trader may occasionally form genuine views.",
   "data_snapshot": {
     "geo_elo": 2140.8686315789473,
-    "geo_elo_active": 1959.4089,
+    "geo_elo_active": 1929.46,
     "resolved_trades": 25,
     "distinct_markets": 2,
     "directionality": 1.0,

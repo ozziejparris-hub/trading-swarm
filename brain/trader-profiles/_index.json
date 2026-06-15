@@ -331,5 +331,23 @@
     "signal_weight": "DOMAIN_ONLY",
     "profile_date": "2026-06-10",
     "geo_elo_active": 1850.2495
+  },
+  "0x44a1159b925c145e70f746bb3f0f58380553bd21": {
+    "address": "0x44a1159b925c145e70f746bb3f0f58380553bd21",
+    "tier": "LEGENDARY",
+    "archetype": "YIELD_HARVESTER",
+    "signal_weight": "EXCLUDE",
+    "primary_domain": "Europe",
+    "overall_signal_value": "NOISE",
+    "profile_date": "2026-06-15"
+  },
+  "0xfa323e40632edca701abc6c8cf1f82175909bd9a": {
+    "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+    "tier": "NEAR_LEGENDARY",
+    "archetype": "GENUINE_FORECASTER",
+    "signal_weight": "MINIMAL",
+    "primary_domain": "Trump_US",
+    "overall_signal_value": "MEDIUM",
+    "profile_date": "2026-06-15"
   }
 }

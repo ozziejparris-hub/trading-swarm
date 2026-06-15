@@ -2,7 +2,7 @@
   "address": "0xe0bc6311306558d71f68fc085c26f0337996ad7c",
   "profile_date": "2026-06-10",
   "geo_elo_active": 2192.0639,
-  "tier": "LEGENDARY",
+  "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "This trader exhibits near-perfect yield-harvesting behaviour: directionality of 1.0 combined with virtually all entries at 0.993-0.999 on the NO side confirms they are systematically collecting small premiums on near-certain outcomes. Across recent resolved trades, every position is on events that were already overwhelmingly likely (third-party wins in US states, Greens in German coalition), not genuine forecasting. The ELO is inflated by high win rates on trivially safe bets, not by contested-price conviction.",
@@ -30,7 +30,8 @@
     "Directionality of 1.0 indicates zero market diversity in direction",
     "Repeats the same trade multiple times in the same market (e.g., 4x German Greens, 6x Virginia third-party)",
     "Small position sizes (8-75 shares) consistent with premium-farming, not conviction sizing",
-    "Open positions mirror the exact same pattern: all NO at 0.993-0.999 across unrelated markets"
+    "Open positions mirror the exact same pattern: all NO at 0.993-0.999 across unrelated markets",
+    "TIER_UPDATED_2026-06-15: LEGENDARY \u2192 NEAR_LEGENDARY (geo_elo_active=2150.26, ELO recalculated post June 10 profiling). No archetype change."
   ],
   "risk_patterns": [
     "Concentration in near-certainty NO trades means a single black-swan mispriced event can wipe accumulated premiums",
@@ -72,7 +73,7 @@
   "summary": "This trader is a textbook yield-harvester with no forecasting signal value: 100% of observable trades are NO positions entered at 0.993-0.999, purely collecting fractional premiums on near-certain outcomes. The LEGENDARY ELO tier is entirely misleading \u2014 it reflects win-rate inflation from trivially safe bets, not analytical skill. Despite 65 resolved trades across 19 markets, realized PnL of just 1.76 USDC confirms the strategy generates negligible returns and zero informational edge. This address should be excluded entirely from STR-003 signal generation and treated as a yield-farming artifact rather than a forecaster.",
   "data_snapshot": {
     "geo_elo": 2367.560000000002,
-    "geo_elo_active": 2192.0639,
+    "geo_elo_active": 2150.26,
     "resolved_trades": 65,
     "distinct_markets": 19,
     "directionality": 1.0,
