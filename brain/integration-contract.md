@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.9 — 2026-06-13
+**Version:** v2.10 — 2026-06-15
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -392,6 +392,20 @@ Implications:
 This is not a data quality issue to be fixed — it is a permanent structural feature of the dataset.
 
 ## Section 8 — Change Log
+
+### v2.10 — 2026-06-15
+
+**Critical datetime format fix:** normalize_market_dates.py normalized 471,561 values across resolution_date, end_date, and last_checked columns — eliminating the T-separator/Z-suffix formats that caused SQLite string comparison to misorder dates and silently hide 976+ markets from all resolution passes for weeks. Section 16 added as the authoritative datetime format standard.
+
+**STR-002 redesigned:** dual-role architecture formalised — (1) feeder/confirmation layer for STR-003 (primary, 70%), (2) standalone research control group (30%). str002_signals table gains has_proven_trader, regime, event_cluster metadata columns. STR-003 register_signal.py now auto-checks for STR-002 confirmation. Section 17 added.
+
+**Resolution infrastructure expanded:** stale_clob_pass limit raised 200 → 500/day. Weekly sweep (Sunday 03:30 UTC, scripts/weekly_resolution_sweep.sh) added — up to 7×300 = 2100 stale markets/week, stops at batch yield <20. Genuine-unresolved floor: ~113 markets (Peru, Maine RCV, disputed UMA proposals). Section 14c added.
+
+**STR-002→STR-003 confirmation link:** str002_confirmed field on STR-003 signals documents whether a proven-trader STR-002 signal existed for same market+direction at registration time.
+
+**Impact on agents:** All ingestion paths must normalize dates before writing (Section 16). STR-002 scoring agents must report per-cluster accuracy (10 clusters, not 30 signals). Resolution agents: stale pass limit is now 500/day.
+
+---
 
 ### v2.9 — 2026-06-13
 
@@ -949,6 +963,25 @@ Data API (data-api.polymarket.com/trades) also unaffected by V3 changes.
 
 Audit conclusion: all read endpoints functioning correctly post-V3 migration.
 
+### 14c — Resolution Pass Schedule and Limits
+
+Daily maintenance (06:00 UTC):
+  - fast_resolution_check.py: Gamma bulk scan + recent_overdue_pass(100) +
+    stale_clob_pass(500) + external_seed_pass
+  - Catches markets 0-7 days past resolution (recent_overdue_pass) AND >7 days
+    (stale_clob_pass, 500/day limit raised from 200 on 2026-06-15)
+
+Weekly sweep (Sunday 03:30 UTC):
+  - scripts/weekly_resolution_sweep.sh: up to 7 x 300 = 2100 markets stale pass
+  - Stops when batch yield <20 (genuine-floor signal)
+  - Runs after DB backup (03:00), before daily maintenance (06:00)
+  - Logs: trading-swarm/logs/weekly_resolution_sweep.log
+
+Genuine-unresolved floor (as of 2026-06-15): ~113 markets (Peru, Maine RCV,
+disputed UMA proposals). These are correctly unresolved — not pipeline failures.
+
+---
+
 ## Section 15 — Backup Infrastructure
 
 **Offsite backup:** 1TB USB drive mounted at `/mnt/backup`
@@ -970,3 +1003,70 @@ Audit conclusion: all read endpoints functioning correctly post-V3 migration.
 > **The DB and elo_snapshots history are IRREPLACEABLE.** The external parquet dataset
 > covers only V1/older data. Gamma backfill has known caps. If the DB is lost, years
 > of trade history and all temporal snapshots are gone permanently.
+
+---
+
+## Section 16 — Datetime Format Standard
+
+All date columns in the markets table MUST be stored in SQLite canonical format:
+  `YYYY-MM-DD HH:MM:SS` (space separator, no Z suffix, no T separator, no +00:00 offset)
+
+**HISTORY:** A critical bug existed from system inception where three date formats coexisted
+in the same columns: `'2026-06-15T00:00:00Z'` (Z-suffix), `'2026-06-15T00:00:00+00:00'`
+(offset), and `'2026-06-15 00:00:00'` (canonical). SQLite string comparison between
+`'2026-06-15T00:00:00Z'` and `datetime('now')` output (`'2026-06-15 12:30:00'`) fails because
+`'T'` (0x54) > `' '` (0x20), making markets on their resolution day appear to be in the
+FUTURE. This silently hid 976+ markets from all resolution passes for weeks.
+
+**FIX APPLIED 2026-06-15:** normalize_market_dates.py normalized 471,561 values across
+resolution_date, end_date, and last_checked columns. Zero parse failures.
+
+**ENFORCEMENT:** All ingestion paths must normalize dates before writing. Use:
+```sql
+datetime(replace(replace(value,'Z',''),'T',' '))
+```
+or strip in Python before INSERT. Resolution queries use this normalization as a
+defensive wrapper even after the data fix.
+
+**AUDIT:** run `normalize_market_dates.py --dry-run` periodically to detect regressions.
+
+---
+
+## Section 17 — STR-002 Strategy Design and Research Architecture
+
+STR-002 serves two roles: (1) a feeder/confirmation layer that strengthens STR-003
+(primary purpose, 70%), and (2) a standalone research control group (30%).
+
+### Role 1 — STR-002 as STR-003 Feeder (the stepping-stone)
+
+When a STR-003 signal is registered via register_signal.py, it automatically checks
+whether the same market+direction has a proven-trader (ELITE/LEGENDARY) STR-002 signal
+in the registry. If yes, the STR-003 signal carries `str002_confirmed=true` and full
+confirmation metadata. Two independent detection methods agreeing = higher conviction.
+The confirmation check keys on `has_proven_trader=1 AND regime IN ('CONTESTED','MID')`.
+Near-resolved QUALIFIED signals never participate in confirmation.
+
+### Role 2 — STR-002 as Research Control Group
+
+The v1 unfiltered signals (all 30 registered 2026-06-06 through 2026-06-15) are kept
+as a labelled dataset to empirically prove which regime and tier carries information.
+Early data (3 scored, all QUALIFIED near-resolved): 0% accuracy, avg edge -0.29 —
+confirming QUALIFIED-near-resolved is noise. Thesis cell (proven + contested): 4 signals
+pending resolution (2 LEGENDARY Peru, 1 ELITE Maine, 1 ELITE Iran peace deal).
+
+### str002_signals Table Metadata Columns
+
+| Column | Description |
+|--------|-------------|
+| `has_proven_trader` | 1 if elite_traders>0 OR legendary_traders>0 |
+| `regime` | `CONTESTED` (0.20–0.80), `NEAR_RESOLVED` (≥0.90 or ≤0.10), `MID` (else) |
+| `event_cluster` | Groups correlated variants (iran_us_peace_2026, fed_june_2026, etc.) |
+
+**Effective independent observations: 10 clusters (not 30 signals).** Always report
+accuracy per-cluster, not per-signal.
+
+### Scoring Rule
+
+Gate 3 metric uses thesis-cell signals only (`has_proven_trader=1`, `regime=CONTESTED`)
+once sufficient n is available. Overall accuracy is reported separately as the
+control-group metric.
