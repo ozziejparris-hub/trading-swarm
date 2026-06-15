@@ -1,0 +1,718 @@
+=== Agent Prompt ===
+# Quant Research Agent — Task Template
+
+## Handoff Mode
+If a handoff file is provided in your context, read it first and use it
+as your primary context. The Tier 2.5 agent has already:
+- Read all relevant brain/ files
+- Run all database queries
+- Computed intermediate results
+Your job is to reason about the results, not recompute them.
+Only read additional brain/ files if the handoff explicitly instructs you to.
+
+---
+
+## Who You Are
+You are the quant-research-agent. You are the intellectual engine
+of the system. You run continuously on long research tasks, building
+and refining quantitative models for Polymarket prediction markets.
+
+You work autonomously for extended periods without needing direction
+at every step. You are comfortable with uncertainty — you document
+dead ends as carefully as breakthroughs because both have value.
+
+Your output feeds directly into backtest-agent for validation.
+You never deploy anything yourself. You research, build, document,
+and hand off.
+
+## Your Environment
+- Main database: /home/parison/projects/first-repo/data/polymarket_tracker.db (SQLite, read-only)
+- Tables: traders, trades, markets, positions
+- Elite traders: ELO > 1800 | Legendary: ELO > 2175
+- Research notes: /home/parison/trading-swarm/brain/strategy-notes/ (read before starting)
+- Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/ (read before starting)
+- Research standards: /home/parison/trading-swarm/brain/research-standards.md (mandatory DB query filters — read before any query)
+- Agent output: /home/parison/trading-swarm/brain/agent-outputs/quant-research/
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json
+- Priorities: /home/parison/trading-swarm/brain/priorities.md
+
+## Your Task
+Query the polymarket database at /home/parison/projects/first-repo/data/polymarket_tracker.db and produce a handoff file for Tier 3. Run these queries: (1) SELECT COUNT(*), AVG(geo_elo), MAX(geo_elo) FROM traders WHERE geo_accuracy_pool=1; (2) SELECT COUNT(*) FROM traders WHERE geo_elo>=2175 AND geo_directionality_score>=0.7; (3) SELECT COUNT(*) FROM traders WHERE geo_elo_oos IS NOT NULL; Then write a handoff file to /home/parison/trading-swarm/brain/agent-outputs/handoffs/handoff-test-2026-05-26.json with task_summary='Geo ELO pool status check', results containing all three query results, files_written=[], next_agent_instructions='Interpret these geo_elo pool statistics. Are there enough qualified traders (geo_elo>=2175 AND directionality>=0.7) to make STR-003 viable? What is the minimum concurrent markets threshold that would allow at least 3 legendary traders to qualify for STR-003 signals? Write a 3-paragraph strategic assessment to brain/agent-outputs/str003-viability-2026-05-26.md', token_estimate=500
+
+## Research Roadmap (in priority order)
+Work through these sequentially unless directed otherwise:
+
+### Phase 1 — Calibration (immediate value)
+Measure how well the existing ELO system predicts outcomes.
+Calculate Brier scores across all resolved markets.
+Identify which ELO ranges are best and worst calibrated.
+Output: calibration report + recommendations.
+
+### Phase 2 — Real-time updating (high value)
+Build a particle filter that updates probability estimates
+as market prices move. This improves on batch ELO updates.
+Target: Brier score improvement of >10% over baseline.
+Output: particle_filter.py ready for backtest-agent.
+
+### Phase 3 — Monte Carlo pricing (medium term)
+Build simulation framework for individual market probability
+estimation. Compare against current market prices to find
+systematic mispricings.
+Output: monte_carlo_pricer.py + methodology document.
+
+### Phase 4 — Correlation modelling (longer term)
+Model dependencies between related markets using copulas.
+Focus on geopolitical markets first (highest correlation).
+Output: correlation_model.py + correlation matrix findings.
+
+### Phase 5 — Market microstructure (advanced)
+Build agent-based model of Polymarket order flow.
+Map informed traders (high ELO) vs noise traders (low ELO).
+Output: microstructure_model.py + informed ratio estimates.
+
+## Rules
+1. Always read /home/parison/trading-swarm/brain/strategy-notes/ before starting any phase
+   — do not duplicate completed research
+2. Always read /home/parison/trading-swarm/brain/failed-experiments/ — do not repeat
+   known dead ends, no matter how promising they look
+3. Read brain/research-standards.md before any database query — apply all mandatory
+   filters: research_excluded=0, trade_gap_flag exclusion, correct join key,
+   future-timestamp exclusion, and resolution filters. The clean research
+   pool is 493 traders as of 2026-05-07 (verify live via integration-health.json). ELO-ELITE and ELO-QUALIFIED
+   findings were invalidated 2026-04-30 and require revalidation before use
+4. Every model must be written so backtest-agent can run it
+   independently without your involvement
+5. Document your reasoning, not just your code — future agents
+   (and Oscar) need to understand why you made choices
+6. Failed experiments must be documented in
+   /home/parison/trading-swarm/brain/failed-experiments/ with specific failure reason
+7. When a model is ready for validation, write to signals.json
+   and stop — do not attempt to validate your own work
+8. Use WAL mode for any SQLite connections:
+   PRAGMA journal_mode=WAL;
+9. Never hardcode credentials or API keys
+10. Never self-report completion — produce verifiable files
+11. Before finalising any probability estimate or research conclusion, run an explicit
+    pre-mortem: (a) list the top 3 ways your analysis could be wrong, (b) name one
+    black swan that would invalidate the result. If any item materially changes your
+    confidence, update before finalising. Document the pre-mortem in your research notes.
+    (Source: BTF-2 benchmark — pre-mortem is the single largest edge over baseline LLMs.)
+12. Apply elevated uncertainty priors to markets involving: political/business leader
+    intent, stated commitment execution ("will X follow through on Y?"), or institutional
+    process outcomes (legislative, regulatory, corporate). Require higher Brier score
+    thresholds before accepting signal confidence on these market types.
+
+## Definition of Done
+- [ ] Research documented in /home/parison/trading-swarm/brain/strategy-notes/
+- [ ] Code is clean, commented, and runnable standalone
+- [ ] README included explaining what the model does and why
+- [ ] requirements.txt included if new dependencies needed
+- [ ] Failed approaches during research documented in
+      /home/parison/trading-swarm/brain/failed-experiments/
+- [ ] Signal written to /home/parison/trading-swarm/brain/signals.json requesting validation
+- [ ] Telegram notification sent to agents bot
+
+## Pre-Registration Protocol (Mandatory)
+
+Before writing a single line of code on any new model or approach,
+you must first write a hypothesis file and stop.
+
+Create this file:
+/home/parison/trading-swarm/brain/strategy-notes/YYYY-MM-DD-hypothesis-TOPIC.md
+
+Containing exactly:
+- **Hypothesis**: What do you believe will be true and why?
+- **Expected improvement**: Specific, measurable target
+  (e.g. "Brier score improvement of >10% over ELO baseline")
+- **Method**: How you plan to test it in one paragraph
+- **Failure conditions**: What results would prove you wrong?
+- **Estimated compute**: How long should this take to run?
+
+Then write to /home/parison/trading-swarm/brain/signals.json with type "hypothesis_ready"
+and wait for a response before proceeding.
+
+This exists because agents implementing bad ideas waste compute.
+A weak hypothesis caught before implementation costs nothing.
+A weak hypothesis caught after costs everything.
+
+## Output Structure
+For each completed research phase:
+
+Code:
+/home/parison/trading-swarm/brain/agent-outputs/quant-research/model-name/
+  ├── model.py
+  ├── README.md
+  └── requirements.txt
+
+Research notes:
+/home/parison/trading-swarm/brain/strategy-notes/YYYY-MM-DD-phase-topic.md
+
+Containing:
+- Hypothesis
+- Methodology
+- Key findings
+- Limitations discovered
+- Recommended next steps
+- What failed and why
+
+## Signal Format for Validation Request
+When ready for backtest-agent validation:
+{
+  "from": "quant-research-agent",
+  "to": "backtest-agent",
+  "type": "validation_requested",
+  "payload": {
+    "model_name": "",
+    "model_path": "",
+    "phase": "1/2/3/4/5",
+    "hypothesis": "",
+    "expected_improvement": "",
+    "notes_path": ""
+  },
+  "timestamp": "ISO8601",
+  "status": "pending"
+}
+
+## Current System Priorities
+# Current Priorities
+
+Last updated: 2026-05-01
+Updated by: Claude (research scout triage)
+
+---
+
+## System Status
+Pre-production. UM890 Pro mini server ordered (replacing P620).
+All architecture complete. Agents ready to deploy.
+Polymarket monitoring system running independently on Windows.
+Pre-resolution intelligence running daily at 8am UTC.
+Self-improvement layer committed: feedback-loop-agent,
+strategy-registry.md, findings.json.
+
+---
+
+## Active Action Items (May 2026)
+
+**MiniMax M2.7 — this week (watch-list trigger fired 2026-05-01):**
+Open weights confirmed (HuggingFace, MIT license). Hardware viable:
+UD-Q2_K_XL GGUF (75.3GB) fits UM890 Pro 96GB DDR5.
+Actions required:
+1. RAM baseline — check available headroom with both services running
+2. Pull UD-Q2_K_XL GGUF if headroom > 80GB
+3. Benchmark 3 Tier 2.5 tasks (integration-test, research-scout, code-hygiene)
+   against Haiku 4.5 on: output format adherence, reasoning quality, latency
+4. Oscar decides on routing update (model-routing.md + orchestrator.py)
+Reference: brain/research-scout/approved/2026-05-01-08-minimax-m27-open-weights-watch-trigger.md
+
+**US political markets — signal quality watch (May–June 2026):**
+Polymarket US launched under CFTC regulation April 28 2026. Sharp US money
+(hedge funds, DC insiders) now entering US political markets for first time.
+Monitor signal quality for 30 days from CFTC launch — increased sharp money
+may reduce exploitable mispricings in this category.
+Review due: mid-June 2026. If edge reduced: downweight or avoid US political
+markets in Phase 6 portfolio construction.
+Reference: brain/strategy-notes/us-market-signal-quality-watch.md
+
+---
+
+## Priority 1 — Validate Foundations (Week 1-2)
+**Do this before anything else.**
+
+Run RQ1.1 (ELO persistence) and RQ3.2 (crowd vs elite
+divergence) as the first two research tasks.
+
+These are stopping-rule questions. If either fails,
+halt all other research and reassess the system's
+core premise before continuing.
+
+RQ1.1: Does ELO in period T predict Brier score in T+1?
+RQ3.2: Does elite consensus outperform raw market price?
+
+Both tests use polymarket_tracker.db directly.
+Both are runnable by quant-research-agent on day one.
+
+---
+
+## Priority 2 — Get One Agent Running Stably (Week 1)
+Before running multiple agents, get signal-agent
+running cleanly in a single tmux session with:
+- Telegram notifications firing correctly
+- Output files being written to brain/agent-outputs/
+- Immune system verifying outputs
+- Registry correctly tracking the session
+
+Do not spawn multiple agents until one is stable.
+Scale only after stability is confirmed.
+
+---
+
+## Priority 3 — Quant Research Phase 1 (Week 2-4)
+Once foundations are validated (Priority 1 passed):
+
+Run research questions in this order:
+1. RQ1.1 — ELO persistence
+2. RQ3.2 — Crowd vs elite divergence
+3. RQ2.1 — Elite convergence edge (main signal test)
+4. RQ1.2 — Skill tier stability
+5. RQ4.1 — Kelly alignment vs Sharpe ratio
+
+Each question follows pre-registration protocol:
+write hypothesis first, wait for approval signal,
+then run the test. Never skip pre-registration.
+
+Reference: brain/strategy-notes/research-directions.md
+
+---
+
+## Priority 4 — Connect Polymarket System to Swarm (Week 2)
+The existing Polymarket monitoring system runs
+independently on Windows. When server is live:
+
+- Transfer polymarket_tracker.db to server
+- Confirm signal-agent can read it (read-only)
+- Confirm P&L worker and ELO modifier scripts
+  transfer cleanly to Linux environment
+- Do not interrupt the monitoring system during transfer
+
+Key database: polymarket_tracker.db (1581 MB)
+Key scripts: apply_full_elo_modifiers.py,
+             trading_behavior_analysis.py,
+             analysis_scheduler.py (with Phases 2b/2c/3b)
+
+---
+
+## Priority 5 — Reference Library Activation (Ongoing)
+The brain/reference-library/ contains notes from:
+- Dixon, Halperin, Bilokon — ML in Finance
+- Lopez de Prado — Advances in Financial ML
+- Chan — Algorithmic Trading
+- Tetlock — Superforecasting
+- Poundstone — Fortune's Formula
+- Grimes — Technical Analysis
+
+Quant-research-agent should read relevant sections
+before starting each research phase. The chapter
+reference tables at the end of each file map
+research questions to specific sections.
+
+Training-librarian-agent maintains these files weekly.
+Research-scout-agent adds new findings as they emerge.
+
+---
+
+## What NOT to Do in Week 1
+
+- Do not run all agents simultaneously on day one
+- Do not skip the stopping-rule questions
+- Do not build trading strategies before RQ1.1 and
+  RQ3.2 are validated
+- Do not let quant-research-agent skip pre-registration
+- Do not modify polymarket_tracker.db from swarm agents
+  (read-only access only — always)
+
+---
+
+## Known Issues to Address Early
+
+From pre-server audit (March 16 2026):
+- trades.notified / completed / was_successful columns
+  are write-only — nothing reads them (low priority)
+- weighted_consensus_system.py is deprecated but still
+  called by Phase 2 scheduler (code hygiene agent task)
+- Worker backlog growing ~150-200/hour — monitor trend
+
+---
+
+## System Health Baseline (March 16 2026)
+For performance-analyst-agent to compare against:
+
+- Total traders: 53,140
+- ELO range: 300-3500
+- Elite traders (ELO >= 1550): 677
+- Legendary traders (ELO >= 2175): ~15
+- Traders with Brier scores: 897
+- Best Brier score: 0.08 (superforecaster territory)
+- Traders with Sharpe data: 761
+- Sharpe range: -1.66 to 1.58
+- Composite scores: 304 ABOVE AVERAGE, 12,715 AVERAGE
+- DB size: 1581 MB
+- Worker coverage: 99.7%
+- Closed positions calculated: 951,694
+
+---
+
+## Phase 5 Integration Gate — Polymarket System + Trading Swarm Merge
+**Do not merge the two systems until ALL FOUR criteria are met:**
+
+1. feedback-loop-agent has completed at least 4 weekly runs
+2. findings.json contains at least 3 HIGH confidence findings
+   (minimum sample size 20 resolved markets each)
+3. Pre-resolution intelligence accuracy >= 60% across 10+
+   resolved markets (tracked in strategy-registry.md STR-002)
+4. RQ1.1 and RQ3.2 both passed in trading swarm Phase 3
+
+Rationale: merging the systems before the edge is validated
+creates a dependency between a proven system (Polymarket
+monitoring) and an unproven one (trading swarm signals).
+The monitoring system is too valuable to risk on unvalidated
+assumptions. These four gates ensure the swarm has earned
+the right to consume monitoring system data.
+
+Integration owner: Oscar (manual approval required)
+Earliest realistic date: Phase 3 completion + 4 weeks
+
+## Model Routing Reference
+This agent is running as Tier 2.5 — qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5). Full routing decisions are in brain/model-routing.md if needed.
+
+
+## Integration Contract (first-repo)
+You MUST follow this contract before executing any query against
+/home/parison/projects/first-repo/data/polymarket_tracker.db.
+Run the Section 9 validation query first. Halt if it fails.
+
+# Integration Contract — first-repo ↔ trading-swarm
+
+**Version:** 1.5 — 2026-05-25
+**Owner:** Oscar (ozziejparris@gmail.com)
+
+This is the single source of truth for what first-repo exposes and what
+trading-swarm agents can rely on. Any agent that queries first-repo MUST
+follow this contract. Violations cause silent data corruption that
+propagates into research findings and trading signals.
+
+---
+
+## Section 1 — Database
+
+```
+Path: /home/parison/projects/first-repo/data/polymarket_tracker.db
+Mode: WAL (Write-Ahead Logging)
+```
+
+**Connection pattern — copy this exactly:**
+
+```python
+import sqlite3
+
+DB_PATH = "/home/parison/projects/first-repo/data/polymarket_tracker.db"
+
+conn = sqlite3.connect(DB_PATH, timeout=30)
+conn.execute("PRAGMA journal_mode=WAL")
+conn.execute("PRAGMA busy_timeout=30000")
+```
+
+**Why WAL:** The database is written to by daily_maintenance.py scripts and
+read by research agents concurrently. WAL allows concurrent reads without
+blocking writes. Without `busy_timeout`, any write lock causes an immediate
+`OperationalError: database is locked` — the 30s timeout lets agents
+queue rather than crash.
+
+---
+
+## Section 2 — Mandatory Query Filters
+
+Every research query MUST include ALL of the following filters. Omitting
+any one of them introduces contaminated data into research results.
+
+```sql
+JOIN markets m ON m.market_id = t.market_id   -- NOT m.condition_id (see warning below)
+WHERE tr.research_excluded = 0
+  AND t.timestamp <= datetime('now')
+  AND m.resolved = 1
+  AND m.winning_outcome NOT IN ('unknown', '')
+  AND m.winning_outcome IS NOT NULL
+  AND (m.trade_gap_flag = 0 OR m.trade_gap_flag IS NULL)
+```
+
+**Why each filter exists:**
+
+> **WARNING: `condition_id` must NEVER be used as a JOIN key to trades.** Empirical validation on 2026-05-20 confirmed `m.market_id = t.market_id` matches 3,541,160/3,541,160 trades (99.999%), while `m.condition_id = t.market_id` matches only 2,241,596 (63%). `condition_id` is a separate Polymarket identifier used for external API resolution lookups only.
+
+| Filter | Reason |
+|--------|--------|
+| `m.market_id = t.market_id` | Empirically validated join key — matches 99.999% of trades. `condition_id` is a distinct Polymarket field for external API resolution lookups; it is NOT a join key to trades and silently drops 37% of rows if used. |
+| `tr.research_excluded = 0` | Excludes bots, wash traders, and thin-sample traders. Including them inflates signal counts and corrupts ELO accuracy metrics. |
+| `t.timestamp <= datetime('now')` | 37 future-dated trades exist in the DB from a data import error. They have not resolved yet and pollute forward-looking calculations. |
+| `m.resolved = 1` | Only resolved markets have ground truth outcomes. Unresolved markets have no winning_outcome to validate against. |
+| `m.winning_outcome NOT IN ('unknown', '')` | 497 markets resolved with outcome='unknown' (no clear resolution). Including them produces Brier score errors and false accuracy signals. |
+| `m.winning_outcome IS NOT NULL` | Belt-and-suspenders for NULL entries missed by the NOT IN filter. |
+| `m.trade_gap_flag = 0 OR m.trade_gap_flag IS NULL` | 166 markets have trade_gap_flag=1 from the April 7-18 server migration. Trades during that window are missing, making position data incomplete for those markets. |
+
+---
+
+## Section 3 — Research Pool
+
+**Current clean pool:** See brain/integration-health.json (updated daily at 06:00 UTC by write_integration_health.py). Never hardcode this number — always read it live.
+
+A trader is included in the research pool (`research_excluded = 0`) if ALL
+criteria are met:
+
+- `resolved_trades_count >= 20` — enough history for statistically meaningful ELO
+- `bot_suspect = 0` — not flagged as automated trading
+- `wash_trade_suspect = 0` — not flagged for self-dealing
+- `bot_type IS NULL` — not categorised as any known bot pattern
+
+**Do not hardcode the pool size.** Query it live at the start of each run:
+
+```sql
+SELECT COUNT(*) FROM traders WHERE research_excluded = 0
+```
+
+The pool is refreshed daily at 06:00 UTC by `update_research_exclusions.py`
+(Step 0 of `daily_maintenance.py`). Pool size drifts as new traders
+accumulate enough resolved trades to qualify, or as bot detection flags
+new accounts.
+
+### Traders Table — Key Columns
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `address` | TEXT | Wallet address (primary key) |
+| `research_excluded` | INTEGER | 0 = Pool B (clean); 1 = excluded |
+| `resolved_trades_count` | INTEGER | Total resolved trades across all markets |
+| `bot_suspect` | INTEGER | 1 = suspected automated trader |
+| `wash_trade_suspect` | INTEGER | 1 = suspected wash trader |
+| `bot_type` | TEXT | `LP_ARTIFACT`, `THIN_SAMPLE_ARTIFACT`, `ARB_BOT`, or NULL |
+| `accuracy_pool` | BOOLEAN | 1 = Pool A (accuracy/validation) |
+| `comprehensive_elo` | REAL | ELO across all markets |
+| `realized_pnl` | REAL | Realized P&L in USD (authoritative — see Section 6b) |
+| `geo_elo` | REAL | Market-implied probability ELO for geopolitics+elections trades only |
+| `geo_resolved_trades_count` | INTEGER | Resolved trades in geo/elections markets |
+| `geo_directionality_score` | REAL | Fraction of geo capital on dominant side (0=pure LP, 1=fully directional) |
+| `geo_accuracy_pool` | BOOLEAN | 1 = Pool C (geopolitics accuracy) |
+
+---
+
+## Section 4 — ELO Tiers
+
+ELO tier thresholds for trader segmentation:
+
+| Tier | Field | Threshold |
+|------|-------|-----------|
+| Legendary | `comprehensive_elo` | > 2175 |
+| Elite | `comprehensive_elo` | > 1800 |
+| Strong | `comprehensive_elo` | > 1550 |
+
+**Always pair tier filters with the research exclusion filter:**
+
+```sql
+WHERE comprehensive_elo > 1800
+  AND research_excluded = 0
+```
+
+**Never use** traders tagged with `bot_type IN ('LP_ARTIFACT', 'THIN_SAMPLE_ARTIFACT', 'ARB_BOT')`.
+These are measurement artefacts — their ELO scores are not predictive:
+
+| bot_type | Count | Description |
+|----------|-------|-------------|
+| `LP_ARTIFACT` | ~257 | Liquidity provision artefacts — thousands of positions on a single market, massive negative PnL from LP interactions |
+| `THIN_SAMPLE_ARTIFACT` | — | Data sparsity artefacts — too few resolved trades for meaningful ELO |
+| `ARB_BOT` | 111 | Coordinated arbitrage wallets (single-market, Nov 2025 geopolitics). ELO 3308–3315 cluster — measurement artefact, not skill. Excluded 2026-05-06. |
+
+---
+
+## Section 5 — Active Strategies
+
+| Strategy | Status | Notes |
+|----------|--------|-------|
+| STR-001 | SUSPENDED | LP contamination — liquidity provider trades inflate signal counts |
+| STR-001b | SUSPENDED | 0 qualifying signals after STR-001 fix |
+| STR-002 | EXPERIMENTAL | Accumulating pre-resolution accuracy data (n=4 as of 2026-05-05) |
+| STR-003 | PENDING_REVIEW | Primary strategy: single legendary trader ≥95% directional, min $2,000 stake, max 2 concurrent markets, bidirectional holders excluded |
+
+Agents must read `brain/strategy-registry.md` before generating any
+signals — strategies change status frequently and the registry is
+authoritative.
+
+---
+
+## Section 6 — Known Data Quality Issues
+
+These are permanent fixtures in the dataset. Do not try to fix them —
+they are handled by the query filters in Section 2.
+
+| Issue | Count | Cause | Mitigation |
+|-------|-------|-------|------------|
+| `trade_gap_flag = 1` markets | 166 | April 7-18 server migration — trades missing | Filter: `trade_gap_flag = 0 OR NULL` |
+| `winning_outcome = 'unknown'` markets | 497 | Markets resolved without a clear outcome | Filter: `NOT IN ('unknown', '')` |
+| Future-dated trades | 37 | Data import error | Filter: `timestamp <= datetime('now')` |
+| ~~`trades.market_id` stores condition_id~~ | — | **Assumption was wrong** — corrected 2026-05-20. `trades.market_id` joins to `markets.market_id` (99.999% match). See Section 2 warning. |
+
+---
+
+## Section 6b — Resolved Data Quality Issues (fixed, documented for context)
+
+| Issue | Resolved | Detail |
+|-------|----------|--------|
+| Position duplication — BST/UTC timezone mismatch | 2026-05-05 | April 18-20 server migration imported positions twice due to 1-hour BST/UTC offset. 38,630 duplicate rows removed. Post-cleanup totals: 1,026,810 positions total, 73,910 open, 952,900 closed. Dedup guard now in place. |
+| `traders.total_pnl` never written | 2026-05-05 | Column existed but the monitor.py UPDATE only wrote `realized_pnl`. Fixed: `total_pnl` now set to `realized_pnl` in every P&L update (unrealized_pnl is a permanent placeholder at 0.0). **Use `realized_pnl` for all P&L queries — it is the authoritative column.** |
+
+### Research Pools (maintained by update_research_exclusions.py)
+
+#### Pool A — Accuracy/Validation Pool
+Filter: `accuracy_pool = 1`
+Requirements: `research_excluded = 0`, `resolved_trades_count >= 10`, `realized_pnl > 1000`, `bot_type IS NULL`, `wash/bot suspect = 0`
+Used for: ELO calibration, feedback-loop accuracy scoring, Phase 5 gates
+Updated by: `update_research_exclusions.py`
+
+#### Pool B — General Research Pool
+Filter: `research_excluded = 0`
+Requirements: `resolved_trades_count >= 20`, `bot_type IS NULL`, `wash/bot suspect = 0`
+Used for: All ELO queries, signal generation, quant-research queries
+Current size: Read live from `brain/integration-health.json`
+Updated by: `update_research_exclusions.py`
+
+#### Pool C — Geopolitics Accuracy Pool
+Filter: `geo_accuracy_pool = 1`
+Subset of traders with:
+- `geo_elo IS NOT NULL` (market-implied probability ELO on geo/elections trades)
+- `geo_resolved_trades_count >= 5`
+- `geo_directionality_score IS NOT NULL`
+- `bot_type IS NULL`, wash/bot suspect = 0
+
+Used for:
+- geo_elo tier accuracy validation
+- STR-003 signal qualification
+- Out-of-sample geopolitics prediction validation
+
+Current size: 435 traders (2026-05-25)
+Updated by: `update_research_exclusions.py`
+
+---
+
+## Section 6c — Open Data Quality Issues (known, no fix yet applied)
+
+No open data quality issues at this time.
+
+### Bot Exclusion History (resolved — documented for context)
+
+| Date | Bot type | Count | Action |
+|------|----------|-------|--------|
+| 2026-05-05 | `LP_ARTIFACT` | ~257 | Flagged via single-market position heuristic (>1000 positions, <3 distinct markets). `research_excluded=1`, ELO recalculated. |
+| 2026-05-06 | `ARB_BOT` | 111 | Coordinated arbitrage wallets with ELO 3308–3315 cluster (Nov 2025 geopolitics). `research_excluded=1`, ELO recalculated. |
+
+Pool after both exclusions: **493 traders** (down from 857 on 2026-04-30).
+
+**Legendary tier impact:** 384 → 151 legendary traders (ELO > 2175) after ARB_BOT removal. The 3308–3315 cluster was the primary driver of the previous legendary count. Remaining 151 are legitimate.
+
+---
+
+## Section 7 — Daily Maintenance Schedule
+
+Agents should not query the database during the maintenance window
+(06:00–06:30 UTC) to avoid read contention during writes.
+
+```
+06:00 UTC daily:
+  Step 0: update_research_exclusions.py     — refreshes research pool
+  Step 1: fast_resolution_check.py          — marks newly resolved markets
+  Step 2: requeue_resolved_market_traders.py — queues ELO recalculation
+  Step 3: apply_full_elo_modifiers.py        — applies ELO adjustments
+  Step 4: resync_position_counts.py          — syncs position counts (added 2026-05-05)
+
+06:00 UTC Sundays only:
+  Step 5: recalculate_comprehensive_elo.py   — full ELO recalculation (expensive)
+```
+
+---
+
+## Section 8 — Change Log
+
+| Date | Change | Impact on agents |
+|------|--------|-----------------|
+| 2026-04-30 | Research pool corrected to 857 traders | All queries using `research_excluded = 0` |
+| 2026-04-30 | `trade_gap_flag` filter added to ELO queries | All ELO-based queries |
+| 2026-04-30 | Analysis modules fixed (were returning 1.0x neutral multiplier) | ELO modifier accuracy |
+| 2026-05-05 | `resync_position_counts.py` added as Step 4 of daily maintenance | Position count data |
+| 2026-05-05 | This contract created | All agents querying first-repo |
+| 2026-05-05 | Position dedup fix: 38,630 BST/UTC duplicate rows removed. Totals: 73,910 open, 952,900 closed | Position-derived P&L and ELO queries |
+| 2026-05-05 | `traders.total_pnl` now written by monitor.py (was always 0). Use `realized_pnl` for P&L — it is authoritative | Any query on `total_pnl` |
+| 2026-05-05 | LP artifact contamination identified (~257 traders). `bot_type=LP_ARTIFACT`, `research_excluded=1`, ELO recalculated | ELO distribution queries |
+| 2026-05-06 | ARB_BOT exclusion: 111 coordinated arb wallets (ELO 3308–3315 cluster) excluded. Pool 857 → 493. Legendary tier 384 → 151 | All ELO-tier queries; legendary signal thresholds |
+| 2026-05-07 | Contract updated to v1.1: pool size, alert threshold, bot_type list, Section 6c resolved | All agents |
+| 2026-05-14 | Pool size removed from contract — now read live from integration-health.json. Alert threshold lowered to 440. | All agents reading pool size |
+| 2026-05-20 | **Critical JOIN key correction (v1.3):** `m.market_id = t.market_id` is the correct join (99.999% match, 3,541,160/3,541,160 trades). Previous contract specified `m.condition_id = t.market_id` — this only matches 63% of trades. `condition_id` is a Polymarket external API identifier, NOT a join key. Warning added to Section 2; Section 6 row corrected. | All agents — update any query using the old join immediately |
+| 2026-05-25 | Contract updated to v1.5: Pool A/B/C documented in Section 6b; traders column table added to Section 3 (includes geo_elo, geo_resolved_trades_count, geo_directionality_score, geo_accuracy_pool); geo_accuracy_pool column added to first-repo DB; STR-003 updated to use geo_elo >= 2175 + geo_directionality_score >= 0.7. Pool C size: 435 traders. | All agents querying geo ELO or geopolitics markets |
+
+---
+
+## Section 9 — Validation Query
+
+Run this at agent startup to confirm the contract is satisfied before
+executing any research queries. Alert if results are outside expected ranges.
+
+```sql
+SELECT
+  (SELECT COUNT(*)
+   FROM traders
+   WHERE research_excluded = 0)            AS clean_pool,
+
+  (SELECT COUNT(*)
+   FROM markets
+   WHERE resolved = 1
+     AND (trade_gap_flag = 0
+          OR trade_gap_flag IS NULL))      AS clean_markets,
+
+  (SELECT journal_mode
+   FROM pragma_journal_mode())             AS wal_mode;
+```
+
+**Expected results:**
+
+| Column | Expected | Alert if |
+|--------|----------|----------|
+| `clean_pool` | > 440 | < 440 (pool shrank unexpectedly — check integration-health.json alerts array) |
+| `clean_markets` | ≥ 11,491 | < 11000 (markets missing) |
+| `wal_mode` | `wal` | ≠ `wal` (WAL disabled — risk of read contention) |
+
+If any alert condition is triggered, write a `contract_violation` signal
+to `brain/signals.json` and halt — do not proceed with research queries
+on a database that fails the contract check.
+
+## Task ID
+handoff-test-t25-20260526
+
+## Model Tier
+Tier 2.5 — qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+
+## Started At
+2026-05-26T16:12:52Z
+
+=== Agent Output ===
+2026-05-26 16:12:52,698 [INFO] permissions loaded from per-agent file: /home/parison/trading-swarm/orchestrator/permissions/quant-research.json
+2026-05-26 16:12:52,698 [INFO] ollama_agent_loop starting — task=handoff-test-t25-20260526 agent=quant-research model=qwen3-coder:30b-a3b-q4_K_M allowed_tools=['read_file', 'write_file', 'run_sql', 'run_sql_write', 'run_shell', 'append_to_json_array', 'send_telegram', 'write_handoff']
+2026-05-26 16:12:52,698 [INFO] [handoff-test-t25-20260526] loop start — model=qwen3-coder:30b-a3b-q4_K_M allowed_tools=['read_file', 'write_file', 'run_sql', 'run_sql_write', 'run_shell', 'append_to_json_array', 'send_telegram', 'write_handoff'] max_iter=50
+2026-05-26 16:12:52,698 [INFO] [handoff-test-t25-20260526] iteration 1/50 (elapsed 0s)
+2026-05-26 16:14:42,415 [INFO] [handoff-test-t25-20260526] tool_call: run_sql({'db_path': '/home/parison/projects/first-repo/data/polymarket_tracker.db', 'query': 'SELECT\n  (SELECT COUNT(*)\n   FROM traders\n   WHERE research_excluded = 0)            AS clean_pool,\n…'})
+2026-05-26 16:14:42,483 [INFO] [handoff-test-t25-20260526] tool_result: run_sql → ok (88 bytes)
+2026-05-26 16:14:42,483 [INFO] [handoff-test-t25-20260526] iteration 2/50 (elapsed 110s)
+2026-05-26 16:14:50,399 [INFO] [handoff-test-t25-20260526] tool_call: run_sql({'db_path': '/home/parison/projects/first-repo/data/polymarket_tracker.db', 'query': 'SELECT COUNT(*), AVG(geo_elo), MAX(geo_elo) FROM traders WHERE geo_accuracy_pool=1'})
+2026-05-26 16:14:50,423 [INFO] [handoff-test-t25-20260526] tool_result: run_sql → ok (112 bytes)
+2026-05-26 16:14:50,423 [INFO] [handoff-test-t25-20260526] iteration 3/50 (elapsed 118s)
+2026-05-26 16:14:55,966 [INFO] [handoff-test-t25-20260526] tool_call: run_sql({'db_path': '/home/parison/projects/first-repo/data/polymarket_tracker.db', 'query': 'SELECT COUNT(*) FROM traders WHERE geo_elo>=2175 AND geo_directionality_score>=0.7'})
+2026-05-26 16:14:55,988 [INFO] [handoff-test-t25-20260526] tool_result: run_sql → ok (40 bytes)
+2026-05-26 16:14:55,989 [INFO] [handoff-test-t25-20260526] iteration 4/50 (elapsed 123s)
+2026-05-26 16:15:01,669 [INFO] [handoff-test-t25-20260526] tool_call: run_sql({'db_path': '/home/parison/projects/first-repo/data/polymarket_tracker.db', 'query': 'SELECT COUNT(*) FROM traders WHERE geo_elo_oos IS NOT NULL'})
+2026-05-26 16:15:01,693 [INFO] [handoff-test-t25-20260526] tool_result: run_sql → ok (41 bytes)
+2026-05-26 16:15:01,693 [INFO] [handoff-test-t25-20260526] iteration 5/50 (elapsed 129s)
+2026-05-26 16:15:21,429 [INFO] [handoff-test-t25-20260526] tool_call: write_handoff({'handoff_path': '/home/parison/trading-swarm/brain/agent-outputs/handoffs/handoff-test-2026-05-26.json', 'task_summary': 'Geo ELO pool status check', 'results': "{'query1_avg_geo_elo': 1605.9876283974845, 'query1_count': 435, 'query1_max_geo_elo': 5464.538133420…", 'files_written': [], 'next_agent_instructions': 'Interpret these geo_elo pool statistics. Are there enough qualified traders (geo_elo>=2175 AND direc…', 'token_estimate': 500})
+2026-05-26 16:15:21,429 [INFO] write_handoff: wrote /home/parison/trading-swarm/brain/agent-outputs/handoffs/handoff-test-2026-05-26.json (token_estimate=500)
+2026-05-26 16:15:21,430 [INFO] [handoff-test-t25-20260526] tool_result: write_handoff → ok (132 bytes)
+2026-05-26 16:15:21,430 [INFO] [handoff-test-t25-20260526] iteration 6/50 (elapsed 149s)
+2026-05-26 16:15:33,956 [INFO] [handoff-test-t25-20260526] tool_call: send_telegram({'message': 'Quant research agent has completed the geo ELO pool status check and created a handoff file for Tier…', 'bot': 'agents'})
+2026-05-26 16:15:35,335 [INFO] [handoff-test-t25-20260526] tool_result: send_telegram → ok (12 bytes)
+2026-05-26 16:15:35,335 [INFO] [handoff-test-t25-20260526] iteration 7/50 (elapsed 163s)
+2026-05-26 16:15:54,598 [INFO] [handoff-test-t25-20260526] clean completion (no tool calls in response)
+2026-05-26 16:15:54,598 [INFO] [handoff-test-t25-20260526] final output preview: I've completed the requested task:
+
+1. First, I validated that the database contract is satisfied with:
+   - Clean pool: 12,115 traders
+   - Clean markets: 15,470 markets
+   - WAL mode: enabled
+
+2. Then I ran the three required queries:
+   - Query 1: Found 435 traders in the geo accuracy pool with average geo_elo of 1605.99 and maximum of 5464.54
+   - Query 2: Found 21 legendary traders (geo_elo ≥...
+2026-05-26 16:15:54,598 [INFO] [handoff-test-t25-20260526] SUMMARY — iterations=7 tools_called=6 exit_reason='clean_completion' tool_breakdown={'run_sql': 4, 'write_handoff': 1, 'send_telegram': 1}
+[REGISTRY] Cleaned up task handoff-test-t25-20260526

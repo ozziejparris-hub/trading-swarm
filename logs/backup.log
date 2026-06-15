@@ -1,0 +1,182 @@
+Wed 22 Apr 03:00:15 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-22.db (1.6G)
+Wed 22 Apr 03:00:15 UTC 2026: Retention — 4 backup(s) kept (last 7 days)
+Thu 23 Apr 03:00:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-23.db (1.6G)
+Thu 23 Apr 03:00:12 UTC 2026: Retention — 5 backup(s) kept (last 7 days)
+Fri 24 Apr 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-24.db (1.7G)
+Fri 24 Apr 03:00:13 UTC 2026: Retention — 6 backup(s) kept (last 7 days)
+Sat 25 Apr 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-25.db (1.7G)
+Sat 25 Apr 03:00:13 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+Sun 26 Apr 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-26.db (1.7G)
+Sun 26 Apr 03:00:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Mon 27 Apr 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-27.db (1.7G)
+Mon 27 Apr 03:00:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Tue 28 Apr 03:00:16 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-28.db (1.7G)
+Tue 28 Apr 03:00:16 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Wed 29 Apr 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-29.db (1.7G)
+Wed 29 Apr 03:00:13 UTC 2026: Retention — 9 backup(s) kept (last 7 days)
+Thu 30 Apr 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-04-30.db (1.7G)
+Thu 30 Apr 03:00:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Fri  1 May 03:00:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-01.db (1.7G)
+Fri  1 May 03:00:12 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Sat  2 May 03:00:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-02.db (1.7G)
+Sat  2 May 03:00:12 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Sun  3 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-03.db (1.7G)
+Sun  3 May 03:00:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+Mon  4 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-04.db (1.7G)
+Mon  4 May 03:00:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-05T03:00:02Z] Starting database-backup
+Tue  5 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-05.db (1.7G)
+Tue  5 May 03:00:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-05T03:00:13Z] Finished database-backup (exit: 0)
+[2026-05-06T03:00:01Z] Starting database-backup
+Wed  6 May 03:00:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-06.db (1.7G)
+Wed  6 May 03:00:12 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-06T03:00:12Z] Finished database-backup (exit: 0)
+[2026-05-08T03:00:01Z] Starting database-backup
+Fri  8 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-08.db (1.7G)
+Fri  8 May 03:00:13 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-08T03:00:13Z] Finished database-backup (exit: 0)
+[2026-05-09T03:00:01Z] Starting database-backup
+Sat  9 May 03:00:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-09.db (1.7G)
+Sat  9 May 03:00:12 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-09T03:00:12Z] Finished database-backup (exit: 0)
+[2026-05-10T03:00:02Z] Starting database-backup
+Sun 10 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-10.db (1.7G)
+Sun 10 May 03:00:13 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-10T03:00:13Z] Finished database-backup (exit: 0)
+[2026-05-11T03:00:01Z] Starting database-backup
+Mon 11 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-11.db (1.7G)
+Mon 11 May 03:00:13 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-11T03:00:13Z] Finished database-backup (exit: 0)
+[2026-05-12T03:00:01Z] Starting database-backup
+Tue 12 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-12.db (1.7G)
+Tue 12 May 03:00:13 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-12T03:00:13Z] Finished database-backup (exit: 0)
+[2026-05-13T03:00:01Z] Starting database-backup
+Wed 13 May 03:00:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-13.db (1.7G)
+Wed 13 May 03:00:12 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-13T03:00:12Z] Finished database-backup (exit: 0)
+[2026-05-14T03:00:01Z] Starting database-backup
+Thu 14 May 03:00:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-14.db (1.7G)
+Thu 14 May 03:00:13 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-14T03:00:13Z] Finished database-backup (exit: 0)
+[2026-05-15T03:00:01Z] Starting database-backup
+Fri 15 May 03:00:15 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-15.db (1.7G)
+Fri 15 May 03:00:15 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-15T03:00:15Z] Finished database-backup (exit: 0)
+[2026-05-16T03:00:01Z] Starting database-backup
+Sat 16 May 03:00:15 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-16.db (1.9G)
+Sat 16 May 03:00:16 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-16T03:00:16Z] Finished database-backup (exit: 0)
+[2026-05-17T03:00:01Z] Starting database-backup
+Sun 17 May 03:00:17 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-17.db (2.1G)
+Sun 17 May 03:00:17 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-17T03:00:17Z] Finished database-backup (exit: 0)
+[2026-05-18T03:00:01Z] Starting database-backup
+Mon 18 May 03:00:17 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-18.db (2.1G)
+Mon 18 May 03:00:17 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-18T03:00:17Z] Finished database-backup (exit: 0)
+[2026-05-19T03:00:01Z] Starting database-backup
+Tue 19 May 03:00:26 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-19.db (2.9G)
+Tue 19 May 03:00:26 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-19T03:00:26Z] Finished database-backup (exit: 0)
+[2026-05-20T03:00:02Z] Starting database-backup
+Wed 20 May 03:00:47 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-20.db (4.6G)
+Wed 20 May 03:00:47 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-20T03:00:47Z] Finished database-backup (exit: 0)
+[2026-05-21T03:00:01Z] Starting database-backup
+Thu 21 May 03:00:40 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-21.db (4.6G)
+Thu 21 May 03:00:40 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-21T03:00:40Z] Finished database-backup (exit: 0)
+[2026-05-23T03:00:01Z] Starting database-backup
+Sat 23 May 03:00:44 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-23.db (4.7G)
+Sat 23 May 03:00:44 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-23T03:00:44Z] Finished database-backup (exit: 0)
+[2026-05-24T03:00:01Z] Starting database-backup
+Sun 24 May 03:00:49 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-24.db (4.8G)
+Sun 24 May 03:00:49 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-24T03:00:49Z] Finished database-backup (exit: 0)
+[2026-05-25T03:00:01Z] Starting database-backup
+Mon 25 May 03:00:45 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-25.db (5.0G)
+Mon 25 May 03:00:45 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-25T03:00:45Z] Finished database-backup (exit: 0)
+[2026-05-26T03:00:01Z] Starting database-backup
+Tue 26 May 03:00:59 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-26.db (5.9G)
+Tue 26 May 03:00:59 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-26T03:00:59Z] Finished database-backup (exit: 0)
+[2026-05-27T03:00:01Z] Starting database-backup
+Wed 27 May 03:00:57 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-27.db (6.0G)
+Wed 27 May 03:00:57 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-27T03:00:57Z] Finished database-backup (exit: 0)
+[2026-05-28T03:00:01Z] Starting database-backup
+Thu 28 May 03:00:59 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-28.db (6.0G)
+Thu 28 May 03:00:59 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-28T03:00:59Z] Finished database-backup (exit: 0)
+[2026-05-29T03:00:01Z] Starting database-backup
+Fri 29 May 04:51:09 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-29.db (6.0G)
+Fri 29 May 04:51:09 UTC 2026: Retention — 7 backup(s) kept (last 7 days)
+[2026-05-29T04:51:09Z] Finished database-backup (exit: 0)
+[2026-05-30T03:00:01Z] Starting database-backup
+Sat 30 May 03:01:03 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-30.db (6.2G)
+Sat 30 May 03:01:03 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-30T03:01:03Z] Finished database-backup (exit: 0)
+[2026-05-31T03:00:01Z] Starting database-backup
+Sun 31 May 03:01:07 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-05-31.db (6.2G)
+Sun 31 May 03:01:07 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-05-31T03:01:07Z] Finished database-backup (exit: 0)
+[2026-06-01T03:00:01Z] Starting database-backup
+Mon  1 Jun 03:01:12 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-01.db (6.7G)
+Mon  1 Jun 03:01:12 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-06-01T03:01:12Z] Finished database-backup (exit: 0)
+[2026-06-02T03:00:01Z] Starting database-backup
+Tue  2 Jun 03:01:08 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-02.db (7.1G)
+Tue  2 Jun 03:01:09 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-06-02T03:01:09Z] Finished database-backup (exit: 0)
+[2026-06-03T03:00:01Z] Starting database-backup
+Wed  3 Jun 03:01:13 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-03.db (7.1G)
+Wed  3 Jun 03:01:13 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-06-03T03:01:13Z] Finished database-backup (exit: 0)
+[2026-06-04T03:00:01Z] Starting database-backup
+Thu  4 Jun 03:01:18 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-04.db (7.2G)
+Thu  4 Jun 03:01:19 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-06-04T03:01:19Z] Finished database-backup (exit: 0)
+[2026-06-06T03:00:01Z] Starting database-backup
+Sat  6 Jun 03:01:21 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-06.db (7.5G)
+Sat  6 Jun 03:01:21 UTC 2026: Retention — 8 backup(s) kept (last 7 days)
+[2026-06-06T03:01:21Z] Finished database-backup (exit: 0)
+[2026-06-07T03:00:01Z] Starting database-backup
+Sun  7 Jun 03:01:17 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-07.db (7.6G)
+Sun  7 Jun 03:01:17 UTC 2026: Retention — 3 backup(s) kept (last 3 days)
+[2026-06-07T03:01:17Z] Finished database-backup (exit: 0)
+[2026-06-08T03:00:01Z] Starting database-backup
+Mon  8 Jun 03:01:20 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-08.db (7.8G)
+Mon  8 Jun 03:01:20 UTC 2026: Retention — 3 backup(s) kept (last 3 days)
+[2026-06-08T03:01:20Z] Finished database-backup (exit: 0)
+[2026-06-09T03:00:01Z] Starting database-backup
+Tue  9 Jun 03:01:29 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-09.db (8.3G)
+Tue  9 Jun 03:01:29 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-09T03:01:29Z] Finished database-backup (exit: 0)
+[2026-06-10T03:00:01Z] Starting database-backup
+Wed 10 Jun 03:01:32 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-10.db (8.5G)
+Wed 10 Jun 03:01:33 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-10T03:01:33Z] Finished database-backup (exit: 0)
+[2026-06-11T03:00:01Z] Starting database-backup
+Thu 11 Jun 03:01:33 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-11.db (8.6G)
+Thu 11 Jun 03:01:34 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-11T03:01:34Z] Finished database-backup (exit: 0)
+[2026-06-12T03:00:01Z] Starting database-backup
+Fri 12 Jun 03:01:26 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-12.db (8.6G)
+Fri 12 Jun 03:01:27 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-12T03:01:27Z] Finished database-backup (exit: 0)
+[2026-06-13T03:00:01Z] Starting database-backup
+Sat 13 Jun 03:01:31 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-13.db (8.6G)
+Sat 13 Jun 03:01:32 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-13T03:01:32Z] Finished database-backup (exit: 0)
+[2026-06-14T03:00:01Z] Starting database-backup
+Sun 14 Jun 03:01:38 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-14.db (8.7G)
+Sun 14 Jun 03:01:39 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-14T03:01:39Z] Finished database-backup (exit: 0)
+[2026-06-15T03:00:01Z] Starting database-backup
+Mon 15 Jun 03:01:34 UTC 2026: OK — backup created: /home/parison/projects/first-repo/data/backups/polymarket_tracker_2026-06-15.db (8.8G)
+Mon 15 Jun 03:01:35 UTC 2026: Retention — 4 backup(s) kept (last 3 days)
+[2026-06-15T03:01:35Z] Finished database-backup (exit: 0)

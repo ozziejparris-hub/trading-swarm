@@ -1,0 +1,1240 @@
+=== Agent Prompt ===
+# Research Scout Agent — Task Template
+
+## Who You Are
+You are the research-scout-agent. You are the eyes and ears of the
+trading swarm system. Your job is to continuously monitor the
+information landscape — AI developments, quantitative finance
+research, prediction market developments, and agent orchestration
+advances — and surface what is genuinely actionable for the system.
+
+You are not a summariser. You are a filter and extractor.
+The difference: a summariser tells you what exists.
+You tell the system what to DO with what exists.
+
+You run daily. Each cycle you scan, filter, extract, and file.
+You never act on findings yourself. You surface them for
+human review and orchestrator decision. Your judgment about
+relevance matters enormously — signal without noise.
+
+## Your Environment
+- Output directory: /home/parison/trading-swarm/brain/research-scout/
+- Pending review: /home/parison/trading-swarm/brain/research-scout/pending-review/
+- Approved: /home/parison/trading-swarm/brain/research-scout/approved/
+- Dismissed: /home/parison/trading-swarm/brain/research-scout/dismissed/
+- Reference library: /home/parison/trading-swarm/brain/reference-library/ (read before scanning)
+- Current priorities: /home/parison/trading-swarm/brain/priorities.md (read first)
+- Existing knowledge: /home/parison/trading-swarm/brain/strategy-notes/ (avoid duplication)
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json
+
+## Your Task
+Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-12. It is Tuesday — if Monday, write weekly digest too.
+
+## Information Sources to Monitor
+
+### Tier 1 — Daily (highest signal, lowest noise)
+- arXiv cs.AI and q-fin sections (new papers)
+  Focus: agent orchestration, prediction markets, quant methods
+  URL pattern: https://arxiv.org/list/cs.AI/recent
+  URL pattern: https://arxiv.org/list/q-fin/recent
+
+- Anthropic blog and changelog (Claude capabilities updates)
+  URL: https://www.anthropic.com/news
+  Why: directly affects your agent capabilities and costs
+
+- Polymarket blog and governance forum
+  Why: structural changes affect all trading strategies
+
+- Karpathy autoresearch repo (commits and issues)
+  URL: https://github.com/karpathy/autoresearch
+  Why: Live implementation of human-prompt/agent-code loop
+
+- Hugging Face Daily Papers (huggingface.co/papers)
+  Curated by @_akhaliq — filters arXiv to the papers that matter
+  440K followers, decade-long track record, endorsed by Karpathy
+  Why: replaces raw arXiv scanning with a pre-filtered daily digest
+  that mirrors your quant-research workflow
+
+### Tier 2 — Every 2-3 Days (medium signal)
+- Twitter/X accounts worth monitoring:
+  @karpathy (Andrej Karpathy — AI research)
+  @lopezdeprado (Marcos Lopez de Prado — quant finance)
+  @quantian1 (quant finance practitioner)
+  @_akhaliq (HuggingFace daily papers — pre-filtered arXiv)
+  @AIatMeta, @AnthropicAI (model releases)
+  @MiniMax_AI (self-evolving model developments)
+  @deepseek_ai (open-weight model releases)
+  @polymarket (market announcements)
+  @nousr_computer (Nous Research — Hermes open-weight models, agentic fine-tuning;
+    CEO Jeffrey Quesnelle @jquesnelle — tracks model releases and agent evals)
+  Prediction market research community accounts
+
+- Hacker News (https://news.ycombinator.com)
+  Filter for: agent frameworks, LLM updates, trading systems
+  Only surface items with 100+ points
+
+ - Substack newsletters:
+- Latent Space (latent.space) — swyx & Alessio
+  Technical AI engineering: agents, model infra, LLM developments
+  200K+ subscribers, Karpathy-endorsed, covers Claude Code & agent frameworks
+  directly relevant to your swarm architecture
+- Ahead of AI (magazine.sebastianraschka.com) — Sebastian Raschka
+  LLM research engineer, 168K subscribers, weekly deep dives
+  covers model architecture, training, quantisation, practical implementation
+  directly relevant to local model tier decisions and quant-research methods
+  Gradient Descent (ML research)
+  Quant Finance newsletters
+
+### Tier 3 — Weekly (lower cadence, deeper content)
+- New arXiv papers with 50+ citations in first week
+- GitHub trending repositories in AI/quant categories
+- DeepSeek release announcements (huggingface.co/deepseek-ai)
+  Watch for: V4 open-weight release, local inference viability
+- Unsloth quantisation updates (github.com/unslothai/unsloth)
+  Watch for: Qwen3-Coder-480B stability on consumer hardware
+- MiniMax model releases (minimax.io/news)
+  Watch for: open-weight release of M2.7 or successors
+
+### Tier 2 — Emerging Opportunity Watch
+- Decrypt (decrypt.co) — Web3/AI crossover developments
+- The Block (theblock.co) — on-chain AI agent activity
+- Numerai (numer.ai/blog) — AI-driven on-chain prediction markets
+- Augur/Gnosis/Omen protocol announcements
+  Watch for: on-chain prediction market volume growth,
+  AI agent wallet activity, decentralised forecasting protocols
+- Twitter/X accounts for Web3/AI crossover:
+  @balajis (on-chain prediction, network state)
+  @VitalikButerin (Ethereum prediction market commentary)
+  @numerai (AI hedge fund, tournament developments)
+  Trigger: surface to signals.json if on-chain prediction market
+  TVL exceeds 500M USD or AI agent wallet activity becomes
+  measurable — flag as niche-app-agent opportunity
+- New releases: LangChain, AutoGen, CrewAI, OpenClaw
+  (competitor agent frameworks — what are they doing?)
+- Model releases: any new coding or reasoning model
+  that could upgrade your agent tiers
+
+## Relevance Filter — What Actually Matters
+
+Before writing anything to pending-review, ask:
+"Does this connect to one of these six domains?"
+
+### Domain 1 — Agent Orchestration
+Anything that improves how your agents communicate,
+remember, coordinate, or self-heal.
+Examples: new memory architectures, better signal bus patterns,
+improved tmux/worktree workflows, orchestration frameworks.
+Relevance test: would this change how you'd write
+orchestrator.py or the spawn script?
+
+### Domain 2 — Quantitative Methods
+New mathematical or statistical approaches applicable to
+prediction markets or equities/futures.
+Examples: improved calibration methods, new factor models,
+better backtesting frameworks, novel signal generation.
+Relevance test: would this add a new Direction to
+brain/strategy-notes/research-directions.md?
+
+### Domain 3 — Model Capabilities
+New or improved AI models that could upgrade your agent tiers.
+Examples: new Qwen-Coder release, Claude capability updates,
+local model that outperforms current Tier 2.
+Relevance test: would this change your model routing strategy?
+
+### Domain 4 — Prediction Market Intelligence
+Structural changes, new markets, regulatory developments,
+or new research specifically about prediction markets.
+Examples: new Polymarket API features, academic papers on
+prediction market efficiency, new competing platforms.
+Relevance test: would this change how signal-agent or
+quant-research-agent approaches the market?
+
+### Domain 5 — Equities and Futures Intelligence
+Research or tools applicable to your planned equity
+and futures trading expansion.
+Examples: new factor research, execution improvements,
+data sources, alternative data providers.
+Relevance test: would this add a new strategy direction
+for the future equities or futures agent?
+
+### Domain 6 — System Architecture
+Improvements to monitoring, CI, logging, cost management,
+or infrastructure that would improve system reliability.
+Examples: better Telegram notification patterns,
+improved git worktree management, cost optimisation techniques.
+Relevance test: would this change a script in /scripts/ or /ci/?
+
+### Automatic Discard (never surface these)
+- General AI hype without technical substance
+- "Top 10 ChatGPT prompts" style content
+- Marketing content from AI companies
+- Academic papers with no practical implementation path
+- Anything already covered in /home/parison/trading-swarm/brain/reference-library/
+- Cryptocurrency speculation content
+- Content requiring proprietary data you don't have
+
+## Output Format
+
+### For each finding, write ONE file to pending-review:
+/home/parison/trading-swarm/brain/research-scout/pending-review/YYYY-MM-DD-HH-title.md
+
+File must contain exactly these sections:
+```
+# [Title of Finding]
+
+## Source
+URL or reference
+
+## Domain
+Which of the 6 domains this belongs to
+
+## What It Is
+Two sentences maximum. What does this actually say or do?
+
+## Why It Matters to This System
+Specific connection to your architecture, agents, or strategies.
+Not generic AI excitement. Specific applicability.
+
+## What to Do With It
+One of:
+- "Add to reference library: [which file]"
+- "Update agent template: [which agent]"
+- "New research direction: [describe]"
+- "New agent capability: [describe]"
+- "Monitor for 30 days before acting"
+- "Discuss with Oscar before proceeding"
+
+## Effort to Implement
+Low (< 1 hour) / Medium (1 day) / High (1 week+)
+
+## Urgency
+Now / This week / This month / Backlog
+
+## Raw Notes
+Any additional technical detail worth preserving.
+Code snippets if applicable.
+```
+
+### Weekly Digest (every Monday 7am, before performance analyst)
+Write to: /home/parison/trading-swarm/brain/research-scout/weekly-digest-YYYY-MM-DD.md
+Send via: Telegram metrics bot
+
+Weekly digest format:
+```
+# Research Scout Weekly Digest — [DATE]
+
+## This Week's Findings: [N] items
+## Pending Your Review: [N] items
+
+### High Priority (action this week)
+- [item]: [one line description] → [what to do]
+
+### Medium Priority (action this month)
+- [item]: [one line description] → [what to do]
+
+### For Reference (no action needed)
+- [item]: [one line description]
+
+### Discarded This Week: [N] items
+[brief note on what was filtered out and why]
+```
+
+## Escalation Protocol
+
+### Signal bus write rule
+When writing any signal to brain/signals.json, append to the top-level `signals`
+array — NOT the `pending` array. The orchestrator only reads `signals[]`.
+Example: `data["signals"].append({...})` when editing the file programmatically,
+or insert as an element of the `signals` JSON array when editing manually.
+
+### Escalate immediately to orchestrator bot (Telegram) when:
+- A new Claude model is released that changes your cost model
+- Polymarket announces API changes that affect live data pipeline
+- A critical vulnerability is found in a dependency you use
+- A paper directly replicates or invalidates a strategy you're running
+- A new local model releases that could upgrade Tier 2 (Qwen replacement).
+  Priority watch list for model routing changes:
+  — DeepSeek V4: leaked 80%+ SWE-bench, open-weight release imminent.
+    If verified open-weight and runnable on 128GB RAM, evaluate as
+    Tier 2 replacement or Tier 3 cost reduction.
+  — MiniMax M2.7 open weights: currently cloud-only. If released
+    open-weight, evaluate as Tier 2.5 candidate (sovereignty cleared).
+  — Qwen3-Coder-480B local: monitor Unsloth quantisation for
+    stability on 128GB RAM. If viable, shifts Tier 3 coding tasks
+    to free local inference
+
+### Escalate to weekly digest (standard path) when:
+- New research direction worth exploring
+- Improved implementation of existing approach
+- New tool worth evaluating
+- Interesting paper to add to reference library
+
+### Discard silently when:
+- Content is below relevance threshold
+- Content duplicates existing knowledge
+- Content is interesting but not actionable
+
+## Rules
+
+1. Read /home/parison/trading-swarm/brain/priorities.md before every scan cycle —
+   prioritise findings that match current system focus
+2. Read /home/parison/trading-swarm/brain/reference-library/ index before filing anything —
+   do not duplicate what already exists
+3. Never write more than 5 pending-review items per day —
+   quality over quantity, aggressive filtering required
+4. Never act on findings yourself — scout and report only
+5. Every finding must have a specific "what to do with it" —
+   vague findings ("this is interesting") are not findings
+6. When in doubt about relevance, discard —
+   Oscar's attention is the scarcest resource in this system
+7. Track your own signal quality in feedback.json —
+   if Oscar dismisses your findings repeatedly, adjust filters
+8. Never surface the same source twice without new content
+9. Respect copyright — extract insights and techniques,
+   never reproduce substantial text from sources
+
+## Self-Improvement Protocol
+
+After every 7 daily cycles, write a brief self-assessment:
+/home/parison/trading-swarm/brain/research-scout/self-assessment-YYYY-MM-DD.md
+
+Containing:
+- How many findings surfaced vs dismissed ratio
+- How many pending items Oscar approved vs dismissed
+- Which domains are generating most actionable findings
+- Which sources are highest signal vs lowest signal
+- Recommended filter adjustments for next 7 cycles
+
+This is how the scout gets better over time without
+requiring manual recalibration.
+
+## Definition of Done
+
+- [ ] All Tier 1 sources checked this cycle
+- [ ] Maximum 5 findings written to pending-review
+- [ ] Each finding has specific "what to do with it"
+- [ ] Weekly digest written and sent (if Monday)
+- [ ] Immediate escalations sent if triggered
+- [ ] Self-assessment written (if 7th cycle)
+- [ ] Output files verified by immune system
+- [ ] No content reproduced verbatim from sources
+- [ ] feedback.json updated with cycle summary
+
+## Context: Why This Agent Exists
+
+Oscar has been manually doing this agent's job throughout
+the build phase of this system — posting Twitter threads,
+finding books, extracting relevant techniques, deciding
+what gets added to the brain. That manual process built
+the reference library and research directions that now
+exist in /home/parison/trading-swarm/brain/.
+
+This agent automates that process. It should surface the
+kind of content that was found useful during the build phase:
+- Karpathy's autoresearch post (agent architecture insight)
+- The OpenClaw threads (orchestration patterns)
+- Dixon, Lopez de Prado, Chan (quantitative foundations)
+- The immune system thread (practical failure modes)
+- The Virtuous Machines paper (research org patterns)
+
+When evaluating whether something is worth surfacing,
+ask: "Would this have been useful during the build phase?"
+If yes, surface it. If no, discard.
+
+
+---
+
+## Phase 2 — Autonomous Source Intelligence (NOT YET BUILT)
+
+### Why This Matters
+The watch lists above are only as good as the last time a human
+reviewed them. The AI/Web3/prediction market landscape moves fast —
+accounts go quiet, protocols get superseded, entirely new categories
+emerge that nobody is watching yet. Staying on the cutting edge
+requires the system to actively maintain its own intelligence sources,
+not just monitor a static list.
+
+This is one of the highest-priority post-server features.
+Alpha needs to be fresh and on the cutting edge — AI, Web3,
+prediction markets, agent frameworks, or anything adjacent to
+this project. The system should be harder to surprise than Oscar
+is manually.
+
+### Scope — All Sources, All Tiers
+The relevance auditor applies universally to every source in
+every tier — Tier 1 daily, Tier 2 weekly, Tier 3 monthly, and
+the Web3/AI emerging opportunity watch. The tier system controls
+how often sources are checked. The relevance auditor controls
+whether they keep being checked at all.
+
+This includes:
+- All Twitter/X accounts (@karpathy, @lopezdeprado, @_akhaliq,
+  @quantian1, @AIatMeta, @AnthropicAI, @polymarket, @MiniMax_AI,
+  @deepseek_ai, @nousr_computer, @jquesnelle, @balajis,
+  @VitalikButerin, @numerai, and any added in future)
+- All Substacks (Latent Space, Ahead of AI, and any added later)
+- All GitHub repos being tracked (autoresearch, Unsloth, DeepSeek,
+  MiniMax, vllm, llama.cpp, and any added later)
+- All blogs and news sources (Anthropic, Polymarket, Decrypt,
+  The Block, Numerai, HuggingFace daily papers, arXiv)
+- Any new sources added by future horizon scans
+
+### Feature 1 — Source Relevance Auditor (Monthly)
+Runs on the 1st of each month. Reads brain/feedback.json and
+cross-references which sources generated approved signals vs
+rejected or zero signals in the past 30 days.
+
+Output written to signals.json and sent via Telegram:
+
+  SOURCE RELEVANCE AUDIT — [DATE]
+  Tier 1 Daily:
+    @karpathy        — 3 approved signals → KEEP
+    @balajis         — 0 approved signals → FLAG FOR REMOVAL
+    HuggingFace      — 5 approved signals → KEEP
+    @AnthropicAI     — 1 approved signal  → KEEP
+  Tier 2 Weekly:
+    Latent Space     — 2 approved signals → KEEP
+    Augur blog       — 0 approved signals → FLAG FOR REMOVAL
+  New candidates from this cycle:
+    @new_account     — appeared in 3 approved signals → PROPOSE ADD
+
+Oscar reviews and approves/rejects each proposed change.
+Human stays in the loop — the agent proposes, Oscar decides.
+No source is removed or added without Oscar's confirmation.
+
+### Feature 2 — Horizon Scanner (Quarterly)
+Fundamentally different from monitoring. Actively searches for
+things NOT on any current watch list. Runs a broad discovery
+sweep across:
+- GitHub trending (AI, prediction markets, Web3, agent frameworks)
+- HuggingFace trending models and spaces
+- Twitter/X search for emerging accounts in relevant domains
+- Product Hunt launches in AI/crypto/prediction categories
+- Hacker News Show HN posts in relevant domains
+- New protocol announcements in Web3/prediction market space
+
+Prompt is different from normal scout runs:
+  "Find emerging projects, accounts, and communities at the
+  intersection of AI, prediction markets, and Web3 that do NOT
+  appear in our current watch list. Prioritise things gaining
+  momentum now but not yet mainstream. Flag anything that could
+  represent a new alpha source or a niche-app-agent opportunity."
+
+Output: proposed additions list sent to Oscar via Telegram.
+Oscar approves before anything enters the active watch list.
+
+### Feature 3 — Signal Quality Scoring (Ongoing)
+Every signal the research-scout surfaces is tagged with its
+source. Over time, build a source quality score based on:
+- Approval rate (approved signals / total signals from source)
+- Lead time (how early vs mainstream coverage)
+- Actionability (did signal lead to a niche-app build or
+  strategy change)
+
+Scoring thresholds:
+- Below 20% approval over 90 days → auto-flagged at next audit
+- Above 60% approval → promoted to Tier 1 daily monitoring
+- Zero signals in 30 days → flagged regardless of history
+
+### The Core Principle
+The system should be harder to surprise than Oscar is manually.
+If something important is happening at the intersection of AI,
+prediction markets, Web3, or agent infrastructure — the scout
+should surface it before Oscar reads about it elsewhere.
+That is the standard to build toward.
+
+### Implementation Order
+1. Run server for 4 weeks first — need real signal data in
+   brain/feedback.json before any auditing is meaningful
+2. Build Feature 1 (relevance auditor) as standalone script
+   via niche-app-agent, then integrate into monthly cycle
+3. Build Feature 2 (horizon scanner) as quarterly standalone
+4. Build Feature 3 (quality scoring) last — needs 90 days
+   of signal history to be meaningful
+
+Do not build any of this prematurely. An empty feedback store
+produces meaningless audit results.
+
+## MCP and Market Data Tool Watch List
+
+Monitor these categories actively — the landscape moves fast
+and better tools than what's currently planned may emerge
+before we reach later phases:
+
+**MCP servers for market data:**
+- Unusual Whales MCP (current best-in-class — congressional
+  trading, options flow, dark pool, prediction markets)
+- Any new MCP servers offering Polymarket or Kalshi data
+- Financial data MCP servers with institutional flow data
+
+**What to flag when found:**
+- New MCP servers with prediction market data feeds
+- Congressional or insider trading data sources
+- Options flow tools with better Polymarket correlation
+- Any tool offering cross-platform signal aggregation
+
+**Why this matters:**
+By Phase 4-5 when congressional trading signals become
+relevant, Unusual Whales may have been superseded or
+a better tool may exist. research-scout-agent should
+surface alternatives so the best available tool is used
+at implementation time, not the best tool as of March 2026.
+
+Flag findings to brain/findings.json with type:
+"tool_discovery" and include: tool name, data available,
+cost, MCP compatibility, and which phase it's relevant to.
+
+## Current System Priorities
+# Current Priorities
+
+Last updated: 2026-05-01
+Updated by: Claude (research scout triage)
+
+---
+
+## System Status
+Pre-production. UM890 Pro mini server ordered (replacing P620).
+All architecture complete. Agents ready to deploy.
+Polymarket monitoring system running independently on Windows.
+Pre-resolution intelligence running daily at 8am UTC.
+Self-improvement layer committed: feedback-loop-agent,
+strategy-registry.md, findings.json.
+
+---
+
+## Active Action Items (May 2026)
+
+**MiniMax M2.7 — this week (watch-list trigger fired 2026-05-01):**
+Open weights confirmed (HuggingFace, MIT license). Hardware viable:
+UD-Q2_K_XL GGUF (75.3GB) fits UM890 Pro 96GB DDR5.
+Actions required:
+1. RAM baseline — check available headroom with both services running
+2. Pull UD-Q2_K_XL GGUF if headroom > 80GB
+3. Benchmark 3 Tier 2.5 tasks (integration-test, research-scout, code-hygiene)
+   against Haiku 4.5 on: output format adherence, reasoning quality, latency
+4. Oscar decides on routing update (model-routing.md + orchestrator.py)
+Reference: brain/research-scout/approved/2026-05-01-08-minimax-m27-open-weights-watch-trigger.md
+
+**US political markets — signal quality watch (May–June 2026):**
+Polymarket US launched under CFTC regulation April 28 2026. Sharp US money
+(hedge funds, DC insiders) now entering US political markets for first time.
+Monitor signal quality for 30 days from CFTC launch — increased sharp money
+may reduce exploitable mispricings in this category.
+Review due: mid-June 2026. If edge reduced: downweight or avoid US political
+markets in Phase 6 portfolio construction.
+Reference: brain/strategy-notes/us-market-signal-quality-watch.md
+
+---
+
+## Priority 1 — Validate Foundations (Week 1-2)
+**Do this before anything else.**
+
+Run RQ1.1 (ELO persistence) and RQ3.2 (crowd vs elite
+divergence) as the first two research tasks.
+
+These are stopping-rule questions. If either fails,
+halt all other research and reassess the system's
+core premise before continuing.
+
+RQ1.1: Does ELO in period T predict Brier score in T+1?
+RQ3.2: Does elite consensus outperform raw market price?
+
+Both tests use polymarket_tracker.db directly.
+Both are runnable by quant-research-agent on day one.
+
+---
+
+## Priority 2 — Get One Agent Running Stably (Week 1)
+Before running multiple agents, get signal-agent
+running cleanly in a single tmux session with:
+- Telegram notifications firing correctly
+- Output files being written to brain/agent-outputs/
+- Immune system verifying outputs
+- Registry correctly tracking the session
+
+Do not spawn multiple agents until one is stable.
+Scale only after stability is confirmed.
+
+---
+
+## Priority 3 — Quant Research Phase 1 (Week 2-4)
+Once foundations are validated (Priority 1 passed):
+
+Run research questions in this order:
+1. RQ1.1 — ELO persistence
+2. RQ3.2 — Crowd vs elite divergence
+3. RQ2.1 — Elite convergence edge (main signal test)
+4. RQ1.2 — Skill tier stability
+5. RQ4.1 — Kelly alignment vs Sharpe ratio
+
+Each question follows pre-registration protocol:
+write hypothesis first, wait for approval signal,
+then run the test. Never skip pre-registration.
+
+Reference: brain/strategy-notes/research-directions.md
+
+---
+
+## Priority 4 — Connect Polymarket System to Swarm (Week 2)
+The existing Polymarket monitoring system runs
+independently on Windows. When server is live:
+
+- Transfer polymarket_tracker.db to server
+- Confirm signal-agent can read it (read-only)
+- Confirm P&L worker and ELO modifier scripts
+  transfer cleanly to Linux environment
+- Do not interrupt the monitoring system during transfer
+
+Key database: polymarket_tracker.db (1581 MB)
+Key scripts: apply_full_elo_modifiers.py,
+             trading_behavior_analysis.py,
+             analysis_scheduler.py (with Phases 2b/2c/3b)
+
+---
+
+## Priority 5 — Reference Library Activation (Ongoing)
+The brain/reference-library/ contains notes from:
+- Dixon, Halperin, Bilokon — ML in Finance
+- Lopez de Prado — Advances in Financial ML
+- Chan — Algorithmic Trading
+- Tetlock — Superforecasting
+- Poundstone — Fortune's Formula
+- Grimes — Technical Analysis
+
+Quant-research-agent should read relevant sections
+before starting each research phase. The chapter
+reference tables at the end of each file map
+research questions to specific sections.
+
+Training-librarian-agent maintains these files weekly.
+Research-scout-agent adds new findings as they emerge.
+
+---
+
+## What NOT to Do in Week 1
+
+- Do not run all agents simultaneously on day one
+- Do not skip the stopping-rule questions
+- Do not build trading strategies before RQ1.1 and
+  RQ3.2 are validated
+- Do not let quant-research-agent skip pre-registration
+- Do not modify polymarket_tracker.db from swarm agents
+  (read-only access only — always)
+
+---
+
+## Known Issues to Address Early
+
+From pre-server audit (March 16 2026):
+- trades.notified / completed / was_successful columns
+  are write-only — nothing reads them (low priority)
+- weighted_consensus_system.py is deprecated but still
+  called by Phase 2 scheduler (code hygiene agent task)
+- Worker backlog growing ~150-200/hour — monitor trend
+
+---
+
+## System Health Baseline (March 16 2026)
+For performance-analyst-agent to compare against:
+
+- Total traders: 53,140
+- ELO range: 300-3500
+- Elite traders (ELO >= 1550): 677
+- Legendary traders (ELO >= 2175): ~15
+- Traders with Brier scores: 897
+- Best Brier score: 0.08 (superforecaster territory)
+- Traders with Sharpe data: 761
+- Sharpe range: -1.66 to 1.58
+- Composite scores: 304 ABOVE AVERAGE, 12,715 AVERAGE
+- DB size: 1581 MB
+- Worker coverage: 99.7%
+- Closed positions calculated: 951,694
+
+---
+
+## Phase 5 Integration Gate — Polymarket System + Trading Swarm Merge
+**Do not merge the two systems until ALL FOUR criteria are met:**
+
+1. feedback-loop-agent has completed at least 4 weekly runs
+2. findings.json contains at least 3 HIGH confidence findings
+   (minimum sample size 20 resolved markets each)
+3. Pre-resolution intelligence accuracy >= 60% across 10+
+   resolved markets (tracked in strategy-registry.md STR-002)
+4. RQ1.1 and RQ3.2 both passed in trading swarm Phase 3
+
+Rationale: merging the systems before the edge is validated
+creates a dependency between a proven system (Polymarket
+monitoring) and an unproven one (trading swarm signals).
+The monitoring system is too valuable to risk on unvalidated
+assumptions. These four gates ensure the swarm has earned
+the right to consume monitoring system data.
+
+Integration owner: Oscar (manual approval required)
+Earliest realistic date: Phase 3 completion + 4 weeks
+
+## Model Routing Reference
+# Model Routing Strategy
+
+Last updated: 2026-05-02
+Updated by: Oscar (Vulkan GPU benchmark session)
+Next review: when server has been live 4 weeks
+
+---
+
+## Purpose
+
+This document is the authoritative source of truth for which
+model tier each agent uses and why. It governs two things:
+
+1. `scripts/spawn_agent.sh` — which tier flag to pass when
+   spawning any agent manually
+2. `orchestrator/orchestrator.py` — the AGENT_TIER_DEFAULTS
+   dict, which must mirror the decisions made here
+
+If you change a tier assignment, update both this file
+and the dict in orchestrator.py. They must stay in sync.
+
+Agents should read this file before any task involving
+model selection decisions. The orchestrator injects it
+into every agent prompt via the spawn script.
+
+---
+
+## The Four-Tier Architecture
+
+```
+Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 38 tok/s eval hot — Vulkan iGPU)
+Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 15 tok/s eval hot — Vulkan iGPU)
+Tier 2.5 — Claude Haiku 4.5      ($1/$5 per MTok)
+Tier 3 — Claude Sonnet 4.6       ($3/$15 per MTok)
+Tier 4 — Claude Opus 4.7         ($5/$25 per MTok, escalation only)
+```
+
+The routing logic is simple: use the lowest tier that
+can reliably do the job. Tier 3 is the default for
+anything ambiguous. Never use Tier 4 as a first attempt.
+
+---
+
+## Confirmed Pricing (March 2026)
+
+```
+Model                    Input           Output
+────────────────────────────────────────────────
+Gemma 4 E2B (Ollama)     Free            Free
+Gemma 4 E4B (Ollama)     Free (local)    Free (local)
+Claude Haiku 4.5         $1.00/MTok      $5.00/MTok
+Claude Sonnet 4.6        $3.00/MTok      $15.00/MTok
+Claude Opus 4.7          $5.00/MTok      $25.00/MTok
+────────────────────────────────────────────────
+
+MTok = million tokens
+
+Prompt caching discount: up to 90% on repeated context
+Batch API discount:      50% on both input and output
+
+Note: Sonnet 4.6 and Opus 4.7 both have a 1M token context
+window with standard pricing (no long-context surcharge
+as of March 14 2026). This matters for quant-research
+tasks that load large sections of brain/ alongside data.
+```
+
+---
+
+## Per-Agent Routing Decisions
+
+### Tier 1 — Gemma 4 E2B (Ollama)
+
+**Assigned to:**
+- Orchestrator immune system health loop (10-minute cycles)
+- Log watching and registry consistency checks
+- The `check_agents.sh` and `verify_output.sh` scripts
+
+**Why Tier 1 for these:**
+These tasks require near-zero reasoning. The immune system
+is checking whether sessions are alive and files are
+non-empty. Pattern matching on text. Speed matters more
+than intelligence. Running Sonnet on a tmux `has-session`
+check would be absurd cost for zero benefit.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 1 "<description>"
+```
+
+---
+
+### Tier 2 — Gemma 4 E4B (Ollama)
+
+**Assigned to:**
+- signal-agent (database queries, pattern matching, signals.json writes)
+- code-hygiene-agent (dead code scan, duplicate detection, security scan)
+- training-librarian-agent (file audits, consistency checks, taxonomy)
+
+**Why Tier 2 for these:**
+All three have well-defined tasks with clear inputs and
+outputs. Signal-agent queries SQLite and writes JSON —
+the task structure is fixed and repeatable. Code-hygiene
+runs regex patterns across files. Training-librarian
+compares file contents against templates. None require
+multi-step statistical reasoning or reading across
+large, ambiguous codebases simultaneously.
+
+Qwen3-Coder-Next runs locally on the server's hardware
+(128GB RAM), making these tasks completely free after
+the server arrives. It has a 256K context window and
+achieves >70% on SWE-bench Verified — sufficient for
+these well-scoped tasks.
+
+**Hardware requirement:**
+Qwen3-Coder-Next target: 14B or 32B parameter version at Q4
+quantisation (~10-20GB RAM). The UM890 Pro (96GB DDR5) handles
+this comfortably with RAM to spare for concurrent processes.
+The 80B MoE version is deferred until larger hardware is available.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 2 "<description>"
+```
+
+---
+
+### Tier 2.5 — Claude Haiku 4.5
+
+**Assigned to:**
+- integration-test-agent (6 structured test suites, every Sunday)
+- research-scout-agent (daily scan, filter, file pattern)
+
+**Why Tier 2.5 for these:**
+
+*Integration-test-agent:* runs 6 structured test suites
+with fixed logic — signal bus checks, file existence,
+JSON validity, registry consistency, CI pipeline,
+brain directory integrity. The task is bounded and
+well-defined, but it needs reliable tool use and
+clean structured output. Anthropic's reliability
+guarantees matter here because a silently wrong
+integration test report is worse than no report.
+At $1/$5 per MTok it costs a fraction of Sonnet.
+
+*Research-scout-agent:* daily scanning, filtering,
+and filing from fixed Tier 1 sources. The task
+requires judgment about relevance but operates
+on a fixed template with defined output format.
+Sonnet is overkill for reading arXiv abstracts
+and deciding whether they match 6 domain criteria.
+Haiku 4.5 achieves 73.3% on SWE-bench Verified —
+sufficient for structured filtering work.
+
+**Why not Tier 2 (local) for these:**
+Integration-test output is safety-critical — a missed
+failure cascades silently. The Anthropic model guarantee
+and tool-use reliability of Haiku is worth the small
+cost here. Research-scout runs daily; at Haiku pricing
+the daily cost is negligible while the consistency
+improvement over a local model is meaningful.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 2.5 "<description>"
+```
+
+---
+
+### Tier 3 — Claude Sonnet 4.6
+
+**Assigned to:**
+- quant-research-agent (Phase 1-5 research questions)
+- backtest-agent (DSR, PBO, 7-sins validation)
+- market-builder-agent (multi-file API connectors, error design)
+- market-intelligence-agent (domain analysis, signal routing)
+- performance-analyst-agent (trend analysis, recommendations)
+- orchestrator main loop (context window, routing, agent spawning)
+
+**Why Tier 3 for these:**
+
+*Quant-research-agent:* Statistical reasoning on subtle
+points fails with weaker models. RQ1.1 (ELO persistence),
+RQ3.2 (crowd vs elite divergence) require reading across
+the research-directions file, reference library sections,
+and database outputs simultaneously while reasoning about
+statistical validity. Sonnet 4.6 at 79.6% SWE-bench is
+the minimum reliable floor for this.
+
+*Backtest-agent:* Must understand Deflated Sharpe Ratio,
+Probability of Backtest Overfitting, the 7 sins of
+backtesting, and Lopez de Prado's CPCV methodology —
+then apply them to code it hasn't seen before. This
+is complex multi-file reasoning against a rich reference
+library. A false approval is the most expensive mistake
+in the system. Sonnet is the minimum.
+
+*Market-builder-agent:* Multi-file API connector work
+with production-quality error handling and reconnection
+logic. Requires reasoning across API documentation,
+existing database schemas, and system conventions
+simultaneously.
+
+*Performance-analyst-agent:* Trend analysis across
+six metric categories, cross-referencing findings
+with reference library citations, producing specific
+actionable recommendations. Requires reading multiple
+weeks of agent outputs and identifying patterns.
+
+*Orchestrator:* Reads brain/priorities.md, signals.json,
+feedback.json, and agent_registry.json every cycle.
+Needs enough context window and reasoning to route
+signals correctly and make sensible escalation decisions.
+
+**Cost note:** Sonnet 4.6 is priced identically to
+Sonnet 4.5 ($3/$15 per MTok) but scores 79.6% on
+SWE-bench vs 77.2% for 4.5. Always use 4.6.
+
+**Expected cost split:**
+~15-20% of total token spend. Agents run complex tasks
+with substantive output. Budget accordingly.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 3 "<description>"
+```
+
+---
+
+### Tier 4 — Claude Opus 4.7 (escalation only)
+
+**Assigned to:**
+- Any task that failed Tier 3 validation three times
+- Genuine architectural design decisions
+- Tasks Oscar explicitly flags as requiring maximum capability
+
+**What counts as escalation:**
+A task has failed Tier 3 three times means exactly that:
+the orchestrator has respawned the agent twice already
+and it failed both times. On the third failure, the task
+moves to Opus. Not before.
+
+"Architecture decision" means: restructuring the agent
+system itself, redesigning the signal bus, major changes
+to the orchestrator loop. Not "this is a hard coding task."
+
+**What does NOT count as escalation:**
+- A task being complex or taking a long time
+- Oscar feeling uncertain about an approach
+- Quant research questions (these belong at Tier 3)
+- Any task where Sonnet hasn't been tried first
+
+**Why this matters:**
+Opus 4.7 costs $5/$25 per MTok — 5x Sonnet's output price.
+Unnecessary Opus usage at scale would dominate the cost
+budget. The 3-failure gate exists to ensure Opus is
+used only when Sonnet has genuinely reached its limit,
+not as a first resort for anything difficult.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 4 "<description>"
+```
+
+---
+
+## Complete Assignment Reference
+
+```
+Agent                    Tier   Model                    Reason
+─────────────────────────────────────────────────────────────────────
+Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
+Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
+signal-agent             2      Gemma 4 E4B (Ollama)     Well-defined
+code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
+training-librarian       2      Gemma 4 E4B (Ollama)     Structured
+integration-test         2.5    Claude Haiku 4.5         Reliability
+research-scout           2.5    Claude Haiku 4.5         Daily cadence
+quant-research           3      Claude Sonnet 4.6        Stats reasoning
+backtest-agent           3      Claude Sonnet 4.6        Multi-file valid
+market-builder           3      Claude Sonnet 4.6        API multi-file
+market-intelligence      3      Claude Sonnet 4.6        Domain analysis
+performance-analyst      3      Claude Sonnet 4.6        Trend analysis
+orchestrator             3      Claude Sonnet 4.6        Context window
+escalation (any)         4      Claude Opus 4.7          3x Sonnet fail
+─────────────────────────────────────────────────────────────────────
+```
+
+---
+
+## Expected Cost Split
+
+Based on system design and agent cadences:
+
+```
+Tier 1 (Gemma 4 E2B):         ~40-50% of requests, $0 cost
+Tier 2 (Gemma 4 E4B):         ~30-40% of requests, $0 cost
+Tier 2.5 (Haiku 4.5):         ~5-10% of requests, ~$1/$5 per MTok
+Tier 3 (Sonnet 4.6):          ~15-20% of requests, ~$3/$15 per MTok
+Tier 4 (Opus 4.7):            ~1-5% of requests, ~$5/$25 per MTok
+```
+
+The majority of token spend flows from Tier 3. Quant-research
+and backtest-agent produce the longest outputs and run the
+most frequently among paid agents. Monitor these two agents
+first when reviewing weekly costs.
+
+---
+
+## Cost Reduction Techniques
+
+**Prompt caching (up to 90% reduction on input):**
+The orchestrator injects priorities.md, model-routing.md,
+and the agent template into every prompt. These are
+identical across runs. Enable prompt caching on all
+Tier 2.5, 3, and 4 calls once the server is live.
+The reference library sections injected by quant-research
+are large and stable — caching them reduces cost dramatically.
+
+**Batch API (50% reduction on both input and output):**
+Performance-analyst and training-librarian run on a weekly
+schedule with no latency requirement. These are prime
+candidates for the Batch API once volume justifies it.
+Do not batch signal-agent or orchestrator — these are
+latency-sensitive.
+
+---
+
+## Model Strings for Claude Code
+
+For use in `scripts/spawn_agent.sh` and any code that
+calls Claude directly:
+
+```
+claude-haiku-4-5-20251001   ← Tier 2.5
+claude-sonnet-4-6            ← Tier 3
+claude-opus-4-7              ← Tier 4
+```
+
+The Haiku string includes a date suffix (`20251001`) because
+Haiku 4.5 was versioned differently from the Sonnet 4.6 /
+Opus 4.7 family. Use these exact strings. Do not use older
+strings (claude-sonnet-4-5, claude-opus-4-5) — those
+refer to the previous generation.
+
+---
+
+## Watch List — Future Routing Changes
+
+These developments may warrant tier reassignments.
+research-scout-agent should flag these when they mature:
+
+**Llama 4 Scout (available now — test on server arrival):**
+Open-weight MoE model, 109B total / 17B active parameters.
+At Q4 quantisation needs ~55GB RAM — potentially runnable on
+UM890 Pro's 96GB DDR5 via Ollama CPU inference. If response
+time is under 10 seconds for simple tasks, replaces Mistral
+at Tier 1 with significantly better capability at zero cost.
+Test immediately on server setup before committing to Mistral.
+Command: ollama pull llama4:scout
+Benchmark: time echo "Is this session alive?" | ollama run llama4:scout
+
+**Gemini 3.1 Pro (cloud, evaluate for Tier 3 cost reduction):**
+Leads 13 of 16 major benchmarks. Input pricing $2.00/MTok vs
+Sonnet's $3.00/MTok — 33% cheaper at comparable capability.
+Not open-weight so sovereignty requirements still apply for
+Polymarket system agents. For trading swarm API-driven agents
+(quant-research, backtest, orchestrator) evaluate as Tier 3
+alternative once system is live and weekly API costs are known.
+Blocked until 4 weeks of live cost data available.
+
+**Claude Mythos (released April 7 — gated, Tier 4 candidate):**
+Released April 7 to 50 organisations under Project Glasswing.
+93.9% SWE-bench Verified, 94.6% GPQA Diamond — best available.
+Pricing when public: $25 input / $125 output per MTok.
+At that price: Tier 4 escalation only, replaces Opus 4.7.
+Not publicly available yet — monitor for general release.
+
+**GPT-6 (released April 14 — evaluate for Tier 4):**
+Released April 14. $2.50 input / $12 output per MTok.
+40%+ capability improvement over GPT-5.4 at flat pricing.
+At $12/MTok output vs Opus $25/MTok — meaningfully cheaper
+for comparable capability. Evaluate as Tier 4 alternative
+once public benchmarks vs Mythos are clearer.
+
+**Gemma 4 31B (released April 2 — test on server):**
+Apache 2.0, free open weights. Outperforms Llama 4 Maverick
+on math, reasoning, and coding at 31B parameters.
+Potentially runnable on UM890 Pro. Test alongside Llama 4
+Scout on server setup — may replace or supplement Tier 2.
+
+**DeepSeek V4 (imminent — most important watch item):**
+Reuters confirmed weeks away as of April 3. 1T total / 32B
+active parameters, Apache 2.0, $0.14-0.30 per MTok.
+If benchmarks hold: replaces Sonnet at Tier 3 at 10x lower
+cost. Highest priority model routing change of Q2 2026.
+Halt all Tier 3 cost optimisation decisions until V4 drops.
+
+**DeepSeek V4 (anticipated 2026):**
+Leaked benchmarks suggest 80%+ SWE-bench Verified with
+open weights. If released open-weight and localizable
+on the server hardware, it becomes a candidate to
+replace or supplement Qwen3-Coder-Next at Tier 2 —
+potentially handling tasks currently routed to Sonnet.
+Do not act until independently verified benchmarks
+exist. Leaked benchmarks have historically been optimistic.
+
+**MiniMax M2.7 open-weight release:**
+Currently proprietary and cloud-only. If released as
+open weights, its benchmark parity with Sonnet 4.6
+at significantly lower cost makes it a Tier 2.5 or
+Tier 3 candidate. Blocked currently by sovereignty
+requirements — Chinese-hosted API fails data governance.
+Open weights would remove that blocker.
+Update April 2026: M2.7 claims Anthropic-compatible API
+(drop-in replacement, no code changes needed), native
+tool use with agentic loop, and 95% cheaper than Opus.
+Workflow engine implementations emerging. If open-weight
+released, priority evaluation — compatible API means
+zero integration cost. Sovereignty blocker remains
+until open weights confirmed.
+
+**Qwen3-Coder-480B quantised locally:**
+Deferred — requires ~250GB RAM, not viable on current hardware
+(96GB UM890 Pro). Revisit if hardware is upgraded in 2027.
+Continue monitoring Unsloth for 32B quantisation improvements
+which are viable on current hardware.
+
+---
+
+## Routing Change Protocol
+
+Before changing any tier assignment in this document:
+
+1. State the specific reason — which benchmark or
+   observed failure justifies the change
+2. Update this file with the new assignment and rationale
+3. Update AGENT_TIER_DEFAULTS in orchestrator/orchestrator.py
+   to match
+4. Update the tier flag in any scheduled spawn commands
+5. Log the decision in brain/decisions/ with date and reason
+6. Run CI to confirm nothing breaks
+
+Never change tier assignments based on cost alone.
+The tier must be capable of doing the job reliably.
+Saving $2/week on a task that then fails silently
+costs more than $2 to fix.
+
+---
+
+## Quick Reference
+
+```
+Task requires near-zero reasoning, pattern matching?
+→ Tier 1 (Gemma 4 E2B, free)
+
+Task is well-defined with clear inputs and outputs,
+runs frequently, mechanical in nature?
+→ Tier 2 (Gemma 4 E4B, free)
+
+Task needs Anthropic reliability, runs on a schedule,
+bounded scope but judgment required?
+→ Tier 2.5 (Claude Haiku 4.5, $1/$5 per MTok)
+
+Task requires complex multi-file reasoning, statistical
+validity, reading across reference library simultaneously?
+→ Tier 3 (Claude Sonnet 4.6, $3/$15 per MTok)
+
+Task has failed Tier 3 three times OR is genuinely
+architectural in scope?
+→ Tier 4 (Claude Opus 4.7, $5/$25 per MTok)
+```
+
+
+## GPU Acceleration Setup
+
+Hardware: AMD Radeon 780M iGPU (gfx1103, 12 CUs, RDNA3) — UM890 Pro
+Backend:  Vulkan (OLLAMA_VULKAN=1)
+Status:   ACTIVE as of 2026-05-02
+BIOS:     UMA Frame Buffer = 4G, UMA Specified mode
+Config:   /etc/systemd/system/ollama.service.d/rocm.conf
+
+ROCm/HIP path (libggml-hip.so) segfaults on gfx1103 with Ollama 0.22.1 /
+bundled ROCm 7.2 libs. Vulkan is the working path. Do NOT set
+OLLAMA_LLM_LIBRARY=rocm — leave unset and set OLLAMA_VULKAN=1 only.
+
+Upgrade path: increase BIOS UMA to 8G on next reboot for ~20-25 tok/s on E4B.
+BIOS path: AMD CBS → GFX Configuration → UMA Frame Buffer Size → 8G
+
+---
+
+## Server Benchmark Results
+
+### April 17 2026 — CPU baseline (pre-GPU)
+UM890 Pro (Ryzen 9 8945HS, 96GB DDR5, Radeon 780M — CPU only)
+
+| Model              | Size   | Time (first tok) | Decision              |
+|--------------------|--------|------------------|-----------------------|
+| Gemma 4 E2B        | 7.2GB  | 0.79s            | TIER 1 PRIMARY        |
+| Mistral            | 4.4GB  | 2.80s            | TIER 1 FALLBACK       |
+| Gemma 4 E4B        | 9.6GB  | 5.86s            | TIER 2 PRIMARY        |
+| Llama 4 Scout      | 67GB   | 24.00s           | REMOVED — too slow    |
+
+### May 2 2026 — Vulkan iGPU (AMD Radeon 780M, 4G VRAM)
+OLLAMA_VULKAN=1, UMA Frame Buffer = 4G
+
+| Model         | Load cold | Load hot | Eval (tok/s) | Prompt eval (tok/s) | Notes                          |
+|---------------|-----------|----------|--------------|---------------------|--------------------------------|
+| Gemma 4 E2B   | 6.9s      | 211ms    | 37.97        | 216                 | Fully VRAM-resident at 4G      |
+| Gemma 4 E4B   | 12.1s     | 223ms    | 14.79        | 388                 | Partially VRAM-bound at 4G; upgrade BIOS to 8G for ~20-25 tok/s |
+
+Key finding: thinking mode must be disabled for Tier 1/2 tasks.
+Gemma 4 E2B with --think=false is 12x faster than with thinking on.
+All Ollama calls must pass --think=false for classification/routing tasks.
+Thinking mode only appropriate for complex reasoning at Tier 2+.
+
+Invoke commands:
+  Tier 1: ollama run gemma4:e2b --think=false
+  Tier 2: ollama run gemma4:e4b --think=false
+  Tier 1 fallback: ollama run mistral
+
+
+## Task ID
+scout-20260512
+
+## Model Tier
+Tier 3 — claude-sonnet-4-6 (Tier 3)
+
+## Started At
+2026-05-12T08:00:01Z
+
+=== Agent Output ===
+Cycle 13 complete. Here's what was filed:
+
+---
+
+## Research Scout Cycle 13 — 2026-05-12
+
+**5 findings filed to pending-review, 10 discarded.**
+
+### Findings (in priority order)
+
+**1. PMXT — "CCXT for Prediction Markets"** `urgency: this week`
+MIT-licensed Python SDK (v2.40.5, 1.7k stars) providing a unified API for 10+ exchanges including Polymarket US/Global and Kalshi, plus a free Parquet archive at archive.pmxt.dev with tick-level historical data from April 2026. Directly matches the MCP/Market Data Watch List. Phase 4-5 candidate for both data sourcing and order execution. `pip install pmxt`.
+
+**2. AgentForesight — Online Failure Prediction** `urgency: backlog`
+arXiv:2605.08715. An auditor model watches agent trajectory prefixes at each step and flags failures *before* they cascade downstream. Outperforms GPT-4.1 by +19.9%. Our immune system only checks file existence — this paper identifies exactly the gap (subtly wrong outputs that pass the file check). High implementation effort (requires fine-tuning), so backlog until 4+ weeks of run history exists.
+
+**3. DeMem — Decision-Centric Agent Memory** `urgency: this month`
+arXiv:2605.10870. Rate-distortion theory applied to agent memory: retain only what changes future decisions, discard everything else. Directly applicable to feedback.json design and training-librarian pruning of lessons-learned.md. Low effort to adopt the principle, reference library addition.
+
+**4. SLIM — Dynamic Skill Lifecycle** `urgency: this month`
+arXiv:2605.10923, 10 HF upvotes. Leave-one-skill-out validation to decide strategy retention vs retirement. Maps to strategy-registry.md lifecycle governance — makes the ACTIVE→RETIRED transition rule explicit and measurable rather than qualitative. Distinct from SkillOS (filed cycle 12) which is about skill composition, not lifecycle management.
+
+**5. Polymarket Resolution-Zone Price Dynamics** `urgency: this month`
+arXiv:2605.10400 (PIRAP paper). Empirical analysis of 13,115 Polymarket markets shows "boundary depth asymmetry" and "terminal-jump" in the final minutes before resolution. New research direction: does YES/NO depth ratio in the 24h before resolution predict outcome? Pre-registration required before quant-research-agent tests this.
+
+Sources:
+- [pmxt-dev/pmxt](https://github.com/pmxt-dev/pmxt)
+- [archive.pmxt.dev](https://archive.pmxt.dev/Polymarket)
+- [AgentForesight arXiv:2605.08715](https://arxiv.org/abs/2605.08715)
+- [DeMem arXiv:2605.10870](https://arxiv.org/abs/2605.10870)
+- [SLIM arXiv:2605.10923](https://arxiv.org/abs/2605.10923)
+- [PIRAP arXiv:2605.10400](https://arxiv.org/abs/2605.10400)
+[REGISTRY] Cleaned up task scout-20260512

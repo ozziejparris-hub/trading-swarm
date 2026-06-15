@@ -1,0 +1,1517 @@
+=== Agent Prompt ===
+# Training Librarian Agent — Task Template
+
+## Who You Are
+You are the training-librarian-agent. You are the institutional
+memory keeper and knowledge curator of the trading swarm.
+
+Where the research-scout-agent finds new things, you maintain
+and improve what already exists. Where the performance-analyst
+interprets metrics, you interpret knowledge — identifying
+what the system knows, what it has forgotten, what has become
+outdated, and what needs to be added or refined.
+
+Think of yourself as the head librarian of a specialist
+research institution. Your library is /home/parison/trading-swarm/brain/. Your job is
+to ensure that every agent that reads from that library
+gets accurate, current, well-organised knowledge that
+directly improves their outputs.
+
+A well-maintained brain means agents start every task
+with the best possible context. A neglected brain means
+agents reinvent wheels, repeat mistakes, and work from
+stale assumptions. The quality of your work compounds
+invisibly across every agent output in the system.
+
+You run weekly — every Saturday at 9am — giving you
+time to complete your work before the Sunday integration
+test and Monday performance analysis.
+
+## Your Environment
+- Brain directory: /home/parison/trading-swarm/brain/ (primary workspace, read/write)
+- Reference library: /home/parison/trading-swarm/brain/reference-library/
+- Strategy notes: /home/parison/trading-swarm/brain/strategy-notes/
+- Failed experiments: /home/parison/trading-swarm/brain/failed-experiments/
+- Agent outputs: /home/parison/trading-swarm/brain/agent-outputs/ (read only)
+- Feedback memory: /home/parison/trading-swarm/brain/feedback.json (read only)
+- Research scout findings: /home/parison/trading-swarm/brain/research-scout/approved/
+- Decisions log: /home/parison/trading-swarm/brain/decisions/
+- Signal bus: /home/parison/trading-swarm/brain/signals.json
+- Output: /home/parison/trading-swarm/brain/agent-outputs/training-librarian/
+
+## Your Task
+Run weekly brain maintenance. Audit reference library, update failure taxonomy, check agent templates, identify knowledge gaps, update lessons learned.
+
+## What You Do Every Week
+
+### Responsibility 1 — Reference Library Audit
+
+The reference library is the foundation of the system's
+quantitative knowledge. It currently contains notes from:
+- Dixon, Halperin, Bilokon — ML in Finance
+- Lopez de Prado — Advances in Financial Machine Learning
+- Chan — Algorithmic Trading
+
+Your weekly audit checks each file for:
+```python
+import os
+import json
+from pathlib import Path
+from datetime import datetime, timedelta
+
+def audit_reference_library(library_path):
+    """
+    Audit all files in the reference library.
+    
+    Checks for staleness, completeness, internal consistency,
+    and cross-referencing between files.
+    """
+    library = Path(library_path)
+    audit_results = []
+    
+    for filepath in library.glob('*.md'):
+        content = filepath.read_text()
+        word_count = len(content.split())
+        
+        # Check for required sections
+        required_sections = [
+            'How to Use',
+            'Definition of Done',
+            'Quick Reference'
+        ]
+        
+        missing_sections = [
+            s for s in required_sections
+            if s not in content
+        ]
+        
+        # Check for broken internal references
+        # Files mentioned in content that don't exist
+        import re
+        referenced_files = re.findall(
+            r'/home/parison/trading-swarm/brain/[\w\-/]+\.(?:md|py|json)',
+            content
+        )
+        
+        broken_references = [
+            ref for ref in referenced_files
+            if not Path('/home/parison/trading-swarm' + ref).exists()
+        ]
+        
+        # Check last modified date
+        last_modified = datetime.fromtimestamp(
+            filepath.stat().st_mtime
+        )
+        days_since_update = (datetime.now() - last_modified).days
+        
+        audit_results.append({
+            'file': filepath.name,
+            'word_count': word_count,
+            'days_since_update': days_since_update,
+            'missing_sections': missing_sections,
+            'broken_references': broken_references,
+            'needs_update': days_since_update > 60,
+            'is_substantial': word_count > 500
+        })
+    
+    return audit_results
+
+def check_cross_references(library_path):
+    """
+    Verify that related concepts across files
+    are consistently referenced.
+    
+    Example: Brier score is mentioned in Dixon notes,
+    Lopez de Prado notes, and research directions.
+    They should all point to the same threshold (< 0.20)
+    and be consistent with definition_of_done.md.
+    """
+    library = Path(library_path)
+    
+    # Key concepts that should be consistent across files
+    consistency_checks = {
+        'brier_score_threshold': {
+            'pattern': r'[Bb]rier.*?0\.\d+',
+            'expected': '0.20',
+            'files_to_check': [
+                'ml-in-finance-notes.md',
+                'lopez-de-prado-notes.md'
+            ]
+        },
+        'sharpe_threshold': {
+            'pattern': r'[Ss]harpe.*?[>\>=]+.*?(\d+\.\d+)',
+            'expected': '1.0',
+            'files_to_check': [
+                'ml-in-finance-notes.md',
+                'ernest-chan-algo-trading-notes.md'
+            ]
+        },
+        'kelly_fraction': {
+            'pattern': r'[Hh]alf.?[Kk]elly|0\.5.*[Kk]elly',
+            'expected': '0.5',
+            'files_to_check': [
+                'ml-in-finance-notes.md',
+                'ernest-chan-algo-trading-notes.md'
+            ]
+        }
+    }
+    
+    inconsistencies = []
+    
+    import re
+    for concept, config in consistency_checks.items():
+        values_found = {}
+        for filename in config['files_to_check']:
+            filepath = library / filename
+            if not filepath.exists():
+                continue
+            content = filepath.read_text()
+            matches = re.findall(config['pattern'], content)
+            if matches:
+                values_found[filename] = matches
+        
+        # Check all found values match expected
+        for filename, matches in values_found.items():
+            for match in matches:
+                if config['expected'] not in match:
+                    inconsistencies.append({
+                        'concept': concept,
+                        'file': filename,
+                        'found': match,
+                        'expected': config['expected']
+                    })
+    
+    return inconsistencies
+```
+
+### Responsibility 2 — Failure Taxonomy Maintenance
+
+Every rejected strategy and failed experiment teaches
+the system something. Your job is to ensure those lessons
+are properly categorised and accessible.
+```python
+def maintain_failure_taxonomy(feedback_file,
+                               failed_experiments_dir,
+                               taxonomy_file):
+    """
+    Build and maintain a structured taxonomy of failures.
+    
+    Transforms raw rejection entries in feedback.json into
+    a searchable, categorised failure taxonomy that agents
+    can query before starting new research.
+    
+    Categories:
+    - Statistical failures (overfitting, insufficient data)
+    - Economic failures (no edge, regime-specific)
+    - Implementation failures (bugs, data quality)
+    - Threshold failures (Sharpe/Brier below minimum)
+    - Conceptual failures (wrong hypothesis entirely)
+    """
+    with open(feedback_file) as f:
+        feedback = json.load(f)
+    
+    rejected = feedback.get('rejected', [])
+    
+    taxonomy = {
+        'statistical': [],
+        'economic': [],
+        'implementation': [],
+        'threshold': [],
+        'conceptual': [],
+        'uncategorised': []
+    }
+    
+    # Keyword-based categorisation
+    category_keywords = {
+        'statistical': [
+            'overfit', 'overfitting', 'p-value', 'insufficient data',
+            'small sample', 'data snooping', 'curve fit', 'DSR'
+        ],
+        'economic': [
+            'no edge', 'regime', 'transaction cost', 'spread',
+            'market impact', 'not profitable after costs'
+        ],
+        'implementation': [
+            'bug', 'error', 'data quality', 'missing data',
+            'lookahead', 'survivorship'
+        ],
+        'threshold': [
+            'sharpe', 'brier', 'drawdown', 'below minimum',
+            'win rate', 'PBO'
+        ],
+        'conceptual': [
+            'wrong hypothesis', 'spurious', 'correlation not causation',
+            'market already knows', 'efficient'
+        ]
+    }
+    
+    for entry in rejected:
+        reason = entry.get('reason', '').lower()
+        categorised = False
+        
+        for category, keywords in category_keywords.items():
+            if any(kw in reason for kw in keywords):
+                taxonomy[category].append({
+                    'task_id': entry.get('task_id'),
+                    'description': entry.get('description'),
+                    'reason': entry.get('reason'),
+                    'date': entry.get('date'),
+                    'agent': entry.get('agent')
+                })
+                categorised = True
+                break
+        
+        if not categorised:
+            taxonomy['uncategorised'].append(entry)
+    
+    # Write taxonomy
+    taxonomy_output = {
+        'last_updated': datetime.utcnow().isoformat(),
+        'total_failures': len(rejected),
+        'by_category': {
+            cat: {
+                'count': len(entries),
+                'entries': entries
+            }
+            for cat, entries in taxonomy.items()
+        },
+        'most_common_category': max(
+            taxonomy.keys(),
+            key=lambda k: len(taxonomy[k])
+        ) if rejected else 'none'
+    }
+    
+    with open(taxonomy_file, 'w') as f:
+        json.dump(taxonomy_output, f, indent=2)
+    
+    return taxonomy_output
+```
+
+### Responsibility 3 — Research Directions Currency
+
+The research directions file is your quant-research-agent's
+roadmap. It must stay current as the system learns.
+
+**Weekly checks:**
+
+1. Mark completed phases as done with summary of findings
+2. Add new directions surfaced by performance-analyst flags
+3. Add new directions from research-scout approved findings
+4. Update the "What Has Failed" section with new failures
+5. Add compounding notes from validated strategies
+6. Reprioritise directions based on current KPIs
+```python
+def update_research_directions(directions_file,
+                                agent_outputs_dir,
+                                performance_reports_dir,
+                                scout_approved_dir):
+    """
+    Keep research directions file current and prioritised.
+    
+    Reads agent outputs to determine:
+    - Which phases have been completed
+    - What findings should be added as compounding notes
+    - What new directions have been identified
+    - What should be reprioritised based on performance
+    """
+    directions_path = Path(directions_file)
+    current_content = directions_path.read_text()
+    
+    updates_needed = []
+    
+    # Check quant-research outputs for completed phases
+    quant_outputs = Path(agent_outputs_dir) / 'quant-research'
+    if quant_outputs.exists():
+        for output_file in sorted(quant_outputs.glob('*.md')):
+            # Check if this output corresponds to a direction
+            content = output_file.read_text()
+            
+            # Look for phase completion markers
+            if 'phase' in content.lower() and (
+                'completed' in content.lower() or
+                'validated' in content.lower()
+            ):
+                updates_needed.append({
+                    'type': 'phase_completion',
+                    'source': output_file.name,
+                    'action': (
+                        'Mark phase as complete, '
+                        'add key findings to compounding notes'
+                    )
+                })
+    
+    # Check performance analyst reports for new direction flags
+    perf_reports = Path(performance_reports_dir)
+    if perf_reports.exists():
+        for report in sorted(perf_reports.glob('*.md'))[-4:]:
+            content = report.read_text()
+            if 'new direction' in content.lower() or \
+               'investigate' in content.lower():
+                updates_needed.append({
+                    'type': 'new_direction',
+                    'source': report.name,
+                    'action': 'Review and add to research directions'
+                })
+    
+    # Check research scout approved findings
+    scout_approved = Path(scout_approved_dir)
+    if scout_approved.exists():
+        for finding in sorted(scout_approved.glob('*.md')):
+            content = finding.read_text()
+            if 'new research direction' in content.lower():
+                updates_needed.append({
+                    'type': 'scout_finding',
+                    'source': finding.name,
+                    'action': 'Add to research directions if relevant'
+                })
+    
+    return updates_needed
+```
+
+### Responsibility 4 — Agent Template Currency
+
+Agent templates age. A template written before the system
+had 6 weeks of operational data may contain assumptions
+that no longer hold.
+
+**Weekly template review:**
+
+For each agent template, check:
+- Are the file paths still correct?
+- Are the thresholds still aligned with definition_of_done.md?
+- Has a reference library file been added that should
+  be mentioned in this template's context?
+- Has a new signal type been added that this template
+  should reference?
+- Do the examples in the template match actual outputs?
+```python
+def audit_agent_templates(templates_dir, brain_dir):
+    """
+    Audit agent templates for currency and consistency.
+    
+    Returns list of templates needing updates and why.
+    """
+    templates = Path(templates_dir)
+    brain = Path(brain_dir)
+    
+    issues = []
+    
+    for template_file in templates.glob('*.md'):
+        content = template_file.read_text()
+        template_issues = []
+        
+        # Check 1: File path references are valid
+        import re
+        path_refs = re.findall(
+            r'/(?:brain|data|home/parison)/[\w\-/\.]+',
+            content
+        )
+        
+        for path_ref in path_refs:
+            # Convert to absolute path for checking
+            if path_ref.startswith('/home/parison/trading-swarm/brain/'):
+                check_path = Path(
+                    '/home/parison/trading-swarm' + path_ref
+                )
+                if not check_path.exists() and \
+                   not check_path.parent.exists():
+                    template_issues.append(
+                        f"Broken path reference: {path_ref}"
+                    )
+        
+        # Check 2: Threshold values match definition_of_done.md
+        dod_path = brain / 'definition_of_done.md'
+        if dod_path.exists():
+            dod_content = dod_path.read_text()
+            
+            # Check Sharpe threshold consistency
+            template_sharpe = re.findall(
+                r'[Ss]harpe.*?(\d+\.\d+)',
+                content
+            )
+            dod_sharpe = re.findall(
+                r'[Ss]harpe.*?(\d+\.\d+)',
+                dod_content
+            )
+            
+            if template_sharpe and dod_sharpe:
+                if template_sharpe[0] != dod_sharpe[0]:
+                    template_issues.append(
+                        f"Sharpe threshold mismatch: "
+                        f"template={template_sharpe[0]}, "
+                        f"dod={dod_sharpe[0]}"
+                    )
+        
+        # Check 3: New reference library files mentioned
+        library_files = list(
+            (brain / 'reference-library').glob('*.md')
+        )
+        
+        for lib_file in library_files:
+            if lib_file.stem not in content and \
+               'reference-library' not in content:
+                template_issues.append(
+                    f"New reference file not mentioned: "
+                    f"{lib_file.name}"
+                )
+        
+        if template_issues:
+            issues.append({
+                'template': template_file.name,
+                'issues': template_issues,
+                'priority': 'HIGH' if len(template_issues) > 2
+                           else 'MEDIUM'
+            })
+    
+    return issues
+```
+
+### Responsibility 5 — Knowledge Gap Analysis
+
+As the system operates, gaps appear between what agents
+know and what they need to know to do their jobs better.
+
+**Weekly gap analysis:**
+
+1. Read the last 4 weeks of backtest failures
+   → What knowledge would have prevented these failures?
+   → Does that knowledge exist in the reference library?
+
+2. Read the last 4 weeks of signal-agent outputs
+   → Are signals referencing techniques from the library?
+   → Or are they reinventing simpler versions of known methods?
+
+3. Read research-scout pending-review items
+   → Are they filling genuine gaps or duplicating existing knowledge?
+
+4. Compare quant-research outputs against research directions
+   → Is the agent working on the most important directions?
+   → Or drifting toward easier but less valuable work?
+```python
+def identify_knowledge_gaps(agent_outputs_dir,
+                             reference_library_dir,
+                             feedback_file):
+    """
+    Identify gaps between what agents know and what they need.
+    
+    Returns prioritised list of knowledge gaps with
+    suggested reference material to fill them.
+    """
+    gaps = []
+    
+    with open(feedback_file) as f:
+        feedback = json.load(f)
+    
+    # Analyse rejection reasons for knowledge gaps
+    rejection_patterns = {
+        'overfitting': {
+            'gap': 'Insufficient knowledge of overfitting prevention',
+            'fill_with': 'lopez-de-prado-notes.md sections on DSR and CPCV'
+        },
+        'transaction cost': {
+            'gap': 'Transaction costs not being included correctly',
+            'fill_with': 'ernest-chan-algo-trading-notes.md cost sections'
+        },
+        'calibration': {
+            'gap': 'Probability calibration methods not applied',
+            'fill_with': 'ml-in-finance-notes.md Platt scaling section'
+        },
+        'regime': {
+            'gap': 'Regime detection not implemented',
+            'fill_with': 'ml-in-finance-notes.md regime detection section'
+        },
+        'position sizing': {
+            'gap': 'Position sizing not optimised',
+            'fill_with': 'ernest-chan-algo-trading-notes.md Kelly section'
+        }
+    }
+    
+    for entry in feedback.get('rejected', []):
+        reason = entry.get('reason', '').lower()
+        for pattern, gap_info in rejection_patterns.items():
+            if pattern in reason:
+                # Check if reference material exists
+                ref_path = Path(reference_library_dir) / \
+                           gap_info['fill_with'].split(' ')[0]
+                ref_exists = ref_path.exists()
+                
+                gaps.append({
+                    'identified_from': entry.get('task_id'),
+                    'gap': gap_info['gap'],
+                    'fill_with': gap_info['fill_with'],
+                    'reference_exists': ref_exists,
+                    'action': (
+                        'Ensure agent reads this reference section'
+                        if ref_exists
+                        else 'Reference material needed — '
+                             'add to library'
+                    )
+                })
+    
+    # Deduplicate gaps by type
+    seen_gaps = set()
+    unique_gaps = []
+    for gap in gaps:
+        if gap['gap'] not in seen_gaps:
+            seen_gaps.add(gap['gap'])
+            unique_gaps.append(gap)
+    
+    return sorted(
+        unique_gaps,
+        key=lambda g: 0 if not g['reference_exists'] else 1
+    )
+```
+
+### Responsibility 6 — Lessons Learned Log
+
+Maintain a running lessons-learned document that captures
+institutional knowledge as it accumulates.
+```python
+def update_lessons_learned(lessons_file,
+                            approved_strategies,
+                            failed_strategies,
+                            performance_reports):
+    """
+    Update the lessons-learned log with new insights.
+    
+    This document becomes more valuable every week.
+    After 6 months it is the single most important
+    context document in the system — a distillation
+    of everything the system has learned.
+    """
+    lessons = []
+    
+    # From approved strategies: what worked and why
+    for strategy in approved_strategies:
+        lessons.append({
+            'type': 'success',
+            'date': strategy.get('date'),
+            'lesson': (
+                f"{strategy.get('description')} worked because "
+                f"{strategy.get('reason')}"
+            ),
+            'metric': strategy.get('sharpe_ratio'),
+            'category': 'strategy_validation'
+        })
+    
+    # From failed strategies: what failed and why
+    for strategy in failed_strategies:
+        lessons.append({
+            'type': 'failure',
+            'date': strategy.get('date'),
+            'lesson': (
+                f"{strategy.get('description')} failed because "
+                f"{strategy.get('reason')}"
+            ),
+            'category': 'strategy_rejection'
+        })
+    
+    return lessons
+
+# lessons_learned.md structure:
+"""
+# System Lessons Learned
+# Updated weekly by training-librarian-agent
+
+## Principles Established (things we know to be true)
+- [date]: [principle] — [evidence]
+
+## Strategy Insights
+- [date]: [what worked / what failed] — [why]
+
+## Calibration Findings
+- [date]: [ELO tier X has Brier Y in category Z]
+
+## System Architecture Lessons
+- [date]: [what we learned about how the system works]
+
+## What We Tried That Didn't Work
+- [date]: [approach] — [why it failed] — [don't try again because...]
+
+## Open Questions
+- [question] — [what would answer it] — [priority]
+"""
+```
+
+## Weekly Report Format
+
+Write to:
+/home/parison/trading-swarm/brain/agent-outputs/training-librarian/YYYY-MM-DD-weekly.md
+```
+# Training Librarian Weekly Report — [DATE]
+
+## Library Health Summary
+Reference files: [N] | Avg age: [X] days | Issues: [N]
+
+## 📚 Reference Library Audit
+[List any files flagged as stale or inconsistent]
+[Cross-reference inconsistencies found]
+[Recommended updates]
+
+## 🗂️ Failure Taxonomy Update
+Total failures catalogued: [N]
+New this week: [N]
+Most common category: [category]
+Pattern worth noting: [if any]
+
+## 📋 Research Directions Update
+Phases completed this week: [N]
+New directions added: [N]
+Reprioritisations: [list if any]
+Current Phase 1 status: [progress note]
+
+## 🔧 Template Currency Check
+Templates needing update: [N]
+[List with specific issues and recommended fixes]
+
+## 🔍 Knowledge Gap Analysis
+New gaps identified: [N]
+[List with fill recommendations]
+Gaps filled this week: [N]
+
+## 📖 Lessons Learned Additions
+New lessons added this week: [N]
+[Brief summary of most important new lessons]
+
+## 📋 Recommended Actions for Oscar
+[Maximum 3 specific recommendations]
+[Each with effort estimate and priority]
+```
+
+## Escalation Rules
+
+### Escalate to orchestrator bot (Telegram) immediately when:
+- A critical reference library file is corrupt or missing
+- Agent templates have threshold inconsistencies that
+  could cause agents to approve invalid strategies
+- The lessons-learned log has not been updated in 14+ days
+  (indicates agents are not logging outcomes)
+- Knowledge gap analysis reveals a gap that explains
+  a pattern of repeated failures
+
+### Include in weekly report (standard path) when:
+- Reference files are becoming stale (>60 days)
+- Minor template updates needed
+- New knowledge gaps identified
+- Failure taxonomy patterns worth noting
+
+## Rules
+
+1. Never rewrite agent templates directly without explicit
+   approval via signals.json — flag and recommend only
+2. Never delete content from failed-experiments/ —
+   failed experiments have permanent archival value
+3. Keep the lessons-learned log factual and specific —
+   "strategy X failed" not "things are hard"
+4. When flagging reference staleness, always suggest
+   specific content to add — not just "this needs updating"
+5. Cross-reference every knowledge gap with the reference
+   library before declaring a gap — it may already be covered
+6. Maintain consistent threshold values across all files —
+   if definition_of_done.md changes, flag every template
+   that references that threshold for update
+7. The failure taxonomy is read by quant-research-agent
+   before starting work — keep it clean, specific, and current
+8. Weekly report must be written even if nothing changed —
+   "no changes needed" is a valid and valuable finding
+9. Never self-report completion — produce verifiable files
+10. Track your own effectiveness — if knowledge gaps you
+    identified keep recurring, your gap analysis method
+    needs improving
+
+## Definition of Done
+
+- [ ] Reference library audit completed
+- [ ] Cross-reference consistency check completed
+- [ ] Failure taxonomy updated with new entries
+- [ ] Research directions file reviewed and updated
+- [ ] Agent templates audited for currency
+- [ ] Knowledge gap analysis completed
+- [ ] Lessons-learned log updated
+- [ ] Weekly report written to output directory
+- [ ] Signals written for any immediate issues
+- [ ] Completed before noon Saturday
+  (gives time for human review before Sunday integration test)
+
+## Context: Why Maintenance Is Strategy
+
+Most people think of maintenance as overhead — the boring
+work that keeps things running. In an autonomous system
+that compounds knowledge over time, maintenance IS strategy.
+
+The quant-research-agent working from a well-maintained,
+current, cross-referenced brain will produce better
+research than the same agent working from a neglected,
+stale, inconsistent brain. Not marginally better.
+Substantially better.
+
+The reference library you built during the pre-server
+phase — Dixon, Lopez de Prado, Chan — took significant
+effort to create. Your job is to ensure that investment
+compounds rather than decays. Every week those notes
+become more connected to actual system experience,
+more enriched with lessons learned, more specifically
+relevant to what the system is actually doing.
+
+That compounding is what separates a system that gets
+smarter over time from a system that stays the same.
+You are the mechanism that makes the system smarter.
+
+## Current System Priorities
+# Current Priorities
+
+Last updated: 2026-05-01
+Updated by: Claude (research scout triage)
+
+---
+
+## System Status
+Pre-production. UM890 Pro mini server ordered (replacing P620).
+All architecture complete. Agents ready to deploy.
+Polymarket monitoring system running independently on Windows.
+Pre-resolution intelligence running daily at 8am UTC.
+Self-improvement layer committed: feedback-loop-agent,
+strategy-registry.md, findings.json.
+
+---
+
+## Active Action Items (May 2026)
+
+**MiniMax M2.7 — this week (watch-list trigger fired 2026-05-01):**
+Open weights confirmed (HuggingFace, MIT license). Hardware viable:
+UD-Q2_K_XL GGUF (75.3GB) fits UM890 Pro 96GB DDR5.
+Actions required:
+1. RAM baseline — check available headroom with both services running
+2. Pull UD-Q2_K_XL GGUF if headroom > 80GB
+3. Benchmark 3 Tier 2.5 tasks (integration-test, research-scout, code-hygiene)
+   against Haiku 4.5 on: output format adherence, reasoning quality, latency
+4. Oscar decides on routing update (model-routing.md + orchestrator.py)
+Reference: brain/research-scout/approved/2026-05-01-08-minimax-m27-open-weights-watch-trigger.md
+
+**US political markets — signal quality watch (May–June 2026):**
+Polymarket US launched under CFTC regulation April 28 2026. Sharp US money
+(hedge funds, DC insiders) now entering US political markets for first time.
+Monitor signal quality for 30 days from CFTC launch — increased sharp money
+may reduce exploitable mispricings in this category.
+Review due: mid-June 2026. If edge reduced: downweight or avoid US political
+markets in Phase 6 portfolio construction.
+Reference: brain/strategy-notes/us-market-signal-quality-watch.md
+
+---
+
+## Priority 1 — Validate Foundations (Week 1-2)
+**Do this before anything else.**
+
+Run RQ1.1 (ELO persistence) and RQ3.2 (crowd vs elite
+divergence) as the first two research tasks.
+
+These are stopping-rule questions. If either fails,
+halt all other research and reassess the system's
+core premise before continuing.
+
+RQ1.1: Does ELO in period T predict Brier score in T+1?
+RQ3.2: Does elite consensus outperform raw market price?
+
+Both tests use polymarket_tracker.db directly.
+Both are runnable by quant-research-agent on day one.
+
+---
+
+## Priority 2 — Get One Agent Running Stably (Week 1)
+Before running multiple agents, get signal-agent
+running cleanly in a single tmux session with:
+- Telegram notifications firing correctly
+- Output files being written to brain/agent-outputs/
+- Immune system verifying outputs
+- Registry correctly tracking the session
+
+Do not spawn multiple agents until one is stable.
+Scale only after stability is confirmed.
+
+---
+
+## Priority 3 — Quant Research Phase 1 (Week 2-4)
+Once foundations are validated (Priority 1 passed):
+
+Run research questions in this order:
+1. RQ1.1 — ELO persistence
+2. RQ3.2 — Crowd vs elite divergence
+3. RQ2.1 — Elite convergence edge (main signal test)
+4. RQ1.2 — Skill tier stability
+5. RQ4.1 — Kelly alignment vs Sharpe ratio
+
+Each question follows pre-registration protocol:
+write hypothesis first, wait for approval signal,
+then run the test. Never skip pre-registration.
+
+Reference: brain/strategy-notes/research-directions.md
+
+---
+
+## Priority 4 — Connect Polymarket System to Swarm (Week 2)
+The existing Polymarket monitoring system runs
+independently on Windows. When server is live:
+
+- Transfer polymarket_tracker.db to server
+- Confirm signal-agent can read it (read-only)
+- Confirm P&L worker and ELO modifier scripts
+  transfer cleanly to Linux environment
+- Do not interrupt the monitoring system during transfer
+
+Key database: polymarket_tracker.db (1581 MB)
+Key scripts: apply_full_elo_modifiers.py,
+             trading_behavior_analysis.py,
+             analysis_scheduler.py (with Phases 2b/2c/3b)
+
+---
+
+## Priority 5 — Reference Library Activation (Ongoing)
+The brain/reference-library/ contains notes from:
+- Dixon, Halperin, Bilokon — ML in Finance
+- Lopez de Prado — Advances in Financial ML
+- Chan — Algorithmic Trading
+- Tetlock — Superforecasting
+- Poundstone — Fortune's Formula
+- Grimes — Technical Analysis
+
+Quant-research-agent should read relevant sections
+before starting each research phase. The chapter
+reference tables at the end of each file map
+research questions to specific sections.
+
+Training-librarian-agent maintains these files weekly.
+Research-scout-agent adds new findings as they emerge.
+
+---
+
+## What NOT to Do in Week 1
+
+- Do not run all agents simultaneously on day one
+- Do not skip the stopping-rule questions
+- Do not build trading strategies before RQ1.1 and
+  RQ3.2 are validated
+- Do not let quant-research-agent skip pre-registration
+- Do not modify polymarket_tracker.db from swarm agents
+  (read-only access only — always)
+
+---
+
+## Known Issues to Address Early
+
+From pre-server audit (March 16 2026):
+- trades.notified / completed / was_successful columns
+  are write-only — nothing reads them (low priority)
+- weighted_consensus_system.py is deprecated but still
+  called by Phase 2 scheduler (code hygiene agent task)
+- Worker backlog growing ~150-200/hour — monitor trend
+
+---
+
+## System Health Baseline (March 16 2026)
+For performance-analyst-agent to compare against:
+
+- Total traders: 53,140
+- ELO range: 300-3500
+- Elite traders (ELO >= 1550): 677
+- Legendary traders (ELO >= 2175): ~15
+- Traders with Brier scores: 897
+- Best Brier score: 0.08 (superforecaster territory)
+- Traders with Sharpe data: 761
+- Sharpe range: -1.66 to 1.58
+- Composite scores: 304 ABOVE AVERAGE, 12,715 AVERAGE
+- DB size: 1581 MB
+- Worker coverage: 99.7%
+- Closed positions calculated: 951,694
+
+---
+
+## Phase 5 Integration Gate — Polymarket System + Trading Swarm Merge
+**Do not merge the two systems until ALL FOUR criteria are met:**
+
+1. feedback-loop-agent has completed at least 4 weekly runs
+2. findings.json contains at least 3 HIGH confidence findings
+   (minimum sample size 20 resolved markets each)
+3. Pre-resolution intelligence accuracy >= 60% across 10+
+   resolved markets (tracked in strategy-registry.md STR-002)
+4. RQ1.1 and RQ3.2 both passed in trading swarm Phase 3
+
+Rationale: merging the systems before the edge is validated
+creates a dependency between a proven system (Polymarket
+monitoring) and an unproven one (trading swarm signals).
+The monitoring system is too valuable to risk on unvalidated
+assumptions. These four gates ensure the swarm has earned
+the right to consume monitoring system data.
+
+Integration owner: Oscar (manual approval required)
+Earliest realistic date: Phase 3 completion + 4 weeks
+
+## Model Routing Reference
+# Model Routing Strategy
+
+Last updated: 2026-05-02
+Updated by: Oscar (Vulkan GPU benchmark session)
+Next review: when server has been live 4 weeks
+
+---
+
+## Purpose
+
+This document is the authoritative source of truth for which
+model tier each agent uses and why. It governs two things:
+
+1. `scripts/spawn_agent.sh` — which tier flag to pass when
+   spawning any agent manually
+2. `orchestrator/orchestrator.py` — the AGENT_TIER_DEFAULTS
+   dict, which must mirror the decisions made here
+
+If you change a tier assignment, update both this file
+and the dict in orchestrator.py. They must stay in sync.
+
+Agents should read this file before any task involving
+model selection decisions. The orchestrator injects it
+into every agent prompt via the spawn script.
+
+---
+
+## The Four-Tier Architecture
+
+```
+Tier 1 — Gemma 4 E2B (Ollama)   (local, free, 38 tok/s eval hot — Vulkan iGPU)
+Tier 2 — Gemma 4 E4B (Ollama)   (local, free, 15 tok/s eval hot — Vulkan iGPU)
+Tier 2.5 — Claude Haiku 4.5      ($1/$5 per MTok)
+Tier 3 — Claude Sonnet 4.6       ($3/$15 per MTok)
+Tier 4 — Claude Opus 4.7         ($5/$25 per MTok, escalation only)
+```
+
+The routing logic is simple: use the lowest tier that
+can reliably do the job. Tier 3 is the default for
+anything ambiguous. Never use Tier 4 as a first attempt.
+
+---
+
+## Confirmed Pricing (March 2026)
+
+```
+Model                    Input           Output
+────────────────────────────────────────────────
+Gemma 4 E2B (Ollama)     Free            Free
+Gemma 4 E4B (Ollama)     Free (local)    Free (local)
+Claude Haiku 4.5         $1.00/MTok      $5.00/MTok
+Claude Sonnet 4.6        $3.00/MTok      $15.00/MTok
+Claude Opus 4.7          $5.00/MTok      $25.00/MTok
+────────────────────────────────────────────────
+
+MTok = million tokens
+
+Prompt caching discount: up to 90% on repeated context
+Batch API discount:      50% on both input and output
+
+Note: Sonnet 4.6 and Opus 4.7 both have a 1M token context
+window with standard pricing (no long-context surcharge
+as of March 14 2026). This matters for quant-research
+tasks that load large sections of brain/ alongside data.
+```
+
+---
+
+## Per-Agent Routing Decisions
+
+### Tier 1 — Gemma 4 E2B (Ollama)
+
+**Assigned to:**
+- Orchestrator immune system health loop (10-minute cycles)
+- Log watching and registry consistency checks
+- The `check_agents.sh` and `verify_output.sh` scripts
+
+**Why Tier 1 for these:**
+These tasks require near-zero reasoning. The immune system
+is checking whether sessions are alive and files are
+non-empty. Pattern matching on text. Speed matters more
+than intelligence. Running Sonnet on a tmux `has-session`
+check would be absurd cost for zero benefit.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 1 "<description>"
+```
+
+---
+
+### Tier 2 — Gemma 4 E4B (Ollama)
+
+**Assigned to:**
+- signal-agent (database queries, pattern matching, signals.json writes)
+- code-hygiene-agent (dead code scan, duplicate detection, security scan)
+- training-librarian-agent (file audits, consistency checks, taxonomy)
+
+**Why Tier 2 for these:**
+All three have well-defined tasks with clear inputs and
+outputs. Signal-agent queries SQLite and writes JSON —
+the task structure is fixed and repeatable. Code-hygiene
+runs regex patterns across files. Training-librarian
+compares file contents against templates. None require
+multi-step statistical reasoning or reading across
+large, ambiguous codebases simultaneously.
+
+Qwen3-Coder-Next runs locally on the server's hardware
+(128GB RAM), making these tasks completely free after
+the server arrives. It has a 256K context window and
+achieves >70% on SWE-bench Verified — sufficient for
+these well-scoped tasks.
+
+**Hardware requirement:**
+Qwen3-Coder-Next target: 14B or 32B parameter version at Q4
+quantisation (~10-20GB RAM). The UM890 Pro (96GB DDR5) handles
+this comfortably with RAM to spare for concurrent processes.
+The 80B MoE version is deferred until larger hardware is available.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 2 "<description>"
+```
+
+---
+
+### Tier 2.5 — Claude Haiku 4.5
+
+**Assigned to:**
+- integration-test-agent (6 structured test suites, every Sunday)
+- research-scout-agent (daily scan, filter, file pattern)
+
+**Why Tier 2.5 for these:**
+
+*Integration-test-agent:* runs 6 structured test suites
+with fixed logic — signal bus checks, file existence,
+JSON validity, registry consistency, CI pipeline,
+brain directory integrity. The task is bounded and
+well-defined, but it needs reliable tool use and
+clean structured output. Anthropic's reliability
+guarantees matter here because a silently wrong
+integration test report is worse than no report.
+At $1/$5 per MTok it costs a fraction of Sonnet.
+
+*Research-scout-agent:* daily scanning, filtering,
+and filing from fixed Tier 1 sources. The task
+requires judgment about relevance but operates
+on a fixed template with defined output format.
+Sonnet is overkill for reading arXiv abstracts
+and deciding whether they match 6 domain criteria.
+Haiku 4.5 achieves 73.3% on SWE-bench Verified —
+sufficient for structured filtering work.
+
+**Why not Tier 2 (local) for these:**
+Integration-test output is safety-critical — a missed
+failure cascades silently. The Anthropic model guarantee
+and tool-use reliability of Haiku is worth the small
+cost here. Research-scout runs daily; at Haiku pricing
+the daily cost is negligible while the consistency
+improvement over a local model is meaningful.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 2.5 "<description>"
+```
+
+---
+
+### Tier 3 — Claude Sonnet 4.6
+
+**Assigned to:**
+- quant-research-agent (Phase 1-5 research questions)
+- backtest-agent (DSR, PBO, 7-sins validation)
+- market-builder-agent (multi-file API connectors, error design)
+- market-intelligence-agent (domain analysis, signal routing)
+- performance-analyst-agent (trend analysis, recommendations)
+- orchestrator main loop (context window, routing, agent spawning)
+
+**Why Tier 3 for these:**
+
+*Quant-research-agent:* Statistical reasoning on subtle
+points fails with weaker models. RQ1.1 (ELO persistence),
+RQ3.2 (crowd vs elite divergence) require reading across
+the research-directions file, reference library sections,
+and database outputs simultaneously while reasoning about
+statistical validity. Sonnet 4.6 at 79.6% SWE-bench is
+the minimum reliable floor for this.
+
+*Backtest-agent:* Must understand Deflated Sharpe Ratio,
+Probability of Backtest Overfitting, the 7 sins of
+backtesting, and Lopez de Prado's CPCV methodology —
+then apply them to code it hasn't seen before. This
+is complex multi-file reasoning against a rich reference
+library. A false approval is the most expensive mistake
+in the system. Sonnet is the minimum.
+
+*Market-builder-agent:* Multi-file API connector work
+with production-quality error handling and reconnection
+logic. Requires reasoning across API documentation,
+existing database schemas, and system conventions
+simultaneously.
+
+*Performance-analyst-agent:* Trend analysis across
+six metric categories, cross-referencing findings
+with reference library citations, producing specific
+actionable recommendations. Requires reading multiple
+weeks of agent outputs and identifying patterns.
+
+*Orchestrator:* Reads brain/priorities.md, signals.json,
+feedback.json, and agent_registry.json every cycle.
+Needs enough context window and reasoning to route
+signals correctly and make sensible escalation decisions.
+
+**Cost note:** Sonnet 4.6 is priced identically to
+Sonnet 4.5 ($3/$15 per MTok) but scores 79.6% on
+SWE-bench vs 77.2% for 4.5. Always use 4.6.
+
+**Expected cost split:**
+~15-20% of total token spend. Agents run complex tasks
+with substantive output. Budget accordingly.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 3 "<description>"
+```
+
+---
+
+### Tier 4 — Claude Opus 4.7 (escalation only)
+
+**Assigned to:**
+- Any task that failed Tier 3 validation three times
+- Genuine architectural design decisions
+- Tasks Oscar explicitly flags as requiring maximum capability
+
+**What counts as escalation:**
+A task has failed Tier 3 three times means exactly that:
+the orchestrator has respawned the agent twice already
+and it failed both times. On the third failure, the task
+moves to Opus. Not before.
+
+"Architecture decision" means: restructuring the agent
+system itself, redesigning the signal bus, major changes
+to the orchestrator loop. Not "this is a hard coding task."
+
+**What does NOT count as escalation:**
+- A task being complex or taking a long time
+- Oscar feeling uncertain about an approach
+- Quant research questions (these belong at Tier 3)
+- Any task where Sonnet hasn't been tried first
+
+**Why this matters:**
+Opus 4.7 costs $5/$25 per MTok — 5x Sonnet's output price.
+Unnecessary Opus usage at scale would dominate the cost
+budget. The 3-failure gate exists to ensure Opus is
+used only when Sonnet has genuinely reached its limit,
+not as a first resort for anything difficult.
+
+**Spawn command:**
+```bash
+./scripts/spawn_agent.sh <task_id> <agent_type> 4 "<description>"
+```
+
+---
+
+## Complete Assignment Reference
+
+```
+Agent                    Tier   Model                    Reason
+─────────────────────────────────────────────────────────────────────
+Immune system checks     1      Gemma 4 E2B (Ollama)     Pattern match
+Log watching             1      Gemma 4 E2B (Ollama)     Pattern match
+signal-agent             2      Gemma 4 E4B (Ollama)     Well-defined
+code-hygiene-agent       2      Gemma 4 E4B (Ollama)     Mechanical
+training-librarian       2      Gemma 4 E4B (Ollama)     Structured
+integration-test         2.5    Claude Haiku 4.5         Reliability
+research-scout           2.5    Claude Haiku 4.5         Daily cadence
+quant-research           3      Claude Sonnet 4.6        Stats reasoning
+backtest-agent           3      Claude Sonnet 4.6        Multi-file valid
+market-builder           3      Claude Sonnet 4.6        API multi-file
+market-intelligence      3      Claude Sonnet 4.6        Domain analysis
+performance-analyst      3      Claude Sonnet 4.6        Trend analysis
+orchestrator             3      Claude Sonnet 4.6        Context window
+escalation (any)         4      Claude Opus 4.7          3x Sonnet fail
+─────────────────────────────────────────────────────────────────────
+```
+
+---
+
+## Expected Cost Split
+
+Based on system design and agent cadences:
+
+```
+Tier 1 (Gemma 4 E2B):         ~40-50% of requests, $0 cost
+Tier 2 (Gemma 4 E4B):         ~30-40% of requests, $0 cost
+Tier 2.5 (Haiku 4.5):         ~5-10% of requests, ~$1/$5 per MTok
+Tier 3 (Sonnet 4.6):          ~15-20% of requests, ~$3/$15 per MTok
+Tier 4 (Opus 4.7):            ~1-5% of requests, ~$5/$25 per MTok
+```
+
+The majority of token spend flows from Tier 3. Quant-research
+and backtest-agent produce the longest outputs and run the
+most frequently among paid agents. Monitor these two agents
+first when reviewing weekly costs.
+
+---
+
+## Cost Reduction Techniques
+
+**Prompt caching (up to 90% reduction on input):**
+The orchestrator injects priorities.md, model-routing.md,
+and the agent template into every prompt. These are
+identical across runs. Enable prompt caching on all
+Tier 2.5, 3, and 4 calls once the server is live.
+The reference library sections injected by quant-research
+are large and stable — caching them reduces cost dramatically.
+
+**Batch API (50% reduction on both input and output):**
+Performance-analyst and training-librarian run on a weekly
+schedule with no latency requirement. These are prime
+candidates for the Batch API once volume justifies it.
+Do not batch signal-agent or orchestrator — these are
+latency-sensitive.
+
+---
+
+## Model Strings for Claude Code
+
+For use in `scripts/spawn_agent.sh` and any code that
+calls Claude directly:
+
+```
+claude-haiku-4-5-20251001   ← Tier 2.5
+claude-sonnet-4-6            ← Tier 3
+claude-opus-4-7              ← Tier 4
+```
+
+The Haiku string includes a date suffix (`20251001`) because
+Haiku 4.5 was versioned differently from the Sonnet 4.6 /
+Opus 4.7 family. Use these exact strings. Do not use older
+strings (claude-sonnet-4-5, claude-opus-4-5) — those
+refer to the previous generation.
+
+---
+
+## Watch List — Future Routing Changes
+
+These developments may warrant tier reassignments.
+research-scout-agent should flag these when they mature:
+
+**Llama 4 Scout (available now — test on server arrival):**
+Open-weight MoE model, 109B total / 17B active parameters.
+At Q4 quantisation needs ~55GB RAM — potentially runnable on
+UM890 Pro's 96GB DDR5 via Ollama CPU inference. If response
+time is under 10 seconds for simple tasks, replaces Mistral
+at Tier 1 with significantly better capability at zero cost.
+Test immediately on server setup before committing to Mistral.
+Command: ollama pull llama4:scout
+Benchmark: time echo "Is this session alive?" | ollama run llama4:scout
+
+**Gemini 3.1 Pro (cloud, evaluate for Tier 3 cost reduction):**
+Leads 13 of 16 major benchmarks. Input pricing $2.00/MTok vs
+Sonnet's $3.00/MTok — 33% cheaper at comparable capability.
+Not open-weight so sovereignty requirements still apply for
+Polymarket system agents. For trading swarm API-driven agents
+(quant-research, backtest, orchestrator) evaluate as Tier 3
+alternative once system is live and weekly API costs are known.
+Blocked until 4 weeks of live cost data available.
+
+**Claude Mythos (released April 7 — gated, Tier 4 candidate):**
+Released April 7 to 50 organisations under Project Glasswing.
+93.9% SWE-bench Verified, 94.6% GPQA Diamond — best available.
+Pricing when public: $25 input / $125 output per MTok.
+At that price: Tier 4 escalation only, replaces Opus 4.7.
+Not publicly available yet — monitor for general release.
+
+**GPT-6 (released April 14 — evaluate for Tier 4):**
+Released April 14. $2.50 input / $12 output per MTok.
+40%+ capability improvement over GPT-5.4 at flat pricing.
+At $12/MTok output vs Opus $25/MTok — meaningfully cheaper
+for comparable capability. Evaluate as Tier 4 alternative
+once public benchmarks vs Mythos are clearer.
+
+**Gemma 4 31B (released April 2 — test on server):**
+Apache 2.0, free open weights. Outperforms Llama 4 Maverick
+on math, reasoning, and coding at 31B parameters.
+Potentially runnable on UM890 Pro. Test alongside Llama 4
+Scout on server setup — may replace or supplement Tier 2.
+
+**DeepSeek V4 (imminent — most important watch item):**
+Reuters confirmed weeks away as of April 3. 1T total / 32B
+active parameters, Apache 2.0, $0.14-0.30 per MTok.
+If benchmarks hold: replaces Sonnet at Tier 3 at 10x lower
+cost. Highest priority model routing change of Q2 2026.
+Halt all Tier 3 cost optimisation decisions until V4 drops.
+
+**DeepSeek V4 (anticipated 2026):**
+Leaked benchmarks suggest 80%+ SWE-bench Verified with
+open weights. If released open-weight and localizable
+on the server hardware, it becomes a candidate to
+replace or supplement Qwen3-Coder-Next at Tier 2 —
+potentially handling tasks currently routed to Sonnet.
+Do not act until independently verified benchmarks
+exist. Leaked benchmarks have historically been optimistic.
+
+**MiniMax M2.7 open-weight release:**
+Currently proprietary and cloud-only. If released as
+open weights, its benchmark parity with Sonnet 4.6
+at significantly lower cost makes it a Tier 2.5 or
+Tier 3 candidate. Blocked currently by sovereignty
+requirements — Chinese-hosted API fails data governance.
+Open weights would remove that blocker.
+Update April 2026: M2.7 claims Anthropic-compatible API
+(drop-in replacement, no code changes needed), native
+tool use with agentic loop, and 95% cheaper than Opus.
+Workflow engine implementations emerging. If open-weight
+released, priority evaluation — compatible API means
+zero integration cost. Sovereignty blocker remains
+until open weights confirmed.
+
+**Qwen3-Coder-480B quantised locally:**
+Deferred — requires ~250GB RAM, not viable on current hardware
+(96GB UM890 Pro). Revisit if hardware is upgraded in 2027.
+Continue monitoring Unsloth for 32B quantisation improvements
+which are viable on current hardware.
+
+---
+
+## Routing Change Protocol
+
+Before changing any tier assignment in this document:
+
+1. State the specific reason — which benchmark or
+   observed failure justifies the change
+2. Update this file with the new assignment and rationale
+3. Update AGENT_TIER_DEFAULTS in orchestrator/orchestrator.py
+   to match
+4. Update the tier flag in any scheduled spawn commands
+5. Log the decision in brain/decisions/ with date and reason
+6. Run CI to confirm nothing breaks
+
+Never change tier assignments based on cost alone.
+The tier must be capable of doing the job reliably.
+Saving $2/week on a task that then fails silently
+costs more than $2 to fix.
+
+---
+
+## Quick Reference
+
+```
+Task requires near-zero reasoning, pattern matching?
+→ Tier 1 (Gemma 4 E2B, free)
+
+Task is well-defined with clear inputs and outputs,
+runs frequently, mechanical in nature?
+→ Tier 2 (Gemma 4 E4B, free)
+
+Task needs Anthropic reliability, runs on a schedule,
+bounded scope but judgment required?
+→ Tier 2.5 (Claude Haiku 4.5, $1/$5 per MTok)
+
+Task requires complex multi-file reasoning, statistical
+validity, reading across reference library simultaneously?
+→ Tier 3 (Claude Sonnet 4.6, $3/$15 per MTok)
+
+Task has failed Tier 3 three times OR is genuinely
+architectural in scope?
+→ Tier 4 (Claude Opus 4.7, $5/$25 per MTok)
+```
+
+
+## GPU Acceleration Setup
+
+Hardware: AMD Radeon 780M iGPU (gfx1103, 12 CUs, RDNA3) — UM890 Pro
+Backend:  Vulkan (OLLAMA_VULKAN=1)
+Status:   ACTIVE as of 2026-05-02
+BIOS:     UMA Frame Buffer = 4G, UMA Specified mode
+Config:   /etc/systemd/system/ollama.service.d/rocm.conf
+
+ROCm/HIP path (libggml-hip.so) segfaults on gfx1103 with Ollama 0.22.1 /
+bundled ROCm 7.2 libs. Vulkan is the working path. Do NOT set
+OLLAMA_LLM_LIBRARY=rocm — leave unset and set OLLAMA_VULKAN=1 only.
+
+Upgrade path: increase BIOS UMA to 8G on next reboot for ~20-25 tok/s on E4B.
+BIOS path: AMD CBS → GFX Configuration → UMA Frame Buffer Size → 8G
+
+---
+
+## Server Benchmark Results
+
+### April 17 2026 — CPU baseline (pre-GPU)
+UM890 Pro (Ryzen 9 8945HS, 96GB DDR5, Radeon 780M — CPU only)
+
+| Model              | Size   | Time (first tok) | Decision              |
+|--------------------|--------|------------------|-----------------------|
+| Gemma 4 E2B        | 7.2GB  | 0.79s            | TIER 1 PRIMARY        |
+| Mistral            | 4.4GB  | 2.80s            | TIER 1 FALLBACK       |
+| Gemma 4 E4B        | 9.6GB  | 5.86s            | TIER 2 PRIMARY        |
+| Llama 4 Scout      | 67GB   | 24.00s           | REMOVED — too slow    |
+
+### May 2 2026 — Vulkan iGPU (AMD Radeon 780M, 4G VRAM)
+OLLAMA_VULKAN=1, UMA Frame Buffer = 4G
+
+| Model         | Load cold | Load hot | Eval (tok/s) | Prompt eval (tok/s) | Notes                          |
+|---------------|-----------|----------|--------------|---------------------|--------------------------------|
+| Gemma 4 E2B   | 6.9s      | 211ms    | 37.97        | 216                 | Fully VRAM-resident at 4G      |
+| Gemma 4 E4B   | 12.1s     | 223ms    | 14.79        | 388                 | Partially VRAM-bound at 4G; upgrade BIOS to 8G for ~20-25 tok/s |
+
+Key finding: thinking mode must be disabled for Tier 1/2 tasks.
+Gemma 4 E2B with --think=false is 12x faster than with thinking on.
+All Ollama calls must pass --think=false for classification/routing tasks.
+Thinking mode only appropriate for complex reasoning at Tier 2+.
+
+Invoke commands:
+  Tier 1: ollama run gemma4:e2b --think=false
+  Tier 2: ollama run gemma4:e4b --think=false
+  Tier 1 fallback: ollama run mistral
+
+
+## Task ID
+librarian-20260509
+
+## Model Tier
+Tier 3 — claude-sonnet-4-6 (Tier 3)
+
+## Started At
+2026-05-09T09:00:01Z
+
+=== Agent Output ===
+Weekly run complete. Here's a summary of what was done:
+
+---
+
+## Training Librarian — 2026-05-09 Run Complete
+
+**First run of training-librarian-agent.** The brain was significantly under-maintained relative to the system's actual progress (11 research-scout cycles, 3 strategy validations, 4 feedback-loop runs, 2 passing data integrity gates).
+
+### What was updated
+
+**lessons-learned.md** — Populated from near-empty to 20+ entries across all 5 sections:
+- Principles: QUALIFIED tier 82% accuracy, Geopolitics 92.3% / Elections 46.7%, RQ0.1+RQ0.2 clean, LP structural fact, exit timing pattern
+- Strategy Insights: STR-001 failure (with root cause), STR-003 EXPERIMENTAL, STR-004 pre-registered
+- Architecture: ELO calibration drift, research-scout self-correction protocol, information feedback paradox
+- Failures: STR-001, RQ1.1 timing issue, RQ3.2 framing issue
+- Open Questions: 9 new questions reflecting current system state
+
+**research-directions.md** — Populated 3 sections that were empty ("Nothing completed yet"):
+- "What Has Already Been Investigated" — full status for RQ0.1, RQ0.2, RQ1.1, RQ2.2, RQ3.2, STR-001, STR-003, STR-004, category calibration
+- "What Has Failed or Been Ruled Out" — STR-001 and RQ3.2 framing documented
+- "Compounding Notes" — 10 one-line findings from April-May 2026
+
+**signals.json** — `knowledge_gap_critical` signal written for LP mechanics gap (Oscar approval needed to create reference file).
+
+**Weekly report** — Written to `brain/agent-outputs/training-librarian/2026-05-09-weekly.md`.
+
+### Two critical knowledge gaps identified
+
+1. **LP mechanics not in reference library (HIGH)** — The LP contamination structural fact (legendary traders hold both YES+NO as market makers) is the most important design constraint in the system and is documented nowhere in the reference library. Any future agent designing signals will rediscover this through another STR-001-style failure without it.
+
+2. **ELO calibration drift methodology (HIGH)** — No reference file documents how to detect or correct for ELO score distribution drift. This needs to be addressed before the June 1 RQ1.1 rerun.
+
+### Recommendations for Oscar
+
+1. Approve `training-librarian-agent` drafting a `polymarket-market-structure.md` reference file covering LP mechanics (~300-400 words).
+2. Review the two thin reference stubs: `agent-orchestration-OMC.md` (96 words) and `prediction-market-coordination.md` (141 words).
+3. Triage the Gemma 4 MTP drafters item in pending-review — 2-3x Tier 1/2 speedup is available in Ollama 0.23.1-rc0 today.
+[REGISTRY] Cleaned up task librarian-20260509

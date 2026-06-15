@@ -1,0 +1,935 @@
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260427
+Model: gemma4:e2b (local, Tier 1)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-27. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-scout-20260427
+<stdin>:19: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260427
+  Model:    gemma4:e2b (local, Tier 1)
+  Branch:   feat/scout-20260427
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260427.log
+
+Watch it:   tmux attach -t research-scout-scout-20260427
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260427
+
+Routing decisions: /brain/model-routing.md
+[Mon 27 Apr 13:31:17 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260427
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-27. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+ERROR: Session research-scout-scout-20260427 already exists
+Kill it first: tmux kill-session -t research-scout-scout-20260427
+[Mon 27 Apr 13:49:00 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260427
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-27. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260427
+HEAD is now at 06fd77b fix: research-scout upgraded to Tier 3 (Sonnet) — Tier 1 insufficient for web research tasks
+Spawning tmux session: research-scout-scout-20260427
+<stdin>:19: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260427
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260427
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260427.log
+
+Watch it:   tmux attach -t research-scout-scout-20260427
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260427
+
+Routing decisions: /brain/model-routing.md
+[Mon 27 Apr 13:53:17 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260427
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-27. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260427
+Worktree already exists at /home/parison/trading-swarm/worktrees/scout-20260427
+Spawning tmux session: research-scout-scout-20260427
+<stdin>:19: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260427
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260427
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260427.log
+
+Watch it:   tmux attach -t research-scout-scout-20260427
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260427
+
+Routing decisions: /brain/model-routing.md
+[Mon 27 Apr 18:56:17 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260428
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-28. It is Tuesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260428
+HEAD is now at 74d6ac8 fix: remove accidentally committed worktree submodules
+Spawning tmux session: research-scout-scout-20260428
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260428
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260428
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260428.log
+
+Watch it:   tmux attach -t research-scout-scout-20260428
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260428
+
+Routing decisions: /brain/model-routing.md
+[Tue 28 Apr 08:00:01 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260429
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-29. It is Wednesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260429
+HEAD is now at 320291f docs: triage 4 research scout findings — all approved
+Spawning tmux session: research-scout-scout-20260429
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260429
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260429
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260429.log
+
+Watch it:   tmux attach -t research-scout-scout-20260429
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260429
+
+Routing decisions: /brain/model-routing.md
+[Wed 29 Apr 08:00:01 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260430
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-04-30. It is Thursday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260430
+HEAD is now at 5723330 feat: research-scout cycle 3 — 3 new findings to pending-review
+Spawning tmux session: research-scout-scout-20260430
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260430
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260430
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260430.log
+
+Watch it:   tmux attach -t research-scout-scout-20260430
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260430
+
+Routing decisions: /brain/model-routing.md
+[Thu 30 Apr 08:00:01 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260501
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-01. It is Friday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260501
+HEAD is now at c9cd168 fix: worktree path in code-hygiene template + update research-standards clean pool
+Spawning tmux session: research-scout-scout-20260501
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260501
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260501
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260501.log
+
+Watch it:   tmux attach -t research-scout-scout-20260501
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260501
+
+Routing decisions: /brain/model-routing.md
+[Fri  1 May 08:00:01 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260502
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-02. It is Saturday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260502
+HEAD is now at 917e7cf fix: action hygiene proposals A+C+D — requirements.txt, market_filter tests, worktree cleanup. Proposal B deferred to post-RQ1.1.
+Spawning tmux session: research-scout-scout-20260502
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260502
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260502
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260502.log
+
+Watch it:   tmux attach -t research-scout-scout-20260502
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260502
+
+Routing decisions: /brain/model-routing.md
+[Sat  2 May 08:00:01 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260503
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-03. It is Sunday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260503
+HEAD is now at 01005e1 fix: housekeeping — expire STRATEGY-OVERDUE duplicates, resolve Ramaswamy+DeepSeek signals, update opus model string to 4-7
+Spawning tmux session: research-scout-scout-20260503
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260503
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260503
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260503.log
+
+Watch it:   tmux attach -t research-scout-scout-20260503
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260503
+
+Routing decisions: /brain/model-routing.md
+[Sun  3 May 08:00:01 UTC 2026] Research scout run complete
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260504
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-04. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260504
+HEAD is now at a35151a docs: RQ1.1 June 2026 pre-registration + STR-003 signal status review
+Spawning tmux session: research-scout-scout-20260504
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260504
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260504
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260504.log
+
+Watch it:   tmux attach -t research-scout-scout-20260504
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260504
+
+Routing decisions: /brain/model-routing.md
+[Mon  4 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-04T16:25:54Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260504
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-04. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260504
+Preparing worktree (checking out 'feat/scout-20260504')
+HEAD is now at a35151a docs: RQ1.1 June 2026 pre-registration + STR-003 signal status review
+Spawning tmux session: research-scout-scout-20260504
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260504
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260504
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260504.log
+
+Watch it:   tmux attach -t research-scout-scout-20260504
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260504
+
+Routing decisions: /brain/model-routing.md
+[Mon  4 May 16:25:54 UTC 2026] Research scout run complete
+[2026-05-04T16:25:54Z] Finished research-scout (exit: 0)
+[2026-05-05T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260505
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-05. It is Tuesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260505
+HEAD is now at aaf5d94 fix: compatibility audit — add research-standards.md to all DB-querying templates
+Spawning tmux session: research-scout-scout-20260505
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260505
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260505
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260505.log
+
+Watch it:   tmux attach -t research-scout-scout-20260505
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260505
+
+Routing decisions: /brain/model-routing.md
+[Tue  5 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-05T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-06T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260506
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-06. It is Wednesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260506
+HEAD is now at eee052b fix: lower clean_pool alert threshold from 800 to 600
+Spawning tmux session: research-scout-scout-20260506
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260506
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260506
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260506.log
+
+Watch it:   tmux attach -t research-scout-scout-20260506
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260506
+
+Routing decisions: /brain/model-routing.md
+[Wed  6 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-06T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-07T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260507
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-07. It is Thursday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260507
+HEAD is now at a1d289b fix: lower clean_pool alert threshold from 600 to 450
+Spawning tmux session: research-scout-scout-20260507
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260507
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260507
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260507.log
+
+Watch it:   tmux attach -t research-scout-scout-20260507
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260507
+
+Routing decisions: /brain/model-routing.md
+[Thu  7 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-07T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-08T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260508
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-08. It is Friday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260508
+HEAD is now at 180e4ac feat: RQ2.2 extended window — STR-003 advances to EXPERIMENTAL
+Spawning tmux session: research-scout-scout-20260508
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260508
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260508
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260508.log
+
+Watch it:   tmux attach -t research-scout-scout-20260508
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260508
+
+Routing decisions: /brain/model-routing.md
+[Fri  8 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-08T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-09T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260509
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-09. It is Saturday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260509
+HEAD is now at 5fff275 feat: pre-register STR-004 Capital-Weighted Legendary Aggregate Signal
+Spawning tmux session: research-scout-scout-20260509
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260509
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260509
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260509.log
+
+Watch it:   tmux attach -t research-scout-scout-20260509
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260509
+
+Routing decisions: /brain/model-routing.md
+[Sat  9 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-09T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-10T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260510
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-10. It is Sunday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260510
+HEAD is now at 8dac188 feat: training-librarian weekly run (2026-05-09) — first full brain maintenance
+Spawning tmux session: research-scout-scout-20260510
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260510
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260510
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260510.log
+
+Watch it:   tmux attach -t research-scout-scout-20260510
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260510
+
+Routing decisions: /brain/model-routing.md
+[Sun 10 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-10T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-11T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260511
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-11. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260511
+HEAD is now at 5f99f03 feat: research-scout cycle 12 (2026-05-10) — 3 findings filed
+Spawning tmux session: research-scout-scout-20260511
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260511
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260511
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260511.log
+
+Watch it:   tmux attach -t research-scout-scout-20260511
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260511
+
+Routing decisions: /brain/model-routing.md
+[Mon 11 May 08:00:02 UTC 2026] Research scout run complete
+[2026-05-11T08:00:02Z] Finished research-scout (exit: 0)
+[2026-05-12T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260512
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-12. It is Tuesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260512
+HEAD is now at 121e6a9 fix: record STR-004 founding case resolution as NO
+Spawning tmux session: research-scout-scout-20260512
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260512
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/scout-20260512
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260512.log
+
+Watch it:   tmux attach -t research-scout-scout-20260512
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260512
+
+Routing decisions: /brain/model-routing.md
+[Tue 12 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-12T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-13T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260513
+Model: claude-haiku-4-5 (Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-13. It is Wednesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Creating git worktree: feat/scout-20260513
+HEAD is now at 977575d fix: update integration test template — signal types, recursive glob, feedback recency
+Spawning tmux session: research-scout-scout-20260513
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260513
+  Model:    claude-haiku-4-5 (Tier 2.5)
+  Branch:   feat/scout-20260513
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260513.log
+
+Watch it:   tmux attach -t research-scout-scout-20260513
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260513
+
+Routing decisions: /brain/model-routing.md
+[Wed 13 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-13T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-14T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-scout-20260514
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-14. It is Thursday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-scout-20260514
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-scout-20260514
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260514
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260514.log
+
+Watch it:   tmux attach -t research-scout-scout-20260514
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-scout-20260514
+
+Routing decisions: /brain/model-routing.md
+[Thu 14 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-14T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-14T17:28:55Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260514
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-14. It is Thursday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260514
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260514
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260514
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260514.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260514
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260514
+
+Routing decisions: /brain/model-routing.md
+[Thu 14 May 17:28:55 UTC 2026] Research scout run complete
+[2026-05-14T17:28:55Z] Finished research-scout (exit: 0)
+[2026-05-15T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260515
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-15. It is Friday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260515
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260515
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260515
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260515.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260515
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260515
+
+Routing decisions: /brain/model-routing.md
+[Fri 15 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-15T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-15T20:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260515
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-15. It is Friday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260515
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260515
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260515
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260515.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260515
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260515
+
+Routing decisions: /brain/model-routing.md
+[Fri 15 May 20:00:01 UTC 2026] Research scout run complete
+[2026-05-15T20:00:01Z] Finished research-scout (exit: 0)
+[2026-05-16T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260516
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-16. It is Saturday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260516
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260516
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260516
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260516.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260516
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260516
+
+Routing decisions: /brain/model-routing.md
+[Sat 16 May 08:00:02 UTC 2026] Research scout run complete
+[2026-05-16T08:00:02Z] Finished research-scout (exit: 0)
+[2026-05-16T20:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260516
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-16. It is Saturday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260516
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260516
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260516
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260516.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260516
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260516
+
+Routing decisions: /brain/model-routing.md
+[Sat 16 May 20:00:02 UTC 2026] Research scout run complete
+[2026-05-16T20:00:02Z] Finished research-scout (exit: 0)
+[2026-05-17T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260517
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-17. It is Sunday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260517
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260517
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260517
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260517.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260517
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260517
+
+Routing decisions: /brain/model-routing.md
+[Sun 17 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-17T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-17T20:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260517
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-17. It is Sunday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260517
+signals.json: 30,132 bytes → 3,849 bytes (87.2% reduction)
+feedback.json: 459 bytes → 176 bytes (61.7% reduction)
+findings.json: 38,162 bytes → 3,337 bytes (91.3% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260517
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260517
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260517.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260517
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260517
+
+Routing decisions: /brain/model-routing.md
+[Sun 17 May 20:00:01 UTC 2026] Research scout run complete
+[2026-05-17T20:00:01Z] Finished research-scout (exit: 0)
+[2026-05-18T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260518
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-18. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260518
+signals.json: 31,659 bytes → 3,849 bytes (87.8% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 40,913 bytes → 4,085 bytes (90.0% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260518
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260518
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260518.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260518
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260518
+
+Routing decisions: /brain/model-routing.md
+[Mon 18 May 08:00:02 UTC 2026] Research scout run complete
+[2026-05-18T08:00:02Z] Finished research-scout (exit: 0)
+[2026-05-18T20:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260518
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-18. It is Monday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260518
+signals.json: 35,305 bytes → 3,849 bytes (89.1% reduction)
+feedback.json: 44,012 bytes → 3,292 bytes (92.5% reduction)
+findings.json: 40,913 bytes → 4,085 bytes (90.0% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260518
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260518
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260518.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260518
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260518
+
+Routing decisions: /brain/model-routing.md
+[Mon 18 May 20:00:01 UTC 2026] Research scout run complete
+[2026-05-18T20:00:01Z] Finished research-scout (exit: 0)
+[2026-05-19T08:00:01Z] Starting research-scout
+──────────────────────────────────────
+Spawning agent: research-scout-agent-scout-20260519
+Model: qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+Task: Run your daily research scout cycle. Check all Tier 1 sources. Surface up to 5 findings to pending-review. Send any immediate escalations. Today is 2026-05-19. It is Tuesday — if Monday, write weekly digest too.
+──────────────────────────────────────
+Spawning tmux session: research-scout-agent-scout-20260519
+signals.json: 19 bytes → 79 bytes (-315.8% reduction)
+feedback.json: 388 bytes → 176 bytes (54.6% reduction)
+findings.json: 40,913 bytes → 4,085 bytes (90.0% reduction)
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  research-scout-agent-scout-20260519
+  Model:    qwen3-coder:30b-a3b-q4_K_M (local, Tier 2.5)
+  Branch:   feat/scout-20260519
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/scout-20260519.log
+
+Watch it:   tmux attach -t research-scout-agent-scout-20260519
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t research-scout-agent-scout-20260519
+
+Routing decisions: /brain/model-routing.md
+[Tue 19 May 08:00:01 UTC 2026] Research scout run complete
+[2026-05-19T08:00:01Z] Finished research-scout (exit: 0)
+[2026-05-19T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-19T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-20T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-20T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-20T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-20T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-21T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-21T08:00:02Z] Finished research-scout (exit: 1)
+[2026-05-21T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-21T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-22T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-22T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-22T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-22T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-23T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-23T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-23T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-23T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-24T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-24T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-24T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-24T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-25T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-25T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-25T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-25T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-26T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-26T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-26T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-26T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-27T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-27T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-27T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-27T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-28T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-28T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-28T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-28T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-29T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-29T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-29T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-29T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-30T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-30T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-30T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-30T20:00:01Z] Finished research-scout (exit: 1)
+[2026-05-31T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-31T08:00:01Z] Finished research-scout (exit: 1)
+[2026-05-31T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-05-31T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-01T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-01T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-01T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-01T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-02T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-02T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-02T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-02T20:00:02Z] Finished research-scout (exit: 1)
+[2026-06-03T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-03T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-03T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-03T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-04T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-04T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-04T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-04T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-05T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-05T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-05T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-05T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-06T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-06T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-06T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-06T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-07T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-07T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-07T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-07T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-08T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-08T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-08T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-08T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-09T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-09T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-09T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-09T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-10T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-10T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-10T20:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-10T20:00:01Z] Finished research-scout (exit: 1)
+[2026-06-11T08:00:01Z] Starting research-scout
+ERROR: [Errno 2] No such file or directory: 'claude'
+[2026-06-11T08:00:01Z] Finished research-scout (exit: 1)
+[2026-06-11T20:00:01Z] Starting research-scout
+Research scout complete: 5 findings written (4 HIGH, 1 MEDIUM, 0 LOW relevance)
+[2026-06-11T20:01:24Z] Finished research-scout (exit: 0)
+[2026-06-12T08:00:01Z] Starting research-scout
+Research scout complete: 6 findings written (3 HIGH, 3 MEDIUM, 0 LOW relevance)
+[2026-06-12T08:01:19Z] Finished research-scout (exit: 0)
+[2026-06-12T20:00:01Z] Starting research-scout
+ERROR: claude CLI timed out after 120s
+[2026-06-12T20:02:01Z] Finished research-scout (exit: 1)
+[2026-06-13T08:00:01Z] Starting research-scout
+Research scout complete: 0 findings written (0 HIGH, 0 MEDIUM, 0 LOW relevance)
+[2026-06-13T08:01:54Z] Finished research-scout (exit: 0)
+[2026-06-13T20:00:01Z] Starting research-scout
+Research scout complete: 0 findings written (0 HIGH, 0 MEDIUM, 0 LOW relevance)
+[2026-06-13T20:01:56Z] Finished research-scout (exit: 0)
+[2026-06-14T08:00:01Z] Starting research-scout
+Research scout complete: 0 findings written (0 HIGH, 0 MEDIUM, 0 LOW relevance)
+[2026-06-14T08:01:22Z] Finished research-scout (exit: 0)
+[2026-06-14T20:00:01Z] Starting research-scout
+Research scout complete: 5 findings written (3 HIGH, 2 MEDIUM, 1 LOW relevance)
+[2026-06-14T20:01:44Z] Finished research-scout (exit: 0)
+[2026-06-15T08:00:01Z] Starting research-scout
+ERROR: claude CLI timed out after 120s
+[2026-06-15T08:02:02Z] Finished research-scout (exit: 1)
