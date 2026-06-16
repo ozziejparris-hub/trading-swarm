@@ -1,0 +1,129 @@
+{
+  "date": "2026-06-16",
+  "markets_checked": 95,
+  "signals_found": 11,
+  "signals": [
+    {
+      "market": "US and Iran sign an agreement by June 15, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5487,
+      "market_price_pct": 0.904,
+      "gap_pt": 35.5,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-16"
+    },
+    {
+      "market": "Will the Fed decrease interest rates by 25 bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.3621,
+      "market_price_pct": 0.002,
+      "gap_pt": 36.0,
+      "elite_traders": 9,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will there be no change in Fed interest rates after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7575,
+      "market_price_pct": 0.996,
+      "gap_pt": 23.8,
+      "elite_traders": 50,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4462,
+      "market_price_pct": 0.002,
+      "gap_pt": 44.4,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed increase interest rates by 50+ bps after the June 2026 meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5217,
+      "market_price_pct": 0.001,
+      "gap_pt": 52.1,
+      "elite_traders": 53,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4015,
+      "market_price_pct": 0.997,
+      "gap_pt": 59.5,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-17"
+    },
+    {
+      "market": "Will Ivan Cepeda Castro win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8052,
+      "market_price_pct": 0.1,
+      "gap_pt": 70.5,
+      "elite_traders": 17,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Daniel Quintero win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Jack Schlossberg be the democratic nominee for NY-12?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0526,
+      "gap_pt": 94.7,
+      "elite_traders": 7,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Will Effie Phillips-Staley be the Democratic nominee for NY-17?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.043,
+      "gap_pt": 95.7,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Will Nate Blouin be the Democratic nominee for UT-01?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.11,
+      "gap_pt": 89.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    }
+  ],
+  "scan_timestamp": "2026-06-16T16:58:33.463783+00:00"
+}

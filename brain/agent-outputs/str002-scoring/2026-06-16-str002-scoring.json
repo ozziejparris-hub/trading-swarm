@@ -1,0 +1,82 @@
+{
+  "strategy": "STR-002",
+  "generated_at": "2026-06-16T09:40:19Z",
+  "summary": {
+    "total_scored": 7,
+    "accuracy": 0.1429,
+    "correct": 1,
+    "avg_edge": -0.1431
+  },
+  "scored_signals": [
+    {
+      "signal_id": "STR002-0005",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.05,
+      "market_title": "US x Iran permanent peace deal by June 7, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0006",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Israel announces Lebanon ceasefire extension by June 7?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0016",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.18,
+      "market_title": "Israel closes its airspace by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0017",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Iran closes its airspace by June 15?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0019",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0295,
+      "market_title": "Israel closes its airspace by June 8?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0020",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.83,
+      "market_title": "Will Donald Trump announce that the United States blockade of the Strait of Hormuz has been lifted by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0028",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.01,
+      "market_title": "Will Iran close its airspace by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-16 00:00:00"
+    }
+  ]
+}
