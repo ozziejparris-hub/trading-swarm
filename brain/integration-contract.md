@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.11 — 2026-06-18
+**Version:** v2.12 — 2026-06-18
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -392,6 +392,12 @@ Implications:
 This is not a data quality issue to be fixed — it is a permanent structural feature of the dataset.
 
 ## Section 8 — Change Log
+
+### v2.12 — 2026-06-18
+
+v2.12: Section 18.5.1 — acknowledge cross-repo source-of-truth gap + planned definitions-module fix.
+
+---
 
 ### v2.11 — 2026-06-18
 
@@ -1279,6 +1285,28 @@ Any change to a column's definition must update **all three simultaneously** —
 3. **The invariant check in `audit_invariants.py`** (the recomputation in the check function)
 
 The contract is authoritative. The scripts follow it, not the other way around.
+
+---
+
+### 18.5.1 — KNOWN GAP: cross-repo source-of-truth
+
+**The gap.** The canonical column definitions live in this contract (Markdown, `trading-swarm` repo), while the code that must obey them — `reconcile_trader_aggregates.py` and `audit_invariants.py` — lives in `first-repo`. This creates two structural problems:
+
+1. **This contract is documentation, not enforcement.** Nothing structurally prevents a script from diverging from the written definition; compliance is currently by human diligence alone.
+
+2. **The "same-commit" rule in 18.5 is not literally satisfiable.** The three artefacts that must stay in sync (this contract, the reconciler, the invariant harness) live across two independent git histories. At best a definition change is two commits. Nothing enforces even that loose coupling.
+
+This is candidly the same disease the rest of Section 18 was built to cure — the same fact in multiple places with no enforced sync — appearing one level up in our own governance tooling. We acknowledge it openly rather than pretend the rule is stronger than it is.
+
+**The planned fix (next session).** Extract all operative column definitions into a single importable module in `first-repo` (working name: `monitoring/column_definitions.py`). This module will contain the canonical recompute SQL/logic for every LOCAL-AUTHORITATIVE and DERIVED column as named constants or functions.
+
+- `reconcile_trader_aggregates.py` imports its write-definitions from that module.
+- `audit_invariants.py` imports the **same** definitions for its invariant checks.
+- Both consumers compute from one source string → they cannot disagree. The `total_invested` all-vs-closed mismatch (the standing example in 18.5) becomes structurally impossible, not merely discouraged.
+- Section 18.3 changes role: from **being** the definitions to **describing and pointing at** the module. The contract remains the human-readable principle / classification / decision log; the module becomes the operative source of truth, living in the same repo as the code that uses it.
+- This converts 18.5's three-way-agreement rule from "human updates three places across two repos" (unenforceable) to "one source module, two importers" (enforced by the Python interpreter).
+
+**Status:** Acknowledged gap as of v2.12. Definitions-module refactor is the first item for the next session, to be done alongside the competing-writer teardown (since that work touches all these definitions anyway).
 
 ---
 
