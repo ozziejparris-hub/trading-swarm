@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.10 — 2026-06-15
+**Version:** v2.11 — 2026-06-18
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -392,6 +392,25 @@ Implications:
 This is not a data quality issue to be fixed — it is a permanent structural feature of the dataset.
 
 ## Section 8 — Change Log
+
+### v2.11 — 2026-06-18
+
+Section 18: data provenance registry, single-writer principle, column authority classification, harness-definition-locking rule.
+
+**Data integrity rebuild — foundational session.** Root cause of months of recurring bugs identified: multiple uncoordinated scripts writing the same columns with different definitions, sources, or scales. "Last writer wins" — values depended on execution order. Cure: single-writer pattern codified in Section 18 as the canonical governance layer.
+
+Key deliverables this session:
+- `reconcile_trader_aggregates.py` deployed (Layer 1, 10 direct aggregates + win_rate) — win_rate single-writer ACHIEVED (trader_analyzer + trader_statistics×2 neutralized)
+- `audit_invariants.py` deployed (18 invariants, 3 tiers) — daily immune system; exits 2 on any Tier-1 CRITICAL, hard-aborting ELO before it runs on corrupt data
+- Section 18.3: column authority registry — all ~37 governed traders table columns classified across 5 governance classes with canonical SQL definitions
+- Section 18.5: harness-definition-locking rule — invariant recomputations must match canonical definitions in 18.3; total_invested disagreement (harness used all-positions, reconciler used closed-only) is the standing example
+- Baseline sealed at this commit: 0 CRITICAL, 0 REGRESSION, 18 PASS
+
+Pending (next session Teardown): api_* rename for API-REFERENCE columns, DEAD column drops (unrealized_pnl / total_pnl / roi_percentage), Layer 2 ELO chain single-writer consolidation, specialisation_ratio fix at source in analysis_scheduler.py, neutralize remaining competing writers for successful_trades / total_trades / total_volume.
+
+**Impact on agents:** Layer 1 columns are now single-writer. Any agent or maintenance script that writes `total_trades`, `successful_trades`, `total_volume`, `win_rate`, `specialisation_ratio`, or any position-derived column (total_invested / avg_roi / realized_pnl / open_positions / closed_positions) is creating a competing writer. All aggregate writes for these columns must route through `reconcile_trader_aggregates.py` or be explicitly coordinated. If you must write one of these columns, write it last.
+
+---
 
 ### v2.10 — 2026-06-15
 
@@ -1070,3 +1089,213 @@ accuracy per-cluster, not per-signal.
 Gate 3 metric uses thesis-cell signals only (`has_proven_trader=1`, `regime=CONTESTED`)
 once sufficient n is available. Overall accuracy is reported separately as the
 control-group metric.
+
+---
+
+## Section 18 — Data Provenance & Column Authority Registry
+
+This section is the **single source of truth for what every governed column in the `traders` table means, who writes it, and how it is computed.** Any script that touches a column listed here must follow this contract. The contract is authoritative — if a script and this section disagree, the script is wrong.
+
+---
+
+### 18.1 — The Core Principle
+
+**Local trades are the source of truth for everything the system computes or decides on** — ELO, pool membership, signals, win-rate-in-scoring. The system only scores traders whose trades it has locally in the `trades` and `positions` tables.
+
+**API-sourced figures are reference-only.** They will be renamed `api_*` (PENDING next session) and must NEVER be fed into any computation. They exist only as context for discovery and human review.
+
+> **Consequence:** ~114,000 traders appear in the `traders` table with API-reported trade counts but zero local trade records. These traders are **non-evaluable** until their trades are ingested — parked for a future ingestion-expansion effort. They must not influence any current ELO, pool qualification, or signal computation. (Tracked by Tier-3 invariant `FLOOR_API_NO_LOCAL = 114,047` in `audit_invariants.py`.)
+
+---
+
+### 18.2 — The Disease This Cures
+
+The root cause of months of recurring data-integrity bugs: **the same column was written by multiple uncoordinated scripts with different definitions, different sources, or different scales.** SQLite imposes no write ownership. Whichever script ran last would overwrite the previous value. Values depended on execution order — "last writer wins."
+
+**Writer-count red flags found in the pre-rebuild audit:**
+
+| Column | Writer count | Problem |
+|--------|-------------|---------|
+| `comprehensive_elo` | 4 | Includes a simulation script writing synthetic ELO values alongside the production ELO chain |
+| `open_positions` | 4 | Mixed sources: live positions table COUNT vs. API snapshot vs. legacy manual updates |
+| `closed_positions` | 4 | Same as above |
+| `research_excluded` | 3 | update_research_exclusions.py + discover_* scripts + manual overrides — different qualification criteria |
+| `geo_accuracy_pool` | 3 | Multiple scripts applying slightly different pool qualification thresholds |
+| `geo_resolved_trades_count` | 3 | Different definitions: some scripts included trade_gap_flag markets, others excluded them |
+| `total_trades` | 2 | API-sourced value (from trader discovery) vs. local `COUNT(*)` from trades table |
+| `total_volume` | 2 | API-sourced volume vs. local `SUM(shares × price)` from trades table |
+
+**The cure:** ONE writer per column. Values are **recomputed, not accumulated** — each run derives the value fresh from source tables; it never adds to or modifies a previous stored value. Definitions are locked in 18.3 and cannot be changed without updating this contract, the owning script, and the harness simultaneously.
+
+---
+
+### 18.3 — Column Authority Registry
+
+Complete governance classification of the ~41 columns in the `traders` table. The 37 columns that need single-writer enforcement are fully specified below. The remaining ~4 (address PK, is_flagged, bot_type, elo_last_updated) are identity, metadata, or flagging columns not subject to this registry.
+
+---
+
+#### CLASS 1 — LOCAL-AUTHORITATIVE (24 columns)
+
+These columns are derived exclusively from local source tables (trades, positions, trader_categories). Each has exactly one owning script. Definitions below are the exact SQL recompute formulas — they are not approximations.
+
+**Layer 1 — `reconcile_trader_aggregates.py` (DONE — run deliberately, not yet daily)**
+
+Recomputes all 10 columns in a single-pass CTE JOIN across trades, positions, and trader_categories. Never accumulates — always recomputes from scratch.
+
+| Column | Source table | Canonical definition |
+|--------|-------------|---------------------|
+| `total_trades` | trades | `COUNT(*) per trader_address` |
+| `successful_trades` | trades | `COUNT(*) WHERE trade_result = 'won'` |
+| `resolved_trades_count` | trades | `COUNT(DISTINCT market_id) WHERE trade_result IN ('won', 'lost')` |
+| `total_volume` | trades | `SUM(shares * price) per trader_address` |
+| `total_invested` | positions | `SUM(entry_total_cost) WHERE status = 'closed'` — **closed positions only** ★ |
+| `avg_roi` | positions | `AVG(roi_percent) WHERE status = 'closed'` [pnl_skip=1: preserve existing value] |
+| `realized_pnl` | positions | `SUM(realized_pnl) WHERE status = 'closed'` [pnl_skip=1: preserve existing value] |
+| `closed_positions` | positions | `COUNT(*) WHERE status = 'closed'` |
+| `open_positions` | positions | `COUNT(*) WHERE status = 'open'` |
+| `specialisation_ratio` | trader_categories | `MIN(1.0, MAX(trade_count) / SUM(trade_count)) WHERE trade_count > 0 GROUP BY trader_address` — naturally bounded [0.0, 1.0] since MAX ≤ SUM; NULL preserved for traders with no trader_categories rows |
+
+★ See 18.5 — the KEY LESSON. `total_invested` is **closed positions only**. The harness was initially wrong about this and had to be aligned. Never change this definition without updating 18.3, the reconciler, and `audit_invariants.py` in the same commit.
+
+**Layer 1b — geo columns (`update_geo_elo.py` + `reconcile_geo_resolved_counts.py`)**
+
+| Column | Owner script | Canonical definition |
+|--------|-------------|---------------------|
+| `geo_elo` | update_geo_elo.py | Market-implied probability ELO computed from Geo/Elections trades only using the Elo rating algorithm (see update_geo_elo.py). Not decayed. |
+| `geo_resolved_trades_count` | reconcile_geo_resolved_counts.py | `COUNT(DISTINCT market_id) FROM trades JOIN markets WHERE trade_result IN ('won','lost') AND category IN ('Geopolitics','Elections') AND (trade_gap_flag = 0 OR trade_gap_flag IS NULL)` |
+| `geo_directionality_score` | update_geo_elo.py | `dominant_side_geo_volume / total_geo_volume` — fraction of geo capital committed to the dominant outcome side. 0 = pure LP (equal sides); 1 = fully directional. |
+
+**Layer 1c — bot detection (`detect_arb_bots.py` / monitoring)**
+
+| Column | Owner script | Canonical definition |
+|--------|-------------|---------------------|
+| `bot_suspect` | detect_arb_bots.py | 1 = automated trader detected by local heuristic pattern matching on trade frequency, timing, and market concentration |
+| `wash_trade_suspect` | monitoring / detect_arb_bots.py | 1 = self-dealing pattern detected (coordinated buys and sells across related wallets) |
+
+**Layer 2 — ELO chain (`recalculate_comprehensive_elo.py` + `apply_full_elo_modifiers.py`) — PENDING single-writer consolidation**
+
+Currently 4 writers (production ELO scripts + simulation script + legacy writers). The ELO chain is the next Teardown. Until single-writer consolidation is complete, the production ELO chain scripts must run **last** to overwrite any competing writes.
+
+| Column | Owner (target) | Canonical definition |
+|--------|-------------|---------------------|
+| `comprehensive_elo` | recalculate_comprehensive_elo.py | Full-history ELO across all market trades using Elo rating algorithm (see script) |
+| `base_category_elo` | recalculate_comprehensive_elo.py | ELO restricted to the trader's strongest market category |
+| `behavioral_modifier` | apply_full_elo_modifiers.py | Behavioral pattern multiplier applied to base comprehensive ELO |
+| `advanced_modifier` | apply_full_elo_modifiers.py | Advanced signal quality multiplier |
+| `pnl_modifier` | apply_full_elo_modifiers.py | P&L-based ELO adjustment (rewards correct sizing, penalises reckless losses) |
+| `kelly_alignment_score` | apply_full_elo_modifiers.py | Kelly criterion position-sizing alignment score |
+| `patience_score` | apply_full_elo_modifiers.py | Trade holding-period and timing-patience metric |
+| `timing_score` | apply_full_elo_modifiers.py | Entry/exit timing quality score |
+| `weighted_win_rate` | apply_full_elo_modifiers.py | Win rate weighted by market difficulty and price at entry |
+
+---
+
+#### CLASS 2 — DERIVED-FROM-DERIVED (4 columns)
+
+These columns are computed from other already-computed columns (not directly from raw source tables). Each has a single owning script, but depends on the compute order shown. They must be written **after** their dependencies are settled.
+
+| Column | Owner script | Dependencies | Compute order | Canonical definition |
+|--------|-------------|-------------|--------------|---------------------|
+| `win_rate` | reconcile_trader_aggregates.py | `successful_trades`, `resolved_trades_count` | After Layer 1 aggregates | `MIN(1.0, successful_trades / resolved_trades_count)` as fraction [0.0, 1.0]; 0.0 on divide-by-zero. MIN(1.0) cap handles traders with multiple trades in a single market where successful_trades (trade count) can exceed resolved_trades_count (distinct-market count). |
+| `geo_elo_active` | update_geo_elo.py | `geo_elo`, `days_dormant` | After `geo_elo` updated | `geo_elo × 0.5^(days_dormant / 180)` — 180-day half-life recency decay. Dormant traders lose weight. Base `geo_elo` is preserved unchanged. |
+| `geo_accuracy_pool` | update_research_exclusions.py | `geo_elo`, `geo_resolved_trades_count`, `geo_directionality_score`, `bot_type`, `wash_trade_suspect`, `bot_suspect` | After all geo columns updated | 1 if: `geo_elo IS NOT NULL AND geo_resolved_trades_count >= 5 AND geo_directionality_score IS NOT NULL AND bot_type IS NULL AND wash_trade_suspect = 0 AND bot_suspect = 0` |
+| `research_excluded` | update_research_exclusions.py | `resolved_trades_count`, `bot_suspect`, `wash_trade_suspect`, `bot_type` | After Layer 1 aggregates | 1 (excluded) if: `resolved_trades_count < 20 OR bot_suspect = 1 OR wash_trade_suspect = 1 OR bot_type IS NOT NULL` |
+
+---
+
+#### CLASS 3 — API-REFERENCE (4 columns)
+
+These columns hold values sourced from external APIs (Polygon blockchain, Polymarket API). They are **never fed into any computation** — ELO, pool qualification, signal scoring, or win-rate. They exist as human-readable context only.
+
+Rename to `api_*` is **PENDING next session.** Once renamed, agents that currently query `wallet_creation_date` must update to `api_wallet_creation_date`, etc.
+
+| Current column | Future name | Source | Purpose |
+|----------------|------------|--------|---------|
+| `wallet_creation_date` | `api_wallet_creation_date` | Polygon blockchain API | Context only — date the wallet was first observed on-chain |
+| `true_wallet_age_days` | `api_true_wallet_age_days` | Derived from Polygon | Context only — days since wallet creation at last update |
+| `funding_wallet` | `api_funding_wallet` | Polygon / chain analysis | Context only — address that funded this wallet |
+| `is_contract_wallet` | `api_is_contract_wallet` | Polygon / chain analysis | Context only — 1 if smart contract wallet, 0 if EOA |
+
+---
+
+#### CLASS 4 — DEAD / DUPLICATE (3 columns — DROP PENDING next session)
+
+These columns are vestiges of old pipelines. They duplicate columns that are already written correctly by single-writer scripts, or they were never meaningfully populated. They will be dropped in the next Teardown session.
+
+| Column | Reason for dropping |
+|--------|-------------------|
+| `unrealized_pnl` | Permanent placeholder — always 0.0. Unrealized PnL is not computed by this system. The meaningful P&L column is `realized_pnl`. |
+| `total_pnl` | Duplicate of `realized_pnl`. Was briefly set equal to `realized_pnl` by the monitor.py fix (2026-05-05 — Section 6b). No downstream consumer reads `total_pnl`. |
+| `roi_percentage` | Duplicate of `avg_roi`. Different scripts used inconsistent scaling (some stored as percentage ×100, others as fraction). `avg_roi` is the canonical column (fraction scale, from positions WHERE status='closed'). |
+
+---
+
+#### CLASS 5 — OPERATIONAL (2 columns)
+
+These columns govern reconciler and backfill behavior. They are **not data values** and must never be read as such by research agents.
+
+| Column | Written by | Meaning |
+|--------|-----------|---------|
+| `pnl_skip` | Manual / maintenance scripts | 1 = position-derived PnL columns (`total_invested`, `avg_roi`, `realized_pnl`) must NOT be overwritten by `reconcile_trader_aggregates.py`. Set when PnL computation has permanently failed for a trader (e.g., corrupted position data). The reconciler preserves the existing stored value rather than replacing it with NULL or a wrong computation. |
+| `backfill_attempted` | backfill scripts | 1 = trade/position backfill has been attempted for this trader at least once. Prevents infinite re-queuing of traders whose backfill will never complete (e.g., wallet with no Polymarket API history). |
+
+---
+
+### 18.4 — Single-Writer Enforcement Status (as of 2026-06-18)
+
+Honest current state. "Competing writers remain" means the column is written correctly by the reconciler but other scripts also write it — reconciler must run last to win. These must be neutralized in the next Teardown session.
+
+| Column | Status | Detail |
+|--------|--------|--------|
+| `win_rate` | ✅ **SINGLE-WRITER ACHIEVED** | Reconciler is now sole writer. `trader_analyzer.py` and `trader_statistics.py` (2 call sites) neutralized today. |
+| `successful_trades` | ⚠️ **COMPETING WRITERS REMAIN** | Reconciler writes correctly (local COUNT). `trader_statistics.py` and `discover_*` scripts still write this column using compatible definitions today. Reconciler must run **last**. Neutralize at next Teardown. |
+| `total_trades` | ⚠️ **COMPETING WRITERS REMAIN** | Reconciler writes local `COUNT(*)`. Discovery scripts write API-sourced value. Compatible today only because the API value is approximately correct — definitions differ. Neutralize at next Teardown. |
+| `total_volume` | ⚠️ **COMPETING WRITERS REMAIN** | Reconciler writes `SUM(shares × price)` from local trades. API-sourced writers remain. Same fix target as above. |
+| `specialisation_ratio` | ⚠️ **WRONG FORMULA AT SOURCE** | Reconciler writes correct formula (`MAX/SUM` bounded [0,1]). `analysis_scheduler.py` still writes the wrong unbounded ELO-divergence formula. The reconciler must run after `analysis_scheduler` — but the real fix is correcting the formula at source, not relying on overwrite order. **Fix at source next session.** |
+| `comprehensive_elo` + modifiers | ⚠️ **4 WRITERS — LAYER 2 PENDING** | ELO chain scripts + simulation script + legacy monitor writes. Full single-writer consolidation is the entire Layer 2 Teardown. Until then, `recalculate_comprehensive_elo.py` + `apply_full_elo_modifiers.py` must run **last** in the weekly ELO cycle. |
+
+---
+
+### 18.5 — KEY LESSON: Harness Invariants Must Be Definition-Locked to This Contract
+
+During today's rebuild, `audit_invariants.py` (the immune system) and `reconcile_trader_aggregates.py` (the reconciler) independently encoded the definition of `total_invested` — and they **disagreed:**
+
+- The harness initially checked: `ABS(total_invested - SUM(entry_total_cost)) / total_invested > 0.05` joining all positions with no status filter — i.e., **all positions (open + closed)**
+- The reconciler writes: `SUM(entry_total_cost) WHERE status = 'closed'` — **closed positions only**
+
+This is the exact same disease (same fact, two definitions) appearing in the very tools we built to cure it. If left uncorrected, the invariant would have flagged false regressions every day because it was checking a recomputation that didn't match what the reconciler actually wrote. The numbers would never converge.
+
+**They now agree:** `audit_invariants.py` `check_invested_mismatch()` now uses `AND p.status = 'closed'` in its recomputation, matching the reconciler's canonical definition exactly.
+
+**Standing rule — enforced from this commit forward:**
+
+> When `audit_invariants.py` checks a derived column against a recomputation, that recomputation **must exactly match the canonical definition in Section 18.3.** A harness check that recomputes differently than the canonical definition is not a check — it is a source of false regressions.
+
+Any change to a column's definition must update **all three simultaneously** — in the same commit:
+
+1. **This contract** (Section 18.3 canonical definition)
+2. **The owning reconciler/compute script** (the actual recompute formula)
+3. **The invariant check in `audit_invariants.py`** (the recomputation in the check function)
+
+The contract is authoritative. The scripts follow it, not the other way around.
+
+---
+
+### 18.6 — The Standing Immune System
+
+**`audit_invariants.py`** runs as a pre-ELO step in daily maintenance. It is **read-only** — it detects violations but never repairs them. Repairs are the responsibility of `reconcile_trader_aggregates.py`, run deliberately by Oscar.
+
+**18 invariants across 3 tiers:**
+
+| Tier | Invariant count | Behavior on failure | What it checks |
+|------|----------------|---------------------|----------------|
+| **Tier 1 — CRITICAL** | 9 | Exit code 2 — hard aborts daily maintenance before ELO runs | Logically impossible states: `win_rate > 1.0`, `successful_trades > total_trades`, `specialisation_ratio > 1.0`, `geo_elo` out of range for pool members, duplicate `market_id`, trades joinable only via `condition_id` (JOIN-fix regression), `geo_resolved_trades_count` mismatch vs. recomputed |
+| **Tier 2 — REGRESSION** | 4 | Alert + continue | States that have grown beyond a known floor: pending trades on resolved non-gap markets (flagged traders), pending trades on resolved geo markets, `trades.market_category = 'Unknown'` where `markets.category` is known, mixed timestamp formats beyond baseline counts |
+| **Tier 3 — WATCH** | 5 | Alert if >10% growth from floor | Known structural issues with quantified baselines: ~114K API-only traders (no local trades), ~275K BUY trades without position records, `total_volume > $1B` outliers, `total_invested` vs. recomputed mismatch >5% (canonical: closed-only), `successful_trades` vs. actual won-trade count discrepancy >5 |
+
+Telegram alerts fire on any Tier-1 CRITICAL or Tier-2 REGRESSION. Exit code 2 from Tier-1 causes daily_maintenance.py to abort before ELO runs — preventing the ELO chain from writing on top of corrupt data.
+
+**`reconcile_trader_aggregates.py`** repairs Layer 1 columns. Run deliberately when needed (e.g., after a competing writer has overwritten correct values, or after a bulk data import). Not yet scheduled as a daily maintenance step — it will be added once competing writers are neutralized and the daily run is cheap and safe.
+
+**Baseline sealed at this commit: 0 CRITICAL, 0 REGRESSION, 18 PASS.**
