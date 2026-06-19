@@ -5,12 +5,13 @@
       "to": "orchestrator",
       "type": "telegram_notification",
       "payload": {
-        "message": "📊 *Weekly Performance Report — 2026-06-15*\n─────────────────────────────\nBrier (Geo 30d): 0.2213 ✅ BEST ON RECORD (↑ from 0.24)\nBrier (Elections 30d): 0.2714 ↑ improving (was 0.30)\nCombined accuracy: 69.1% on 265 markets (↑ from 65%)\n\n✅ Legendary pool RECOVERED: 13→24 active (contract violation cleared)\n✅ True research pool: 1,738→3,902 traders\n\n🚨 Flags: [1 critical — CI 7th week] [2 high — signal/quant dark]\nTop flag: CI lint blocked 49 days (9 trivial fixes); signal-agent dark 175h+ with June 30 cluster pending\n\nGate 3 risk: 1/4 signals correct (25%) — June 30 cluster is next scoring event\nGate 4 blocked: RQ-GEO-ELO-001 not started (3rd Sunday, July 1 deadline at risk)\n\nFull report: brain/agent-outputs/performance-analyst/2026-06-15-weekly.md",
+        "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-06-15*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier (Geo 30d): 0.2213 \u2705 BEST ON RECORD (\u2191 from 0.24)\nBrier (Elections 30d): 0.2714 \u2191 improving (was 0.30)\nCombined accuracy: 69.1% on 265 markets (\u2191 from 65%)\n\n\u2705 Legendary pool RECOVERED: 13\u219224 active (contract violation cleared)\n\u2705 True research pool: 1,738\u21923,902 traders\n\n\ud83d\udea8 Flags: [1 critical \u2014 CI 7th week] [2 high \u2014 signal/quant dark]\nTop flag: CI lint blocked 49 days (9 trivial fixes); signal-agent dark 175h+ with June 30 cluster pending\n\nGate 3 risk: 1/4 signals correct (25%) \u2014 June 30 cluster is next scoring event\nGate 4 blocked: RQ-GEO-ELO-001 not started (3rd Sunday, July 1 deadline at risk)\n\nFull report: brain/agent-outputs/performance-analyst/2026-06-15-weekly.md",
         "priority": "HIGH",
         "run_id": "analyst-20260615"
       },
       "timestamp": "2026-06-15T06:45:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-06-15T06:19:58.232225"
     },
     {
       "from": "performance-analyst-agent",
@@ -192,6 +193,33 @@
         "escalation_message": "Sunday integration test: 6 failures (86.7% pass rate). CI lint blocked 7th consecutive Sunday \u2014 now 2 lint files. Signal-agent dark 158.9h. Quant-research 3rd consecutive Sunday (systemic). See full report."
       },
       "processed_at": "2026-06-14T23:09:56.891288"
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
+        "message": "*Signal Agent \u2014 2026-06-15 08:00 UTC*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\ud83d\udd0d Rescan: 4 signals | 0 new signals\n\n\ud83d\udcca *Rescan Results:*\n\u2022 STR003-001 (Newsom NO): Position intact $3,475 \u2014 77 days\n\u2022 STR003-004 (Putin NO): $7,191 intact \u2014 15 days \u26a0\ufe0f\n\u2022 STR003-007 (Iran NO): Non-scorable, near-resolved \u2014 15 days\n\u2022 STR003-008 (Europe Security NO): $1,500 intact \u2014 15 days \u2705 scorable\n\n\u26a0\ufe0f *Flags:*\n\u2022 Peru markets (STR003-005/006) still resolved=0 in DB (8d overdue)\n\u2022 0x44a1159b contract discrepancy: excluded per v2.7 but DB shows included\n\u2022 0xfa323e40 NEAR-LEG GENUINE_FORECASTER: $0 PnL anomaly blocks signal use\n\u2022 Top 6 LEGENDARY traders (2503-2897 ELO): ALL dormant, zero open positions\n\n\ud83c\udfaf *June 30 scoring event in 15 days*\nReport: brain/agent-outputs/signal-agent/2026-06-15-08-signal-report.md",
+        "priority": "MEDIUM",
+        "bot": "agents",
+        "run_id": "signal-20260615"
+      },
+      "timestamp": "2026-06-15T08:30:00Z",
+      "status": "processed",
+      "processed_at": "2026-06-15T08:19:59.504415"
+    },
+    {
+      "from": "code-hygiene-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "bot": "agents",
+      "payload": {
+        "message": "\ud83e\uddf9 *Code Hygiene Complete \u2014 2026-06-19*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nSecurity: 0 critical / 0 high / 1 medium (all benign)\nDead code: 9 flagged trading-swarm (all scanner caveats); 88+ first-repo scripts\nDuplicates: SQLite (8 files), Telegram (4 files) \u2014 proposal pending approval\nTest gaps: 4 quant research files (low priority \u2014 research scripts)\nWorktrees cleaned: 0\nAgent logs archived: 39\nContract freshness: PASSED\n\nAction needed: Yes\n\u2192 monitoring.log (first-repo) at 82MB and growing \u2014 needs log rotation\n\u2192 ~15 first-repo scripts/ eligible for archive/ move (Oscar approval)\n\u2192 Telegram send consolidation proposal still awaiting approval\n\nFull report: brain/agent-outputs/code-hygiene/2026-06-19-weekly.md",
+        "priority": "LOW",
+        "run_id": "hygiene-20260619"
+      },
+      "timestamp": "2026-06-19T20:06:45.860108Z",
+      "status": "pending"
     }
   ],
   "pending": [
@@ -427,6 +455,60 @@
         "STR003-006"
       ],
       "note": "STR-001 39 days since revalidation but BLOCKED \u2014 requires STR-001b pre-registration backtest, 0 qualifying signals in historical data"
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "rescan_complete",
+      "timestamp": "2026-06-15T08:30:00Z",
+      "payload": {
+        "cycle_id": "signal-20260615",
+        "signals_rescanned": 4,
+        "signals_confirmed": 4,
+        "signals_flagged": 2,
+        "signals_upgraded": 0,
+        "new_signals_found": 0,
+        "legendary_pool_qualifying": 16,
+        "legendary_clean_with_open_geo_positions": 5,
+        "dormant_legendary_count": 6,
+        "pool_sizes_verified": {
+          "clean_pool": 22229,
+          "true_research_pool": 3902,
+          "pool_c": 2878,
+          "legendary_base": 48,
+          "legendary_active": 24,
+          "legendary_clean": 17,
+          "near_legendary_clean": 20
+        },
+        "signal_statuses": {
+          "STR003-001": "ACTIVE_BELOW_THRESHOLD \u2014 77 days to Sept 1, position intact $3,475 NO, trader fails geo_elo",
+          "STR003-004": "ACTIVE_APPROACHING_RESOLUTION \u2014 15 days, $7,191 NO position intact, trader fails geo_elo",
+          "STR003-007": "ACTIVE_NON_SCORABLE \u2014 15 days, near-fully resolved NO, no LEGENDARY holders in DB",
+          "STR003-008": "ACTIVE_APPROACHING_RESOLUTION \u2014 15 days, $1,500 NO (VOLUME_SPECIALIST), eligible for scoring"
+        },
+        "new_signal_scan_result": "0 new qualifying STR-003 signals",
+        "no_signal_rationale": [
+          "Top 6 LEGENDARY traders (geo_elo_active 2503-2897, cumulative ~$34M PnL) are completely dormant \u2014 zero open geo positions",
+          "0xd44e974a (elo=2340): 43 concurrent markets \u2014 disqualified (max 5 per contract)",
+          "0x9cb98fc5 (elo=2392): 24 concurrent markets \u2014 disqualified",
+          "0xec05c999 (elo=2494): positions below $2,000 minimum ($100-174)",
+          "0xecaa8806 (elo=3640, GENUINE_FORECASTER): only Peru stale positions in DB \u2014 resolution pending",
+          "0x44a1159b (elo=2300): YIELD_HARVESTER archetype, EXCLUDE weight, contract discrepancy \u2014 not actionable"
+        ],
+        "intelligence_flags": [
+          "DATA_QUALITY: Peru markets (STR003-005/006 markets) still resolved=0 in DB (8 days past June 7 resolution)",
+          "HUMAN_REVIEW: 0x44a1159b contract discrepancy \u2014 v2.7 marked research_excluded=1, DB shows 0. Oscar must confirm",
+          "HUMAN_REVIEW: 0xfa323e40 NEAR_LEGENDARY (geo_elo_active=1944.5, GENUINE_FORECASTER provisional) \u2014 $0 PnL anomaly blocks signal use. 72.9% accuracy, 240 resolved trades, 60% contested entries",
+          "ELO_DECAY: 0xe0bc6311 dropped LEGENDARY\u2192NEAR_LEGENDARY (2192\u21922150 this week)",
+          "JUNE_30_CLUSTER: STR003-004, STR003-007, STR003-008 all resolve in 15 days \u2014 scoring event imminent",
+          "DOMAIN_REVERSAL: 0x2884f98185 (DOMAIN_SPECIALIST, Russia_UKR) switched Russia/Ukraine ceasefire YES\u2192NO (per trader-intelligence-agent)"
+        ],
+        "approaching_resolutions_june30": [
+          "STR003-004 \u2014 Putin invasion NO (not scorable, fails geo_elo)",
+          "STR003-007 \u2014 Iran regime fall NO (not scorable, retrospective)",
+          "STR003-008 \u2014 European security guarantee NO (scorable, VOLUME_SPECIALIST)"
+        ]
+      }
     }
   ],
   "str003_signals": [
@@ -455,7 +537,24 @@
       "non_scorable_for_validation": true,
       "non_scorable_reason": "Registered 2026-06-09 after market had already moved from 0.32 to 0.0125 YES price (32pp move). Retrospective discovery \u2014 hindsight contamination per Fable roadmap \u00a75.1.3.",
       "market_price_at_first_capture": 0.007,
-      "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time."
+      "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time.",
+      "rescan_2026-06-15": "ACTIVE_NON_SCORABLE \u2014 15 days to June 30 resolution. Market near-fully resolved (NO dominant, Iran regime intact). DB confirms 0 LEGENDARY traders (geo_elo_active\u22652175) in top-20 positions for this market; largest holders are geo_elo_active 1455-1725 range. Registered retrospectively 2026-06-09 \u2014 non_scorable_for_validation confirmed. Original '7 LEGENDARY' claim based on prior ELO thresholds or registration criteria that differ from current geo_elo_active standard. Monitor for June 30 resolution. Do not use for STR-003 accuracy scoring.",
+      "counter_signal_v2": {
+        "counter_signal_detected": false,
+        "mode": "market_level",
+        "evaluated_at": "2026-06-18T10:11:11Z",
+        "signal_date_cutoff": "2026-06-09",
+        "confirming_count": 13,
+        "exited_count": 14,
+        "reversed_count": 2,
+        "new_post_reg_exits": 0,
+        "new_post_reg_reversals": 0,
+        "credibility_adjustment": 0.0,
+        "scs_floor_applied": 25.0,
+        "reversals": [],
+        "exits": [],
+        "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
+      }
     },
     {
       "signal_id": "STR003-008",
@@ -478,7 +577,24 @@
         "STR003-007"
       ],
       "market_price_at_first_capture": 0.0125,
-      "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time."
+      "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time.",
+      "rescan_2026-06-15": "ACTIVE_APPROACHING_RESOLUTION \u2014 15 days to June 30. Key trader 0xd44e974a (geo_elo_active=2340, VOLUME_SPECIALIST, Russia_UKR domain) holds $1,500 NO. geo_resolved_trades=290 (\u226510, qualifies). Market effectively at near-zero YES price. Corroborated by trader-intelligence-agent (June 15): same trader at avg_price 0.77, 1,308 shares. Position below $2,000 minimum for new signals \u2014 existing signal retained. STR003-008 eligible for scoring on June 30 resolution.",
+      "counter_signal_v2": {
+        "counter_signal_detected": false,
+        "mode": "market_level",
+        "evaluated_at": "2026-06-18T10:11:11Z",
+        "signal_date_cutoff": "2026-06-09",
+        "confirming_count": 2,
+        "exited_count": 0,
+        "reversed_count": 0,
+        "new_post_reg_exits": 0,
+        "new_post_reg_reversals": 0,
+        "credibility_adjustment": 0.0,
+        "scs_floor_applied": 25.0,
+        "reversals": [],
+        "exits": [],
+        "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
+      }
     },
     {
       "signal_id": "STR003-005",
@@ -567,7 +683,8 @@
       "rescan_2026-06-01": "Market unresolved (resolves Sept 1 2026). Position intact: ~$3,475 NO across two open positions. Trader geo_elo=1461.5 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=3 < 10). Signal retained for outcome tracking.",
       "rescan_2026-06-08": "MEDIUM_RETAINED \u2014 market unresolved (resolves Sept 1 2026, 85 days). Position intact: 952 shares ($336) + 10,931 shares ($3,139) = $3,475 total NO. Trader profile unchanged: geo_elo=1461.5, geo_elo_active=845.9 (heavily decayed, inactive), directionality=NULL. Fails geo_elo >= 2175 and directionality >= 0.7 thresholds. thin sample \u2014 resolved_trades_count=3 globally, geo_resolved_trades_count=91. Retained for outcome tracking only, not actionable.",
       "status": "ACTIVE_BELOW_THRESHOLD",
-      "event_cluster": "us_governor_2026"
+      "event_cluster": "us_governor_2026",
+      "rescan_2026-06-15": "ACTIVE_BELOW_THRESHOLD \u2014 position intact ($3,475 total NO: $3,139 + $336). Key trader geo_elo_active=823.4 (heavily decayed, fails 2175 threshold). directionality=NULL \u2014 fails STR-003 criteria. geo_resolved_trades=91 (\u226510). 77 days to Sept 1 resolution. Retained for outcome tracking only \u2014 not actionable."
     },
     {
       "signal_id": "STR003-003",
@@ -623,7 +740,24 @@
       "rescan_2026-06-01": "APPROACHING RESOLUTION \u2014 resolves June 30 2026 (29 days). Position intact: NO 18,472 shares at $7,191. Counter-signal (YES $12,967) also still open. Trader geo_elo=1554.0 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10). Priority: record outcome in strategy-registry.md when market resolves.",
       "rescan_2026-06-08": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (22 days). Position intact: 18,471 NO shares at $7,191 (last_updated 2026-06-05). Trader profile: geo_elo=1554.0, geo_elo_active=842.5 (heavily decayed, inactive), fails geo_elo >= 2175 threshold. Counter-signal environment intensified \u2014 multiple large YES positions now total $200K+: 0xd69da312 YES $91,980+$35,287, 0x5416aae YES $60,887+$22,789. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10, geo_resolved_trades_count=225). Priority: record outcome in strategy-registry.md when market resolves June 30.",
       "status": "ACTIVE",
-      "event_cluster": "russia_ukraine_june2026"
+      "event_cluster": "russia_ukraine_june2026",
+      "rescan_2026-06-15": "ACTIVE_APPROACHING_RESOLUTION \u2014 15 days to June 30. Position intact: 18,472 NO shares at $7,191 avg 0.389 (last updated 2026-06-05). Key trader geo_elo=1554.0, geo_elo_active=820.1 (heavily decayed) \u2014 fails LEGENDARY threshold (2175). Counter-signal environment unverified this cycle (no new large YES positions found in top-20 position scan, positions table filter may be stale). Signal not scorable for STR-003 strategy validation. Record outcome in strategy-registry.md on June 30.",
+      "counter_signal_v2": {
+        "counter_signal_detected": false,
+        "mode": "specific_trader",
+        "evaluated_at": "2026-06-18T10:11:11Z",
+        "signal_date_cutoff": "2026-05-25",
+        "confirming_count": 1,
+        "exited_count": 0,
+        "reversed_count": 0,
+        "new_post_reg_exits": 0,
+        "new_post_reg_reversals": 0,
+        "credibility_adjustment": 0.0,
+        "scs_floor_applied": 25.0,
+        "reversals": [],
+        "exits": [],
+        "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
+      }
     },
     {
       "signal_id": "STR003-009",
