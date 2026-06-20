@@ -527,3 +527,25 @@ This document grows more valuable every week.
 - Closed: STR003-005/006 Peru outcome confirmed (see Strategy Insights above).
 - Still open: What is the mutual exclusivity rate among STR-003 YES signals?
 - Urgent: RQ0 monthly gate due 2026-06-13 — 39 traders above ELO 3,500 still unclassified (May 18 flag).
+
+---
+
+## Lessons added 2026-06-20
+
+### System Architecture Lessons
+- 2026-06-20: Integration contract v2.11 codified the single-writer principle as the canonical governance layer for all traders table aggregate columns. Layer 1 columns (total_trades, successful_trades, total_volume, win_rate, specialisation_ratio, and all position-derived columns: total_invested, avg_roi, realized_pnl, open_positions, closed_positions) are now owned exclusively by reconcile_trader_aggregates.py. Any agent or script writing these columns directly creates a competing writer — this was the root cause of months of recurring data inconsistencies. Route all aggregate writes through reconcile_trader_aggregates.py or coordinate explicitly. (Source: contract v2.11, 2026-06-18 session #38)
+
+- 2026-06-20: True_research_pool nearly doubled in one week (3,837 on 2026-06-13 → 7,836 on 2026-06-20). Extraordinary growth rate. Likely caused by backfill of resolved_trades_count for traders added via vgregoire external_seed (195 traders, SCL-006) now crossing the 20-resolved-trades threshold as the backfill pipeline processes historical trades. Section 9 expected values in integration-contract.md are now significantly stale. Oscar should investigate root cause and update contract numbers. (Source: training-librarian Responsibility 10, 2026-06-20 vs 2026-06-13)
+
+- 2026-06-20: Contract version drift risk. Signal-agent June 15 report referenced contract v2.9 (2026-06-13) while the live contract is v2.12 (2026-06-18). The 3-version gap includes breaking changes: datetime format standard (Section 16, affects all ingestion paths), STR-002 dual-role architecture (Section 17), column authority registry (Section 18). Agents should read the contract version header at startup and log it in their cycle reports. A check against schema-change-log.md last entry would catch this automatically. (Source: signal-agent 2026-06-15-08-signal-report.md vs integration-contract.md v2.12)
+
+### Strategy Insights
+- 2026-06-20: LEGENDARY dormancy pattern — for 3 consecutive weekly cycles (June 1, 8, 15), 6 of the top 16 qualifying LEGENDARY traders (geo_elo_active 2503–2897, combined P&L ~$34M+, 1,876–2,028 geo resolved trades) have zero open positions in active geo/elections markets. The system's highest-ELO cohort is completely inactive. Possible interpretations: (1) low-conviction environment in current geopolitics, (2) Polymarket platform fatigue for high-capital traders, (3) positions not being captured by DB coverage. Monitor post-June 30 resolution cluster for re-engagement. If dormancy continues into July, treat as a structural signal that the current market set has no LEGENDARY conviction opportunities. (Source: signal-agent 2026-06-01, 2026-06-08, 2026-06-15 reports)
+
+### Calibration Findings
+- 2026-06-15: ELO weekly calibration snapshot (feedback-loop-agent 2026-06-15): LEGENDARY 73% (n=22), ELITE 60% (n=30), QUALIFIED 77% (n=48) across non-sports resolved markets. QUALIFIED outperforming LEGENDARY at the weekly snapshot level, which is consistent with small-n noise at LEGENDARY (22 markets). The authoritative calibration finding remains 2026-06-03-ELO-VS-MARKET-001: LEGENDARY 79.2%, ELITE 81.4% on genuinely contested (0.35–0.65 price band) markets, n=746 — a larger, better-controlled sample.
+
+### Open Questions (updated)
+- New URGENT: What caused true_research_pool to nearly double from 3,837 (June 13) to 7,836 (June 20)? Root cause needed before using pool stats for ongoing validation.
+- June 30 resolution cluster: STR003-004 (Putin NO, not scorable — trader fails LEGENDARY threshold), STR003-007 (Iran NO, non-scorable), STR003-008 (Ukraine security guarantee NO, scorable). STR003-008 will be STR-003's 5th resolved signal and first with VOLUME_SPECIALIST-weighted scoring.
+- Stale Polymarket prices: June 15 scan showed 7/8 (87.5%) of signal markets had stale API prices. If structural, the positions scan is providing minimal weekly intelligence. Investigate API refresh cadence.

@@ -1498,6 +1498,10 @@ Cointegration:     Engle-Granger: coint(s1, s2) -> p-value
 
 Kelly (binary):    f* = p/|loss| - (1-p)/win
                    Use 0.5x Kelly, cap at 20% per position
+                   Live calibration: Pool C geo accuracy 70.7% (n=444 resolved 2026
+                   markets) — above 60% minimum for positive Kelly. Calibration is
+                   sufficient to consider fractional Kelly (0.5x) when Phase 6 begins.
+                   (Source: 2026-06-05-POOL-C-GEO-FULL-2026-001, HIGH confidence)
 
 ATR Stop:          stop = entry ± (ATR * multiplier)
                    Typical multiplier: 1.5-3.0x ATR

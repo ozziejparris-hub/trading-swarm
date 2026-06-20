@@ -164,7 +164,9 @@
       "action_recommendation": "Increase ELITE tier weighting \u2014 exceeds 60% accuracy",
       "invalidated_at": "2026-04-30",
       "invalidation_reason": "Computed against contaminated research pool (9,993 traders with research_excluded=0 when correct clean pool is 857). ELO modifiers were also frozen at 1.0x when these ran. Requires revalidation by feedback-loop-agent against clean pool.",
-      "expires_at": "2026-07-24T15:05:25Z"
+      "expires_at": "2026-07-24T15:05:25Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-ELITE-001"
     },
     {
       "id": "2026-04-25-ELO-QUALIFIED-001",
@@ -185,7 +187,9 @@
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
       "invalidated_at": "2026-04-30",
       "invalidation_reason": "Computed against contaminated research pool (9,993 traders with research_excluded=0 when correct clean pool is 857). ELO modifiers were also frozen at 1.0x when these ran. Requires revalidation by feedback-loop-agent against clean pool.",
-      "expires_at": "2026-07-24T15:05:25Z"
+      "expires_at": "2026-07-24T15:05:25Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-04-25-STRATEGY-OVERDUE-001",
@@ -342,7 +346,9 @@
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
       "invalidated_at": "2026-04-30",
       "invalidation_reason": "Computed against contaminated research pool (9,993 traders with research_excluded=0 when correct clean pool is 857). ELO modifiers were also frozen at 1.0x when these ran. Requires revalidation by feedback-loop-agent against clean pool.",
-      "expires_at": "2026-07-26T07:00:01Z"
+      "expires_at": "2026-07-26T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-04-27-STRATEGY-OVERDUE-001",
@@ -406,7 +412,9 @@
       "action_recommendation": "Invalidated \u2014 use 2026-05-07-ELO-QUALIFIED-002 for authoritative clean-pool result",
       "invalidated_at": "2026-05-07",
       "invalidation_reason": "Computed against contaminated research pool: research_excluded=0 matched 746 traders but only 493 meet resolved_trades_count>=20 (253 thin-sample traders included). Run 5 clean-pool revalidation yields 63.16% accuracy (n=57). See 2026-05-07-ELO-QUALIFIED-002.",
-      "expires_at": "2026-08-03T12:11:47Z"
+      "expires_at": "2026-08-03T12:11:47Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-05-05-STRATEGY-OVERDUE-001",
@@ -454,7 +462,9 @@
       },
       "actionable": true,
       "action_recommendation": "QUALIFIED tier consensus accuracy confirmed above 60% Phase 5 gate on clean pool. Signal-agent should continue using QUALIFIED tier consensus. Apply category-level weighting: Geopolitics+Unknown signals carry 91% accuracy vs Elections 47% (below chance). Phase 5 feedback-loop gate criterion now met (run 5 complete, 4+ required).",
-      "expires_at": "2026-08-05T12:00:00Z"
+      "expires_at": "2026-08-05T12:00:00Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-05-07-CATEGORY-ELECTIONS-001",
@@ -521,7 +531,9 @@
       },
       "actionable": false,
       "action_recommendation": "Await 9 more signal resolutions before drawing accuracy conclusions. One resolved signal (Ramaswamy NO \u2014 validated correct 2026-05-02) is insufficient for statistical claims.",
-      "expires_at": "2026-08-05T12:00:00Z"
+      "expires_at": "2026-08-05T12:00:00Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-SIGNAL-ACCURACY-INSUFFICIENT-001"
     },
     {
       "id": "2026-05-07-RQ2.2-EXTENDED-001",
@@ -1368,7 +1380,9 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-09-06T07:00:01Z"
+      "expires_at": "2026-09-06T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-SIGNAL-ACCURACY-INSUFFICIENT-001"
     },
     {
       "id": "2026-06-08-ELO-LEGENDARY-001",
@@ -1387,7 +1401,9 @@
       },
       "actionable": false,
       "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-09-06T07:00:01Z"
+      "expires_at": "2026-09-06T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-LEGENDARY-001"
     },
     {
       "id": "2026-06-08-ELO-ELITE-001",
@@ -1406,7 +1422,9 @@
       },
       "actionable": false,
       "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-09-06T07:00:01Z"
+      "expires_at": "2026-09-06T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-ELITE-001"
     },
     {
       "id": "2026-06-08-ELO-QUALIFIED-001",
@@ -1425,7 +1443,9 @@
       },
       "actionable": false,
       "action_recommendation": "QUALIFIED tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-09-06T07:00:01Z"
+      "expires_at": "2026-09-06T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-15-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-06-09-POSITIONS-ANALYSIS-001",
@@ -1552,7 +1572,7 @@
     {
       "id": "2026-06-13-STR003-ACC-004",
       "generated_by": "score_str003_signals",
-      "generated_at": "2026-06-13T06:00:30Z",
+      "generated_at": "2026-06-13T09:17:02Z",
       "finding_type": "strategy_performance",
       "confidence": "LOW",
       "sample_size": 4,
@@ -1577,7 +1597,233 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-13T06:00:30Z"
+      "expires_at": "2027-06-13T09:17:02Z"
+    },
+    {
+      "id": "2026-06-14-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-14T06:00:30Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-14T06:00:30Z"
+    },
+    {
+      "id": "2026-06-15-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-15T06:00:31Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-15T06:00:31Z"
+    },
+    {
+      "id": "2026-06-15-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-15T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 11
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-09-13T07:00:01Z"
+    },
+    {
+      "id": "2026-06-15-ELO-LEGENDARY-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-15T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 22,
+      "summary": "LEGENDARY tier consensus accuracy: 73% over 22 non-sports markets",
+      "detail": {
+        "metric": "elo_legendary_consensus_accuracy",
+        "value": 0.7273,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 11
+      },
+      "actionable": true,
+      "action_recommendation": "Increase LEGENDARY tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-09-13T07:00:01Z"
+    },
+    {
+      "id": "2026-06-15-ELO-ELITE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-15T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 30,
+      "summary": "ELITE tier consensus accuracy: 60% over 30 non-sports markets",
+      "detail": {
+        "metric": "elo_elite_consensus_accuracy",
+        "value": 0.6,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 11
+      },
+      "actionable": false,
+      "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-09-13T07:00:01Z"
+    },
+    {
+      "id": "2026-06-15-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-15T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 48,
+      "summary": "QUALIFIED tier consensus accuracy: 77% over 48 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.7708,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 11
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-09-13T07:00:01Z"
+    },
+    {
+      "id": "2026-06-16-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-16T06:00:34Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-16T06:00:34Z"
+    },
+    {
+      "id": "2026-06-17-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-17T06:00:33Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-17T06:00:33Z"
+    },
+    {
+      "id": "2026-06-18-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-18T06:00:35Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-18T06:00:35Z"
     }
   ]
 }

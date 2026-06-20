@@ -553,6 +553,12 @@ with accumulated knowledge rather than from zero.
 - 2026-06-13: RQ0 monthly gate due 2026-06-13 (per compounding note 2026-05-13). Gate covers wash trading (RQ0.1) and bot detection (RQ0.2). The 39 new traders above ELO 3,500 flagged May 18 remain unclassified. RQ0 should prioritise this cluster.
 - 2026-06-13: DB pool growth confirmed — clean_pool=18,759 (threshold 15,000), true_research_pool=3,837 (threshold 3,000), pool_c=2,851, legendary_clean=18. Integration contract Section 9 all pass.
 - 2026-06-13: Signal Credibility Index now annotating positions scan output (June 9 scan: 5 markets; MEDIUM tier predominates, no HIGH; 1 MIXED_SIGNAL: China tariff market). SCI is annotation-only until validated on ≥20 resolved markets per RQ-SCI-001 criteria.
+- 2026-06-15: ELO weekly calibration — LEGENDARY 73% (n=22), ELITE 60% (n=30), QUALIFIED 77% (n=48) non-sports markets (feedback-loop-agent). QUALIFIED outperforming LEGENDARY weekly — consistent with small-n noise at LEGENDARY level. Authoritative calibration remains 2026-06-03 finding (n=746 market pairs, LEGENDARY 79.2%).
+- 2026-06-20: True_research_pool nearly doubled in one week: 3,837 → 7,836. Clean_pool: 18,759 → 22,475. Legendary_clean: 18 → 23. Pool growth rate is extraordinary — root cause unknown. Section 9 expected values in integration-contract.md now stale; flagged for Oscar to investigate and update contract numbers.
+- 2026-06-20: LEGENDARY dormancy confirmed — 6/16 qualifying LEGENDARY traders (geo_elo_active 2503–2897, combined P&L ~$34M+) have zero open geo positions for 3rd consecutive weekly cycle. Highest-conviction cohort completely absent from active markets. Monitor post-June 30 resolutions for re-engagement.
+- 2026-06-20: STR003-004 (Putin NO), STR003-007 (Iran NO, non-scorable), STR003-008 (Ukraine security guarantee NO, scorable) all resolve 2026-06-30. First fully scorable STR-003 outcome for accuracy tracking since Peru: STR003-008 (VOLUME_SPECIALIST archetype, DOMAIN_ONLY weight).
+- 2026-06-20: Integration contract advanced to v2.12 (2026-06-18). New sections: 16 (datetime standard), 17 (STR-002 dual-role architecture), 18 (column authority registry, single-writer principle). Signal-agent June 15 still referencing stale v2.9. Agents must check contract version header at startup.
+- 2026-06-20: Positions scan June 15 — 7/8 active signal markets had stale Polymarket API prices; 0 markets in report. Stale price coverage is a growing data quality risk for the weekly intelligence function.
 
 
 ## Formal Research Questions

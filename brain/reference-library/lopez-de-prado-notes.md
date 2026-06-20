@@ -1115,6 +1115,16 @@ drawdowns.
 
 ---
 
+## Live System Findings — Enrichment Notes
+
+**2026-06-20 (training-librarian-agent, 60-day threshold enrichment):**
+
+The core argument of Part 3 (specialist scoring outperforms market consensus) is now empirically validated in the live system. On genuinely contested markets (entry_price 0.35–0.65), ELO-tiered specialist traders showed: ELITE 81.4% (n=274), LEGENDARY 79.2% (n=288), QUALIFIED 69.6% (n=184) vs market baseline 50.3% (n=1,255 market-tier pairs). Edge is +31.1pp / +28.9pp / +19.3pp above random. This is consistent with Lopez de Prado's validation framework: specialist signals are meaningful precisely in the uncertain regime where the market is not informationally efficient. Easy markets (price >0.90) show no edge difference — the market already knows. (Source: 2026-06-03-ELO-VS-MARKET-001, Oscar manual query, HIGH confidence, n=746)
+
+This finding directly supports the meta-labelling architecture in Part 3.1: the primary signal (ELO tier consensus) has validated accuracy on the subset of markets where it should theoretically work (genuinely uncertain outcomes). The next step per Lopez de Prado's framework is a time-series stability check across 2024–2026 to confirm the edge is not a single-year artifact.
+
+---
+
 ## Quick Reference: Lopez de Prado vs Dixon
 
 | Topic | Dixon et al | Lopez de Prado |

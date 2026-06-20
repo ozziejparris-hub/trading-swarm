@@ -169,8 +169,45 @@ these columns yet — pure data capture. PROPAGATION: N/A (new columns, no exist
 
 ---
 
-## Pending verification items
-Last full audit: 2026-06-13 (training-librarian-agent)
+---
 
-All SCL-001 through SCL-009 items are verified COMPLETE except:
-- **feedback-loop-agent.md (SCL-004):** condition_id → market_id semantic conflict in Step 1 signal payload lookup. PENDING OSCAR REVIEW. Flagged 2026-06-06. Requires confirmation of what value is stored in signal.payload.market_id before changing WHERE clause.
+### SCL-010 — Datetime format normalisation (Section 16)
+**Date:** 2026-06-15
+**Contract version:** integration-contract v2.10
+**Type:** Canonical format standard — BREAKING for ingestion paths
+**Description:**
+normalize_market_dates.py normalised 471,561 values across resolution_date, end_date, and last_checked columns, removing T-separator/Z-suffix formats that caused SQLite string comparison to misorder dates and silently hide 976+ markets from all resolution passes for weeks. Section 16 added as the authoritative datetime format standard. All dates in the DB are now plain YYYY-MM-DD or YYYY-MM-DD HH:MM:SS without T-separators or Z-suffixes. Any ingestion path writing datetime values MUST normalise before writing.
+**Affected templates (requiring fix):**
+- [ ] All templates that instruct agents to write datetime values to the DB — check for ISO 8601 T-separator format and remove it
+- [ ] market-builder.md — if it writes end_date or resolution_date: normalise to YYYY-MM-DD
+**Note:** This SCL was not added at time of change (2026-06-15). Added retrospectively by training-librarian-agent 2026-06-20 during weekly audit after identifying gap in v2.10–v2.12 contract changes with no SCL entries.
+**Reference:** integration-contract.md Section 16
+
+---
+
+### SCL-011 — Column authority registry (Section 18)
+**Date:** 2026-06-18
+**Contract version:** integration-contract v2.11
+**Type:** Governance standard — BREAKING for write patterns
+**Description:**
+Single-writer principle codified. Layer 1 aggregate columns on the traders table are now owned by reconcile_trader_aggregates.py:
+- total_trades, successful_trades, total_volume — direct aggregates from positions
+- win_rate — derived from the above
+- total_invested, avg_roi, realized_pnl, open_positions, closed_positions — position-derived
+- specialisation_ratio — from analysis_scheduler.py (pending consolidation)
+Any agent or script writing these columns directly creates a competing writer. Route all aggregate writes through reconcile_trader_aggregates.py.
+Section 18.3 provides the full column authority registry (~37 columns, 5 governance classes).
+**Affected:**
+- All agents that write to the traders table (signal-agent, feedback-loop-agent if updating trader records) — READ SECTION 18.3 before writing any traders column.
+- DEAD columns pending drop: unrealized_pnl, total_pnl, roi_percentage — do not reference these.
+**Reference:** integration-contract.md Section 18
+
+---
+
+## Pending verification items
+Last full audit: 2026-06-20 (training-librarian-agent)
+
+All SCL-001 through SCL-011 items — status as of 2026-06-20:
+- **feedback-loop-agent.md (SCL-004):** condition_id → market_id semantic conflict in Step 1 signal payload lookup. PENDING OSCAR REVIEW (open since 2026-06-06). Requires confirmation of what value is stored in signal.payload.market_id before changing WHERE clause.
+- **SCL-010:** market-builder.md datetime normalisation — PROPAGATION INCOMPLETE. Requires review to verify it does not write non-normalised datetime values.
+- **SCL-011:** Column authority registry — template impact assessment INCOMPLETE. All templates that write traders table columns should be reviewed against Section 18.3 authority list.
