@@ -1,6 +1,6 @@
 # Integration Contract — first-repo ↔ trading-swarm
 
-**Version:** v2.12 — 2026-06-18
+**Version:** v2.13 — 2026-06-23
 **Owner:** Oscar (ozziejparris@gmail.com)
 
 This is the single source of truth for what first-repo exposes and what
@@ -392,6 +392,12 @@ Implications:
 This is not a data quality issue to be fixed — it is a permanent structural feature of the dataset.
 
 ## Section 8 — Change Log
+
+### v2.13 — 2026-06-23
+
+**Tier-1 definitions-module complete.** Section 18.5.1 rewritten to record DONE (not planned). `monitoring/column_definitions.py` built and live as the single canonical source for all covered definitions. Six data-integrity consumers repointed. Harness-vs-writer structural divergence is now impossible for covered columns. Tier-2 scope (13 read-side scripts) recorded as next milestone.
+
+---
 
 ### v2.12 — 2026-06-18
 
@@ -1288,25 +1294,103 @@ The contract is authoritative. The scripts follow it, not the other way around.
 
 ---
 
-### 18.5.1 — KNOWN GAP: cross-repo source-of-truth
+### 18.5.1 — RESOLVED: cross-repo source-of-truth → definitions module built (Tier-1 COMPLETE)
 
-**The gap.** The canonical column definitions live in this contract (Markdown, `trading-swarm` repo), while the code that must obey them — `reconcile_trader_aggregates.py` and `audit_invariants.py` — lives in `first-repo`. This creates two structural problems:
+**Status as of v2.13 (2026-06-23): TIER 1 COMPLETE.** The gap acknowledged in v2.12 is closed for all covered columns. The definitions module is built and live.
 
-1. **This contract is documentation, not enforcement.** Nothing structurally prevents a script from diverging from the written definition; compliance is currently by human diligence alone.
+---
 
-2. **The "same-commit" rule in 18.5 is not literally satisfiable.** The three artefacts that must stay in sync (this contract, the reconciler, the invariant harness) live across two independent git histories. At best a definition change is two commits. Nothing enforces even that loose coupling.
+#### The Module
 
-This is candidly the same disease the rest of Section 18 was built to cure — the same fact in multiple places with no enforced sync — appearing one level up in our own governance tooling. We acknowledge it openly rather than pretend the rule is stronger than it is.
+`first-repo/monitoring/column_definitions.py` is the **single canonical source** for the following:
 
-**The planned fix (next session).** Extract all operative column definitions into a single importable module in `first-repo` (working name: `monitoring/column_definitions.py`). This module will contain the canonical recompute SQL/logic for every LOCAL-AUTHORITATIVE and DERIVED column as named constants or functions.
+| What it defines | Detail |
+|-----------------|--------|
+| `geo_resolved_trades_count` | Canonical SQL for geo resolved-trade count (with trade_gap_flag filter) |
+| `resolved_trades_count` | Canonical SQL for total resolved-trade count |
+| Pool C gate | `geo_accuracy_pool = 1` qualification predicate |
+| LEGENDARY gate | `geo_elo_active >= GEO_ELO_LEGENDARY AND geo_accuracy_pool = 1 AND research_excluded = 0` |
+| Threshold constants | `GEO_ELO_POOL_SANITY_FLOOR = 500`, `GEO_ELO_LEGENDARY = 2175`, `NEAR_LEGENDARY = 1800`, `ELITE = 1400`, `QUALIFIED = 1000`, `POOL_C_MIN_RESOLVED_TRADES = 10` |
+| `compute_win_rate(successful, resolved)` | Canonical win-rate function (matches reconciler formula; 0.0 on divide-by-zero; MIN(1.0) cap) |
+| `compute_geo_elo_active(geo_elo, days_dormant)` | 180-day half-life decay: `geo_elo × 0.5^(days_dormant/180)` |
+| `derive_tier(geo_elo_active)` | Returns `'LEGENDARY'` / `'NEAR_LEGENDARY'` / `'ELITE'` / `'QUALIFIED'` / `'UNRANKED'` |
+| `refresh_pool_c(conn)` | Canonical Pool C recomputation function |
 
-- `reconcile_trader_aggregates.py` imports its write-definitions from that module.
-- `audit_invariants.py` imports the **same** definitions for its invariant checks.
-- Both consumers compute from one source string → they cannot disagree. The `total_invested` all-vs-closed mismatch (the standing example in 18.5) becomes structurally impossible, not merely discouraged.
-- Section 18.3 changes role: from **being** the definitions to **describing and pointing at** the module. The contract remains the human-readable principle / classification / decision log; the module becomes the operative source of truth, living in the same repo as the code that uses it.
-- This converts 18.5's three-way-agreement rule from "human updates three places across two repos" (unenforceable) to "one source module, two importers" (enforced by the Python interpreter).
+Section 18.3 retains its role as the human-readable principle / classification / decision log. The module is the operative source of truth for all items listed above.
 
-**Status:** Acknowledged gap as of v2.12. Definitions-module refactor is the first item for the next session, to be done alongside the competing-writer teardown (since that work touches all these definitions anyway).
+---
+
+#### Tier-1 — Consumers Repointed (6 scripts)
+
+All six data-integrity consumers in `first-repo` now import from `monitoring/column_definitions.py`. The harness and all writers reference the same definitions — harness-vs-writer structural divergence is **impossible** for covered columns:
+
+| Script | Role |
+|--------|------|
+| `reconcile_geo_resolved_counts.py` | Writer — recomputes `geo_resolved_trades_count` using canonical SQL |
+| `update_research_exclusions.py` | Writer — Pool C gate and `research_excluded` logic |
+| `update_geo_elo.py` | Writer — `geo_elo_active` decay formula and LEGENDARY threshold |
+| `backfill_trade_results_geo.py` | Writer — geo resolved-count definition used in backfill logic |
+| `reconcile_trader_aggregates.py` | Writer — win-rate formula imported from module |
+| `audit_invariants.py` | **Harness** — all invariant recomputations now import canonical definitions; structural mismatch between harness and writer is impossible for covered columns |
+
+The `total_invested` all-vs-closed example from 18.5 is the standing proof: that class of disagreement can no longer arise for any column whose definition lives in the module.
+
+---
+
+#### The Principle Established
+
+The module defines **MEANING**. Consumers may implement differently for performance (e.g., `reconcile_trader_aggregates.py` uses a bulk CTE rather than a correlated subquery for `geo_resolved_trades_count`) **if and only if** the results are logically identical and the equivalence is documented in-code. The test is outcome equivalence, not implementation identity.
+
+Any future change to a covered definition must update the module and this contract in the same commit. The "same-commit" rule from 18.5 is now satisfiable for all Tier-1 columns: one repo, one module, two importers.
+
+---
+
+#### Maintenance Self-Healing
+
+`daily_maintenance.py` now runs `reconcile_geo_resolved_counts.py` at **two points**:
+
+1. **Pre-audit** (before `audit_invariants.py`) — closes drift from overnight category reclassifications
+2. **Post-eval** (after `evaluate_new_trader_results.py`) — closes drift introduced by newly scored trades that shift traders across the `geo_resolved_trades_count >= 10` Pool C gate
+
+This double-reconcile eliminates the geo-count drift windows that previously caused intermittent CRITICAL failures in the audit harness.
+
+---
+
+#### Bugs Fixed in Tier 1
+
+| Bug | Script | Detail |
+|-----|--------|--------|
+| Price-filtered count (daily re-corruption) | `update_geo_elo.py` | Was filtering trades by price range during geo count, causing count to drift down daily. Removed; canonical count (no price filter) now used throughout. |
+| `>= 5` evict-only re-gate | `reconcile_geo_resolved_counts.py` | Was only evicting traders who dropped below 5 geo trades, not re-gating traders who crossed the Pool C `>= 10` threshold. Fixed to apply full canonical gate. |
+| NULL-handling Pool C divergence | `update_research_exclusions.py` | Harness checked `geo_resolved_trades_count = 0`, reconciler wrote NULL for missing traders. Divergence caused spurious CRITICAL alerts. Fixed: both now treat NULL as non-qualifying (canonical: `IS NOT NULL AND >= 10`). |
+| `sync_trade_categories` argparse crash | `sync_trade_categories.py` | Crash on argparse import under certain invocation paths. Fixed. |
+
+---
+
+#### Tier-2 — STILL PENDING
+
+~13 read-side signal/scan scripts still use their own hard-coded copies of the LEGENDARY gate and threshold constants. **6 of these use raw `geo_elo` instead of `geo_elo_active`** — they count ~41 traders as LEGENDARY vs. the 13–16 genuine active ones.
+
+After Tier-2 repointing, all active STR-003 signals must be re-validated against the corrected `geo_elo_active` gate.
+
+Priority script: **`score_str003_signals.py`** (signal-integrity — uses raw `geo_elo` with no pool check; highest impact on active signals).
+
+| Script | Issue |
+|--------|-------|
+| `score_str003_signals.py` | raw `geo_elo`, no pool check — **highest priority** |
+| `register_signal.py` | local threshold copy |
+| `signal_credibility.py` | local threshold copy |
+| `detect_counter_signals.py` | local threshold copy |
+| `legendary_positions_scan.py` | raw `geo_elo`, no pool check |
+| `resolve_legendary_markets.py` | raw `geo_elo`, no pool check |
+| `backfill_transaction_hashes.py` | local threshold copy |
+| `polygon_event_scanner.py` | local threshold copy |
+| `polygon_maker_taker.py` | local threshold copy |
+| `pre_resolution_intelligence.py` | local threshold copy |
+| `verify_market_titles.py` | local threshold copy |
+| `system_observer.py` | local threshold copy |
+| `snapshot_elo_scores.py` | `derive_tier` logic not yet imported |
+| `evaluate_new_trader_results.py` | local market-resolved review logic |
 
 ---
 
