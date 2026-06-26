@@ -1,0 +1,85 @@
+{
+  "date": "2026-06-18",
+  "markets_checked": 97,
+  "signals_found": 7,
+  "signals": [
+    {
+      "market": "Will Ivan Cepeda Castro win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.805,
+      "market_price_pct": 0.1,
+      "gap_pt": 70.5,
+      "elite_traders": 17,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Daniel Quintero win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Juan Carlos Pinz\u00f3n win the 2026 Colombian presidential election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Gustavo Bol\u00edvar win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Jack Schlossberg be the democratic nominee for NY-12?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0526,
+      "gap_pt": 94.7,
+      "elite_traders": 7,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Will Effie Phillips-Staley be the Democratic nominee for NY-17?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.043,
+      "gap_pt": 95.7,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Will Nate Blouin be the Democratic nominee for UT-01?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.11,
+      "gap_pt": 89.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    }
+  ],
+  "scan_timestamp": "2026-06-18T09:01:14.291207+00:00"
+}

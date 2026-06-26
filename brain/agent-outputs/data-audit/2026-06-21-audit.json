@@ -1,0 +1,214 @@
+{
+  "summary": {
+    "audit_date": "2026-06-21",
+    "run_at": "2026-06-21T06:01:10",
+    "total": 18,
+    "pass": 11,
+    "regression": 5,
+    "critical": 2,
+    "headline": "7 invariants violated, 2 critical."
+  },
+  "checks": [
+    {
+      "name": "successful_trades > total_trades",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "win_rate > 1.0 (fraction-scale violation)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "win_rate > 100 (percentage-scale corruption)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "specialisation_ratio > 1.0",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_elo out of range [0,5000] for pool members",
+      "tier": 1,
+      "floor": 0,
+      "count": 2,
+      "status": "CRITICAL",
+      "examples": []
+    },
+    {
+      "name": "geo_accuracy_pool=1 with geo_elo_active < 500",
+      "tier": 1,
+      "floor": 0,
+      "count": 40,
+      "status": "CRITICAL",
+      "examples": []
+    },
+    {
+      "name": "duplicate markets.market_id",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "trades only join via condition_id (JOIN-fix regression)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_resolved_trades_count mismatch vs recomputed",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "pending on resolved non-gap markets (flagged traders)",
+      "tier": 2,
+      "floor": 0,
+      "count": 15298,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "pending on resolved non-gap geo/elections markets",
+      "tier": 2,
+      "floor": 0,
+      "count": 6495,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "trades.market_category='Unknown' where market.category is known",
+      "tier": 2,
+      "floor": 122417,
+      "count": 126626,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "timestamp mixed formats (per-column breakdown)",
+      "tier": 2,
+      "floor": 24996,
+      "count": 45328,
+      "status": "REGRESSION",
+      "examples": [
+        {
+          "column": "trades.timestamp",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "markets.end_date",
+          "canonical": "space-sep",
+          "non_canonical": 1007,
+          "floor": 946,
+          "status": "REGRESSION"
+        },
+        {
+          "column": "markets.resolution_date",
+          "canonical": "space-sep",
+          "non_canonical": 942,
+          "floor": 881,
+          "status": "REGRESSION"
+        },
+        {
+          "column": "traders.elo_last_updated",
+          "canonical": "T-sep",
+          "non_canonical": 43379,
+          "floor": 23163,
+          "status": "REGRESSION"
+        },
+        {
+          "column": "positions.entry_timestamp",
+          "canonical": "T-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.exit_timestamp",
+          "canonical": "T-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.created_at",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.last_updated",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "traders with API total_trades but 0 local records",
+      "tier": 3,
+      "floor": 114047,
+      "count": 1410,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "BUY trades with no position record",
+      "tier": 3,
+      "floor": 275254,
+      "count": 285551,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "total_volume > $1B outliers",
+      "tier": 3,
+      "floor": 75,
+      "count": 25,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "total_invested vs SUM(entry_total_cost) mismatch >5%",
+      "tier": 3,
+      "floor": 0,
+      "count": 96,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "successful_trades > actual won trades + 5 (Tier-3 population)",
+      "tier": 3,
+      "floor": 608,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    }
+  ]
+}

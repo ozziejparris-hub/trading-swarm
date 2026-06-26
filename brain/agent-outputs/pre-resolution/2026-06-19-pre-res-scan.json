@@ -1,0 +1,173 @@
+{
+  "date": "2026-06-19",
+  "markets_checked": 98,
+  "signals_found": 15,
+  "signals": [
+    {
+      "market": "Will Sergio Fajardo win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.2661,
+      "market_price_pct": 0.0011,
+      "gap_pt": 26.5,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Ivan Cepeda Castro win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8245,
+      "market_price_pct": 0.1,
+      "gap_pt": 72.4,
+      "elite_traders": 29,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Daniel Quintero win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Juan Carlos Pinz\u00f3n win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Vicky D\u00e1vila win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8929,
+      "market_price_pct": 0.001,
+      "gap_pt": 89.2,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Luis Gilberto Murillo win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5848,
+      "market_price_pct": 0.001,
+      "gap_pt": 58.4,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will David Luna S\u00e1nchez win the 2026 Colombian presidential election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.001,
+      "gap_pt": 99.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Juan Daniel Oviedo win the 2026 Colombian presidential election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.65,
+      "market_price_pct": 0.001,
+      "gap_pt": 64.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Roy Barreras win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5307,
+      "market_price_pct": 0.001,
+      "gap_pt": 53.0,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Claudia L\u00f3pez win the 2026 Colombian presidential election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6757,
+      "market_price_pct": 0.002,
+      "gap_pt": 67.4,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-21"
+    },
+    {
+      "market": "Will Claude Fable 5 be restored for US customers by June 22?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8698,
+      "market_price_pct": 0.3,
+      "gap_pt": 57.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-22"
+    },
+    {
+      "market": "Will Jack Schlossberg be the democratic nominee for NY-12?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0526,
+      "gap_pt": 94.7,
+      "elite_traders": 7,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Will Effie Phillips-Staley be the Democratic nominee for NY-17?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.043,
+      "gap_pt": 95.7,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Will Nate Blouin be the Democratic nominee for UT-01?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.11,
+      "gap_pt": 89.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-23"
+    },
+    {
+      "market": "Billionaire one-time wealth tax on California ballot?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0001,
+      "market_price_pct": 0.36,
+      "gap_pt": 36.0,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-06-25"
+    }
+  ],
+  "scan_timestamp": "2026-06-19T13:16:36.310943+00:00"
+}

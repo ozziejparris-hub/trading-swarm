@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-25T12:20:59Z",
+  "generated": "2026-06-08T17:19:41Z",
   "hypothesis": "RQ-GEO-ELO-001",
   "version": "v2 \u2014 market-implied probability ELO",
   "phase": "Phase 1+2+3 complete",
@@ -19,60 +19,60 @@
     "note": "Phase 1 used fixed opponent=1500 which caps ELO at ~1993. v2 uses market price as expected score \u2014 no artificial cap."
   },
   "tier_distribution": {
-    "traders_with_geo_elo": 435,
-    "max_geo_elo": 5464.5381,
-    "min_geo_elo": -1055.488,
-    "avg_geo_elo": 1605.9876,
-    "geo_legendary": 46,
-    "geo_elite": 47,
-    "geo_qualified": 114,
-    "geo_below": 228
+    "traders_with_geo_elo": 6098,
+    "max_geo_elo": 10002.5339,
+    "min_geo_elo": -28861.4677,
+    "avg_geo_elo": 1392.1025,
+    "geo_legendary": 169,
+    "geo_elite": 224,
+    "geo_qualified": 4292,
+    "geo_below": 1413
   },
   "directionality": {
-    "highly_directional_gte_0_7": 60
+    "highly_directional_gte_0_7": 4292
   },
   "phase3_accuracy": {
-    "note": "accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. Reason: geo_elo holders have <20 total resolved trades (research_excluded=1); accuracy_pool requires research_excluded=0 (>=20 resolved trades). Accuracy reported on all geo_elo holders.",
-    "accuracy_pool_geo_overlap": 0,
-    "total_position_calls": 969,
+    "note": "geo_accuracy_pool=1 AND geo_elo IS NOT NULL = 0 traders. Reason: geo_elo holders have <20 total resolved trades (research_excluded=1); geo_accuracy_pool requires research_excluded=0 (>=20 resolved trades). Accuracy reported on all geo_elo holders.",
+    "accuracy_pool_geo_overlap": 494,
+    "total_position_calls": 28191,
     "by_tier": {
       "legendary": {
-        "n": 215,
-        "accuracy": 0.6698
+        "n": 2344,
+        "accuracy": 0.7777
       },
       "elite": {
-        "n": 141,
-        "accuracy": 0.695
+        "n": 2709,
+        "accuracy": 0.7586
       },
       "qualified": {
-        "n": 209,
-        "accuracy": 0.7368
+        "n": 17375,
+        "accuracy": 0.6974
       },
       "below_qualified": {
-        "n": 399,
-        "accuracy": 0.2882
+        "n": 5602,
+        "accuracy": 0.4891
       },
       "all": {
-        "n": 964,
-        "accuracy": 0.5301
+        "n": 28030,
+        "accuracy": 0.6684
       }
     },
     "by_tier_directional": {
       "legendary_dir": {
-        "n": 113,
-        "accuracy": 0.6283
+        "n": 2184,
+        "accuracy": 0.7747
       },
       "elite_dir": {
-        "n": 2,
-        "accuracy": 1.0
+        "n": 2545,
+        "accuracy": 0.7599
       },
       "qualified_dir": {
-        "n": 6,
-        "accuracy": 1.0
+        "n": 17006,
+        "accuracy": 0.6981
       },
       "all_dir": {
-        "n": 151,
-        "accuracy": 0.5364
+        "n": 26812,
+        "accuracy": 0.6753
       }
     },
     "baseline": {
