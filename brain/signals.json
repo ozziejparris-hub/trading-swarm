@@ -219,7 +219,30 @@
         "run_id": "hygiene-20260619"
       },
       "timestamp": "2026-06-19T20:06:45.860108Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-06-19T20:13:45.646747"
+    },
+    {
+      "from": "training-librarian-agent",
+      "to": "orchestrator",
+      "type": "contract_violation",
+      "subtype": "section_9_validation",
+      "date": "2026-06-27",
+      "status": "processed",
+      "violations": [
+        "pool_c=2155 below threshold 2500"
+      ],
+      "results": {
+        "clean_pool": 22383,
+        "true_research_pool": 8221,
+        "clean_markets": 28407,
+        "pool_c": 2155,
+        "legendary_base": 78,
+        "legendary_active": 31,
+        "legendary_clean": 16
+      },
+      "context": "pool_c dropped from 3660 (2026-06-20) to 2155 (2026-06-27) \u2014 40% decline in one week. Root cause unknown. Oscar to investigate geo_accuracy_pool flag assignment.",
+      "processed_at": "2026-06-27T09:06:24.444621"
     }
   ],
   "pending": [
@@ -542,10 +565,10 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-06-18T10:11:11Z",
+        "evaluated_at": "2026-06-27T08:44:55Z",
         "signal_date_cutoff": "2026-06-09",
-        "confirming_count": 13,
-        "exited_count": 14,
+        "confirming_count": 11,
+        "exited_count": 11,
         "reversed_count": 2,
         "new_post_reg_exits": 0,
         "new_post_reg_reversals": 0,
@@ -564,6 +587,14 @@
       "resolution_date": "2026-06-30T00:00:00Z",
       "direction": "NO",
       "legendary_traders": 2,
+      "corrected_legendary_count": 1,
+      "phantom_legendary": [
+        {
+          "address": "0xe0f1e775",
+          "note": "geo_elo_active 2111 < 2175, decayed; counted LEGENDARY only under deprecated raw-geo_elo gate"
+        }
+      ],
+      "basis_correction_note": "Basis corrected 2026-06-23 (Tier-2 geo_elo_active migration). Directional call (NO) unaffected; records true LEGENDARY backing for accurate findings.json at June-30 resolution. Real LEGENDARY: 0xd44e974a (geo_elo_active 4087).",
       "signal_date": "2026-06-09",
       "registered_at": "2026-06-09",
       "confidence": "MEDIUM",
@@ -582,7 +613,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-06-18T10:11:11Z",
+        "evaluated_at": "2026-06-27T08:44:55Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 2,
         "exited_count": 0,
@@ -745,7 +776,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "specific_trader",
-        "evaluated_at": "2026-06-18T10:11:11Z",
+        "evaluated_at": "2026-06-27T08:44:55Z",
         "signal_date_cutoff": "2026-05-25",
         "confirming_count": 1,
         "exited_count": 0,

@@ -1,2 +1,3 @@
 2026-06-13 PASS: clean_pool=18759 true_research_pool=3837 pool_c=2851 legendary_clean=18
 2026-06-20 PASS: clean_pool=22475 true_research_pool=7836 pool_c=3660 legendary_clean=23
+2026-06-27 VIOLATION: clean_pool=22383 true_research_pool=8221 pool_c=2155 legendary_clean=16 — pool_c=2155 below threshold 2500 (signal written to signals.json)

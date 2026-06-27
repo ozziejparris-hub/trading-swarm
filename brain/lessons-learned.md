@@ -549,3 +549,26 @@ This document grows more valuable every week.
 - New URGENT: What caused true_research_pool to nearly double from 3,837 (June 13) to 7,836 (June 20)? Root cause needed before using pool stats for ongoing validation.
 - June 30 resolution cluster: STR003-004 (Putin NO, not scorable — trader fails LEGENDARY threshold), STR003-007 (Iran NO, non-scorable), STR003-008 (Ukraine security guarantee NO, scorable). STR003-008 will be STR-003's 5th resolved signal and first with VOLUME_SPECIALIST-weighted scoring.
 - Stale Polymarket prices: June 15 scan showed 7/8 (87.5%) of signal markets had stale API prices. If structural, the positions scan is providing minimal weekly intelligence. Investigate API refresh cadence.
+
+---
+
+## Lessons added 2026-06-27
+
+### System Architecture Lessons
+- 2026-06-27: pool_c (geo_accuracy_pool=1) dropped 40% in one week (3,660 on June 20 → 2,155 on June 27), breaching the Section 9 contract threshold of 2,500. The geo_accuracy_pool flag appears to have been reset or reassigned for a large batch of traders. Contract violation signal written to signals.json. Root cause unknown — Oscar to investigate before next signal generation run. (Source: training-librarian Responsibility 10, 2026-06-27)
+
+- 2026-06-27: Daily STR003-ACC-004 scoring creates 7+ stale entries per week in findings.json (10 entries needed cleanup this run). The score_str003_signals script writes a new entry every day even when the count hasn't changed. A deduplication check at write time would prevent accumulation: only write if sample_size or value has changed since the last entry. (Source: training-librarian Responsibility 7, 2026-06-27)
+
+- 2026-06-27: Integration contract v2.13 (2026-06-23) — Tier-1 definitions-module complete. monitoring/column_definitions.py is now the canonical source for all covered column definitions. Tier-2 scope (13 read-side scripts) is next milestone. Agents referencing Section 18.3 will find the definitions module live and authoritative. (Source: integration-contract.md Section 8 v2.13)
+
+### Calibration Findings
+- 2026-06-22: ELO weekly calibration snapshot (feedback-loop-agent 2026-06-22): LEGENDARY 51% (n=37), ELITE 49% (n=41), QUALIFIED 63% (n=57). QUALIFIED holds above 60% threshold. LEGENDARY and ELITE near random on unfiltered weekly snapshot — consistent with finding that contested-market filter (0.35–0.65 price band) is required to show their edge. Do not act on unfiltered LEGENDARY/ELITE weekly numbers.
+
+### Positions Scan (June 22)
+- 2026-06-27: Iran regime fall by June 30 (5 LEGENDARY NO, gap=45.3pt, CLEAN) is the strongest open conviction signal resolving within 7 days. SCI=LOW because entry_timing_alpha=0 (no early-entry bonus). Signal is likely registered as STR003. Four Iran-adjacent markets show both_sides_ratio > 0.35 (MIXED_SIGNAL): another-country-strikes-Iran rank 6 (0.379), US-Iran ceasefire rank 7 (0.488), Trump announcement rank 29 (0.378), Marseille mayor rank 31 (0.400). These markets have LEGENDARY traders on both sides — do not treat as directional signals.
+
+### Open Questions (updated)
+- Resolved? True_research_pool growth from June 20 (7,836) is still unexplained — needs Oscar investigation.
+- URGENT: What caused pool_c to drop from 3,660 to 2,155 in one week? (New as of June 27)
+- June 30 resolution cluster: STR003-007 (Iran regime NO), STR003-008 (Ukraine security guarantee NO). Score immediately after resolution.
+- LEGENDARY dormancy: Post-June 30 cluster is the next test of whether LEGENDARY traders re-engage.

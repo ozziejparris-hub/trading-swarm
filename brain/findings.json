@@ -1597,7 +1597,10 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-13T09:17:02Z"
+      "expires_at": "2027-06-13T09:17:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-14-STR003-ACC-004",
@@ -1627,7 +1630,10 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-14T06:00:30Z"
+      "expires_at": "2027-06-14T06:00:30Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-15-STR003-ACC-004",
@@ -1657,7 +1663,10 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-15T06:00:31Z"
+      "expires_at": "2027-06-15T06:00:31Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-15-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -1676,7 +1685,10 @@
       },
       "actionable": false,
       "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-09-13T07:00:01Z"
+      "expires_at": "2026-09-13T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-22-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-15-ELO-LEGENDARY-001",
@@ -1695,7 +1707,10 @@
       },
       "actionable": true,
       "action_recommendation": "Increase LEGENDARY tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-09-13T07:00:01Z"
+      "expires_at": "2026-09-13T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-22-ELO-LEGENDARY-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-15-ELO-ELITE-001",
@@ -1714,7 +1729,10 @@
       },
       "actionable": false,
       "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-09-13T07:00:01Z"
+      "expires_at": "2026-09-13T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-22-ELO-ELITE-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-15-ELO-QUALIFIED-001",
@@ -1733,7 +1751,10 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-09-13T07:00:01Z"
+      "expires_at": "2026-09-13T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-22-ELO-QUALIFIED-001",
+      "superseded_reason": "Weekly rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-16-STR003-ACC-004",
@@ -1763,7 +1784,10 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-16T06:00:34Z"
+      "expires_at": "2027-06-16T06:00:34Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-17-STR003-ACC-004",
@@ -1793,7 +1817,10 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-17T06:00:33Z"
+      "expires_at": "2027-06-17T06:00:33Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
     },
     {
       "id": "2026-06-18-STR003-ACC-004",
@@ -1823,7 +1850,248 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-06-18T06:00:35Z"
+      "expires_at": "2027-06-18T06:00:35Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
+    },
+    {
+      "id": "2026-06-22-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-22T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 0,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 0 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 12
+      },
+      "actionable": false,
+      "action_recommendation": "Await 10 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-09-20T07:00:01Z"
+    },
+    {
+      "id": "2026-06-22-ELO-LEGENDARY-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-22T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 37,
+      "summary": "LEGENDARY tier consensus accuracy: 51% over 37 non-sports markets",
+      "detail": {
+        "metric": "elo_legendary_consensus_accuracy",
+        "value": 0.5135,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 12
+      },
+      "actionable": false,
+      "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-09-20T07:00:01Z"
+    },
+    {
+      "id": "2026-06-22-ELO-ELITE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-22T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 41,
+      "summary": "ELITE tier consensus accuracy: 49% over 41 non-sports markets",
+      "detail": {
+        "metric": "elo_elite_consensus_accuracy",
+        "value": 0.4878,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "weeks_observed": 12
+      },
+      "actionable": false,
+      "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-09-20T07:00:01Z"
+    },
+    {
+      "id": "2026-06-22-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-06-22T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 57,
+      "summary": "QUALIFIED tier consensus accuracy: 63% over 57 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.6316,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 12
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-09-20T07:00:01Z"
+    },
+    {
+      "id": "2026-06-23-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-23T19:51:25Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-23T19:51:25Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
+    },
+    {
+      "id": "2026-06-24-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-24T06:01:27Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-24T06:01:27Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
+    },
+    {
+      "id": "2026-06-25-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-25T06:01:29Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-25T06:01:29Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
+    },
+    {
+      "id": "2026-06-26-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-26T06:01:30Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-26T06:01:30Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-06-27-STR003-ACC-004",
+      "superseded_reason": "Daily rolling finding \u2014 latest run supersedes all prior."
+    },
+    {
+      "id": "2026-06-27-STR003-ACC-004",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-06-27T06:01:36Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 4,
+      "summary": "STR-003 out-of-sample accuracy: 25.0% (1/4 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.25,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 2,
+            "accuracy": 0.5
+          },
+          "UNKNOWN": {
+            "n": 2,
+            "accuracy": 0.0
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-06-27T06:01:36Z"
     }
   ]
 }

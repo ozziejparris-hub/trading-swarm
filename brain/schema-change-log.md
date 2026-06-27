@@ -178,8 +178,8 @@ these columns yet — pure data capture. PROPAGATION: N/A (new columns, no exist
 **Description:**
 normalize_market_dates.py normalised 471,561 values across resolution_date, end_date, and last_checked columns, removing T-separator/Z-suffix formats that caused SQLite string comparison to misorder dates and silently hide 976+ markets from all resolution passes for weeks. Section 16 added as the authoritative datetime format standard. All dates in the DB are now plain YYYY-MM-DD or YYYY-MM-DD HH:MM:SS without T-separators or Z-suffixes. Any ingestion path writing datetime values MUST normalise before writing.
 **Affected templates (requiring fix):**
-- [ ] All templates that instruct agents to write datetime values to the DB — check for ISO 8601 T-separator format and remove it
-- [ ] market-builder.md — if it writes end_date or resolution_date: normalise to YYYY-MM-DD
+- [x] market-builder.md — verified 2026-06-27: explicitly states "New market data must never write to polymarket_tracker.db" — no datetime writes possible. No fix needed.
+- [ ] All other templates that instruct agents to write datetime values to the DB — check for ISO 8601 T-separator format and remove it. Remaining scope: any new agent templates that generate DB writes.
 **Note:** This SCL was not added at time of change (2026-06-15). Added retrospectively by training-librarian-agent 2026-06-20 during weekly audit after identifying gap in v2.10–v2.12 contract changes with no SCL entries.
 **Reference:** integration-contract.md Section 16
 
@@ -199,15 +199,29 @@ Any agent or script writing these columns directly creates a competing writer. R
 Section 18.3 provides the full column authority registry (~37 columns, 5 governance classes).
 **Affected:**
 - All agents that write to the traders table (signal-agent, feedback-loop-agent if updating trader records) — READ SECTION 18.3 before writing any traders column.
+- Verified 2026-06-27: signal-agent.md and feedback-loop-agent.md are READ-ONLY on the traders table. Neither template instructs writing traders columns. Section 18.3 compliance is met for these two agents.
 - DEAD columns pending drop: unrealized_pnl, total_pnl, roi_percentage — do not reference these.
 **Reference:** integration-contract.md Section 18
 
 ---
 
-## Pending verification items
-Last full audit: 2026-06-20 (training-librarian-agent)
+### SCL-012 — Definitions module live + Section 18.5.1 updated (v2.12–v2.13)
+**Date:** 2026-06-23
+**Contract versions:** v2.12 (2026-06-18), v2.13 (2026-06-23)
+**Type:** Governance/documentation — NO template propagation required
+**Description:**
+v2.12: Section 18.5.1 acknowledged cross-repo source-of-truth gap and planned definitions-module fix.
+v2.13: `monitoring/column_definitions.py` built and live as single canonical source for 6 data-integrity consumers. Tier-1 definitions-module complete — harness-vs-writer divergence now impossible for covered columns. Tier-2 scope (13 read-side scripts) is next milestone.
+**Template impact:** None — no new column definitions or schema changes. Agents already directed to Section 10 via existing warning blocks. Agents must NOT write covered Layer 1 columns directly; route through reconcile_trader_aggregates.py.
+**PROPAGATION COMPLETE** — no template changes required.
+**Reference:** integration-contract.md Section 8 (v2.12, v2.13), Section 18.5.1
 
-All SCL-001 through SCL-011 items — status as of 2026-06-20:
+---
+
+## Pending verification items
+Last full audit: 2026-06-27 (training-librarian-agent)
+
+All SCL-001 through SCL-012 items — status as of 2026-06-27:
 - **feedback-loop-agent.md (SCL-004):** condition_id → market_id semantic conflict in Step 1 signal payload lookup. PENDING OSCAR REVIEW (open since 2026-06-06). Requires confirmation of what value is stored in signal.payload.market_id before changing WHERE clause.
-- **SCL-010:** market-builder.md datetime normalisation — PROPAGATION INCOMPLETE. Requires review to verify it does not write non-normalised datetime values.
-- **SCL-011:** Column authority registry — template impact assessment INCOMPLETE. All templates that write traders table columns should be reviewed against Section 18.3 authority list.
+- **SCL-010:** All other templates with datetime DB writes — remaining scope is limited (market-builder verified clean). Low risk: most agent templates are read-only.
+- **SCL-007:** system_observer.py LEGENDARY threshold + error rate thresholds — still unresolved (in first-repo, outside training-librarian scope). Flag for Oscar.
