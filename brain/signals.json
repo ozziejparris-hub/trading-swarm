@@ -1,6 +1,74 @@
 {
   "signals": [
     {
+      "type": "integration_test_critical",
+      "from": "integration-test-agent",
+      "status": "pending",
+      "timestamp": "2026-06-28T23:02:00Z",
+      "payload": {
+        "report": "brain/agent-outputs/integration-test/2026-06-28-sunday-report.md",
+        "pass_rate": "82.2%",
+        "total_tests": 45,
+        "passed_tests": 37,
+        "failed_tests": 8,
+        "critical_failures": [
+          {
+            "test": "ci_pipeline_passes",
+            "consecutive_sundays": 8,
+            "detail": "8×F541 f-string missing placeholders in calculate_geo_elo.py. E722 fixed since Jun 14.",
+            "fix": "Remove f-prefix from 8 literal strings in calculate_geo_elo.py"
+          }
+        ],
+        "high_failures": [
+          {
+            "test": "signal-agent_output_recent",
+            "consecutive_sundays": "6+",
+            "age_hours": 326.8,
+            "detail": "Dark since Jun 15. June 30 cluster (STR003-004/007/008) resolves in 48h. STR003-008 scorable for Gate 3.",
+            "urgency": "TIME_CRITICAL"
+          },
+          {
+            "test": "quant-research-agent_output_recent",
+            "consecutive_sundays": "4+",
+            "age_hours": 485.7,
+            "detail": "RQ-GEO-ELO-001 approved May 25, Phase 1 never executed. July 1 deadline at risk."
+          },
+          {
+            "test": "backtest-agent_output_recent",
+            "consecutive_sundays": "4+",
+            "age_hours": 678.4,
+            "detail": "GEO-ELO-003 OOS verdict not written to output directory."
+          },
+          {
+            "test": "performance-analyst-agent_output_recent",
+            "consecutive_sundays": 2,
+            "age_hours": 328.9,
+            "detail": "Missed Jun 22 and Jun 29 weekly reports."
+          }
+        ],
+        "medium_failures": [
+          {
+            "test": "feedback_updated_recently",
+            "detail": "feedback.json not updated in 23 days. Feedback-loop-agent last ran Jun 5."
+          },
+          {
+            "test": "research-scout-agent_output_recent",
+            "age_hours": 38.9,
+            "detail": "Scout ran Jun 27 (recent) but outside 26h window. Not systemic."
+          },
+          {
+            "test": "expected_signal_types_present",
+            "detail": "Derivative of agent dormancy. Resolves when signal-agent and feedback-loop-agent resume."
+          }
+        ],
+        "ancillary_alerts": [
+          "MISSING JUNE 21 REPORT: integration-test-agent did not produce output on June 21",
+          "pool_c=2093 below Section 9 alert threshold of 2500 (down from 3660 on Jun 20, -43%)"
+        ],
+        "escalation_message": "Sunday integration test 2026-06-28: 8 failures (82.2% pass rate). CI lint 8th consecutive Sunday (SYSTEMIC). Signal-agent dark 326.8h with June 30 resolution cluster in 48h (TIME CRITICAL). Quant-research 4th+ consecutive (SYSTEMIC). Backtest 4th+ consecutive (SYSTEMIC). Performance-analyst missed 2 weekly reports. See full report."
+      }
+    },
+    {
       "from": "performance-analyst-agent",
       "to": "orchestrator",
       "type": "telegram_notification",
