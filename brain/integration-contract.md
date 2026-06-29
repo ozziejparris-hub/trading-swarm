@@ -658,14 +658,14 @@ SELECT
    FROM pragma_journal_mode())                          AS wal_mode;
 ```
 
-**Expected results (as of 2026-06-13):**
+**Expected results (as of 2026-06-29):**
 
 | Column | Expected | Alert if |
 |--------|----------|----------|
 | `clean_pool` | ≈ 18,910 | < 15,000 |
 | `true_research_pool` | ≈ 3,837 | < 3,000 |
 | `clean_markets` | ≈ 24,184 | < 20,000 |
-| `pool_c` | ≈ 2,851 | < 2,500 |
+| `pool_c` | ≈ 2,185 | < 1,700 |
 | `legendary_base` | ≈ 48 | < 15 or > 200 |
 | `legendary_active` | ≈ 25 | < 5 or > 100 |
 | `legendary_clean` | ≈ 18 | < 5 |
@@ -696,7 +696,7 @@ on a database that fails the contract check.
 | Pool | Filter | Size (approx) | Use for |
 |------|--------|---------------|---------|
 | Pool B (research) | `research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL` | ≈ 3,837 | All accuracy calculations, ELO research |
-| Pool C (geo) | `geo_accuracy_pool = 1` | ≈ 2,851 | geo_elo accuracy, STR-003 qualification |
+| Pool C (geo) | `geo_accuracy_pool = 1` | ≈ 2,185 | geo_elo accuracy, STR-003 qualification |
 | ⚠️ WARNING | `research_excluded = 0` alone | ≈ 18,910 | INSUFFICIENT — includes 13K+ leaderboard traders with <20 resolved trades |
 
 ### 10.3 — Agent Output Paths

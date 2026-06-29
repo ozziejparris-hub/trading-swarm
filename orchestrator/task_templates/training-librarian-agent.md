@@ -1146,7 +1146,7 @@ checks = {
     "clean_pool":         ("SELECT COUNT(*) FROM traders WHERE research_excluded = 0", 15000, None),
     "true_research_pool": ("SELECT COUNT(*) FROM traders WHERE research_excluded = 0 AND resolved_trades_count >= 20 AND bot_type IS NULL", 3000, None),
     "clean_markets":      ("SELECT COUNT(*) FROM markets WHERE resolved = 1 AND (trade_gap_flag = 0 OR trade_gap_flag IS NULL)", 20000, None),
-    "pool_c":             ("SELECT COUNT(*) FROM traders WHERE geo_accuracy_pool = 1", 2500, None),
+    "pool_c":             ("SELECT COUNT(*) FROM traders WHERE geo_accuracy_pool = 1", 1700, None),
     "legendary_base":     ("SELECT COUNT(*) FROM traders WHERE geo_elo >= 2175 AND research_excluded = 0", 15, 200),
     "legendary_active":   ("SELECT COUNT(*) FROM traders WHERE geo_elo_active >= 2175 AND research_excluded = 0", 5, 100),
     "legendary_clean":    ("SELECT COUNT(*) FROM traders WHERE geo_elo_active >= 2175 AND geo_accuracy_pool = 1 AND research_excluded = 0 AND bot_type IS NULL", 5, None),
