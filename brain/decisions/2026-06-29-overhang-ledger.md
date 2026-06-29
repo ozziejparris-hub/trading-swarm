@@ -93,9 +93,18 @@ Active `comprehensive_elo` writers confirmed by grep:
 2. `scripts/apply_full_elo_modifiers.py` (daily) — reads stored `base_category_elo`/`comprehensive_elo`, applies pnl damping  
 3. `scripts/integrate_behavioral_elo.py` (on-demand) — writes `comprehensive_elo` directly (lines 254 + 601)  
 **SOURCE:** Sessions #40, #41, #42 (all three explicitly name this)  
-**STATUS:** OPEN — distinct from O-5 (non-ELO columns). This is the **immediate precursor to Layer 2** (O-7). The daily path stripping behavioral between Sunday runs is a known confirmed behavior: "~35 traders each cycle" (session #42 DEFERRED). No code has been written to resolve it.  
-**DEPENDENCIES:** **Directly blocks Layer 2 (O-7).** The Layer 2 reconciler's design must account for what the daily path does (or the daily path must be frozen/rerouted before Layer 2 begins). Also blocks harness coverage for `comprehensive_elo` (no harness checks exist for this column today — confirmed by reading audit output which has no `comprehensive_elo` checks).  
-**RISK/EFFORT:** Medium as a standalone diagnostic; Large as the full reconciliation. This is the entry point into Layer 2.  
+**STATUS:** **INVESTIGATED-COMPLETE (2026-06-29, session tonight).** The diagnostic is done; no code changes made. Key findings:
+
+- **Behavioral not in `comprehensive_elo` is INTENTIONAL (RQ-CONTESTED-001, documented 2026-06-05).** `monitoring/system_observer.py:2956–2977` explicitly disables a behavioral writer with the note: *"silently discarded by apply_full_elo_modifiers.py which overwrites comprehensive_elo without reading it. Intentionally disabled until comprehensive_elo formula is redesigned (RQ-CONTESTED-001, July 2026)."* This is not a new discovery — it was a known design decision.
+
+- **Proven mechanism:** Writer A (Sunday ELO, `full_elo_recalculation`) writes `comprehensive_elo = base × behavioral × pnl` at ~04:17 UTC Sunday for all 22,650 flagged traders. Writer B (`apply_full_elo_modifiers.py`, daily_maintenance step 24) runs every day at ~08:46 UTC and overwrites `comprehensive_elo = base × pnl` for the ~20,035 traders with ≥1 closed position. Writer B does NOT write `behavioral_modifier`, so that column retains Sunday's 1.4 value while `comprehensive_elo` is stripped to base×pnl — the source of the "stored 1.4 but applied 1.0" apparent contradiction.
+
+- **Empirical proof:** 17,685/17,685 (100%) flagged non-excluded traders satisfy `|comp_elo − base × pnl| < 1.0`. DB timestamps confirm: June 28 04:16 UTC (2,471 traders, Sunday ELO) vs June 29 08:46:35 UTC (20,035 traders, Writer B). Writer B is the last writer.
+
+- **Two documented fix options for O-7:** (a) Remove Writer B from daily_maintenance (Sunday's write becomes permanent); (b) Make Writer B read `behavioral_modifier` from DB and incorporate it alongside P&L. Full spec in `brain/decisions/2026-06-29-comprehensive-elo-writer-map.md` Section 7 (corrected) and Section 9 (root-cause report).
+
+**DEPENDENCIES:** **Directly blocks Layer 2 (O-7).** Diagnostic is now complete; the design choice (option a vs b) must be made as part of O-7.  
+**RISK/EFFORT:** Diagnostic done (zero effort remaining). Design decision = small; implementation = medium.  
 **FROZEN-AREA?** YES — directly touches `comprehensive_elo`. All changes here need output-neutral proof (same pattern as session #42's `bd82fd7` approach).
 
 ---
@@ -272,4 +281,4 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 
 ---
 
-*Ledger last updated: 2026-06-29. All statuses verified against live code and DB. Do not commit yet (Oscar reviewing first).*
+*Ledger last updated: 2026-06-29 (O-6 updated tonight with INVESTIGATED-COMPLETE findings). All statuses verified against live code and DB.*
