@@ -1,0 +1,49 @@
+{
+  "address": "0x8e9eedf20dfa70956d49f608a205e402d9df38e4",
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 2532.3,
+  "tier": "LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "276 resolved geo trades with 94.9% accuracy at avg price 0.080 and only 5% contested entries. This is a YIELD_HARVESTER operating in the reverse direction: instead of buying near-certainty YES tokens (0.92-0.99), this trader buys the equivalent cheap NO/opposite tokens at 0.08 average — effectively betting against highly unlikely events at prices equivalent to near-certainty (the other side of the trade is 0.92). Iran_ME: 159 trades at 0.067 avg, 97% accuracy; Trump_US: 72 trades at 0.008 avg, 100% accuracy. The 94.9% win rate at such low prices is the mathematical inverse of buying near-certainty: buying at 0.08 = opposite side is at 0.92. This is yield harvesting from the other direction. Realized_pnl=$0 exactly triggers the STR-003 PNL exclusion filter.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [],
+  "domain_blindspots": [
+    "All domains: trades at avg 0.08 (opposite-direction yield harvesting) — not genuine forecasting in any domain"
+  ],
+  "domain_summary": "The apparent domain accuracy is a measurement artifact of yield harvesting from the cheap-side. Buying the cheap end (0.05-0.10) of near-certainty markets and winning 94.9% of the time is not forecasting skill — it is collecting residual yield on events that are widely understood to be near-impossible. No signal value in any domain.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Iran_ME",
+    "Trump_US",
+    "Other",
+    "Russia_UKR"
+  ],
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "Yield harvester in reverse direction (buying cheap-side tokens on near-certainty markets). Realized_pnl=$0 exactly also triggers STR-003 PNL exclusion filter (non-redemption or redemption-only account). No forecasting signal in positions. EXCLUDE permanently.",
+  "behavioural_flags": [
+    "Reverse yield harvesting: avg price 0.080 across 276 resolved geo trades, 2% near-certain, 5% contested — pure cheap-side premium collection",
+    "realized_pnl=$0 exactly — STR-003 PNL filter blocks any signal use",
+    "geo_resolved_trades_count stored=34 while actual=276 — data integrity discrepancy"
+  ],
+  "risk_patterns": [
+    "Systematic reverse yield harvesting: collecting cheap premiums on near-impossible events. Edge is real but carries tail risk (if any 'impossible' event resolves YES, all cheap-side positions on it lose)",
+    "100% Trump_US accuracy at 0.008 avg price is not forecasting — these are essentially free money bets on events with 0.8% market probability"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed — EXCLUDE archetype.",
+  "watch_items": [
+    "Monitor if any trades shift toward contested price range (0.10-0.80) — would indicate genuine forecasting shift",
+    "PNL=$0 issue: Oscar to investigate whether this is a non-redemption account or data pipeline issue"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "Reverse yield harvester — buys cheap-side tokens (avg 0.08) in near-certainty markets and wins 94.9% of the time. This is the mathematical inverse of YIELD_HARVESTER pattern and carries identical zero forecasting signal value. PNL=$0 also blocks STR-003. EXCLUDE permanently.",
+  "data_snapshot": {
+    "geo_elo": 3190.5,
+    "geo_elo_active": 2532.3,
+    "resolved_trades": 276,
+    "distinct_markets": 40,
+    "directionality": 1.0,
+    "pnl": 0.0
+  }
+}

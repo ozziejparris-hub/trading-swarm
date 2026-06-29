@@ -1,0 +1,50 @@
+{
+  "address": "0x6b025355d035a679205ae23de33c7e9abe71e5fc",
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 3105.8,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "490 resolved geo trades concentrated in Iran_ME (368 trades, 53% accuracy) and Russia_UKR (122 trades, 53% accuracy). Directionality=1.00 (fully directional). Average price=0.201 is extremely low — most bets are below 0.25. At this price level, winning 53% of the time implies the market is pricing these outcomes at ~20% but they actually resolve at ~53%. This could represent genuine forecasting (correctly calling underdogs) or simply luck at scale. The ELO of 3105.8 suggests the system rates this trader very highly, but 53% accuracy at low prices is a weak edge — it's above chance but not compelling. Classified as DOMAIN_SPECIALIST at LOW confidence because the 2-domain pattern fits but the accuracy margin is thin. Not a YIELD_HARVESTER (0.201 avg price is not near-certainty).",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 368 resolved, 53% accuracy at 0.206 avg price, 73% contested — marginal positive edge at scale"
+  ],
+  "domain_blindspots": [
+    "Russia_UKR: 122 trades, 53% accuracy — same thin margin as Iran_ME, insufficient to declare edge",
+    "No other domains sampled — extremely narrow portfolio (2 domains only)"
+  ],
+  "domain_summary": "Narrow 2-domain portfolio entirely concentrated in Iran_ME and Russia_UKR, with 53% accuracy in both. The ELO is high (3105.8) which likely reflects the volume of trades and some timing advantages on specific events. The 0.201 avg price means these are mostly cheap outcome bets — calibration at this price range is hard to distinguish from volume effects.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "53% accuracy across 490 resolved trades at low prices is above chance but does not meet the threshold for DOMAIN_ONLY weight — genuine edge requires consistent outperformance. MINIMAL weight as the most conservative defensible value. Do not include in STR-003 signals without human review confirming the edge is real and not a volume artifact.",
+  "behavioural_flags": [
+    "Extremely narrow portfolio: 2 domains only (Iran_ME + Russia_UKR), entirely absent from US/Europe/China/LatAm markets",
+    "geo_resolved_trades_count stored=19 while actual resolved geo trades = 490 — data integrity discrepancy"
+  ],
+  "risk_patterns": [
+    "Low average price (0.201) means position sizing and calibration risks if the ELO is inflated by volume",
+    "53% accuracy on 490 resolved is statistically significant but the margin is thin — may degrade in new market conditions"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Open positions not assessed in initial profile.",
+  "watch_items": [
+    "Monitor whether the thin accuracy margin (53%) holds across June-July 2026 resolutions",
+    "Upgrade to DOMAIN_ONLY (Iran_ME) only if accuracy improves to 57%+ on 200+ new trades post-June 10",
+    "Human review required before any signal inclusion"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "High-ELO Iran_ME/Russia_UKR trader with 490 resolved trades but thin accuracy edge (53% at avg price 0.201). The ELO of 3106 is impressive but the underlying accuracy is marginal. MINIMAL weight until human review confirms genuine edge beyond volume effects. Not a yield harvester, but not yet a confirmed forecaster either.",
+  "data_snapshot": {
+    "geo_elo": 3227.8,
+    "geo_elo_active": 3105.8,
+    "resolved_trades": 490,
+    "distinct_markets": 25,
+    "directionality": 1.0,
+    "pnl": 2683.0
+  }
+}

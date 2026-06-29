@@ -1,11 +1,11 @@
 {
   "address": "0x9cb98fc57fe8a3bdf75c3b48bd419e5d262f7b80",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 2287.6168,
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 2470.016,
   "tier": "LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
-  "archetype_reasoning": "Despite a high ELO and 84 distinct markets, the trader's recent resolved trades are overwhelmingly near-certainty entries (0.86\u20130.999) that all lost, and open positions are dominated by NO bets at 0.96\u20130.999 or YES bets at 0.03\u20130.05 \u2014 classic yield-harvesting patterns. The high directionality (0.89) combined with concentration on obvious low-probability rejection plays (Iranian regime fall, US declares war on Iran, Macron out) confirms a strategy of collecting small premiums on events deemed near-impossible. The recent catastrophic streak \u2014 losing 15 consecutive trades on overpriced near-certainty YES positions \u2014 exposes the vulnerability inherent to this archetype.",
+  "archetype_reasoning": "Despite a high ELO and 84 distinct markets, the trader's resolved trades are overwhelmingly near-certainty entries (0.86–0.999) that have repeatedly lost, and open positions are dominated by NO bets at 0.96–0.999 or YES bets at 0.03–0.05 — classic yield-harvesting patterns. The high directionality (0.91) combined with concentration on obvious low-probability rejection plays (Iranian regime fall, US declares war on Iran, Macron out) confirms a strategy of collecting small premiums on events deemed near-impossible. The 2026-06-10 new resolved trade (US x Iran permanent peace deal YES at 0.041, LOST) is a low-price speculative bet below the contested range (0.10–0.80) — consistent with the existing behavioral note about long-shot speculation mixed in, not a forecasting shift. Performance deterioration confirmed: last 10 resolved = 2/10 = 20% accuracy.",
   "primary_domain": "DIVERSE",
   "domain_strengths": [
     "Russia_UKR",
@@ -17,9 +17,9 @@
     "China_Asia: 0 wins from 1 trade, negligible sample",
     "Other: 54.2% accuracy across a catch-all bucket suggests noise not edge"
   ],
-  "domain_summary": "Genuine edge visible in Russia_UKR (61.2%), Iran_ME (61%), and Europe (60.6%), suggesting real geopolitical reading ability in these domains. However, Trump_US and Other sit near 53\u201354%, and the harvesting behavior obscures whether domain accuracy reflects forecasting skill or simply picking very easy NO outcomes.",
+  "domain_summary": "Genuine edge visible in Russia_UKR (61.2%), Iran_ME (61%), and Europe (60.6%), suggesting real geopolitical reading ability in these domains. However, Trump_US and Other sit near 53–54%, and the harvesting behavior obscures whether domain accuracy reflects forecasting skill or simply picking very easy NO outcomes. One new resolved trade (Jun 10 US-Iran peace deal at 0.041, LOST) is consistent with the documented long-shot speculation pattern, not a forecasting shift.",
   "signal_weight": "DOMAIN_ONLY",
-  "signal_weight_reasoning": "The trader's ELO is LEGENDARY but recent behavior reveals a systematic yield-harvesting strategy with near-certainty entries that collapsed spectacularly (15 straight losses on 0.86\u20130.999 priced positions). Domain-filtered signal is valuable in Russia_UKR, Iran_ME, and Europe where accuracy is consistently above 60%. Trump_US and Other domains should be discounted as edge is marginal and contaminated by harvesting artifacts.",
+  "signal_weight_reasoning": "The trader's ELO is LEGENDARY but recent behavior reveals a systematic yield-harvesting strategy with near-certainty entries that have collapsed repeatedly. Domain-filtered signal is valuable in Russia_UKR, Iran_ME, and Europe where accuracy is consistently above 60%. Trump_US and Other domains should be discounted. Performance deterioration (last 10 = 20%) is flagged but does not trigger reclassification — thin data (1 new trade) — no archetype change.",
   "trusted_domains": [
     "Russia_UKR",
     "Iran_ME",
@@ -35,16 +35,17 @@
     "Heavy near-certainty entry clustering: multiple trades at 0.999 YES/NO in same market on same resolution date",
     "Repeat position building in single markets (7+ separate Mamdani YES entries from 0.86 to 0.961)",
     "Doubling-down into losing positions rather than cutting exposure",
-    "Open positions include multiple near-certainty NO bets (Iranian regime, Macron, US war on Iran) at 0.96\u20130.999",
+    "Open positions include multiple near-certainty NO bets (Iranian regime, Macron, US war on Iran) at 0.96–0.999",
     "Simultaneous contradictory near-certainty plays visible (Pakistan military strike YES at 0.998 alongside dovish Iran NO bets)",
-    "Heather Humphreys YES at 0.041 and Kamala 2028 YES at 0.045 suggest some contrarian long-tail speculation mixed in"
+    "Long-shot speculation mixed in: Heather Humphreys YES at 0.041, Kamala 2028 YES at 0.045, US-Iran peace deal YES at 0.041",
+    "PERFORMANCE DETERIORATION (2026-06-29): last 10 resolved = 2/10 = 20% accuracy — well below 45% alert threshold (thin data context, 1 new resolved trade since Jun 10)"
   ],
   "risk_patterns": [
     "Sunk-cost accumulation: added to Mamdani YES position across 7+ entries as market remained elevated, all lost",
-    "Concentration risk: multiple open positions at near-certainty NO pricing \u2014 a single black swan resolves many badly at once",
-    "Recent resolved history is 15/15 losses, suggesting a significant drawdown event or model breakdown",
+    "Concentration risk: multiple open positions at near-certainty NO pricing — a single black swan resolves many badly at once",
     "Pakistan military strike YES at 0.998 is an extremely high-risk near-certainty buy on a volatile geopolitical event",
-    "Epstein files 3x at 0.999 and Israel-Hamas ceasefire at 0.999 \u2014 pattern of overconfident near-certainty bets on complex political outcomes"
+    "Epstein files 3x at 0.999 and Israel-Hamas ceasefire at 0.999 — pattern of overconfident near-certainty bets on complex political outcomes",
+    "Last 10 accuracy = 20% (data depth: thin — only 1 new resolved trade, but combined with prior losing streak indicates sustained drawdown)"
   ],
   "notable_calls": [
     {
@@ -52,14 +53,14 @@
       "side": "YES",
       "entry_price": 0.955,
       "result": "LOST",
-      "significance": "Largest recent loss cluster \u2014 8 separate entries averaging ~0.93, all lost; reveals dangerous conviction doubling-down into a wrong thesis"
+      "significance": "Largest recent loss cluster — 8 separate entries averaging ~0.93, all lost; reveals dangerous conviction doubling-down into a wrong thesis"
     },
     {
       "market": "Trump releases Epstein files by Dec 19",
       "side": "YES",
       "entry_price": 0.999,
       "result": "LOST",
-      "significance": "Three 0.999 entries on a complex political commitment \u2014 textbook near-certainty harvesting backfire"
+      "significance": "Three 0.999 entries on a complex political commitment — textbook near-certainty harvesting backfire"
     },
     {
       "market": "Israel x Hamas ceasefire by October 31",
@@ -69,37 +70,43 @@
       "significance": "Near-certainty bet on a notoriously unpredictable ceasefire outcome; highlights systematic overconfidence in harvest plays"
     },
     {
+      "market": "US x Iran permanent peace deal by June 15, 2026?",
+      "side": "YES",
+      "entry_price": 0.041,
+      "result": "LOST",
+      "significance": "New resolved (Jun 10 2026): long-shot speculative entry at 0.041, below contested range — consistent with existing behavioral pattern of mixing cheap long-shots with harvest plays"
+    },
+    {
       "market": "Will the Iranian regime fall by April 30?",
       "side": "NO",
       "entry_price": 0.999,
       "result": "OPEN",
-      "significance": "2500 shares at 0.999 NO \u2014 largest open position, harvest play on regime stability"
+      "significance": "2500 shares at 0.999 NO — largest open position, harvest play on regime stability"
     },
     {
-      "market": "Fl\u00e1vio Bolsonaro wins 2026 Brazilian presidential election",
+      "market": "Flávio Bolsonaro wins 2026 Brazilian presidential election",
       "side": "YES",
       "entry_price": 0.4,
       "result": "OPEN",
-      "significance": "Contested price entry (0.40) in LatAm domain \u2014 one of few genuine forecasting positions visible in current portfolio"
+      "significance": "Contested price entry (0.40) in LatAm domain — one of few genuine forecasting positions visible in current portfolio"
     }
   ],
-  "open_positions_summary": "Portfolio is split between yield-harvesting NO bets at near-certainty prices (Iranian regime fall, Macron out, US war on Iran, Olivier Faure as PM) and a smaller cluster of long-shot YES bets at low prices (Kamala 2028, Heather Humphreys, Iran-Qatar strike, US-Iran peace deal). One genuine mid-probability call exists in Fl\u00e1vio Bolsonaro at 0.40. The Pakistan military strike YES at 0.998 is an outlier high-risk near-certainty bet on a volatile event. The overall thesis is: collect yield on improbable geopolitical events while holding speculative low-price longs for asymmetric upside.",
+  "open_positions_summary": "Portfolio is split between yield-harvesting NO bets at near-certainty prices (Iranian regime fall, Macron out, US war on Iran, Olivier Faure as PM) and a smaller cluster of long-shot YES bets at low prices (Kamala 2028, Heather Humphreys, US-Iran peace deal — the latter just resolved LOST). One genuine mid-probability call exists in Flávio Bolsonaro at 0.40. The Pakistan military strike YES at 0.998 is an outlier high-risk near-certainty bet on a volatile event.",
   "watch_items": [
-    "Monitor whether the 15-trade losing streak triggers behavioral change \u2014 position sizing reduction or archetype shift",
-    "Pakistan military strike YES at 0.998 is live and high-risk \u2014 track resolution closely",
-    "Iranian regime fall NO (2500 shares at 0.999) is the largest exposure \u2014 any escalation event creates outsized loss",
-    "Watch for continued doubling-down into open losing positions as a sunk-cost flag",
-    "Track whether Fl\u00e1vio Bolsonaro position at 0.40 is managed actively \u2014 signals genuine LatAm forecasting capability if sized/exited well",
-    "ELO may decay significantly if current drawdown streak continues \u2014 monitor geo_elo_active trend"
+    "PERFORMANCE DETERIORATION: last 10 resolved = 20% — monitor whether this reflects structural breakdown or temporary variance (currently only 1 new resolved trade since Jun 10, insufficient for reclassification)",
+    "Pakistani military strike YES at 0.998 — if still open, this is extremely high risk on a volatile geopolitical event",
+    "Iranian regime fall NO (open) — largest exposure, watch June 30 resolution",
+    "Flávio Bolsonaro YES at 0.40 (open) — genuine LatAm forecasting call, track actively",
+    "ELO trajectory: geo_elo_active rose from 2287.6 (Jun 10) to 2470.0 (Jun 29) despite losing streak — decay math suggests limited new trading activity, raising question of dormancy"
   ],
   "overall_signal_value": "MEDIUM",
-  "summary": "This is a LEGENDARY-tier trader by ELO with demonstrated accuracy above 60% in Russia_UKR, Iran_ME, and Europe \u2014 real geopolitical reading ability exists here. However, the dominant trading behavior is yield-harvesting: repeatedly entering near-certainty positions at 0.96\u20130.999 to collect small premiums, a strategy that has visibly collapsed in recent resolved history with 15 consecutive losses. The Mamdani cluster (8 separate entries, all lost) is a textbook example of sunk-cost doubling-down. Signal value is MEDIUM overall \u2014 DOMAIN_ONLY weight is recommended, with full trust only in Russia_UKR, Iran_ME, and Europe where contested-price entries occur, and explicit exclusion of near-certainty entries regardless of domain.",
+  "summary": "LEGENDARY-tier trader by ELO with demonstrated accuracy above 60% in Russia_UKR, Iran_ME, and Europe — real geopolitical reading ability exists. Dominant trading behavior is yield-harvesting (0.96–0.999 entries), repeatedly collapsing in resolved history. One new resolved trade since June 10 (US-Iran peace deal YES 0.041, LOST) adds another loss consistent with existing behavioral pattern. Performance deterioration flag active: last 10 resolved = 20% (thin data — 1 new trade, archetype unchanged). DOMAIN_ONLY weight remains appropriate.",
   "data_snapshot": {
-    "geo_elo": 2287.61684734824,
-    "geo_elo_active": 2287.6168,
+    "geo_elo": 2637.122947667312,
+    "geo_elo_active": 2470.016,
     "resolved_trades": 272,
     "distinct_markets": 84,
-    "directionality": 0.8899113643287611,
+    "directionality": 0.9095648685941041,
     "pnl": 2870.360916939844
   }
 }

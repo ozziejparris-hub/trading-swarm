@@ -1,0 +1,53 @@
+{
+  "address": "0xedc2834124c0465fb2ccbf239896ef65f975ad9f",
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 2364.8,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "893 resolved geo trades across 123 distinct markets, 51.3% overall accuracy at 0.405 avg price, 71% contested. Iran_ME dominates (620 trades, 48% accuracy — BELOW CHANCE). Russia_UKR: 82 trades, 67% accuracy at 0.436 avg — more interesting. Trump_US: 23 trades, 74% accuracy at 0.520 avg — small but promising. The overall 51.3% accuracy masks a significant domain split: Iran_ME is the primary trade but actually below chance (48%), while Russia_UKR shows genuine potential (67% on 82 trades). Classified DOMAIN_SPECIALIST at LOW confidence because Iran_ME performance is poor despite the volume, and the Russia_UKR edge needs more data. The positive PNL ($8,243) despite below-chance Iran_ME accuracy suggests size-into-wins behavior rather than overall calibration. ELO of 2364.8 is above LEGENDARY threshold.",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR: 82 resolved, 67% accuracy at 0.436 avg price, 66% contested — promising edge at thin-to-moderate data depth",
+    "Trump_US: 23 resolved, 74% accuracy at 0.520 avg — very small sample but consistent direction"
+  ],
+  "domain_blindspots": [
+    "Iran_ME: 620 trades, 48% accuracy — below chance at scale. This is the primary trade volume but shows no forecasting edge and may be dragging the portfolio.",
+    "LatAm: 35 trades, 46% accuracy at 0.122 avg — very low price entries, also below chance"
+  ],
+  "domain_summary": "Counterintuitive profile: most trading activity (Iran_ME, 69%) is below-chance, while the smallest significant domain (Russia_UKR, 9%) shows the most promising signal. The positive PNL despite poor Iran_ME accuracy suggests the trader sizes heavily into Russia_UKR and Trump_US wins. Low overall signal value unless domain-filtered to Russia_UKR.",
+  "trusted_domains": [
+    "Russia_UKR"
+  ],
+  "discounted_domains": [
+    "Iran_ME",
+    "LatAm"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Russia_UKR 67% accuracy on 82 trades is above the thin-data threshold and shows genuine edge — but 82 trades is at the boundary between thin and moderate. Setting MINIMAL pending human review. Upgrade to DOMAIN_ONLY (Russia_UKR only) if Russia_UKR accuracy holds above 62% on another 30+ trades. Iran_ME must be explicitly excluded from any signal use.",
+  "behavioural_flags": [
+    "Iran_ME 48% accuracy on 620 trades is below chance at scale — this is significant",
+    "Positive PNL despite below-chance Iran_ME accuracy suggests sizing strategy not captured in accuracy metrics",
+    "geo_resolved_trades_count stored=92 while actual=893 — data integrity discrepancy"
+  ],
+  "risk_patterns": [
+    "Iran_ME: 620 trades at below-chance accuracy — if STR-003 ever included this trader in Iran_ME signals, it would be a negative alpha source",
+    "LatAm similarly below chance — avoid those markets from this address"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed in initial profile.",
+  "watch_items": [
+    "Monitor Russia_UKR trades closely — 67% on 82 is the interesting data point. If it holds to 120+ trades, upgrade to DOMAIN_ONLY for Russia_UKR.",
+    "Iran_ME positions from this address should not be used in signals — actively negative domain"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "Counterintuitive DOMAIN_SPECIALIST: heavy Iran_ME trading at below-chance accuracy (48%), with hidden Russia_UKR edge (67% on 82 trades). MINIMAL weight until Russia_UKR data depth improves. Iran_ME positions are a negative signal. Positive PNL suggests size management skill not captured in raw accuracy.",
+  "data_snapshot": {
+    "geo_elo": 2790.6,
+    "geo_elo_active": 2364.8,
+    "resolved_trades": 893,
+    "distinct_markets": 123,
+    "directionality": 0.94,
+    "pnl": 8243.0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 2470.8,
+  "tier": "LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "264 resolved geo trades with 89% accuracy at avg price 0.885 and 83% near-certain entries (16% contested). This is a textbook YIELD_HARVESTER: predominantly buying high-probability outcomes at 0.88-0.97 and winning 89% of the time. Iran_ME is the primary domain (189 trades, 92% accuracy, avg 0.906, 13% contested). Trump_US: 39 trades, 100% accuracy at avg 0.974 — pure near-certainty harvesting. Directionality=0.96. Realized_pnl=$260 on 264 resolved trades is consistent with small-premium-per-trade collection (typical yield harvester economics). No forecasting signal value.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [],
+  "domain_blindspots": [
+    "All domains: 83% near-certain entries confirm yield harvesting not forecasting. No genuine contested-price edge identifiable."
+  ],
+  "domain_summary": "Classic yield harvester across Iran_ME and Trump_US. High ELO reflects the mathematical benefit of near-certainty accuracy — not predictive skill on genuinely uncertain outcomes.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Iran_ME",
+    "Trump_US",
+    "Other",
+    "LatAm"
+  ],
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "Yield harvester: 83% near-certain entries, 89% accuracy at 0.885 avg price. No contested-price forecasting signal. EXCLUDE.",
+  "behavioural_flags": [
+    "83% near-certain entries at avg 0.885 — textbook yield harvesting",
+    "Trump_US at 100% accuracy avg 0.974 — pure near-certainty premium collection",
+    "geo_resolved_trades_count stored=54 while actual=264 — data integrity discrepancy"
+  ],
+  "risk_patterns": [
+    "Standard yield harvester tail risk: rare low-probability events resolving YES would sweep through near-certainty NO positions"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed — EXCLUDE archetype.",
+  "watch_items": [
+    "Monitor for any shift toward contested entries (0.10-0.80) that would indicate behavioral change"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "Textbook yield harvester. 83% near-certain entries at 0.885 average across 264 resolved geo trades. EXCLUDE permanently.",
+  "data_snapshot": {
+    "geo_elo": 2528.5,
+    "geo_elo_active": 2470.8,
+    "resolved_trades": 264,
+    "distinct_markets": 57,
+    "directionality": 0.96,
+    "pnl": 260.0
+  }
+}

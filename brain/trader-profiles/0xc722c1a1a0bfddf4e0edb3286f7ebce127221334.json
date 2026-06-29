@@ -1,0 +1,54 @@
+{
+  "address": "0xc722c1a1a0bfddf4e0edb3286f7ebce127221334",
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 2784.5,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "383 resolved geo trades across 94 distinct markets with 64.8% accuracy and 79% contested entries (avg price 0.361). Primary edge is Iran_ME (294 trades, 67% accuracy at 0.349 avg price, 79% contested) — one of the stronger Iran_ME accuracy records in the pool. Russia_UKR is weak (34 trades, 38% accuracy) and should be discounted. China_Asia shows 71% accuracy on 35 trades (contested at 94%) — promising but thin data. The dominant Iran_ME concentration (77% of portfolio) and clear weakness in Russia_UKR classify this as a DOMAIN_SPECIALIST rather than GENUINE_FORECASTER. Confidence MEDIUM: directional-score=0.98 (fully directional, not LP) but geo_resolved_trades_count stored=60 while actual trades=383 (data discrepancy).",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 294 resolved, 67% accuracy, avg price 0.349, 79% contested — primary and strongest domain",
+    "China_Asia: 35 resolved, 71% accuracy, avg price 0.361, 94% contested — thin data but impressive"
+  ],
+  "domain_blindspots": [
+    "Russia_UKR: 34 trades, 38% accuracy — significantly below chance, clearly outside core competence. Discounting strongly.",
+    "Trump_US: 5 trades, 40% accuracy — insufficient sample, but below chance"
+  ],
+  "domain_summary": "One of the strongest Iran_ME specialists identified in this pool — 67% accuracy across 294 contested-price trades is a robust signal. The China_Asia edge needs another 50+ trades before it can be trusted. Russia_UKR performance is poor enough that any signal from this trader in that domain should be explicitly excluded.",
+  "trusted_domains": [
+    "Iran_ME",
+    "China_Asia"
+  ],
+  "discounted_domains": [
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Iran_ME accuracy (67% over 294 trades) supports DOMAIN_ONLY weight in that domain. However, this is an initial profile with no human review — setting MINIMAL as the conservative defensible value. Upgrade to DOMAIN_ONLY (Iran_ME only) after Oscar review. Russia_UKR must remain EXCLUDED from any signal use regardless of future upgrades.",
+  "behavioural_flags": [
+    "geo_resolved_trades_count stored=60 while actual geo resolved = 383 — part of the pool-wide data integrity issue flagged 2026-06-29",
+    "Russia_UKR performance (38% accuracy) is a strong negative marker — actively avoid Russia_UKR trades from this address"
+  ],
+  "risk_patterns": [
+    "Clear domain blind spot in Russia_UKR: 62% of the 34 trades LOST — not noise, a systematic failure",
+    "Directionality=0.98 is healthy (fully directional), no LP concern"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Open positions not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "Top priority upgrade candidate: Iran_ME 67% accuracy at deeply contested prices (0.35 avg) is the strongest Iran_ME record in new qualifiers",
+    "Track China_Asia performance — 35 trades at 71% is promising if it holds to 50+ trades",
+    "Russia_UKR blind spot confirmed — never include in Russia_UKR signals"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "Strong Iran_ME DOMAIN_SPECIALIST with 67% accuracy at deeply contested prices across 294 resolved trades. Russia_UKR is a confirmed blind spot (38% accuracy). China_Asia shows early promise. This is one of the most interesting new qualifiers for Iran_ME signal generation — upgrade to DOMAIN_ONLY pending human review.",
+  "data_snapshot": {
+    "geo_elo": 3174.0,
+    "geo_elo_active": 2784.5,
+    "resolved_trades": 383,
+    "distinct_markets": 94,
+    "directionality": 0.98,
+    "pnl": 1296.0
+  }
+}

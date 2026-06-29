@@ -176,8 +176,8 @@
     "overall_signal_value": "MEDIUM",
     "primary_domain": "DIVERSE",
     "signal_weight": "DOMAIN_ONLY",
-    "profile_date": "2026-06-10",
-    "geo_elo_active": 2287.6168
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 2470.016
   },
   "0xaf409e50577bd9cba48378656548a2d28d1a5662": {
     "tier": "ELITE",
@@ -348,6 +348,70 @@
     "signal_weight": "MINIMAL",
     "primary_domain": "Trump_US",
     "overall_signal_value": "MEDIUM",
-    "profile_date": "2026-06-15"
+    "profile_date": "2026-06-15",
+    "geo_elo_active": 1725.7
+  },
+  "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52": {
+    "tier": "LEGENDARY",
+    "archetype": "DOMAIN_SPECIALIST",
+    "overall_signal_value": "HIGH",
+    "primary_domain": "Iran_ME",
+    "signal_weight": "MINIMAL",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 3169.4
+  },
+  "0x6b025355d035a679205ae23de33c7e9abe71e5fc": {
+    "tier": "LEGENDARY",
+    "archetype": "DOMAIN_SPECIALIST",
+    "overall_signal_value": "MEDIUM",
+    "primary_domain": "Iran_ME",
+    "signal_weight": "MINIMAL",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 3105.8
+  },
+  "0xc722c1a1a0bfddf4e0edb3286f7ebce127221334": {
+    "tier": "LEGENDARY",
+    "archetype": "DOMAIN_SPECIALIST",
+    "overall_signal_value": "HIGH",
+    "primary_domain": "Iran_ME",
+    "signal_weight": "MINIMAL",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 2784.5
+  },
+  "0x8e9eedf20dfa70956d49f608a205e402d9df38e4": {
+    "tier": "LEGENDARY",
+    "archetype": "YIELD_HARVESTER",
+    "overall_signal_value": "NOISE",
+    "primary_domain": "Iran_ME",
+    "signal_weight": "EXCLUDE",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 2532.3
+  },
+  "0xd218e474776403a330142299f7796e8ba32eb5c9": {
+    "tier": "LEGENDARY",
+    "archetype": "YIELD_HARVESTER",
+    "overall_signal_value": "NOISE",
+    "primary_domain": "Iran_ME",
+    "signal_weight": "EXCLUDE",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 2470.8
+  },
+  "0x677aec88bba252680728e717538f44a3cc22bd2e": {
+    "tier": "LEGENDARY",
+    "archetype": "DOMAIN_SPECIALIST",
+    "overall_signal_value": "LOW",
+    "primary_domain": "Iran_ME",
+    "signal_weight": "MINIMAL",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 2425.3
+  },
+  "0xedc2834124c0465fb2ccbf239896ef65f975ad9f": {
+    "tier": "LEGENDARY",
+    "archetype": "DOMAIN_SPECIALIST",
+    "overall_signal_value": "MEDIUM",
+    "primary_domain": "Russia_UKR",
+    "signal_weight": "MINIMAL",
+    "profile_date": "2026-06-29",
+    "geo_elo_active": 2364.8
   }
 }

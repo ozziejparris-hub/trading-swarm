@@ -1,0 +1,49 @@
+{
+  "address": "0x677aec88bba252680728e717538f44a3cc22bd2e",
+  "profile_date": "2026-06-29",
+  "geo_elo_active": 2425.3,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "399 resolved geo trades, 50.9% accuracy at avg price 0.535, 68% contested. Iran_ME: 314 trades at 55% accuracy (marginal positive). Russia_UKR: 45 trades at 18% accuracy (catastrophically poor — 8/45 wins). The 18% Russia_UKR accuracy is not noise at 45 trades — this is a genuine and severe blind spot. Iran_ME accuracy at 55% is statistically above chance but barely. Classified DOMAIN_SPECIALIST at LOW confidence because the 2-domain concentration fits the pattern but the accuracy in Iran_ME is thin. The Russia_UKR result is strongly negative. PNL=-$82 (slightly negative) is consistent with marginal forecasting at high volume.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 314 resolved, 55% accuracy at 0.519 avg price, 69% contested — thin positive edge"
+  ],
+  "domain_blindspots": [
+    "Russia_UKR: 45 trades, 18% accuracy — severe blind spot. Never include in Russia_UKR signals.",
+    "Other: 57% accuracy on 40 trades at 0.384 avg — too small to trust"
+  ],
+  "domain_summary": "Iran_ME specialist with thin edge (55% accuracy). Russia_UKR performance is severely negative (18% accuracy on 45 trades). Negative PNL overall. Low signal value.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Russia_UKR",
+    "Trump_US"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "55% accuracy in Iran_ME on 314 contested trades is barely above chance. Russia_UKR is a confirmed severe blind spot (18%). Negative PNL. MINIMAL is the most this trader earns — do not include in STR-003 signals without Oscar review.",
+  "behavioural_flags": [
+    "Russia_UKR: 18% accuracy on 45 trades — actively negative, not noise",
+    "geo_resolved_trades_count stored=27 while actual=399 — data integrity discrepancy"
+  ],
+  "risk_patterns": [
+    "Negative PNL (-$82) despite 68% contested entries suggests poor calibration or bad sizing",
+    "Russia_UKR blind spot is severe enough to flag any Russia-related position from this address as a contrarian indicator"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed in initial profile.",
+  "watch_items": [
+    "Russia_UKR positions from this address are contrarian indicators — if this trader goes long Russia_UKR, it may be a sell signal",
+    "Monitor Iran_ME accuracy over next 3 months — if it holds above 57% on 100+ new trades, upgrade to DOMAIN_ONLY"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "Iran_ME specialist with thin 55% accuracy edge and severe Russia_UKR blind spot (18% accuracy on 45 trades). Negative PNL. MINIMAL weight. Not a compelling signal source in current state.",
+  "data_snapshot": {
+    "geo_elo": 2764.6,
+    "geo_elo_active": 2425.3,
+    "resolved_trades": 399,
+    "distinct_markets": 32,
+    "directionality": 0.61,
+    "pnl": -82.0
+  }
+}

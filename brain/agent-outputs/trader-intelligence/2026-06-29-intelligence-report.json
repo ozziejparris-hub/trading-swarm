@@ -1,0 +1,381 @@
+{
+  "report_date": "2026-06-29",
+  "profiles_updated": [
+    {
+      "address": "0x9cb98fc57fe8a3bdf75c3b48bd419e5d262f7b80",
+      "new_resolved_trades": 1,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "what_changed": "One new resolved trade: US x Iran permanent peace deal YES at 0.041, LOST (Jun 10). Long-shot speculative entry consistent with existing behavioral pattern — not a forecasting shift. Performance deterioration flag added: last 10 resolved = 20% accuracy (well below 45% threshold). Archetype remains YIELD_HARVESTER/DOMAIN_ONLY — thin data (1 trade) blocks reclassification."
+    }
+  ],
+  "archetype_drift_flags": [
+    {
+      "pattern": "performance_deterioration",
+      "trader": "0x9cb98fc57fe8a3bdf75c3b48bd419e5d262f7b80",
+      "severity": "HIGH",
+      "evidence": {
+        "last_10_accuracy": 0.20,
+        "new_trade_result": "LOST",
+        "new_trade_price": 0.041,
+        "new_trade_market": "US x Iran permanent peace deal by June 15, 2026?"
+      },
+      "data_depth": "thin (1 new resolved trade)",
+      "n_new_trades": 1,
+      "interpretation": "LEGENDARY YIELD_HARVESTER continues losing streak. Last 10 resolved = 20% accuracy. The new trade (long-shot speculative YES at 0.041 on US-Iran peace deal, LOST) is consistent with existing behavioral flag about mixing cheap speculation with yield harvesting. DOMAIN_ONLY weight unchanged — thin data bars reclassification. Monitor: if the losing streak continues with 5+ further resolved trades, reclassification to DOMAIN_ONLY→EXCLUDE or tier demotion review becomes warranted.",
+      "reclassified": false
+    }
+  ],
+  "new_traders_qualified": [
+    {
+      "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 3169.4,
+      "geo_elo": 3711.5,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "Dual Iran_ME/Russia_UKR specialist with 737 resolved geo trades, 59% accuracy at 67% contested entries (avg price 0.441). Iran_ME (429 trades, 60% acc) and Russia_UKR (241 trades, 59% acc) both show genuine above-chance edge at contested prices. Trump_US is weak (47%). Potentially a strong DOMAIN_ONLY signal source in both major domains, blocked by an anomalously low realized_pnl ($103 on 737 trades) that triggers the STR-003 PNL investigation requirement.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "blocking_item": "realized_pnl=$103 anomaly on 737 resolved trades — investigate non-redemption account vs pipeline issue. If legitimate PNL, upgrade to DOMAIN_ONLY (Iran_ME, Russia_UKR) immediately."
+    },
+    {
+      "address": "0xc722c1a1a0bfddf4e0edb3286f7ebce127221334",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2784.5,
+      "geo_elo": 3174.0,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "Iran_ME specialist with 383 resolved geo trades, 67% accuracy at 0.349 avg price, 79% contested — one of the strongest Iran_ME accuracy records in any new qualifier. Russia_UKR is a confirmed blind spot (34 trades, 38% accuracy). China_Asia shows 71% on 35 trades (thin). Positive PNL ($1,296). Strong DOMAIN_ONLY upgrade candidate for Iran_ME.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "blocking_item": "Standard new-qualifier human review. Russia_UKR must be excluded regardless of upgrade. Iran_ME domain upgrade to DOMAIN_ONLY is the priority recommendation."
+    },
+    {
+      "address": "0x6b025355d035a679205ae23de33c7e9abe71e5fc",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 3105.8,
+      "geo_elo": 3227.8,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "first_read": "Iran_ME/Russia_UKR trader with 490 resolved trades and only 53% accuracy at avg price 0.201 (very cheap entries). Thin accuracy margin barely above chance. Positive PNL ($2,683) despite thin accuracy suggests volume-based gains. High ELO (3106) may be inflated by cheap-entry volume effects. Cautious MINIMAL weight — needs sustained accuracy improvement before useful for signals.",
+      "human_review_required": true,
+      "review_priority": "MEDIUM",
+      "blocking_item": "Accuracy too thin (53%) for DOMAIN_ONLY weight. Review whether the edge is real or a volume artifact."
+    },
+    {
+      "address": "0xedc2834124c0465fb2ccbf239896ef65f975ad9f",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2364.8,
+      "geo_elo": 2790.6,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "first_read": "Counterintuitive profile: 893 resolved geo trades, 51% overall accuracy, but domain breakdown reveals Iran_ME is below chance (48% on 620 trades) while Russia_UKR shows 67% on 82 trades. Positive PNL ($8,243) despite below-chance Iran_ME accuracy suggests size-into-wins behavior. If the Russia_UKR edge (67%, 82 trades) holds to 120+ trades, this becomes a DOMAIN_ONLY Russia_UKR candidate. Iran_ME must be explicitly excluded from any signal use.",
+      "human_review_required": true,
+      "review_priority": "MEDIUM",
+      "blocking_item": "Russia_UKR accuracy (67% on 82 trades) is promising but at the thin-to-moderate boundary. Confirm over next 30+ trades before upgrading."
+    },
+    {
+      "address": "0x8e9eedf20dfa70956d49f608a205e402d9df38e4",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2532.3,
+      "geo_elo": 3190.5,
+      "provisional_archetype": "YIELD_HARVESTER",
+      "archetype_confidence": "HIGH",
+      "first_read": "Reverse yield harvester: buys cheap-side tokens (avg price 0.080) and wins 94.9% of the time — the mathematical inverse of standard yield harvesting. Positions are 95% non-contested. PNL=$0 exactly triggers the STR-003 PNL exclusion filter. EXCLUDE permanently.",
+      "human_review_required": false,
+      "review_priority": "NONE"
+    },
+    {
+      "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2470.8,
+      "geo_elo": 2528.5,
+      "provisional_archetype": "YIELD_HARVESTER",
+      "archetype_confidence": "HIGH",
+      "first_read": "Textbook yield harvester: 83% near-certain entries at 0.885 average, 89% accuracy. Iran_ME dominates (189 trades, 92% acc at 0.906 avg). Trump_US: 100% accuracy at 0.974 average — pure near-certainty. EXCLUDE permanently.",
+      "human_review_required": false,
+      "review_priority": "NONE"
+    },
+    {
+      "address": "0x677aec88bba252680728e717538f44a3cc22bd2e",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2425.3,
+      "geo_elo": 2764.6,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "first_read": "Iran_ME trader with thin 55% accuracy on 314 contested trades and severe Russia_UKR blind spot (18% accuracy on 45 trades). Negative PNL (-$82). Russia_UKR performance is a contrarian indicator — if this trader goes long Russia_UKR, it may be a sell signal. MINIMAL weight, low priority for upgrade.",
+      "human_review_required": true,
+      "review_priority": "LOW"
+    }
+  ],
+  "new_near_legendary_qualifiers_summary": {
+    "count": 28,
+    "note": "28 new NEAR_LEGENDARY qualifiers (geo_elo_active 1800-2174) have entered Pool C since the June 10 baseline profiling. Full profiling of all 28 is infeasible in a single run at acceptable quality. Flagged for profiling queue. Top candidates by geo_elo_active: 0xe0f1e7751df4035f78a5... (2070.3), 0x10fc6c4395bc1690ee6b... (2066.1), 0x7b64e09f384b07534dff... (2065.0), 0x5f0b2ef77500dcda06d1... (2051.7), 0xc8b9a30184244d427169... (2039.1 — note pnl=$26,913, high priority for review). Oscar to authorize a dedicated profiling run for this cohort.",
+    "top_candidate_for_immediate_review": "0xc8b9a30184244d427169... (geo_elo_active=2039.1, pnl=$26,913, geo_trades=56, dir=0.99) — unusually high PNL for NEAR_LEGENDARY tier suggests a strong signal source pending investigation"
+  },
+  "emerging_consensus": [
+    {
+      "market": "European country agrees to give Ukraine security guarantee by June 30?",
+      "market_id": null,
+      "direction": "No",
+      "resolution_date": "2026-06-30",
+      "days_to_resolution": 1,
+      "traders": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "trusted_domain": "Russia_UKR",
+          "in_trusted_domain": true,
+          "avg_price": 0.768,
+          "net_shares": 1308,
+          "contested": true
+        }
+      ],
+      "interpretation": "VOLUME_SPECIALIST holds NO at 0.768 CONTESTED (1,308 shares) corroborating active STR003-008. Single eligible trader (not multi-trader consensus). Resolves tomorrow — June 30.",
+      "str003_eligible": false,
+      "str003_reason": "Single trader only. Corroborates existing STR003-008 signal."
+    },
+    {
+      "market": "Will Ukraine agree to cede territory to Russia before 2027?",
+      "market_id": null,
+      "direction": "No",
+      "resolution_date": "2026-12-31",
+      "days_to_resolution": 185,
+      "traders": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "trusted_domain": "Russia_UKR",
+          "in_trusted_domain": true,
+          "avg_price": 0.731,
+          "net_shares": 15376,
+          "contested": true
+        }
+      ],
+      "interpretation": "VOLUME_SPECIALIST holds very large NO position (15,376 shares) at 0.731 CONTESTED on Ukraine ceding territory — a new Dec 2026 position not present at Jun 10 profiling. Single eligible trader. The position size (15,376 shares) at a contested price in trusted domain is significant. Not yet enough traders for STR-003 but watch for additional traders entering this market.",
+      "str003_eligible": false,
+      "str003_reason": "Single DOMAIN_ONLY trader — needs additional qualifying trader for STR-003 consideration. Track for consensus development."
+    },
+    {
+      "market": "Will Russia capture all of Kostyantynivka by December 31, 2026?",
+      "market_id": null,
+      "direction": "No",
+      "resolution_date": "2026-12-31",
+      "days_to_resolution": 185,
+      "traders": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "trusted_domain": "Russia_UKR",
+          "in_trusted_domain": true,
+          "avg_price": 0.529,
+          "net_shares": 39185,
+          "contested": true
+        }
+      ],
+      "interpretation": "VOLUME_SPECIALIST holds the single largest open position in this run: 39,185 shares NO at 0.529 CONTESTED (deeply contested price) on Russia capturing Kostyantynivka by Dec 31. This is a major directional conviction call by a Russia_UKR domain specialist at a genuinely contested price. Single trader prevents STR-003 qualification but this is the most significant new contested position observed. The pre-resolution scan (June 28) showed 28 legendary traders in the Kostyantynivka market at ELITE tier but 0 legendary at our threshold — no consensus across our pool yet.",
+      "str003_eligible": false,
+      "str003_reason": "Single DOMAIN_ONLY trader. No other LEGENDARY pool members in this position yet. Flag for watch — if a second eligible trader enters, evaluate for STR-003."
+    }
+  ],
+  "direction_reversals": [
+    {
+      "trader": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+      "market": "Will New People (NL) gain the most seats in the next Russian elections?",
+      "market_id": null,
+      "archetype": "DOMAIN_SPECIALIST",
+      "signal_weight": "DOMAIN_ONLY",
+      "trusted_domain": "Russia_UKR",
+      "from": "No (106 shares at 0.669)",
+      "to": "Yes (886 shares at 0.345, dominant)",
+      "old_leg": {
+        "direction": "No",
+        "avg_price": 0.669,
+        "shares": 106
+      },
+      "new_leg": {
+        "direction": "Yes",
+        "avg_price": 0.345,
+        "shares": 886
+      },
+      "interpretation": "Russia_UKR DOMAIN_SPECIALIST holds bidirectional positions on the Russian election market: 106 shares NO at 0.669 (small position, earlier entry) and 886 shares YES at 0.345 (dominant new position). The dominant capital is on YES — this is a new contested-price bet that New People will top the Russian election. The shift from small-NO to large-YES at a contested price in trusted domain is notable. Resolves 2026-09-30. Market category: Geopolitics/Russia_UKR. This may indicate domain intelligence about Russian political dynamics. Data depth: moderate. Not a clean reversal (bidirectional remains), but the YES at 0.345 is the dominant thesis.",
+      "data_depth": "moderate"
+    }
+  ],
+  "approaching_resolutions": [
+    {
+      "market": "NATO x Russia military clash by June 30, 2026?",
+      "market_id": null,
+      "end_date": "2026-06-30 00:00:00",
+      "days_remaining": 1,
+      "positions": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "direction": "No",
+          "avg_price": 0.946,
+          "net_shares": 8648
+        },
+        {
+          "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "direction": "No",
+          "avg_price": 0.957,
+          "net_shares": 125
+        }
+      ],
+      "cross_ref_pre_res_scan": "Pre-res scan June 28 shows NATO x Russia military clash at LEGENDARY tier, 3 legendary traders, NO direction at 31.6% gap from market price 1.84%. Two Russia_UKR pool specialists hold NO at near-certainty prices (not contested) — corroborating but not signaling new information."
+    },
+    {
+      "market": "European country agrees to give Ukraine security guarantee by June 30?",
+      "market_id": null,
+      "end_date": "2026-06-30 00:00:00",
+      "days_remaining": 1,
+      "positions": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "direction": "No",
+          "avg_price": 0.768,
+          "net_shares": 1308
+        }
+      ],
+      "cross_ref_str003": "Active signal STR003-008 (European security guarantee NO) resolves tomorrow. VOLUME_SPECIALIST corroborates with 1,308 shares NO at 0.768 CONTESTED. Pre-res scan June 28 not separately flagged."
+    },
+    {
+      "market": "Kharg Island no longer under Iranian control by June 30?",
+      "market_id": null,
+      "end_date": "2026-06-30 00:00:00",
+      "days_remaining": 1,
+      "positions": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "direction": "No",
+          "avg_price": 0.822,
+          "net_shares": 5918
+        }
+      ],
+      "cross_ref_pre_res_scan": "Pre-res scan June 28: Kharg Island LEGENDARY tier, 7 legendary traders, YES direction at 85.7% gap from market 1.1%. Our VOLUME_SPECIALIST holds NO at 0.822 (near-certain) — consistent with the mainstream NO thesis (market is at 1.1% YES = 98.9% NO priced). Not a contested position."
+    },
+    {
+      "market": "Will Russia enter Druzkhivka by June 30?",
+      "market_id": null,
+      "end_date": "2026-06-30T00:00:00+00:00",
+      "days_remaining": 1,
+      "positions": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "direction": "No",
+          "avg_price": 0.549,
+          "net_shares": 5307
+        }
+      ],
+      "cross_ref_pre_res_scan": "Not separately flagged in pre-res scan June 28. VOLUME_SPECIALIST holds NO at 0.549 CONTESTED (5,307 shares) — a meaningful Russia_UKR directional call at genuinely contested price. This is a new position not in the June 10 profile. The pre-res scan June 28 missed this LEGENDARY pool position.",
+      "pre_res_scan_gap": true
+    },
+    {
+      "market": "Will Rafael López Aliaga win the 2026 Peruvian presidential election?",
+      "market_id": null,
+      "end_date": "2026-06-07 00:00:00",
+      "days_remaining": -22,
+      "status": "OVERDUE — 22 days past end_date, still pending in DB",
+      "positions": [
+        {
+          "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+          "archetype": "GENUINE_FORECASTER",
+          "signal_weight": "FULL",
+          "direction": "Yes",
+          "avg_price": 0.245,
+          "net_shares": 20231
+        }
+      ],
+      "cross_ref_str003": "STR003-006 already RESOLVED_WRONG (López Aliaga YES — wrong call). The DB position is still showing 'pending' — has not been scored. 22 days overdue. daily maintenance should have caught this by now — may indicate pipeline failure on this specific market. Flag for Oscar."
+    }
+  ],
+  "tier_demotion_reviews": [
+    {
+      "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+      "stored_tier": "NEAR_LEGENDARY",
+      "current_geo_elo_active": 1725.7,
+      "archetype": "GENUINE_FORECASTER",
+      "signal_weight": "MINIMAL",
+      "note": "geo_elo_active dropped from 1944.5 (Jun 15) to 1725.7 (Jun 29) — significant decay of 219 points in 2 weeks. This is primarily recency decay from dormancy (180-day half-life). The trader had a blocking PNL issue ($0 realized_pnl) from Jun 15 that was unresolved. Now ELO has also decayed below NEAR_LEGENDARY threshold. Profile remains — per Rule 7. Human review recommended to determine if this is genuine dormancy decay or pipeline issue."
+    }
+  ],
+  "critical_data_integrity_alert": {
+    "severity": "HIGH",
+    "issue": "geo_resolved_trades_count systematic undercount + geo_elo inflation",
+    "description": "Multiple established Russia_UKR DOMAIN_SPECIALISTs (9 traders profiled in June 10 run) have lost Pool C membership (geo_accuracy_pool set to 0) because their traders.geo_resolved_trades_count now shows 4-5 records — below the Pool C minimum of 5. However, actual geo resolved trades in the DB range from 1,876 to 2,028 for these traders. The geo_elo column is also massively inflated: 0xbbd22b was 2953 (Jun 10) and is now 5469 — an apparent 85% inflation. This pattern affects all established Russia_UKR specialists.",
+    "affected_profiles": [
+      "0xbbd22b1ace7f8933e2862a0827ad6a63dbad3c10 (stored=2953 → current geo_elo=5469, pool_c=0)",
+      "0x40173a531f84e7fde7f806fd72c154886a02fb23 (stored=2807 → current geo_elo=5197, pool_c=0)",
+      "0x55055087699c7436fde338b7017c20378b9baa5a (stored=2695 → current geo_elo=5009, pool_c=0)",
+      "0x51d2063dc67f9de481223cb1cf329d0234f2eaa8 (stored=2682 → current geo_elo=4966, pool_c=0)",
+      "0x4f2365287b87b4437bee646b269656817151e0d3 (stored=2616 → current geo_elo=4844, pool_c=0)",
+      "0xca0acc6f272eb35229c2ca4be66049e7058193a4 (stored=2543 → current geo_elo=4727, pool_c=0)",
+      "0x9f162cab9822be4ce687a1a12d8114dc9d14884d (stored=2487 → current geo_elo=4605, pool_c=0)",
+      "0x474ea661f6be8c9d49438353a42acedd229c938b (stored=2316 → current geo_elo=4305, pool_c=0)",
+      "0x4c34beb16ddedf02116413693b07a709e0a1dcce (stored=2327 → current geo_elo=4309, pool_c=0)"
+    ],
+    "hypothesis": "The geo_resolved_trades_count column is being calculated from a subset of geo trades (possibly only post-April-28 trades or only trades meeting some new filter) rather than all historical geo trades. The geo_elo is then calculated from only those 4-5 trades, producing an inflated ELO from a very small sample. This would explain both the low geo_resolved_trades_count AND the inflated geo_elo simultaneously.",
+    "impact": "Pool C dropped from ~2,851 to 2,157 (below alert threshold of 2,500). These 9 DOMAIN_SPECIALIST profiles are among the most valuable in the system for Russia_UKR signal generation. Their pool membership is likely incorrect — they should still qualify for Pool C based on actual trade history.",
+    "action_required": "Oscar to investigate geo_resolved_trades_count and geo_elo calculation pipeline. Likely cause: update_geo_elo.py or update_research_exclusions.py is counting from a wrong subset. Fix should restore these traders to Pool C and recalculate geo_elo from full trade history. Do NOT adjust profiles until fix is confirmed — profiles reflect the correct archetype assignments from the full trade history."
+  },
+  "pool_health": {
+    "legendary_clean": 16,
+    "near_legendary_clean": 41,
+    "profiles_current": 46,
+    "profiles_stale": 0,
+    "profiles_with_new_resolved_trades": 1,
+    "new_profiles_created": 7,
+    "note": "Pool sizes as of 2026-06-29: legendary_clean=16, near_legendary_clean=41. pool_c=2,157 (BELOW alert threshold of 2,500 — caused by data integrity issue affecting 9 Russia_UKR DOMAIN_SPECIALISTs whose geo_resolved_trades_count incorrectly shows 4-5). 28 NEAR_LEGENDARY traders newly entered Pool C and remain unprofiled. 46 profiles total (39 original + 7 new). Zero profiles stale on delta-trade basis.",
+    "contract_validation": "CONDITIONAL PASS — pool_c=2,157 below alert threshold of 2,500. Cause identified as data integrity issue, NOT a genuine pool collapse. Research proceeding but Oscar must investigate."
+  },
+  "action_items": [
+    "URGENT — DATA INTEGRITY: 9 Russia_UKR DOMAIN_SPECIALISTs have been incorrectly dropped from Pool C. Their geo_resolved_trades_count shows 4-5 in the traders table but actual resolved geo trades in DB range from 1,876 to 2,028. geo_elo is inflated 85% (0xbbd22b: 2953 → 5469). Pool C dropped below alert threshold (2,157 vs expected 2,851). Oscar must investigate geo_resolved_trades_count and geo_elo calculation in update_geo_elo.py or update_research_exclusions.py. Affected traders include the most valuable Russia_UKR signal sources (0xbbd22b, 0x40173a, 0x55055, 0x51d20).",
+    "CRITICAL — STR003 JUNE 30 RESOLUTION: STR003-004 (Putin invasion NO), STR003-007 (Iran regime fall NO), STR003-008 (European security guarantee NO) all resolve TOMORROW. Monitor daily maintenance for resolution flags. VOLUME_SPECIALIST (0xd44e974a) holds corroborating NO at 0.768 CONTESTED on STR003-008. 0xecaa8806 (GENUINE_FORECASTER) Peru positions still showing 'pending' in DB — 22 days overdue, pipeline investigation needed.",
+    "HUMAN REVIEW REQUIRED — 0x3d03c46d (NEW LEGENDARY, 3169 ELO): Strong Iran_ME/Russia_UKR DOMAIN_SPECIALIST with 737 resolved geo trades, 59% accuracy at contested prices. Upgrade to DOMAIN_ONLY blocked by pnl=$103 anomaly. Highest-priority new qualifier. Oscar to investigate PNL pipeline — if legitimate, promote to DOMAIN_ONLY immediately for Iran_ME and Russia_UKR.",
+    "HUMAN REVIEW REQUIRED — 0xc722c1a1 (NEW LEGENDARY, 2785 ELO): Iran_ME specialist with 67% accuracy on 294 contested trades — strongest Iran_ME accuracy of any new qualifier. Recommend DOMAIN_ONLY (Iran_ME only) after human review. Russia_UKR is a confirmed blind spot (38% accuracy). Prioritize for STR-003 inclusion after review.",
+    "WATCH — VOLUME_SPECIALIST new Dec 2026 positions: 0xd44e974a has opened three major contested-price Russia_UKR positions since June 10: Ukraine cede territory NO (0.731, 15,376 shares), Ukraine peace deal NO (0.557, 6,327 shares), Russia capture Kostyantynivka NO (0.529, 39,185 shares). The Kostyantynivka position (39,185 shares at 0.529 CONTESTED) is the largest single contested position observed in the pool. If one additional LEGENDARY trader enters any of these markets, evaluate for POTENTIAL STR-003.",
+    "PROFILE DEBT — 28 new NEAR_LEGENDARY qualifiers entered Pool C since June 10 and are unprofiled. Notable high-priority: 0xc8b9a30184244d427169... (geo_elo_active=2039, pnl=$26,913, 56 geo trades) — unusually strong PNL for this tier. Oscar to authorize a dedicated NEAR_LEGENDARY profiling run before next weekly cycle.",
+    "PERFORMANCE DETERIORATION — 0x9cb98fc57fe8a3 (LEGENDARY YIELD_HARVESTER): last 10 resolved = 20% accuracy. One new loss confirmed (US-Iran peace deal YES 0.041). DOMAIN_ONLY weight unchanged (thin data). Monitor: 5+ further losses would warrant archetype/weight review."
+  ],
+  "run_metadata": {
+    "agent": "trader-intelligence-agent",
+    "run_date": "2026-06-29",
+    "profiles_scanned": 39,
+    "profiles_with_new_resolved_trades": 1,
+    "new_qualifiers_profiled": 7,
+    "near_legendary_qualifiers_flagged_unprofiled": 28,
+    "tier_demotion_reviews": 1,
+    "contract_version_read": "v2.13 (2026-06-23)",
+    "schema_change_log_read": "SCL-001 through SCL-012 (all reviewed; no new PROPAGATION INCOMPLETE items affecting this agent)",
+    "contract_validation": "CONDITIONAL PASS — pool_c below threshold, cause identified",
+    "pool_sizes_at_run": {
+      "clean_pool": 22384,
+      "true_research_pool": 8221,
+      "clean_markets": 28608,
+      "pool_c": 2157,
+      "legendary_base": 78,
+      "legendary_active": 29,
+      "legendary_clean": 16,
+      "near_legendary_clean": 41,
+      "wal_mode": "wal"
+    },
+    "alert_flags": [
+      "pool_c=2157 below threshold of 2500 — caused by geo_resolved_trades_count data integrity issue",
+      "true_research_pool=8221 (significant increase from 3,902 on Jun 15 — warrants monitoring)"
+    ]
+  }
+}
