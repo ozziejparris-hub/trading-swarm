@@ -170,6 +170,17 @@ Active `comprehensive_elo` writers confirmed by grep:
 
 ---
 
+### O-12 · Resolution-collection ID-routing gap (permanent-loss class)
+**ITEM:** Some `market_id`s are unroutable through any resolution-collection path: CLOB returns empty, Gamma doesn't recognize the hex ID, and there is no `api_id`/`condition_id` to fall back to the fast path. Example: Putin market `0x657195fda8...`, `last_checked` 2026-04-01 — 90 days stale as of today. These markets can **never** be collected as things stand — this is a **permanent loss**, distinct from the cap-latency gap fixed today in commit `6c08afc` (round-robin rotation for the recent-overdue resolution pass, first-repo), which addresses staleness from throughput limits, not unroutable IDs. Likely cause: a V1/V2 market identifier format mismatch.  
+**ALSO FOLDED IN:** Monitoring-service Gamma-null observability (warn on markets with no `api_id`/`condition_id`) — scoped earlier today but deferred; rather than tracking separately, it's the natural detection mechanism for this item, so it's folded into O-12's scope.  
+**SOURCE:** Identified 2026-06-29/30 alongside the round-robin rotation fix (`6c08afc`, first-repo).  
+**STATUS:** OPEN — uninvestigated. Needs its own investigation: (1) characterize how many markets are affected, (2) determine why their IDs don't route through CLOB or Gamma, (3) determine whether backfilling `api_id`/`condition_id`, or adding a V1 resolution path, resolves it.  
+**DEPENDENCIES:** Independent of the ELO rebuild arc. No frozen-area contact.  
+**RISK/EFFORT:** Unknown until characterized — investigation is read-only to start. NOT urgent (affects a subset of markets), but real and currently silent (no observability until the Gamma-null warning above is built).  
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
@@ -267,6 +278,7 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 - O-9 trading-swarm data-layer audit
 - O-10 Composite scorer scheduling decision
 - O-11 Research-scout triage
+- O-12 Resolution-collection ID-routing gap (permanent-loss class)
 
 **What specifically precedes Layer 2:**
 1. O-5 (non-ELO competing writers) — removes noise before the frozen-area build  
@@ -281,4 +293,4 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 
 ---
 
-*Ledger last updated: 2026-06-29 (O-6 updated tonight with INVESTIGATED-COMPLETE findings). All statuses verified against live code and DB.*
+*Ledger last updated: 2026-06-30 (O-12 added — resolution-collection ID-routing gap, permanent-loss class). Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
