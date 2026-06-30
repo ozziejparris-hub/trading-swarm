@@ -122,7 +122,8 @@ Active `comprehensive_elo` writers confirmed by grep:
 - **Unblocked by completion of:** O-5 (non-ELO competing writers removed), O-6 (daily path behavior resolved), test suite green (DONE, #42)  
 - **Unlocks:** ELO recalc unfreeze (the standing freeze since session #38). Until Layer 2 is done + harness clean, `recalculate_comprehensive_elo.py` stays frozen.  
 **RISK/EFFORT:** Large. Complex orchestration of `UnifiedELOSystem` + `TradingBehaviorAnalyzer`. The session summaries flag this consistently as "complex, fresh session." Behavioral data now populated (#42), removing one blocker.  
-**FROZEN-AREA?** YES — this IS the frozen area. Must be ELO-output-neutral at every intermediate step. Same discipline as session #42 (byte-identical avg/range verification before/after).
+**FROZEN-AREA?** YES — this IS the frozen area. Must be ELO-output-neutral at every intermediate step. Same discipline as session #42 (byte-identical avg/range verification before/after).  
+**DOWNSTREAM IMPACT CONFIRMED (2026-06-30):** STR-002's ELITE/QUALIFIED tier-gating reads `comprehensive_elo` directly (`scripts/pre_resolution_intelligence.py`) and is measurably degraded by the missing behavioral component — see `2026-06-30-str002-thesis-cell-analysis.md`. This is no longer an abstract data-quality concern; it's a live strategy underperforming partly because of it. Strengthens the case for prioritizing O-7.
 
 ---
 
