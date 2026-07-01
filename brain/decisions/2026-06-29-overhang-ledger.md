@@ -182,6 +182,16 @@ Active `comprehensive_elo` writers confirmed by grep:
 
 ---
 
+### O-13 · Monitoring service blocking-call stall (event-loop starvation during resolution scans)
+**ITEM:** `check_market_resolutions()` (`monitoring/trader_analyzer.py:121`) is a synchronous function called directly from the async main loop (`monitoring/monitor.py:1261`). Its up-to-300,437 sequential per-market HTTP calls run with no `await`/yield, blocking the entire asyncio event loop for the scan's full duration — starving every other scheduled async task (`pnl_worker`, `watchdog`, `backfill_worker`) until the scan finishes. On July 1 the scan had been blocking the loop for 73+ minutes and was only 12% complete (37,160/300,437) when the concurrent power outage hit.
+**SOURCE:** Discovered during July 1 power-outage forensics (house power loss, ~02:54–07:26 UTC). Initially misread as a file-logging failure — `logs/monitoring.log` (the `logging`-module output) goes silent for the scan's duration, but the systemd journal keeps showing `[RESOLUTION] Checking market...` lines throughout, because those come from `print()` calls inside the blocking function, which bypass the stalled event loop by writing straight to stdout.
+**STATUS:** OPEN — root cause identified, not yet investigated further (frequency across other restarts, typical scan duration) or fixed. Confirmed via code read (`monitor.py:1261` calls the sync `def check_market_resolutions` with no executor/thread offload) and log cross-reference (file-logger gap 01:40:59→02:54:13 on July 1 lines up exactly with the scan's blocking window; journal shows the process alive and mid-scan throughout).
+**DEPENDENCIES:** Independent of the ELO rebuild arc. No frozen-area contact — this is a monitoring-service concurrency issue, not an ELO-chain issue.
+**RISK/EFFORT:** Medium. Real production impact: the watchdog meant to catch problems is itself unscheduled during the stall, so the monitor is effectively blind to its own health for the scan's full duration. Fix direction (not scoped today): offload the blocking scan to `run_in_executor`/a thread pool, or chunk the market list with periodic `await asyncio.sleep(0)` yields between batches. Needs its own design pass — not a same-session fix.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
@@ -280,6 +290,7 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 - O-10 Composite scorer scheduling decision
 - O-11 Research-scout triage
 - O-12 Resolution-collection ID-routing gap (permanent-loss class)
+- O-13 Monitoring service blocking-call stall (event-loop starvation during resolution scans)
 
 **What specifically precedes Layer 2:**
 1. O-5 (non-ELO competing writers) — removes noise before the frozen-area build  
@@ -294,4 +305,4 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 
 ---
 
-*Ledger last updated: 2026-06-30 (O-12 added — resolution-collection ID-routing gap, permanent-loss class). Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
+*Ledger last updated: 2026-07-01 (O-13 added — monitoring service blocking-call stall, discovered during July 1 power-outage forensics). Earlier: 2026-06-30, O-12 added — resolution-collection ID-routing gap, permanent-loss class. Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
