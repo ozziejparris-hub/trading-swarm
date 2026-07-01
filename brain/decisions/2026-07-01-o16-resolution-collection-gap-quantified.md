@@ -14,6 +14,8 @@ The real gap is **two orders of magnitude larger** than the 724-market segment s
 
 **It is not a "nobody cares" population.** 68,290 of the 194,216 stuck markets (35%) have at least one recorded trade; 62,407 (32%) have a trade from a currently-flagged, non-research-excluded trader; **19,084 of 22,390 flagged+clean traders (85%) have at least one trade in a stuck market.** This directly touches the scored/tracked trader population that feeds ELO and accuracy signals.
 
+**2026-07-01 follow-up (§6-7): confirmed dormant, not just quiet — and a backfill design is ready.** §6 traces the exact write-path mechanism and finds the generator was **structurally fixed by commits `4cdd190`/`446bcde` (2026-05-31)**, which made every `end_date` write co-write `resolution_date`; zero new instances of this pattern have appeared since (verified against the live DB). A **one-time backfill is a permanent fix**, not a stopgap — no code fix is required first. §6.4 separately flags a **different, currently-active, small-scale generator** (`resolve_legendary_markets.py` / `legendary_positions_scan.py` resolving markets correctly but never writing `resolution_date` — 182 rows and growing slowly) that disproportionately affects LEGENDARY-tier P&L requeueing; worth its own quick fix, not part of the 194,216 backlog. §7 scopes the backfill itself: ~2.6-5 hour runtime at light concurrency, resumable via the existing `resolved=0` filter (no new progress file needed), confirmed the per-ID Gamma endpoint works (30/30 in a fresh sample), and recommends processing the 62,407 flagged-trader-affecting markets first.
+
 **Pass 1's real reach is ~2,100 closed markets per run, not the 50,000 the code assumes** — Gamma's list endpoint now hard-errors past offset 2,100 with `"offset too large, use /markets/keyset for deeper pagination"`. This is a ~95.8% shortfall against the coded assumption, confirmed precisely below. It's a contributing factor to overall system-wide under-collection but is **not** why the 194,216 are stuck — those lack an `endDate` field on Gamma's side entirely, so no depth of pagination would ever surface them; they're excluded by the sort key, not the cap.
 
 **Bottom line for urgency:** this is a large, real, and materially-relevant data-quality gap — but it is a **backlog to schedule a fix for, not a fire to fight tonight.** The mechanism producing new orphans (the interaction of `run_recent_overdue_pass`'s no-op-on-failure `resolution_date` and `run_stale_clob_pass`'s hard `resolution_date IS NOT NULL` requirement) is a live structural bug that *could* leak going forward, but the live-monitoring evidence (1 stuck vs 24,333 clean) shows it isn't doing so today in any measurable way. Recommend: fix-this-week, not fix-tonight.
@@ -134,7 +136,93 @@ Two independent follow-up items, neither urgent enough to interrupt current work
 
 ---
 
-## 6. Files Referenced
+## 6. Follow-up Investigation 1 — Is the Generator Dormant or Live? (2026-07-01, read-only, alongside `daily_maintenance.py` PID 6794)
+
+**Verdict, for the exact pattern that produced the 194,216 backlog: DORMANT, and structurally fixed — not just quiet.** But a second, distinct, currently-active generator was found for an adjacent pattern (§6.4) — small in scale, worth its own fix, not the same bug.
+
+### 6.1 The mechanism — how a live market could end up like the 194,216
+
+Traced every write path that touches `markets.end_date`:
+
+- `monitor.py`'s `_batch_update_market_end_dates` (event-category-map refresh, every ~10 cycles) and `_backfill_clob_end_dates` (per-cycle CLOB fallback) both write `end_date` and `resolution_date` **in the same UPDATE statement**, via `resolution_date = COALESCE(resolution_date, ?)` — so `resolution_date` is always co-populated the first time `end_date` is set. Both are guarded by `WHERE end_date IS NULL`, so they only fire once per row (first population), which is exactly right.
+- `database.py`'s `update_market()` (the general upsert used when a market is first seen from trade data) computes `effective_resolution_date = resolution_date if resolution_date is not None else end_date` before the INSERT, and the `ON CONFLICT` clause does `resolution_date = COALESCE(resolution_date, excluded.resolution_date, excluded.end_date)` — same pattern, same guarantee: whenever `end_date` is provided, `resolution_date` gets a value too (at minimum, `end_date` itself as a proxy).
+- **These co-write functions were added in commits `4cdd190` and `446bcde`, both dated 2026-05-31** — "market end_date backfill — resolution date coverage for STR-003 signals" / "CLOB API end_date lookup — permanent resolution date coverage." Before that date, `_refresh_event_category_map` didn't write to the DB at all (verified via `git show 4cdd190` diff — the whole `_batch_update_market_end_dates` function and its call site are new in that commit).
+- The one confirmed exception to the co-write guarantee anywhere in the current codebase is `scripts/fix_expired_unresolved.py`'s Task 4 (`"UPDATE markets SET end_date = ? WHERE api_id = ?"`, no `resolution_date` touch) — but this is a **hardcoded, one-off manual data-fix script** (2 specific `api_id`s, not scheduled by `daily_maintenance.py` or cron, run by hand). Not a generator.
+
+**Confirmed empirically: zero rows in the "`end_date` set, `resolution_date` NULL" state have `last_checked` later than 2026-05-31** (`SELECT COUNT(*) ... WHERE end_date IS NOT NULL AND resolution_date IS NULL AND last_checked > '2026-05-31'` → **0**). The May 31 fix has held for 5+ weeks with zero recurrence.
+
+### 6.2 The 1 (now 3) stuck `live_monitoring` markets — genuine leak or fluke?
+
+Widening the filter to include not-yet-overdue markets (not just the 194,216 already-overdue ones) surfaces **3** `live_monitoring` rows in this state, not 1 — but **all 3 share the identical `last_checked` timestamp, 2026-01-12 21:11:10.** This is a second, tiny, one-time event (3 rows, not a trickle), and — critically — it **predates** the May 31 fix by 4.5 months. No commit or scheduled script matches this exact timestamp; most likely an ad-hoc/manual DB touch during early STR-003 experimentation (which the May 31 commit message explicitly references: "Putin and Newsom markets not indexed in Gamma... end_dates will be captured on next cycle").
+
+Investigated the one **currently overdue** member of this trio directly (`0x5e15850d...42a`, title "US recession in 2027?", `end_date` 2026-05-29, `api_id` empty):
+- **Neither Gamma nor CLOB recognizes this `condition_id`.** Gamma: HTTP 422 ("id is invalid" — same hex-ID rejection as O-13's finding). CLOB: `{"error": "market not found"}`. A Gamma full-text search for "recession in 2027" returns zero matches (only 2025/2026-titled recession markets from other countries/years exist).
+- **28 real trades** exist for this `market_id` in our DB, spanning 2026-03-09 to 2026-05-22 — genuine trading activity, not synthetic/test data.
+
+**Verdict: this is an O-12-class unroutable-ID fluke, not the leading edge of a slow leak.** The market was genuinely traded, but whatever ID we hold for it doesn't resolve through either live API today — a different, already-known problem (O-12), not evidence that O-16's specific `end_date`/`resolution_date` mechanism is still active.
+
+### 6.3 The key question: does the backlog refill after backfilling?
+
+**No — for the specific pattern this doc measures (194,216 rows: `resolved=0`, `end_date` set, `resolution_date` NULL).** Both known instances of this pattern (194,215-row Dec 11 2025 bulk import; 3-row Jan 12 2026 anomaly) predate the May 31 2026 structural fix, and zero new instances have appeared since. **A one-time backfill of the 194,216 is a permanent fix for this specific gap shape** — no code fix is required first (though §6.4's separate finding is worth fixing too, on its own timeline).
+
+### 6.4 A different, currently-active generator found along the way (not part of the 194,216, flagged separately)
+
+While confirming §6.3, found that **182 markets currently have `resolved = 1` (correctly resolved, with `winning_outcome` set) but `resolution_date` still NULL** — a different failure shape (resolution *did* happen; only the `resolution_date` metadata is missing). Day-by-day breakdown of `last_checked` for this population shows an **ongoing trickle through the most recent weeks** (2026-06-15 through 2026-06-30, roughly 1-57/day, not one clustered event) — this one is live.
+
+**Root cause: `scripts/resolve_legendary_markets.py`** (scheduled **daily** via `daily_maintenance.py:50`, `["--limit", "50"]`, non-blocking) — its two `UPDATE` statements (`resolve_legendary_markets.py:210,215`) write `resolved = 1` and, where known, `winning_outcome`, but **never write `resolution_date`.** `scripts/legendary_positions_scan.py` (weekly, Monday cron) has the identical gap at its own `UPDATE markets SET resolved = 1, winning_outcome = ?` call (line 304) and `resolved = 1`-only variant (line 314).
+
+**This matters disproportionately for data quality despite the small row count (182 total)**, because it specifically targets **LEGENDARY-tier markets** (`geo_elo_active >= 2175 AND geo_accuracy_pool = 1`) — the highest-value trader population in the system — and because `scripts/requeue_resolved_market_traders.py:76` filters newly-resolved markets via `AND datetime(resolution_date) > datetime(?)`. **Any market `resolve_legendary_markets.py` resolves never gets its traders requeued for P&L recalculation via that script**, since `resolution_date` stays NULL and the comparison never matches — a silent, compounding gap specifically in LEGENDARY-trader P&L accuracy. Not investigated further here (out of this doc's scope), but flagged as a clear, cheap, high-value fix: add `resolution_date = datetime('now')` (or a Gamma-sourced value, if available in the API response already being parsed) to both `UPDATE` statements in `resolve_legendary_markets.py` and the two in `legendary_positions_scan.py`.
+
+---
+
+## 7. Follow-up Investigation 2 — Backfill Design (scoping only, not implemented)
+
+### 7.1 Runtime
+
+Measured live, read-only, against a random sample of the actual 194,216-row target set:
+
+| Mode | Measured throughput | Est. runtime for 194,216 |
+|---|---|---|
+| Sequential, no delay (20 requests) | 0.46s/req (2.17 req/s) | ~24.9 hours |
+| Concurrency 5 (40 requests, `xargs -P 5`) | 10.7 req/s | ~5.0 hours |
+| Concurrency 10 (80 requests, `xargs -P 10`) | 20.5 req/s, **0 non-200 responses** | ~2.6 hours |
+
+Concurrency scaled roughly linearly from 5→10 with zero errors in these test batches, suggesting Gamma isn't aggressively rate-limiting at this depth — but these are short bursts (40-80 requests), not a sustained multi-hour run, so **recommend starting at concurrency 5 (~5-hour, safely-overnight run) with a backoff-on-429/5xx handler, and only stepping up to 8-10 if the first hour shows zero throttling.** A plain sequential run (matching the existing scripts' `time.sleep(0.1-0.2)` convention) would take ~24-32 hours — too long to call "overnight" — so some parallelism is warranted, but this is a new pattern for this codebase (existing resolution scripts are all single-threaded) and should be tested conservatively rather than assumed safe at full production scale.
+
+### 7.2 Idempotency / Resumability
+
+**No new progress file or checkpoint table needed — the existing `last_checked` column and the target-set query are naturally resumable, with one caveat.**
+
+The target set is `SELECT market_id, api_id FROM markets WHERE data_source = 'historical_backfill' AND resolved = 0 AND resolution_date IS NULL` (a stable ~194,215-row set per §2 — no longer moving, per §6.3's dormant-generator finding, so no need to also filter by `end_date`/overdue-window). On each (re)start, simply **re-run this exact query**: rows already fixed by a prior partial run have `resolved = 1` now and drop out of the `WHERE` clause automatically — no separate "done" marker required. This is the same idiom `fast_resolution_check.py`'s passes already use (`last_checked ASC` rotation), just applied to a query where the drop-out condition (`resolved = 0`) is the resume signal, not `last_checked` order.
+
+**Caveat, given "two power outages this week":** commit in small batches (e.g., every 20-50 rows, not one giant transaction and not one commit per row) — bounds both the write amplification (SQLite WAL under concurrent maintenance) and the amount of re-fetched-but-uncommitted work lost to a mid-batch crash, without either extreme. Also worth writing a plain-text progress line (`processed / total, last market_id`) to a log file each batch, matching every other script's `print(f"Checked {idx}/{total}...")` convention — not for resumability (the DB already provides that), just for visibility into how far a killed run got before restarting.
+
+### 7.3 Confirming the Gamma per-ID lookup works for this specific population
+
+**Confirmed, cleanly: 30/30 (100%) fresh random samples from the actual 194,216-row set returned HTTP 200 from `GET gamma-api.polymarket.com/markets/{api_id}`.** Combined with the ~65 per-ID lookups already performed across this investigation and the original O-16 measurement (all against real members of this same population), **95+/95 (100%) success rate on the direct per-ID endpoint** — this is a confirmed, working data source for the backfill; **no CLOB or on-chain fallback is needed** for the vast majority. (The list-pagination endpoint, `/markets?closed=true&order=endDate...`, is the broken one per §4 — the backfill must use the per-ID endpoint, `/markets/{api_id}`, not the list endpoint.)
+
+One real-world wrinkle to design for: ~5% of samples return `closed: false` (genuinely still open, correctly not resolved yet — e.g. the VA-02 primary-nominee markets in §1.3). **Recommend the backfill also write `resolution_date = end_date` (no `resolved` change) for these** — matching the existing `update_market()` proxy convention already used elsewhere in the codebase — so they at least become visible to `run_stale_clob_pass` for future/normal resolution checking, rather than remaining permanently stuck outside all 4 passes the way they are today.
+
+### 7.4 Correctness / Provenance
+
+- **`INSERT OR REPLACE` is not used anywhere on the `markets` table in the current codebase** (`grep -rn "INSERT OR REPLACE\|REPLACE INTO"` — the only 2 matches are `monitoring_status` and `baselines`, unrelated tables). Every existing resolution-writer (`update_market_resolution`, all 4 `fast_resolution_check.py` passes, `resolve_legendary_markets.py`) uses a plain `UPDATE markets SET ... WHERE market_id = ?` — touches only the named columns, cannot wipe unrelated ones. **The backfill should follow this exact same pattern** — plain `UPDATE`, never `INSERT OR REPLACE` — to avoid any risk of reintroducing the column-wiping bug already fixed elsewhere (per the positions-table `ON CONFLICT DO UPDATE` fix referenced in the 2026-06-25 session summary).
+- **Provenance:** write a new, explicit `data_source` value on touched rows — e.g. `'gamma_backfill_2026-07-01'` — rather than leaving `data_source = 'historical_backfill'` in place or silently overwriting it to `'live_monitoring'`. This preserves an honest audit trail (these rows were bulk-imported without resolution data, then later backfilled by a dedicated one-time script) and won't be mistaken for either the original import or the organic live-monitoring pipeline in any future forensic investigation like this one. Set `resolution_date` to the actual value read from Gamma (`umaEndDate`/`closedTime`, or the market's own `endDate` if that's absent too — matching this doc's finding that these markets don't have `endDate` populated on Gamma's side; `closedTime` is the closest real resolution-date value.
+
+### 7.5 Prioritization
+
+Exact breakdown of the 194,216 by trader relevance (same join as §3):
+
+| Tier | Count | % | Criterion |
+|---|---|---|---|
+| 1 — highest value | 62,407 | 32% | Has a trade from a flagged, non-research-excluded trader |
+| 2 — some value | 5,883 | 3% | Has a trade, but not from a flagged/clean trader |
+| 3 — no known trade | 125,926 | 65% | No trade record in our DB at all |
+
+**Recommend processing in exactly this tier order.** Tier 1 (62,407) alone, at the concurrency-5 throughput measured in §7.1, is roughly a 1.6-hour run — it recovers essentially all of the ELO/signal-relevant value (the 85%-of-flagged-traders finding in §3) in a bounded, low-risk first pass, with Tiers 2-3 following as lower-priority, resumable continuation work rather than blocking the highest-value data from landing quickly.
+
+---
+
+## 8. Files Referenced
 
 | File | Role |
 |------|------|
@@ -144,3 +232,11 @@ Two independent follow-up items, neither urgent enough to interrupt current work
 | `scripts/daily_maintenance.py:46` | Where `fast_resolution_check.py --stale-limit 500` is scheduled daily |
 | `data/polymarket_tracker.db` `markets.data_source` | The `historical_backfill` vs `live_monitoring` distinction that proves §2's static-not-growing verdict |
 | `2026-07-01-o13-monitoring-blocking-stall-design.md` §5b | The 724-market segment that prompted this broader measurement; same 2025-12-11 forensic timestamp appears in both |
+| `monitoring/monitor.py:205-232` | `_batch_update_market_end_dates` — confirmed co-writes `resolution_date` whenever `end_date` is first set (§6.1) |
+| `monitoring/monitor.py:234-288` | `_backfill_clob_end_dates` — same co-write guarantee, CLOB-sourced path (§6.1) |
+| `monitoring/database.py:434-467` | `update_market()` — the general upsert; `ON CONFLICT` co-writes `resolution_date` via `COALESCE(..., excluded.end_date)` (§6.1) |
+| commits `4cdd190`, `446bcde` (2026-05-31) | The structural fix that makes §6.1's dormant-generator verdict hold — introduced the co-write pattern repo-wide |
+| `scripts/fix_expired_unresolved.py:228-231` | The one confirmed exception to the co-write guarantee — a hardcoded, unscheduled, 2-row manual fix script, not a generator (§6.1) |
+| `scripts/resolve_legendary_markets.py:210,215` | Daily-scheduled (`daily_maintenance.py:50`), resolves LEGENDARY-tier markets but never writes `resolution_date` — the live, currently-active generator found in §6.4 |
+| `scripts/legendary_positions_scan.py:304,314` | Weekly (Monday cron), same missing-`resolution_date` gap as above (§6.4) |
+| `scripts/requeue_resolved_market_traders.py:76` | The downstream consumer silently broken by §6.4's gap — its `resolution_date > ?` filter never matches a NULL `resolution_date` |
