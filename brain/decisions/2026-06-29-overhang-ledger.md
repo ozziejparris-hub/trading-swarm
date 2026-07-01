@@ -192,6 +192,20 @@ Active `comprehensive_elo` writers confirmed by grep:
 
 ---
 
+### O-14 · Offsite backup mount silently failing since June 20 (ext4 label truncation)
+**ITEM:** `/mnt/backup` was not mounting via `fstab`'s `LABEL=polymarket-backup` entry — `backup_offsite.sh` had effectively been running against an unmounted mount point.
+**SOURCE:** Identified and resolved 2026-07-01 during backup-system investigation.
+**STATUS:** RESOLVED (2026-07-01). Root cause is NOT a truncated/accidental label as first suspected — ext4 volume labels are hard-capped at 16 characters, and `"polymarket-backup"` is 17 chars. `e2label` always silently truncated it to `"polymarket-backu"` (confirmed by re-attempting the set, which reproduced the same truncation). `fstab`'s `LABEL=polymarket-backup` could therefore never match, so mount-by-label silently no-op'd (exit 0, nothing mounted) on every boot from June 20 through July 1, surviving 3 reboots — a structural fstab bug, not a disk/mount race.
+**FIX:** Switched `fstab` from `LABEL=` to `UUID=299b7d20-68a9-40c3-b3ee-513529ee689b` (immune to the 16-char constraint). `/etc/fstab` backed up first (`fstab.bak-20260701`). Confirmed mounted post-fix: 916G total, 850G free. A full offsite backup ran successfully afterward (brain synced, DB backup complete, 14-day pruning working, 23G used on the drive).
+**VERIFIED:** `df -h /mnt/backup` shows 916G/850G free; `backup_offsite.sh` completed end-to-end with no errors.
+**FOLLOW-UP (low-priority):** Confirm after the next reboot that the UUID-based `nofail` entry auto-mounts cleanly — expected to work since UUID has no length constraint, but not yet observed across a reboot.
+**STILL OPEN (separate, not investigated):** A doubled-cron-entry anomaly — `backup_offsite` wrapper possibly firing twice since June 14. Minor, not yet investigated; not part of this item's scope.
+**DEPENDENCIES:** Independent of the ELO rebuild arc. No frozen-area contact.
+**RISK/EFFORT:** None remaining — fix applied and verified.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
@@ -291,6 +305,7 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 - O-11 Research-scout triage
 - O-12 Resolution-collection ID-routing gap (permanent-loss class)
 - O-13 Monitoring service blocking-call stall (event-loop starvation during resolution scans)
+- O-14 Offsite backup mount fix (RESOLVED)
 
 **What specifically precedes Layer 2:**
 1. O-5 (non-ELO competing writers) — removes noise before the frozen-area build  
@@ -305,4 +320,4 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 
 ---
 
-*Ledger last updated: 2026-07-01 (O-13 added — monitoring service blocking-call stall, discovered during July 1 power-outage forensics). Earlier: 2026-06-30, O-12 added — resolution-collection ID-routing gap, permanent-loss class. Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
+*Ledger last updated: 2026-07-01 (O-14 added and RESOLVED — offsite backup mount fix, ext4 label-truncation root cause). Earlier same day: O-13 added — monitoring service blocking-call stall, discovered during July 1 power-outage forensics. Earlier: 2026-06-30, O-12 added — resolution-collection ID-routing gap, permanent-loss class. Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
