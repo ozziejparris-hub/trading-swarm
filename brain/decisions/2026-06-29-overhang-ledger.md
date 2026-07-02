@@ -239,6 +239,17 @@ Active `comprehensive_elo` writers confirmed by grep:
 
 ---
 
+### O-18 · Pre-bug NULL `resolution_date` rows (historical, static, distinct from O-17)
+**ITEM:** 55 markets (corrected from an initial 60 estimated 2026-07-01) have `resolved = 1` but `resolution_date` still `NULL`, with `last_checked < 2026-06-05` — outside the O-17 co-write-bug window. These predate the bug and have a **distinct root cause**: not an active generator leak (that's O-17), but historical rows that were never revisited after being set. Breakdown: 50 rows from the 2025-12-11 `historical_backfill` import (`last_checked` = import time, off by months from any real resolution date — do NOT use as a backfill proxy); 4 rows from a 2026-01-12 `live_monitoring` batch (one with `winning_outcome='unknown'`, unexplained); 1 isolated 2026-04-28 `live_monitoring` anomaly (also missing `end_date`, a third distinct signature). Connected to O-16's 194,216-row backlog only by the shared `2025-12-11`/`historical_backfill` signature — not the same mechanism, likely an INSERT-time gap in the historical importer rather than a co-write gap.
+**SOURCE:** First flagged (unledgered) in the 2026-07-01 session summary during O-17 backfill scoping. Properly ledgered and quantified 2026-07-02: `brain/decisions/2026-07-02-o18-pre-bug-null-resolution-dates.md` (includes the current 55 market_ids for future diffing).
+**STATUS:** OPEN — quantified only, not investigated further. **Drift note (verified benign):** the 60→55 count change overnight was diffed exactly against two prior-day DB backups and traced to `scripts/backfill_market_dates.py` — an existing, already-safe (COALESCE-based) `resolution_date` writer not previously catalogued in O-17's 12-writer audit — legitimately draining 5 rows via its normal `end_date`-proxy backfill during today's maintenance run. Not corruption; no action needed, but note for O-17's deferred shared-helper work.
+**FIX:** Not designed. **Do NOT blanket-backfill with `last_checked`** (proven wrong for the 50-row Dec-11 group). Needs a per-row approach if picked up: re-fetch each from Gamma individually rather than any bulk heuristic; separately explain the `winning_outcome='unknown'` row and the NULL-`end_date` anomaly.
+**DEPENDENCIES:** Independent of O-16/O-17/the ELO rebuild arc. No frozen-area contact.
+**RISK/EFFORT:** Low urgency (55 rows, static, not growing from any known active generator — though `backfill_market_dates.py` may continue to organically shrink it). Investigation-only effort if picked up.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
