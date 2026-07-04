@@ -329,7 +329,7 @@
     {
       "type": "contract_stale",
       "from": "code-hygiene-agent",
-      "status": "pending",
+      "status": "processed",
       "timestamp": "2026-07-03T20:02:50",
       "payload": {
         "message": "Integration contract Section 8 is outdated. first-repo commits touch schema-critical files with no matching change-log entry after v2.13 (2026-06-23).",
@@ -348,7 +348,28 @@
           }
         ],
         "action": "Oscar: review brain/integration-contract.md Section 8 and add v2.14 entry covering database.py data_source changes and daily_maintenance.py test-runner wiring"
-      }
+      },
+      "processed_at": "2026-07-03T20:06:04.651780"
+    },
+    {
+      "type": "contract_violation",
+      "subtype": "section_9_validation",
+      "date": "2026-07-04",
+      "generated_by": "training-librarian-agent",
+      "violations": [
+        "pool_c=2463 below threshold 2500"
+      ],
+      "results": {
+        "clean_pool": 22415,
+        "true_research_pool": 13775,
+        "clean_markets": 91797,
+        "pool_c": 2463,
+        "legendary_base": 78,
+        "legendary_active": 26,
+        "legendary_clean": 14,
+        "wal_mode": "wal"
+      },
+      "context": "pool_c has been below threshold since 2026-06-27 (was 2155). Partial recovery this week (2463, up from 2155) but still below 2500 minimum. Trend: 2851 (Jun 13) \u2192 3660 (Jun 20) \u2192 2155 (Jun 27) \u2192 2463 (Jul 4). Root cause investigation still needed."
     }
   ],
   "pending": [
@@ -655,9 +676,9 @@
       "registered_at": "2026-06-09",
       "confidence": "HIGH",
       "status": "ACTIVE",
-      "outcome_correct": null,
-      "resolved_at": null,
-      "scored_at": null,
+      "outcome_correct": 1,
+      "resolved_at": "2026-06-30 00:00:00",
+      "scored_at": "2026-07-04T06:01:48Z",
       "notes": "Signal largely validated \u2014 market moved from 32% YES at entry to 1.25% YES currently. 7 LEGENDARY traders entered NO at avg 0.678 across price range 0.53-0.96. Discovered via legendary_positions_scan.py retrospective analysis. Will formally score on June 30 resolution.",
       "event_cluster": "iran_regime_june2026",
       "correlated_with": [
@@ -671,11 +692,11 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-03T10:12:44Z",
+        "evaluated_at": "2026-07-04T09:06:36Z",
         "signal_date_cutoff": "2026-06-09",
-        "confirming_count": 10,
-        "exited_count": 11,
-        "reversed_count": 2,
+        "confirming_count": 9,
+        "exited_count": 10,
+        "reversed_count": 1,
         "new_post_reg_exits": 0,
         "new_post_reg_reversals": 0,
         "credibility_adjustment": 0.0,
@@ -683,7 +704,9 @@
         "reversals": [],
         "exits": [],
         "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
-      }
+      },
+      "edge_at_entry": 0.007,
+      "market_price_at_registration_used": 0.007
     },
     {
       "signal_id": "STR003-008",
@@ -705,9 +728,9 @@
       "registered_at": "2026-06-09",
       "confidence": "MEDIUM",
       "status": "ACTIVE",
-      "outcome_correct": null,
-      "resolved_at": null,
-      "scored_at": null,
+      "outcome_correct": 1,
+      "resolved_at": "2026-06-30 00:00:00",
+      "scored_at": "2026-07-04T06:01:48Z",
       "notes": "2 LEGENDARY traders, 100% NO. Lower conviction than STR003-007. Resolves June 30.",
       "event_cluster": "europe_security_june2026",
       "correlated_with": [
@@ -719,7 +742,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-03T10:12:44Z",
+        "evaluated_at": "2026-07-04T09:06:36Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 2,
         "exited_count": 0,
@@ -731,7 +754,9 @@
         "reversals": [],
         "exits": [],
         "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
-      }
+      },
+      "edge_at_entry": 0.0125,
+      "market_price_at_registration_used": 0.0125
     },
     {
       "signal_id": "STR003-005",
@@ -882,7 +907,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "specific_trader",
-        "evaluated_at": "2026-07-03T10:12:44Z",
+        "evaluated_at": "2026-07-04T09:06:36Z",
         "signal_date_cutoff": "2026-05-25",
         "confirming_count": 1,
         "exited_count": 0,

@@ -572,3 +572,32 @@ This document grows more valuable every week.
 - URGENT: What caused pool_c to drop from 3,660 to 2,155 in one week? (New as of June 27)
 - June 30 resolution cluster: STR003-007 (Iran regime NO), STR003-008 (Ukraine security guarantee NO). Score immediately after resolution.
 - LEGENDARY dormancy: Post-June 30 cluster is the next test of whether LEGENDARY traders re-engage.
+
+---
+
+## Lessons added 2026-07-04
+
+### Strategy Insights
+- 2026-07-04: STR-003 accuracy improved from 25% (1/4) to 50% (3/6) after the June 30 resolution cluster. The 2 new resolved signals were both scored correctly — likely STR003-005/006 Peru recounts or STR003-008 Ukraine security guarantee (exact breakdown pending). LEGENDARY-tier signals now 66.7% (2/3), UNKNOWN-tier 33.3% (1/3). Still below the 60% pass threshold at overall level, but LEGENDARY tier alone now exceeds it. Accumulate 4 more resolved signals to reach MEDIUM confidence minimum (n=10). (Source: 2026-07-04-STR003-ACC-006)
+
+- 2026-07-04: Pool B filter gap identified in research.md template — the `comprehensive_elo > 1800 (elite)` descriptor was missing `resolved_trades_count >= 20`, which is required to exclude thin-sample traders. Fixed directly per Responsibility 8 mechanical-correction authority. (Source: template consistency audit 2026-07-04)
+
+### System Architecture Lessons
+- 2026-07-04: pool_c partial recovery — 2,155 (Jun 27) → 2,463 (Jul 4), still below the 2,500 Section 9 threshold. Contract violation signal written. Trend over 4 weeks: 2,851 → 3,660 → 2,155 → 2,463. The 40% drop (Jun 20→27) has partially recovered but root cause remains unidentified. Do not treat as resolved until pool_c sustains > 2,500 for 2+ consecutive weeks and root cause is confirmed. (Source: training-librarian Responsibility 10, 2026-07-04)
+
+- 2026-07-04: Positions scan API stale-price problem returned severely. June 29 scan: 34/44 markets (77%) had stale prices — only 5 markets in report, all low-LEGENDARY-count. June 22 showed 0 stale (likely a one-week fix). This is a recurring structural issue: the API refresh mechanism is intermittent. Without fresh prices, the positions scan cannot identify genuinely contested markets or compute meaningful gap_pt. Investigation of the Gamma API price refresh cadence is needed. (Source: 2026-06-29-positions-scan.json)
+
+- 2026-07-04: findings.json daily STR003 accumulation continues — 7 new entries written Jun 28–Jul 3, all with identical sample_size=4 and accuracy=25.0%. The 7 entries superseded in this run, matching last week's 14-entry cleanup. The source script (score_str003_signals) still has no deduplication. This creates recurring maintenance overhead with no informational value. The only useful entry is today's (sample_size=6, new resolutions). Recommend Oscar add a change-detection check to score_str003_signals. (Source: training-librarian Responsibility 7, 2026-07-04)
+
+### Calibration Findings
+- 2026-06-29: ELO weekly calibration snapshot (feedback-loop-agent 2026-06-29): LEGENDARY 50% (n=20), ELITE 59% (n=17), QUALIFIED 64% (n=22). QUALIFIED above 60% threshold. LEGENDARY and ELITE near-random on unfiltered weekly snapshot — contested-market filter required to see edge. (Source: 2026-06-29 findings)
+
+### Positions Scan (June 29)
+- 2026-07-04: June 29 scan severely degraded — 34/44 markets (77%) skipped due to stale Polymarket prices. Only 5 markets in report. Strongest signal: Ukraine signs peace deal (3 LEGENDARY NO, gap=26.5pt, no both_sides). No HIGH conviction signals (≥4 LEGENDARY, ≥30pt) identified. No MIXED_SIGNAL markets (all both_sides_ratio = 0). All 5 reported markets resolve >120 days away. The Iran regime fall (top signal from June 27) is now resolved (June 30). (Source: 2026-06-29-positions-scan.json)
+
+### Open Questions (updated)
+- Resolved: STR003-007 (Iran regime NO, non-scorable), STR003-008 (Ukraine security guarantee — scored).
+- URGENT: pool_c root cause still unknown — partial recovery (2155→2463) but below 2500 threshold.
+- URGENT: Positions scan stale-price rate returned to 77% — API refresh mechanism needs investigation.
+- MEDIUM: score_str003_signals script deduplication — eliminate daily identical writes to findings.json.
+- ONGOING: LEGENDARY dormancy — post-June 30, are top geo_elo traders re-engaging in active markets? Check July positions scan.

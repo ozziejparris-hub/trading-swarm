@@ -47,7 +47,7 @@ Interpret the results. Be specific and quantitative.
 Where relevant, segment by ELO tier:
   - All traders (baseline)
   - comprehensive_elo > 1400 (active traders)
-  - comprehensive_elo > 1800 (elite, with research_excluded=0 AND bot_type IS NULL)
+  - comprehensive_elo > 1800 (elite, with research_excluded=0 AND resolved_trades_count >= 20 AND bot_type IS NULL)
   - geo_elo >= 2175 AND geo_accuracy_pool = 1 (legendary — geo/elections research)
     OR comprehensive_elo > 2175 (comprehensive legendary — health/bot monitoring only)
 
