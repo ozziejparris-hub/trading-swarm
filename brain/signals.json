@@ -370,6 +370,70 @@
         "wal_mode": "wal"
       },
       "context": "pool_c has been below threshold since 2026-06-27 (was 2155). Partial recovery this week (2463, up from 2155) but still below 2500 minimum. Trend: 2851 (Jun 13) \u2192 3660 (Jun 20) \u2192 2155 (Jun 27) \u2192 2463 (Jul 4). Root cause investigation still needed."
+    },
+    {
+      "type": "integration_test_critical",
+      "from": "integration-test-agent",
+      "status": "pending",
+      "timestamp": "2026-07-05T23:00:00Z",
+      "payload": {
+        "report": "brain/agent-outputs/integration-test/2026-07-05-sunday-report.md",
+        "pass_rate": "86.0%",
+        "total_tests": 50,
+        "passed_tests": 43,
+        "failed_tests": 7,
+        "critical_failures": [
+          {
+            "test": "ci_pipeline_passes",
+            "consecutive_sundays": 9,
+            "detail": "9\u00d7F541/E722 lint errors: 8\u00d7F541 in calculate_geo_elo.py + 1\u00d7E722 in run_trader_profiling.py. 27/27 tests pass.",
+            "fix": "Remove f-prefix from 8 literal strings in calculate_geo_elo.py:449,450,479,480,506,507,516,517; bare except\u2192except Exception: at run_trader_profiling.py:271"
+          }
+        ],
+        "high_failures": [
+          {
+            "test": "signal-agent_output_recent",
+            "consecutive_sundays": "7+",
+            "age_hours": 158.9,
+            "detail": "Dark since Jun 29. STR003-004 (Putin NO) and STR003-008 (Europe Security NO) both resolved Jun 30 \u2014 unscored.",
+            "urgency": "SYSTEMIC"
+          },
+          {
+            "test": "quant-research-agent_output_recent",
+            "consecutive_sundays": "5+",
+            "age_hours": 966.9,
+            "detail": "RQ-GEO-ELO-001 Oscar-approved May 25, Phase 1 still never executed. Phase 5 Gate 4 BLOCKED."
+          },
+          {
+            "test": "backtest-agent_output_recent",
+            "consecutive_sundays": "5+",
+            "age_hours": 846.4,
+            "detail": "GEO-ELO-003 OOS verdict not written to output directory. No output since May 31."
+          }
+        ],
+        "medium_failures": [
+          {
+            "test": "research-scout-agent_output_recent",
+            "age_hours": 63.0,
+            "detail": "Scout ran Jul 3 (recent) but outside 26h window. Not systemic."
+          },
+          {
+            "test": "feedback_updated_recently",
+            "detail": "feedback.json not updated in 54 days. Last entry: scout_cycle 2026-05-12."
+          },
+          {
+            "test": "expected_signal_types_present",
+            "detail": "Missing: revalidation_requested, validation_complete, str003_directional_single. Derivative of agent dormancy."
+          }
+        ],
+        "observations": [
+          "pool_c=2463 still below 2500 threshold (partial recovery from 2155 Jun 27)",
+          "contract_stale: integration-contract.md Section 8 needs v2.14 entry (Jun 25 database.py + Jun 29 daily_maintenance.py)",
+          "2026-07-04 contract_violation signal has no status field \u2014 appears unprocessed by orchestrator",
+          "signal-202606042140 (status: failed) remains in active_tasks \u2014 candidate for archival"
+        ],
+        "escalation_message": "Sunday integration test 2026-07-05: 7 failures (86.0% pass rate). CI lint 9th consecutive Sunday (SYSTEMIC \u2014 20-min fix). Signal-agent dark 158.9h with Jun 30 signals unscored (STR003-004/008). Quant-research 5th+ consecutive (SYSTEMIC \u2014 RQ-GEO-ELO-001 Phase 1 approved May 25, never run, blocks Phase 5 Gate 4). Backtest 5th+ consecutive (SYSTEMIC). See full report."
+      }
     }
   ],
   "pending": [
@@ -692,7 +756,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-04T09:06:36Z",
+        "evaluated_at": "2026-07-05T08:55:58Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 9,
         "exited_count": 10,
@@ -742,7 +806,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-04T09:06:36Z",
+        "evaluated_at": "2026-07-05T08:55:58Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 2,
         "exited_count": 0,
@@ -907,7 +971,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "specific_trader",
-        "evaluated_at": "2026-07-04T09:06:36Z",
+        "evaluated_at": "2026-07-05T08:55:58Z",
         "signal_date_cutoff": "2026-05-25",
         "confirming_count": 1,
         "exited_count": 0,
