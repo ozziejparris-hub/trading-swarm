@@ -10,7 +10,8 @@
         "run_id": "analyst-20260706"
       },
       "timestamp": "2026-07-06T06:30:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-07-06T06:20:58.822929"
     },
     {
       "from": "performance-analyst-agent",
@@ -447,6 +448,36 @@
         "escalation_message": "Sunday integration test 2026-07-05: 7 failures (86.0% pass rate). CI lint 9th consecutive Sunday (SYSTEMIC \u2014 20-min fix). Signal-agent dark 158.9h with Jun 30 signals unscored (STR003-004/008). Quant-research 5th+ consecutive (SYSTEMIC \u2014 RQ-GEO-ELO-001 Phase 1 approved May 25, never run, blocks Phase 5 Gate 4). Backtest 5th+ consecutive (SYSTEMIC). See full report."
       },
       "processed_at": "2026-07-05T23:10:57.158597"
+    },
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
+        "message": "*Signal Agent — 2026-07-06 08:00 UTC*\n──────────────────────────────\n🔍 Rescan: 4 active | 0 new signals\n\n📊 *Signal Status:*\n• STR003-001 (Newsom NO): $3,475 intact, 57d to Sept 1 — below threshold\n• STR003-004 (Putin NO): OVERDUE ⚠️ — 6d past June 30, resolved=0 in DB\n• STR003-007 (Iran NO): RESOLVED_CORRECT ✅ (scored Jul 4, non-scorable)\n• STR003-008 (EU Security NO): RESOLVED_CORRECT ✅ (Gate 3: 2/5=40%)\n\n🔵 *LEGENDARY Pool: 11 qualifying, 7 in market limit, 0 signals*\nAll positions: too small (<$2k), near-certainty, or stale overdue\n\n⚠️ *Action Required:*\n• Putin market OVERDUE — Oscar verify NO + trigger resolution\n• 0x44a1159b discrepancy (ongoing)\n👀 Watch: 0xcc2620f9 at ELO 2171 (4 from LEGENDARY) — 113 geo markets resolving this week\n\nReport: brain/agent-outputs/signal-agent/2026-07-06-08-signal-report.md",
+        "priority": "MEDIUM",
+        "bot": "agents",
+        "run_id": "signal-20260706"
+      },
+      "timestamp": "2026-07-06T08:05:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "feedback-loop-agent",
+      "to": "backtest-agent",
+      "type": "revalidation_requested",
+      "payload": {
+        "strategy_name": "STR-002 \u2014 Pre-Resolution Intelligence",
+        "strategy_path": "/home/parison/trading-swarm/brain/strategy-registry.md",
+        "last_validated": "\u2014",
+        "days_since_validation": 5,
+        "original_dsr": null,
+        "original_sharpe": null,
+        "reason": "Past next revalidation due date 2026-07-01 (5 days overdue)"
+      },
+      "timestamp": "2026-07-06T07:00:01Z",
+      "status": "processed",
+      "processed_at": "2026-07-06T07:01:00.116190"
     }
   ],
   "pending": [
@@ -517,6 +548,55 @@
     }
   ],
   "rescan_log": [
+    {
+      "from": "signal-agent",
+      "to": "orchestrator",
+      "type": "rescan_complete",
+      "timestamp": "2026-07-06T08:05:00Z",
+      "payload": {
+        "cycle_id": "signal-20260706",
+        "signals_rescanned": 4,
+        "signals_confirmed": 2,
+        "signals_flagged": 1,
+        "signals_upgraded": 0,
+        "new_signals_found": 0,
+        "pool_sizes_verified": {
+          "clean_pool": 26626,
+          "true_research_pool": 13855,
+          "clean_markets": 92144,
+          "pool_c": 2610,
+          "legendary_base": 78,
+          "legendary_active": 25,
+          "legendary_clean": 13,
+          "near_legendary_clean": 34
+        },
+        "contract_valid": true,
+        "legendary_qualifying_str003": 11,
+        "legendary_within_market_limit": 7,
+        "signal_statuses": {
+          "STR003-001": "ACTIVE_BELOW_THRESHOLD — position intact $3,475 NO (57 days to Sept 1). Trader geo_elo_active ~820, fails 2175 threshold. thin sample flag retained. No change.",
+          "STR003-004": "ACTIVE_OVERDUE — market resolved=0 in DB, 6 days past June 30 resolution date. Position intact $7,191 NO. Expected outcome: CORRECT (Putin did not invade). Action required: Oscar to verify + trigger resolution.",
+          "STR003-007": "RESOLVED_CORRECT — already scored 2026-07-04. Market resolved=1 winning_outcome=No. Non-scorable for validation. No action.",
+          "STR003-008": "RESOLVED_CORRECT — already scored 2026-07-04. Market resolved=1 winning_outcome=No. Counted for Gate 3 (2/5=40%)."
+        },
+        "upgrade_check": "No upgrade possible — no active signal has 2+ independent LEGENDARY traders on same side. STR003-004 and STR003-001 both have single below-threshold traders.",
+        "new_signal_scan": "0 new STR-003 signals. 11 LEGENDARY qualifying traders, 7 within market limit. All disqualified by: insufficient position size (<$2,000), near-certainty prices (outside 0.10-0.80 anti-arb range), or stale/overdue positions.",
+        "near_legendary_watch": [
+          "0xcc2620f9 (geo_elo_active 2171.0, directionality 0.983) — 4 ELO from LEGENDARY threshold. Bidirectional and near-certainty positions — caution YIELD_HARVESTER. Watch after this week's 113 geo market resolutions.",
+          "0xdc700b60 (geo_elo_active 2115.3, directionality 0.907, pnl +$931) — 60 ELO from threshold",
+          "0x9aa516ed (geo_elo_active 2052.4, directionality 1.000, pnl -$6) — 123 ELO from threshold"
+        ],
+        "anomalies": [
+          "STR003-004 (Putin NO) OVERDUE — 6 days past June 30 resolution, DB still resolved=0. fast_resolution_check.py should catch on next run. Oscar action needed.",
+          "0x44a1159b DB discrepancy (ongoing) — contract says research_excluded=1 but DB shows 0. Oscar to reconcile.",
+          "0xcc2620f9 approaching LEGENDARY threshold (4 ELO) — archetype check needed if threshold crossed.",
+          "legendary_clean declining 3rd consecutive week: 17 → 16 → 14 → 13. Not at alert level but trend warrants monitoring.",
+          "113 geo markets resolving this week — ELO updates expected, near-legendary pool may shift substantially."
+        ],
+        "action_required": "Oscar: (1) verify Putin invasion market resolved NO and trigger DB resolution. (2) reconcile 0x44a1159b research_excluded discrepancy. Quant-research-agent: RQ-GEO-ELO-001 Phase 1 42 days overdue — Phase 5 Gate 4 blocked.",
+        "report_path": "brain/agent-outputs/signal-agent/2026-07-06-08-signal-report.md"
+      }
+    },
     {
       "from": "signal-agent",
       "to": "orchestrator",
@@ -923,7 +1003,8 @@
       "rescan_2026-06-08": "MEDIUM_RETAINED \u2014 market unresolved (resolves Sept 1 2026, 85 days). Position intact: 952 shares ($336) + 10,931 shares ($3,139) = $3,475 total NO. Trader profile unchanged: geo_elo=1461.5, geo_elo_active=845.9 (heavily decayed, inactive), directionality=NULL. Fails geo_elo >= 2175 and directionality >= 0.7 thresholds. thin sample \u2014 resolved_trades_count=3 globally, geo_resolved_trades_count=91. Retained for outcome tracking only, not actionable.",
       "status": "ACTIVE_BELOW_THRESHOLD",
       "event_cluster": "us_governor_2026",
-      "rescan_2026-06-15": "ACTIVE_BELOW_THRESHOLD \u2014 position intact ($3,475 total NO: $3,139 + $336). Key trader geo_elo_active=823.4 (heavily decayed, fails 2175 threshold). directionality=NULL \u2014 fails STR-003 criteria. geo_resolved_trades=91 (\u226510). 77 days to Sept 1 resolution. Retained for outcome tracking only \u2014 not actionable."
+      "rescan_2026-06-15": "ACTIVE_BELOW_THRESHOLD \u2014 position intact ($3,475 total NO: $3,139 + $336). Key trader geo_elo_active=823.4 (heavily decayed, fails 2175 threshold). directionality=NULL \u2014 fails STR-003 criteria. geo_resolved_trades=91 (\u226510). 77 days to Sept 1 resolution. Retained for outcome tracking only \u2014 not actionable.",
+      "rescan_2026-07-06": "ACTIVE_BELOW_THRESHOLD \u2014 position intact ($3,475 total NO: $336 + $3,139). Key trader geo_elo_active ~820 (heavily decayed, fails 2175 threshold). directionality=NULL \u2014 fails STR-003 criteria. geo_resolved_trades=91. 57 days to Sept 1 resolution. thin sample \u2014 ELO unvalidated (resolved_trades_count=3 < 10). No change. Retained for outcome tracking only."
     },
     {
       "signal_id": "STR003-003",
@@ -978,9 +1059,10 @@
       "scored_at": null,
       "rescan_2026-06-01": "APPROACHING RESOLUTION \u2014 resolves June 30 2026 (29 days). Position intact: NO 18,472 shares at $7,191. Counter-signal (YES $12,967) also still open. Trader geo_elo=1554.0 (below 2175 LEGENDARY threshold) \u2014 fails new STR-003 criteria. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10). Priority: record outcome in strategy-registry.md when market resolves.",
       "rescan_2026-06-08": "MEDIUM_APPROACHING_RESOLUTION \u2014 resolves June 30 2026 (22 days). Position intact: 18,471 NO shares at $7,191 (last_updated 2026-06-05). Trader profile: geo_elo=1554.0, geo_elo_active=842.5 (heavily decayed, inactive), fails geo_elo >= 2175 threshold. Counter-signal environment intensified \u2014 multiple large YES positions now total $200K+: 0xd69da312 YES $91,980+$35,287, 0x5416aae YES $60,887+$22,789. thin sample \u2014 ELO unvalidated (resolved_trades_count=1 < 10, geo_resolved_trades_count=225). Priority: record outcome in strategy-registry.md when market resolves June 30.",
-      "status": "ACTIVE",
+      "status": "ACTIVE_OVERDUE",
       "event_cluster": "russia_ukraine_june2026",
       "rescan_2026-06-15": "ACTIVE_APPROACHING_RESOLUTION \u2014 15 days to June 30. Position intact: 18,472 NO shares at $7,191 avg 0.389 (last updated 2026-06-05). Key trader geo_elo=1554.0, geo_elo_active=820.1 (heavily decayed) \u2014 fails LEGENDARY threshold (2175). Counter-signal environment unverified this cycle (no new large YES positions found in top-20 position scan, positions table filter may be stale). Signal not scorable for STR-003 strategy validation. Record outcome in strategy-registry.md on June 30.",
+      "rescan_2026-07-06": "ACTIVE_OVERDUE \u2014 6 days past June 30 resolution date, market still resolved=0 in DB. Position intact: NO 18,471 shares at $7,191 (last_updated 2026-06-05). Expected outcome: CORRECT (Putin did not invade Ukraine by June 30 2026). Key trader geo_elo_active ~820 (fails LEGENDARY threshold) \u2014 signal NOT scorable for STR-003 strategy validation but outcome should be recorded for completeness. ACTION: Oscar to verify Polymarket NO resolution and trigger fast_resolution_check.py or manual DB update.",
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "specific_trader",
