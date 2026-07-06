@@ -3,8 +3,41 @@
 **Date:** 2026-07-06
 **Author:** Claude Fable (design session, deep reasoning)
 **Status:** DESIGN FOR HUMAN REVIEW — no code changed, ELO subsystem remains FROZEN
-**Inputs:** `2026-06-29-comprehensive-elo-writer-map.md` (O-6, verified against live code today), `2026-06-29-overhang-ledger.md` (O-5/O-6/O-7), `2026-06-30-str002-thesis-cell-analysis.md` (downstream cost), `system_observer.py:2956` (freeze rationale), live DB verification queries run 2026-07-06 (Appendix A)
+**Inputs:** `2026-06-29-comprehensive-elo-writer-map.md` (O-6, verified against live code today), `2026-06-29-overhang-ledger.md` (O-5/O-6/O-7), `2026-06-30-str002-thesis-cell-analysis.md` (downstream cost), `system_observer.py:2956` (freeze rationale), live DB verification queries run 2026-07-06 (Appendix A), **independent re-verification of Claims 1–2 run 2026-07-06 same day (see Correction section below)**
 **Resolves:** RQ-CONTESTED-001 (deferred 2026-06-05 → July 2026 — this is that deliverable)
+
+---
+
+## CORRECTION (2026-07-06, same day — independent re-verification)
+
+This document's two load-bearing claims were independently re-verified against live code and the live DB before being banked as plan of record. **Claim 1 (Writer D fully dead, exactly 2 live writers) was CONFIRMED** — no exception found; see Appendix B below. **Claim 2 (Stage 2's output-neutrality) was FALSE AS ORIGINALLY WRITTEN** — three concrete discrepancies were found between "canonical formula at `W_beh=0`" and actual production Writer B. This section documents what was wrong, the fix, and re-confirms the corrected claim. §2.1, §2.4, §2.5, §4.1, and §5 (Stages 2–3) below have been revised in place to match; this section is the changelog.
+
+**What broke, quantified against today's live Writer-B population (n=20,054):**
+
+1. **Bonus leak (material — 85% of the population).** The original formula scaled the behavioral *multiplier* by `W_beh` but scaled the kelly/patience *bonus* by a separate, independent constant `W_bonus` ("1.0 at launch"). Setting `W_beh=0` therefore zeroed the multiplier term but left the bonus term fully active. Measured: **17,053 / 20,054 traders (85%) with resolved ≥ 10 would receive a nonzero bonus injection averaging +9.37 points**, purely from deploying the supposedly-neutral Stage 2. Not neutral.
+2. **Soft cap (material, small population).** The original formula applied Writer A's soft cap (`1500 + resolved×150`) unconditionally, including at `W_beh=0`. Writer B's actual production code has **no soft cap at all** — only the 3,500 hard cap. Measured: **9 real traders today** exceed the soft cap while under the hard cap; canonical-at-`W_beh=0` would have silently *lowered* their values by **5.1 to 297.2 points** versus what Writer B actually wrote this morning.
+3. **Floor at 400 (latent, not currently binding, but a real difference).** Writer B has no floor; the original formula added one unconditionally. Checked: today's minimum raw Writer-B value is 479.0, so this specific difference doesn't currently change any output — but it is a genuine, unacknowledged behavioral difference from "Writer B, exactly," not an algebraic identity as claimed.
+
+**The fix, applied below:**
+
+- **Bonus leak →** `W_bonus` is **retired as an independent knob**. The bonus term is now scaled by the *same* `W_beh` as the multiplier term (§2.1). At `W_beh=0`, both the multiplicative term and the bonus term are exactly zero — `beh_gain = 0` in full, not just its multiplicative half. This is the direct fix: one behavioral dimension, one weight, both halves zero together.
+- **Soft cap and floor →** these are **no longer applied unconditionally by the pure formula**. The formula now takes explicit `apply_soft_cap` / `apply_floor` parameters (§4.1). **Stage 2 calls with both `False`** (Writer B's own bounds only: hard cap 3,500, nothing else) — genuinely reproducing Writer B's existing bounds, not Writer A's. **Stage 3 flips both to `True`** (where Sunday's output is already changing for other reasons, and the soft cap is native to Writer A's own history anyway).
+
+**Re-verified corrected claim — term by term, at `W_beh=0`, `apply_soft_cap=False`, `apply_floor=False`:**
+
+| Term | Writer B (production) | Canonical, corrected | Match? |
+|---|---|---|---|
+| P&L gating (confidence cap, thin-sample gate, loss amplification) | `apply_full_elo_modifiers.py:159-191`, verbatim | Same three guards, same order, same constants | ✓ identical |
+| Behavioral multiplier contribution | none | `base × (beh_applied − 1.0)` where `beh_applied = 1.0 + (beh_mult−1.0)×0 = 1.0` → contributes 0 | ✓ zero |
+| Behavioral bonus contribution | none | `bonus × W_beh = bonus × 0 = 0` | ✓ zero (was the bug; now fixed) |
+| Dampening | `0.60 / 0.80 / 1.00` by base, applied to `base×(mult−1)` | identical thresholds, applied to `pnl_gain + 0` = `pnl_gain` | ✓ identical |
+| Soft cap | none | `apply_soft_cap=False` → not applied | ✓ identical (fixed; was previously applied) |
+| Hard cap | `min(new_elo, 3500.0)` | `min(comp, 3500)` | ✓ identical |
+| Floor | none | `apply_floor=False` → not applied | ✓ identical (fixed; was previously applied) |
+
+**Result: at these settings, `comp = base + base×(pnl_gated−1.0)×damp, capped at 3500` — exactly Writer B's formula, term for term, with no residual difference.** Re-running the same live-population checks that found the original 3 discrepancies (Appendix B below) against the corrected formula: bonus contribution is 0 for all 20,054 traders (not 17,053 nonzero); soft cap is not applied so the 9-trader discrepancy disappears; floor is not applied so it's moot in Stage 2 by construction, not by luck. **Stage 2's dry-run would now produce byte-identical `comprehensive_elo` and `pnl_modifier` values against today's actual Writer B output** — the property Stage 2 requires. This closes the gap; the corrected design is accurate as plan of record.
+
+**Net effect on the design:** the architecture, the migration stage count (still 6), the harness spec, and the O-5 sequencing are unchanged — this was a formula-internals correction, not a structural one. The only substantive change to the *shape* of the design is that Stage 2 now genuinely does nothing but plumbing (bounds move to Stage 3, where they belong conceptually anyway — Stage 3 is where Sunday's output changes for other reasons).
 
 ---
 
@@ -49,6 +82,9 @@ The writer map (2026-06-29) was re-verified against live code and DB today. Thre
 #   pnl_raw    = P&L multiplier from positions table [0.40, 2.50]
 #   closed     = closed_positions count (from pnl_cache / positions table)
 #   resolved   = resolved_trades_count
+#
+# apply_soft_cap, apply_floor: bool, caller-controlled (NOT tunable weights — see
+# Correction section above and §4.1/§5). Stage 2 = (False, False); Stage 3+ = (True, True).
 
 # P&L gain — Writer B's guards, verbatim (unchanged from production):
 pnl_gated = min(pnl_raw, confidence_cap(closed))        # 1.30–2.20 by closed count
@@ -57,21 +93,30 @@ if pnl_gated < 1.0 and base >= 2000:                    # asymmetric loss amplif
     pnl_gated = 1.0 − (1.0 − pnl_gated) × 1.30
 pnl_gain = base × (pnl_gated − 1.0)
 
-# Behavioral gain — NEW, bounded and gated:
+# Behavioral gain — bounded and gated. CORRECTED 2026-07-06: both the multiplicative
+# term AND the bonus term are scaled by the SAME weight (W_beh) so they zero together.
+# (Originally the bonus was scaled by an independent W_bonus that stayed 1.0 regardless
+# of W_beh — this was the bug the independent re-verification caught; see Correction
+# section above. W_bonus no longer exists as a separate knob.)
 if resolved < 10:
     beh_gain = 0.0                                      # same thin-sample philosophy as P&L
 else:
     beh_applied = 1.0 + (beh_mult − 1.0) × W_beh        # W_beh = 0.5 → effective range [0.90, 1.20]
-    beh_gain    = base × (beh_applied − 1.0) + bonus × W_bonus   # W_bonus = 1.0 at launch
+    beh_gain    = base × (beh_applied − 1.0) + bonus × W_beh   # SAME W_beh scales both halves
 
-# Compose additively, dampen the TOTAL gain, cap both ways:
+# Compose additively, dampen the TOTAL gain:
 damp = 0.60 if base >= 2500 else 0.80 if base >= 2000 else 1.00
 comp = base + (pnl_gain + beh_gain) × damp
-comp = min(comp, 1500 + resolved × 150, 3500)           # Writer A's soft cap AND Writer B's hard cap
-comp = max(comp, 400)                                   # absolute floor (today's empirical min: 479)
+
+# Bounds — applied conditionally, NOT baked into the formula unconditionally:
+if apply_soft_cap:
+    comp = min(comp, 1500 + resolved × 150)             # Writer A's soft cap — Stage 3+ only
+comp = min(comp, 3500)                                  # Writer B's hard cap — always, all stages
+if apply_floor:
+    comp = max(comp, 400)                               # absolute floor — Stage 3+ only (today's empirical min: 479)
 ```
 
-Equivalently: **`comp = WriterB_today(base, pnl) + damp × beh_gain`** — the canonical formula is exactly today's production Writer B output plus a bounded, dampened behavioral delta. This decomposition is deliberate: it makes the migration previewable (§5, Stage 1) and the behavioral term independently toggleable (`W_beh = 0` reproduces today's values exactly).
+Equivalently: **`comp = WriterB_today(base, pnl) + damp × beh_gain`** at `apply_soft_cap=apply_floor=False` — the canonical formula is exactly today's production Writer B output plus a bounded, dampened behavioral delta. This decomposition is deliberate: it makes the migration previewable (§5, Stage 1) and the behavioral term independently toggleable (`W_beh = 0` reproduces today's values exactly, **now including the bonus** — see Correction section above for why this needed fixing).
 
 ### 2.2 Justification against the three criteria
 
@@ -91,23 +136,23 @@ Equivalently: **`comp = WriterB_today(base, pnl) + damp × beh_gain`** — the c
 
 ### 2.4 Worked examples
 
-`W_beh = 0.5`, `W_bonus = 1.0`, timing excluded from bonus. "A-theor" = Writer A's coded formula; "B-today" = production Writer B; "U" = canonical.
+**Revised 2026-07-06** (corrected bonus scaling — see Correction section above; numbers below supersede the original pass). `W_beh = 0.5` scales *both* the behavioral multiplier and the bonus (no separate `W_bonus`); timing excluded from bonus. `apply_soft_cap=apply_floor=True` for L/M/H/T/X below — i.e. these show **Stage 4 (fully-launched) behavior**, not Stage 2 (which is deliberately bounds-free per the Correction section, and is byte-identical to B-today by construction, not shown as a separate case here). "A-theor" = Writer A's coded formula; "B-today" = production Writer B; "U" = canonical.
 
 | Case | Inputs | A-theor | B-today | **U (canonical)** | U − B |
 |---|---|---|---|---|---|
-| **L** low base, good behavior | base 1200, beh 1.20, bonus +40, pnl 1.5, closed 5, resolved 15 | (1200×1.2+40)×1.5 = **2220** | 1200+1200×0.5 = **1800** | gains 600+120+40 = 760 → **1960** | **+160** |
-| **M** mid base, poor behavior | base 1600, beh 0.90, bonus −20, pnl 1.8, closed 10, resolved 25 | (1440−20)×1.8 = **2556** | 1600+1600×0.8 = **2880** | gains 1280−80−20 = 1180 → **2780** | **−100** |
-| **H** high base, good behavior | base 2400, beh 1.20, bonus +40, pnl 1.4, closed 25, resolved 60 | (2880+40)×1.4 = **4088** | 2400+2400×0.4×0.8 = **3168** | gains 960+240+40 = 1240 ×0.8 → **3392** | **+224** |
+| **L** low base, good behavior | base 1200, beh 1.20, bonus +40, pnl 1.5, closed 5, resolved 15 | (1200×1.2+40)×1.5 = **2220** | 1200+1200×0.5 = **1800** | gains 600+120+20 = 740 → **1940** | **+140** |
+| **M** mid base, poor behavior | base 1600, beh 0.90, bonus −20, pnl 1.8, closed 10, resolved 25 | (1440−20)×1.8 = **2556** | 1600+1600×0.8 = **2880** | gains 1280−80−10 = 1190 → **2790** | **−90** |
+| **H** high base, good behavior | base 2400, beh 1.20, bonus +40, pnl 1.4, closed 25, resolved 60 | (2880+40)×1.4 = **4088** | 2400+2400×0.4×0.8 = **3168** | gains 960+240+20 = 1220 ×0.8 → **3376** | **+208** |
 | **T** thin sample | base 1500, beh 1.40, bonus +100, pnl_raw 2.5, closed 1, resolved 4 | (2100+100)×2.5 = 5500 → soft cap **2100** | conf cap 1.30, thin-gate → mult 1.0 → **1500** | pnl AND behavioral both thin-gated → **1500** | **0** |
-| **X** joint extreme | base 2400, beh 1.40, bonus +100, pnl_raw 2.5, closed 25, resolved 60 | 3460×2.5 = **7975** (soft cap 10,500 doesn't bind!) | 4704 → hard cap **3500** | 5048 → hard cap **3500** | 0 (both capped) |
+| **X** joint extreme | base 2400, beh 1.40, bonus +100, pnl_raw 2.5, closed 25, resolved 60 | 3460×2.5 = **7975** (soft cap 10,500 doesn't bind!) | 4704 → hard cap **3500** | gains 2880+480+50=3410 ×0.8=2728 → 5128 → hard cap **3500** | 0 (both capped) |
 
-Readings: **L/M/H** — U discriminates in both directions (good behavior +160/+224, poor behavior −100) while staying between B's conservatism and A's inflation. **T** — the thin-sample gate now covers behavioral too (decision: a 4-resolved-trade trader's "consistency" is noise; without this, T would jump to 1,900 on style metrics alone). **X** — A-theoretical produces 7,975 (its soft cap is useless at high resolved counts: 1500+60×150 = 10,500); B and U both cap at 3,500 — at the joint extreme the cap absorbs discrimination, which is acceptable: exactly 0 traders currently exceed 3,315.
+Readings: **L/M/H** — U discriminates in both directions (good behavior +140/+208, poor behavior −90) while staying between B's conservatism and A's inflation; these deltas are smaller than the original (pre-correction) pass's +160/+224/−100 because the bonus half now shares the same 0.5 compression as the multiplier half, instead of contributing at full strength — a direct, visible consequence of the fix. **T** — the thin-sample gate now covers behavioral too (decision: a 4-resolved-trade trader's "consistency" is noise; without this, T would jump on style metrics alone). **X** — A-theoretical produces 7,975 (its soft cap is useless at high resolved counts: 1500+60×150 = 10,500); B and U both cap at 3,500 — at the joint extreme the cap absorbs discrimination, which is acceptable: exactly 0 traders currently exceed 3,315.
 
 ### 2.5 Sub-decisions inside the formula
 
 - **`advanced_modifier`: EXCLUDED from formula v1, still computed and stored.** It's currently stored-but-never-applied (§1d), its range is tight (1.00–1.10 — low discriminating power), and its underlying modules only started returning real data in April 2026. Adding a third live dimension mid-migration multiplies validation surface for little gain. Revisit after behavioral has post-launch evidence. *Alternative rejected: include it now as another additive gain — more moving parts in the exact stage where we most need attributable diffs.*
-- **Floor at 400 (new, explicit).** Worst-case additive composition can reach ~350 at low base (P&L floor 0.40 + behavioral floor + bonus floor); today's empirical min is 479. An absolute floor catches pathology without shaping the real distribution. *Judgment call, flagged.*
-- **`W_beh = 0.5` (i.e., behavioral multiplier's applied range compressed [0.80,1.40] → [0.90,1.20]).** Rationale: P&L is the system's declared dominant factor ("ROI-FIRST"); behavioral measures process (consistency/diversification/style/activity), not outcomes, and should not be able to out-contribute the outcome measure. At 0.5, max behavioral gain (0.20×base + 100) stays below max gated P&L gain (up to 1.2×base). **This is a tunable judgment call, not a derived constant** — the Stage 0 validation study (§3.3) is the mechanism for revising it before launch.
+- **Floor at 400 (new, explicit — Stage 3+ only, see Correction section above).** Worst-case additive composition can reach ~350 at low base (P&L floor 0.40 + behavioral floor + bonus floor); today's empirical min is 479, and the independent re-verification confirmed today's minimum *raw, unfloored* Writer-B value is also 479.0 — so the floor is currently dormant, not currently binding, and is deliberately staged to Stage 3 (alongside the soft cap) rather than Stage 2, so Stage 2 reproduces Writer B's actual bounds (hard cap only) with no unacknowledged behavioral difference. *Judgment call, flagged.*
+- **`W_beh = 0.5` (i.e., behavioral multiplier's applied range compressed [0.80,1.40] → [0.90,1.20], and — after the 2026-07-06 correction — the bonus term's effective range compressed [−100,+100] → [−50,+50] too, since both halves now share one weight).** Rationale: P&L is the system's declared dominant factor ("ROI-FIRST"); behavioral measures process (consistency/diversification/style/activity), not outcomes, and should not be able to out-contribute the outcome measure. At 0.5, max behavioral gain (0.20×base + 50) stays below max gated P&L gain (up to 1.2×base). **This is a tunable judgment call, not a derived constant** — the Stage 0 validation study (§3.3) is the mechanism for revising it before launch. (`W_bonus` no longer exists as a separate knob — see Correction section above; it was the source of the Stage-2-neutrality bug the independent re-verification caught.)
 
 ---
 
@@ -151,8 +196,16 @@ CLAUDE.md warning #3: timing quality is intentionally disabled; all traders rece
 
 ```python
 def compute_comprehensive_elo(base, beh_mult, bonus, pnl_raw, closed, resolved,
-                              w_beh=W_BEH, w_bonus=W_BONUS) -> EloResult
+                              w_beh=W_BEH,
+                              apply_soft_cap=True, apply_floor=True) -> EloResult
 # EloResult: comp, pnl_gated, beh_applied, gain_pnl, gain_beh, damp, cap_applied — full audit trail
+#
+# CORRECTED 2026-07-06 (independent re-verification): no separate w_bonus parameter —
+# the bonus term is scaled by the same w_beh as the multiplier (both halves of the
+# "behavioral" dimension zero together). apply_soft_cap / apply_floor are explicit
+# bounds-control params, not tunable weights: Stage 2 calls with both False (reproduces
+# Writer B's actual bounds — hard cap only); Stage 3+ calls with both True. See the
+# Correction section at the top of this document and §5 below.
 ```
 
 **New write helper (in `monitoring/database.py`): `write_elo_result(conn, address, result, components)`** — writes the **full column set atomically, every time**: `comprehensive_elo, base_category_elo, behavioral_modifier, advanced_modifier, pnl_modifier, kelly_alignment_score, patience_score, timing_score, elo_last_updated` (canonical timestamp format — the O-3 writer fix lands here). **No caller may write any subset.** This single rule kills the entire artifact class that produced RQ-CONTESTED-001: "behavioral_modifier from Sunday, comprehensive_elo from Monday" becomes structurally impossible, because every write refreshes every column from one coherent computation.
@@ -191,21 +244,23 @@ Design constraints: live system, frozen area, every step individually reversible
 - **Rollback:** trivial (0c is a dead-code delete; everything else is read-only).
 
 ### Stage 1 — Shadow computation (zero production writes)
-- Build `comprehensive_elo_formula.py` + unit tests: golden-file tests pinning the worked examples (§2.4), property tests (monotonic in pnl_raw; bounded delta; cap/floor compliance; thin-sample gates), and an exact-equivalence test: `compute(..., w_beh=0, bonus off) == WriterB_formula(...)` across the input grid.
+- Build `comprehensive_elo_formula.py` + unit tests: golden-file tests pinning the worked examples (§2.4), property tests (monotonic in pnl_raw; bounded delta; cap/floor compliance; thin-sample gates), and an exact-equivalence test: `compute(..., w_beh=0, apply_soft_cap=False, apply_floor=False) == WriterB_formula(...)` across the input grid — **this is the test that would have caught the original bonus-leak/soft-cap/floor bugs before Stage 2 shipped** (see Correction section above); it must assert zero diffs, not near-zero.
 - Nightly shadow job writes to a **side table** `elo_shadow(address, comp_v2, components..., computed_at)` — *not* a column on `traders` (no schema contact, trivially droppable).
 - **Deliverable: the delta report** — per-trader `comp_v2 − comp_v1` distribution; population mean/percentiles; tier-count changes at 1500/1800/2175; top-100 leaderboard diff; mean bonus (the §2.2c measurement). **Human reviews before Stage 2.**
 - **Rollback:** drop table. Nothing depends on it.
 
-### Stage 2 — Writer B onto canonical plumbing, output-neutral (`W_beh = 0`)
-- Replace `apply_full_elo_modifiers.py` formula internals with `compute_comprehensive_elo(w_beh=0)` + `write_elo_result`. With `W_beh=0`, the canonical formula **is algebraically Writer B** — so this cutover is provably value-neutral.
-- **Verification:** full dry-run on a DB snapshot — assert byte-identical `comprehensive_elo`/`pnl_modifier` for all ~20K against the old code path. Exactly **two intentional diffs allowed**: (i) `elo_last_updated` switches to canonical space-separated format (the O-3 writer fix — after this, the O-3 count stops growing); (ii) behavioral/advanced/snapshot columns now refresh atomically per §4.1 (value-identical if caches unchanged — assert that too).
+### Stage 2 — Writer B onto canonical plumbing, output-neutral (`W_beh=0`, `apply_soft_cap=False`, `apply_floor=False`)
+- Replace `apply_full_elo_modifiers.py` formula internals with `compute_comprehensive_elo(w_beh=0, apply_soft_cap=False, apply_floor=False)` + `write_elo_result`. At these settings the canonical formula **is algebraically Writer B, term for term** (re-confirmed in the Correction section above after fixing the original bonus-scaling and unconditional-bounds bugs) — so this cutover is provably value-neutral.
+- **Verification:** full dry-run on a DB snapshot — assert byte-identical `comprehensive_elo`/`pnl_modifier` for all ~20K against the old code path, with **zero tolerance, not a rounding epsilon**. Exactly **two intentional diffs allowed**: (i) `elo_last_updated` switches to canonical space-separated format (the O-3 writer fix — after this, the O-3 count stops growing); (ii) behavioral/advanced/snapshot columns now refresh atomically per §4.1 (value-identical if caches unchanged — assert that too). *Any other diff means the plumbing isn't neutral yet — do not proceed to Stage 3 until the dry-run is clean.*
 - **Rollback:** git revert; values were never different.
 
-### Stage 3 — Writer A onto canonical plumbing (still `W_beh = 0`; Sunday outputs DO change)
-- Replace `full_elo_recalculation`'s per-trader formula with the same canonical call. Sunday's output changes from `(base×beh+bonus)×pnl, soft-capped` to canonical-at-neutral (= gated/dampened base×pnl, dual-capped).
+### Stage 3 — Writer A onto canonical plumbing, AND the soft cap + floor turn on (`W_beh=0` still; `apply_soft_cap=True`, `apply_floor=True` from here on)
+- Replace `full_elo_recalculation`'s per-trader formula with the same canonical call, now with `apply_soft_cap=True, apply_floor=True` — this is the stage where Writer A's soft cap and the new floor are deliberately introduced (moved here from the original Stage 2 draft per the Correction section above, since Sunday's output is already changing in this stage for other reasons, and the soft cap is native to Writer A's own history).
+- **Both writers now share `apply_soft_cap=True, apply_floor=True` going forward** — this also retroactively affects Writer B's daily pass from this stage on (previously Stage-2-only bounds-free; Stage 3 turns the unified bounds on everywhere). Verify the 9-trader soft-cap population (identified in the Correction section) explicitly at this cutover — expect their values to drop to the soft cap, by design.
+- Sunday's output changes from `(base×beh+bonus)×pnl, soft-capped` (Writer A's old formula) to canonical-at-neutral (= gated/dampened base×pnl, dual-capped, floored).
 - **Who actually changes lastingly:** the ~2.5K no-closed-positions traders (Writer B never overwrites them). For the other ~20K, Sunday values already get overwritten by (now-canonical) Writer B within 24h — the change shrinks their weekly 4.5-hour behavioral window to zero, which is the honest version of what the system already does for 163 of 168 hours a week.
-- **Verification:** pre-flip shadow diff scoped to exactly the 2.5K Sunday-retained population; human reviews (expect: values *drop* for high-behavioral thin traders — e.g., worked example T's 2,100 → 1,500 — this is the un-gated-pnl and thin-sample corrections landing, defensible and visible).
-- **After this stage the writer disease is dead:** both cadences compute the same function; interleaving is harmless; `comprehensive_elo` can only be computed one way. **This is O-7's structural deliverable, delivered before any formula change.**
+- **Verification:** pre-flip shadow diff scoped to exactly the 2.5K Sunday-retained population, PLUS the 9 identified soft-cap traders and any trader near the new floor; human reviews (expect: values *drop* for high-behavioral thin traders — e.g., worked example T's 2,100 → 1,500 — this is the un-gated-pnl and thin-sample corrections landing, defensible and visible; expect the 9 soft-cap traders to drop by exactly the amounts quantified in the Correction section).
+- **After this stage the writer disease is dead:** both cadences compute the same function with the same bounds; interleaving is harmless; `comprehensive_elo` can only be computed one way. **This is O-7's structural deliverable, delivered before any formula change.**
 - **Rollback:** git revert; next Sunday rewrites old-style values (self-healing ≤ 7 days). Harness invariant #3 flips to gating mode at the END of this stage (formula-reproducibility now must hold).
 
 ### Stage 4 — Enable behavioral (the one formula change)
@@ -265,7 +320,7 @@ The remaining O-3 timestamp debt is entirely `traders.elo_last_updated`, generat
 1. **`W_beh = 0.5` is a judgment, not a measurement** — the single most consequential free parameter. Mitigated by Stage 0b (validation study picks it) and Stage 4's one-constant rollback. *If you review only one number in this design, review this one.*
 2. **Behavioral predictiveness is unproven** (§3.2). The design is structured so this uncertainty cannot block the architecture value.
 3. **The 41/2,476 Sunday-formula residuals** (§1b) are unexplained in detail (suspected adaptive-weight NULL-score edge cases). They don't affect any decision here, but Stage 1's golden tests should include a few of these traders to pin exact current behavior before replacement.
-4. **Bonus step-function shape retained as-is** (kelly/patience thresholds) — inherited, not re-derived. Re-deriving it is out of scope; the compression via `W_bonus` and the thin-sample gate bound its damage either way.
+4. **Bonus step-function shape retained as-is** (kelly/patience thresholds) — inherited, not re-derived. Re-deriving it is out of scope; the compression via `W_beh` (which now scales the bonus too — see Correction section) and the thin-sample gate bound its damage either way.
 5. **Cluster D / non-flagged scope gap** (~100K non-flagged traders parked at 1,500) — **deliberately out of scope.** This design unifies how comprehensive_elo is computed, not who gets one. Widening scope mid-migration would confound every population diff. Revisit post-Stage-5 as its own item.
 6. **Advanced modifier exclusion** (§2.5) — means "6-dimensional ELO" remains aspirational (it becomes ~4-dimensional: base, behavioral-mult, behavioral-bonus, pnl). Docs must say so honestly (Stage 5).
 7. **Stage 0a's drain-stabilization estimate (1–2 weeks) is a guess** — gate on the harness plateau, not the calendar.
@@ -288,4 +343,26 @@ The remaining O-3 timestamp debt is entirely `traders.elo_last_updated`, generat
 | O-3 generator | `apply_full_elo_modifiers.py:152` `datetime.now().isoformat()` → `elo_last_updated` T-format |
 | Sunday shell flags | `run_sunday_elo.sh` still passes `--skip-correlation --skip-contrarian --skip-advanced-metrics` |
 
-*Design complete 2026-07-06. No code changed. ELO subsystem remains frozen pending human review of this document.*
+---
+
+## Appendix B — Independent re-verification, 2026-07-06 (same day, separate pass)
+
+Run specifically to stress-test this document's two load-bearing claims before banking it as plan of record. Read-only; no code changed.
+
+| Claim | Check | Result |
+|---|---|---|
+| **1. Writer D fully dead** | Grepped every reference to `quick_elo_update_for_traders` in both repos | Only `elo_bridge.py:330` (def), `elo_bridge.py:794` (manual `--quick-update` CLI branch, `__main__`-only), and 6 `scripts/archive/*` test files. Zero hits in trading-swarm. |
+| | Checked full crontab, `/etc/systemd/system/`, `deploy/` for any reference to `elo_bridge.py` or `--quick-update` | Zero references anywhere. The only ELO systemd unit (`polymarket-sunday-elo.service`) runs `run_sunday_elo.sh` → `recalculate_comprehensive_elo.py` → `full_elo_recalculation` (Writer A), not `elo_bridge.py`'s own CLI. |
+| **1. Exactly 2 live writers** | Grepped every `SET`/write to `comprehensive_elo` in both repos, excluding archive/simulation | Exactly 3 files: `integrate_behavioral_elo.py:254` (Writer C), `elo_bridge.py:244` (inside `_batch_store_elo_results`, reachable only via Writer D — dead) + `elo_bridge.py:601` (inside `full_elo_recalculation` — Writer A, live), `apply_full_elo_modifiers.py:242` (Writer B, live). |
+| | Checked every other reference to `integrate_behavioral_elo.py` (Writer C) across both repos for a live caller | All are comments, docstrings, or `print("Run: ...")` suggestions in `test_behavioral_integration.py`, `validate_pnl_data.py`, `validate_roi_rebalancing.py`, `reconcile_trader_aggregates.py`, `diagnostics.py` — none execute it. Its one real historical caller (`system_observer.py`) is the disabled comment block. |
+| | **Verdict** | **Claim 1 CONFIRMED. Exactly 2 live writers (A + B). No exception found.** |
+| **2. Stage 2 output-neutrality at `W_beh=0`** | Pulled exact Writer B code (`apply_full_elo_modifiers.py:155-201`) and compared term-by-term against the original formula draft | Confidence-cap's conditional application (`if mult>1.0`) vs. canonical's unconditional `min()` — algebraically equivalent (caps are always ≥1.30>1.0); **not** a real discrepancy. |
+| | Reconstructed the bonus (kelly/patience, timing excluded) for today's Writer-B population (n=20,054) and checked whether it was zero at the original `W_beh=0` | **17,053/20,054 (85%) nonzero, avg +9.37 pts** — the bonus leak, because the original formula scaled bonus by an independent `W_bonus=1.0` regardless of `W_beh`. |
+| | Checked whether the soft cap (`1500+resolved×150`) ever binds below the hard cap for today's Writer-B population | **9 real traders**, deltas **5.1–297.2 points** (e.g. `0xbe997afc...`: actual 3297.2 vs. soft-capped 3000.0) — Writer B has no soft cap in production; the original formula added one unconditionally. |
+| | Checked whether the new 400-floor currently binds on any Writer-B-processed trader (raw, uncapped value) | Minimum raw value today: 479.0 — floor doesn't currently bind, but is a real, unacknowledged behavioral difference from "Writer B, exactly" as originally specified. |
+| | **Verdict (original)** | **Claim 2 BROKEN as originally specified** — 2 material live discrepancies (bonus leak, soft cap) + 1 latent one (floor). Reported back; fixes applied above (Correction section, §2.1, §2.4, §2.5, §4.1, §5). |
+| | **Verdict (corrected formula, re-checked against the same live data)** | Bonus now scales by the same `W_beh`, so it's exactly 0 for all 20,054 traders at `W_beh=0` (not 17,053 nonzero). Soft cap and floor are now explicit `apply_soft_cap`/`apply_floor` parameters, both `False` in Stage 2, so the 9-trader soft-cap discrepancy and the floor difference no longer apply during Stage 2. **Corrected Stage 2 formula is now genuinely, term-for-term identical to production Writer B.** |
+
+---
+
+*Design complete 2026-07-06. Corrected same day following independent re-verification of Claims 1–2 (Appendix B). No code changed. ELO subsystem remains frozen pending human review of this document.*
