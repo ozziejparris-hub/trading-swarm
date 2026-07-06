@@ -5,6 +5,18 @@
       "to": "orchestrator",
       "type": "telegram_notification",
       "payload": {
+        "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-07-06*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier Geo (30d): 0.1798 \u2705\u2705 BEST \u2014 FIRST TIME BELOW 0.20 TARGET\nBrier Elections (30d): 0.1912 \u2705\u2705 BEST \u2014 FIRST TIME BELOW 0.20 TARGET\nCombined accuracy (30d): ~81.5% on 157 markets\n\n\ud83d\udea8 Flags: [1 critical \u2014 CI 9th week] [3 high]\nTop flag: CI lint 9th Sunday (20-min fix). RQ-GEO-ELO-001 Jul 1 deadline MISSED (6+ weeks). STR003-004 (Putin NO) not resolved in DB.\n\nGate 3: 2/5 = 40% \u2191 (was 1/4=25%) \u2014 STR003-008 EU Security correct \u2705\nGate 4: BLOCKED \u2014 RQ-GEO-ELO-001 never executed, Phase 5 stalled\nLegendary clean: 14 (declining 3rd week, was 17 peak)\n7d Brier: 0.0519 Geo \u26a0 CAUTION \u2014 bulk June-30 stub markets (near-certainty NO)\n\nFull report: brain/agent-outputs/performance-analyst/2026-07-06-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260706"
+      },
+      "timestamp": "2026-07-06T06:30:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
         "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-06-29*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier (Geo 30d): 0.2168 \u2705 BEST ON RECORD (\u2191 from 0.2213)\nBrier (Elections 30d): 0.2234 \u2191\u2191 BEST RECORD (was 0.2714)\nCombined accuracy: 68.5% on 447 markets\n\n\ud83d\udea8 Flags: [1 critical \u2014 CI 8th week] [3 high]\nTop flag: June 30 cluster resolving TODAY \u2014 STR003-008 scorable. RQ-GEO-ELO-001 deadline TOMORROW.\n\nPool C: 2,157 \u26a0 (below 2,500 threshold; peaked 3,660 Jun 20)\nLEGENDARY clean: 16 (62.5% dormant \u2014 Gate 3 pipeline constrained)\nNEAR_LEGENDARY clean: 41 \u2191\u2191 (+86% from Jun 15)\n\nGate 3: 1/4 (25%) \u2014 STR003-008 scores today\nGate 4: BLOCKED \u2014 RQ-GEO-ELO-001 NOT STARTED, deadline Jul 1\n\nFull report: brain/agent-outputs/performance-analyst/2026-06-29-weekly.md",
         "priority": "HIGH",
         "run_id": "analyst-20260629"
@@ -374,7 +386,7 @@
     {
       "type": "integration_test_critical",
       "from": "integration-test-agent",
-      "status": "pending",
+      "status": "processed",
       "timestamp": "2026-07-05T23:00:00Z",
       "payload": {
         "report": "brain/agent-outputs/integration-test/2026-07-05-sunday-report.md",
@@ -433,7 +445,8 @@
           "signal-202606042140 (status: failed) remains in active_tasks \u2014 candidate for archival"
         ],
         "escalation_message": "Sunday integration test 2026-07-05: 7 failures (86.0% pass rate). CI lint 9th consecutive Sunday (SYSTEMIC \u2014 20-min fix). Signal-agent dark 158.9h with Jun 30 signals unscored (STR003-004/008). Quant-research 5th+ consecutive (SYSTEMIC \u2014 RQ-GEO-ELO-001 Phase 1 approved May 25, never run, blocks Phase 5 Gate 4). Backtest 5th+ consecutive (SYSTEMIC). See full report."
-      }
+      },
+      "processed_at": "2026-07-05T23:10:57.158597"
     }
   ],
   "pending": [
