@@ -1,0 +1,291 @@
+# ELO Arc Design — Unified comprehensive_elo Architecture (RQ-CONTESTED-001 / O-7)
+
+**Date:** 2026-07-06
+**Author:** Claude Fable (design session, deep reasoning)
+**Status:** DESIGN FOR HUMAN REVIEW — no code changed, ELO subsystem remains FROZEN
+**Inputs:** `2026-06-29-comprehensive-elo-writer-map.md` (O-6, verified against live code today), `2026-06-29-overhang-ledger.md` (O-5/O-6/O-7), `2026-06-30-str002-thesis-cell-analysis.md` (downstream cost), `system_observer.py:2956` (freeze rationale), live DB verification queries run 2026-07-06 (Appendix A)
+**Resolves:** RQ-CONTESTED-001 (deferred 2026-06-05 → July 2026 — this is that deliverable)
+
+---
+
+## 0. Executive summary
+
+`comprehensive_elo` — the composite rating that gates LEGENDARY/ELITE/QUALIFIED tiers and feeds the signal layer — is written by multiple writers with different formulas, and its behavioral component is stripped daily (proven population-wide; re-verified today: 19,944/19,944 of today's Writer-B population satisfy `comp = base × pnl` exactly). This design:
+
+1. **Picks a canonical formula**: Writer B's dampened-additive-gains structure, extended with a bounded behavioral gain term — NOT Writer A's multiplicative compounding. Behavioral enters as a compressed, thin-sample-gated, dampened additive gain, never as a raw multiplier on top of P&L.
+2. **Re-incorporates behavioral behind a validation gate**: the architecture ships with behavioral structurally wired but weight-parameterized (`W_beh`); a read-only predictiveness study decides the launch value. If behavioral proves non-predictive, `W_beh` stays 0 and the redesign still delivers its main value (single formula, single-writer semantics, harness coverage).
+3. **Unifies to one formula implementation** (a pure function in a new module) called by both surviving cadences (Sunday full pass + daily incremental pass), with an atomic full-column-set write helper — killing the entire class of "columns from different writers at different times" artifacts.
+4. **Migrates in 6 staged, individually-reversible steps**, with an output-neutral structural cutover (Stage 2–3) separated from the single formula change (Stage 4), which is togglable by one constant.
+5. **Specifies 8 harness invariants**, including a formula-reproducibility check that mechanically enforces single-writer semantics forever.
+6. **Corrects the O-5 sequencing assumption**: most of O-5 does NOT block O-7. The real precursors are narrower — and one of them (O-15, positions-table integrity) was fixed today and is currently self-healing, which sets the earliest safe date for migration baselines.
+
+---
+
+## 1. Verified current state (2026-07-06) — what changed since the writer map
+
+The writer map (2026-06-29) was re-verified against live code and DB today. Three findings, one of them significant:
+
+**1a. Writer D is DEAD — the map is outdated on this point.** Commit `ca30c07` (2026-07-02, the O-13 stall fix) deleted `check_market_resolutions()` from `trader_analyzer.py`, and the `quick_elo_update_for_traders()` call site was **inside that deleted function** (confirmed via `git show ca30c07`: the call sat in the post-resolution "Step 3" block). `quick_elo_update_for_traders` still exists in `elo_bridge.py:330` but has **zero production callers** — only archive scripts and the manual `--quick-update` CLI branch (`elo_bridge.py:794`) reach it. *This was an unintended side effect of O-13, not a deliberate ELO change — but it simplifies this design substantially: the live writer set is now exactly A + B.*
+
+**1b. The no-op mechanism holds exactly, today.** Live re-verification (Appendix A):
+- 20,054 flagged traders last written 2026-07-06 (Writer B, this morning's maintenance): **19,944/19,944** of those with complete modifier columns satisfy `|comp − base × pnl| < 1.0` — 100%, matching the map's 2026-06-29 finding.
+- 2,491 flagged traders retain Sunday 2026-07-05's write (Writer A — traders without closed positions, whom Writer B never touches). For these, I verified the **full Sunday formula** including terms the map's Section 1 couldn't isolate: `min((base × beh_mult + bonus) × pnl, 1500 + resolved×150)` reproduces **2,435/2,476 (98.3%)** within 2 ELO points, using the stored kelly/patience/timing columns to reconstruct the step-function bonus. (The 41 misses are consistent with adaptive-weight edge cases where a sub-score is NULL; not investigated further — they don't change any conclusion.) This confirms the map's Section 9 correction with higher precision than before: **Sunday's behavioral code path works; Writer B strips it daily.**
+
+**1c. Current population (flagged):** n=26,806 with non-NULL comp; mean 1,400.5; range 479–3,315; 4,238 at ≥1,550; 1,393 at ≥1,800 (ELITE gate). Modifier distributions (flagged, non-excluded): behavioral mean 0.999, range [0.80, 1.40] (≈8,026 above 1.05); advanced mean 1.084, range [1.00, 1.10]; pnl mean 0.932, range [0.40, 2.20].
+
+**1d. Also confirmed:** `run_sunday_elo.sh` still passes `--skip-advanced-metrics`, so `advanced_modifier` is **stored but never applied** on any live path (Writer D, the only path that applied it, is dead) — the same stored-but-not-applied artifact class as behavioral. And `apply_full_elo_modifiers.py:152` writes `elo_last_updated` via `datetime.now().isoformat()` (T-separated) — **this is the O-3 timestamp-debt generator** (23,518 non-canonical rows, the entire remaining O-3 count).
+
+---
+
+## 2. DECISION 1 — The canonical formula
+
+### 2.1 The decision
+
+```
+# Inputs (per trader):
+#   base       = base_category_elo (re-derived Sunday; read from DB daily)
+#   beh_mult   = behavioral multiplier, stored range [0.80, 1.40]
+#   bonus      = behavioral ELO bonus, stored range [−100, +100] (kelly/patience; timing EXCLUDED — see 3.4)
+#   pnl_raw    = P&L multiplier from positions table [0.40, 2.50]
+#   closed     = closed_positions count (from pnl_cache / positions table)
+#   resolved   = resolved_trades_count
+
+# P&L gain — Writer B's guards, verbatim (unchanged from production):
+pnl_gated = min(pnl_raw, confidence_cap(closed))        # 1.30–2.20 by closed count
+if pnl_gated > 1.0 and resolved < 10: pnl_gated = 1.0   # thin-sample gate
+if pnl_gated < 1.0 and base >= 2000:                    # asymmetric loss amplification
+    pnl_gated = 1.0 − (1.0 − pnl_gated) × 1.30
+pnl_gain = base × (pnl_gated − 1.0)
+
+# Behavioral gain — NEW, bounded and gated:
+if resolved < 10:
+    beh_gain = 0.0                                      # same thin-sample philosophy as P&L
+else:
+    beh_applied = 1.0 + (beh_mult − 1.0) × W_beh        # W_beh = 0.5 → effective range [0.90, 1.20]
+    beh_gain    = base × (beh_applied − 1.0) + bonus × W_bonus   # W_bonus = 1.0 at launch
+
+# Compose additively, dampen the TOTAL gain, cap both ways:
+damp = 0.60 if base >= 2500 else 0.80 if base >= 2000 else 1.00
+comp = base + (pnl_gain + beh_gain) × damp
+comp = min(comp, 1500 + resolved × 150, 3500)           # Writer A's soft cap AND Writer B's hard cap
+comp = max(comp, 400)                                   # absolute floor (today's empirical min: 479)
+```
+
+Equivalently: **`comp = WriterB_today(base, pnl) + damp × beh_gain`** — the canonical formula is exactly today's production Writer B output plus a bounded, dampened behavioral delta. This decomposition is deliberate: it makes the migration previewable (§5, Stage 1) and the behavioral term independently toggleable (`W_beh = 0` reproduces today's values exactly).
+
+### 2.2 Justification against the three criteria
+
+**(a) No high-ELO inflation.** The behavioral delta is bounded at `damp × (0.20 × base + 100)`: +400 at base 1,500; +464 at base 2,400 (where damp=0.8 bites). Compare Writer A's theoretical multiplicative form at base 2,400 with beh 1.3: **+720 from the multiplier alone, before the bonus and before P&L compounds on top of it**. Dampening applies to the *total* gain, so behavioral and P&L cannot jointly escape it. Both caps survive: Writer B's hard 3,500 and Writer A's resolved-indexed soft cap (which binds meaningfully — 206 of the current Sunday population sit exactly on it).
+
+**(b) Behavioral actually incorporated.** A trader with beh 1.2 / bonus +40 at base 2,400 gains +224 over today's pnl-only value (worked example H below) — most of a tier width where it matters for ELITE gating, which is precisely the STR-002 complaint being fixed.
+
+**(c) Sane population values.** Population behavioral mean is 0.999 — the multiplier term is near-zero-mean by construction, so the population mean shift ≈ mean(bonus × damp) among resolved≥10 traders. This is measured exactly in the shadow stage before anything ships (§5, Stage 1); with timing excluded (§3.4), the bonus loses its flat +10-for-everyone offset, further centering it.
+
+### 2.3 Rejected alternatives (and why)
+
+**Rejected: Writer A's theoretical formula (multiplicative behavioral × pnl, soft cap only).** Three reasons. (i) *Compounding tails*: multiplying two noisy estimates inflates variance superlinearly — beh 1.4 × pnl 2.5 = 3.5× base at the joint extreme; each estimate's error amplifies the other's. Additive gains bound each dimension's contribution independently and auditable-y. (ii) *Backwards risk-weighting*: a multiplicative behavioral term contributes proportionally MORE ELO at higher base — ±40% of 2,400 is ±960 points — exactly where inflation does most tier-gating damage, and no behavioral estimate is ±960-points reliable at any sample size. (iii) *Un-gated P&L*: Writer A applies raw `pnl_raw` with no confidence cap and no thin-sample gate — a 1-closed-position trader can get 2.5×. Writer B's gates are simply better engineering, and the empirical evidence (worked example T below) shows what they prevent.
+
+**Rejected: Writer B unchanged (permanent behavioral exclusion).** Defeats the tier system's premise. The STR-002 evidence (§3.1) shows pnl-momentum-gated tiers performing at 27.3% (ELITE) and 11.8% (QUALIFIED) — keeping comprehensive_elo a P&L proxy while calling its tiers "skill" is the status quo failure mode this design exists to end.
+
+**Rejected: dampened formula but behavioral as a multiplier on the dampened result** (`B_output × beh_applied`). Re-introduces compounding (behavioral would multiply P&L gains), and makes the behavioral delta base-and-pnl-dependent, breaking the clean `B + delta` decomposition that the migration relies on.
+
+### 2.4 Worked examples
+
+`W_beh = 0.5`, `W_bonus = 1.0`, timing excluded from bonus. "A-theor" = Writer A's coded formula; "B-today" = production Writer B; "U" = canonical.
+
+| Case | Inputs | A-theor | B-today | **U (canonical)** | U − B |
+|---|---|---|---|---|---|
+| **L** low base, good behavior | base 1200, beh 1.20, bonus +40, pnl 1.5, closed 5, resolved 15 | (1200×1.2+40)×1.5 = **2220** | 1200+1200×0.5 = **1800** | gains 600+120+40 = 760 → **1960** | **+160** |
+| **M** mid base, poor behavior | base 1600, beh 0.90, bonus −20, pnl 1.8, closed 10, resolved 25 | (1440−20)×1.8 = **2556** | 1600+1600×0.8 = **2880** | gains 1280−80−20 = 1180 → **2780** | **−100** |
+| **H** high base, good behavior | base 2400, beh 1.20, bonus +40, pnl 1.4, closed 25, resolved 60 | (2880+40)×1.4 = **4088** | 2400+2400×0.4×0.8 = **3168** | gains 960+240+40 = 1240 ×0.8 → **3392** | **+224** |
+| **T** thin sample | base 1500, beh 1.40, bonus +100, pnl_raw 2.5, closed 1, resolved 4 | (2100+100)×2.5 = 5500 → soft cap **2100** | conf cap 1.30, thin-gate → mult 1.0 → **1500** | pnl AND behavioral both thin-gated → **1500** | **0** |
+| **X** joint extreme | base 2400, beh 1.40, bonus +100, pnl_raw 2.5, closed 25, resolved 60 | 3460×2.5 = **7975** (soft cap 10,500 doesn't bind!) | 4704 → hard cap **3500** | 5048 → hard cap **3500** | 0 (both capped) |
+
+Readings: **L/M/H** — U discriminates in both directions (good behavior +160/+224, poor behavior −100) while staying between B's conservatism and A's inflation. **T** — the thin-sample gate now covers behavioral too (decision: a 4-resolved-trade trader's "consistency" is noise; without this, T would jump to 1,900 on style metrics alone). **X** — A-theoretical produces 7,975 (its soft cap is useless at high resolved counts: 1500+60×150 = 10,500); B and U both cap at 3,500 — at the joint extreme the cap absorbs discrimination, which is acceptable: exactly 0 traders currently exceed 3,315.
+
+### 2.5 Sub-decisions inside the formula
+
+- **`advanced_modifier`: EXCLUDED from formula v1, still computed and stored.** It's currently stored-but-never-applied (§1d), its range is tight (1.00–1.10 — low discriminating power), and its underlying modules only started returning real data in April 2026. Adding a third live dimension mid-migration multiplies validation surface for little gain. Revisit after behavioral has post-launch evidence. *Alternative rejected: include it now as another additive gain — more moving parts in the exact stage where we most need attributable diffs.*
+- **Floor at 400 (new, explicit).** Worst-case additive composition can reach ~350 at low base (P&L floor 0.40 + behavioral floor + bonus floor); today's empirical min is 479. An absolute floor catches pathology without shaping the real distribution. *Judgment call, flagged.*
+- **`W_beh = 0.5` (i.e., behavioral multiplier's applied range compressed [0.80,1.40] → [0.90,1.20]).** Rationale: P&L is the system's declared dominant factor ("ROI-FIRST"); behavioral measures process (consistency/diversification/style/activity), not outcomes, and should not be able to out-contribute the outcome measure. At 0.5, max behavioral gain (0.20×base + 100) stays below max gated P&L gain (up to 1.2×base). **This is a tunable judgment call, not a derived constant** — the Stage 0 validation study (§3.3) is the mechanism for revising it before launch.
+
+---
+
+## 3. DECISION 2 — The behavioral question
+
+### 3.1 Was disabling it correct?
+
+**Yes, as a stopgap — the 2026-06-05 disable was the right call at the time.** Writer C applied behavioral *without* P&L, then Writer B overwrote with P&L *without* behavioral; letting them fight produced values that depended on write timing rather than trader quality. Disabling the weaker writer pending redesign was correct triage.
+
+**But permanent exclusion is not defensible.** The tier system's premise — and STR-002's registry description ("6-dimensional ELO") — is a skill measure. What actually gates ELITE/QUALIFIED today is a P&L-momentum proxy, and the measured result is ELITE 27.3%, QUALIFIED 11.8% accuracy (vs. the 60% gate), while the only tier gated on something other than comprehensive_elo (LEGENDARY, via geo_elo) went 1/1.
+
+### 3.2 Honest evidence assessment (proven vs. inferred)
+
+**Proven:** comprehensive_elo is base×pnl for ~89% of flagged traders (100% of the Writer-B population); STR-002's comprehensive-gated tiers underperform badly; the behavioral computation pipeline works (Sunday's writes verify against the full formula at 98.3%).
+
+**Inferred, NOT proven:** that `behavioral_modifier` is *predictive of outcome accuracy*. The STR-002 evidence shows pnl-only gating is bad; it does not show behavioral specifically is good (LEGENDARY's 1/1 success is n=1 and gated on domain-specific base ELO, not behavioral). **No direct validation of behavioral's predictive value exists anywhere in the investigation record.**
+
+### 3.3 The resolution: re-incorporate behind a validation gate
+
+This design deliberately decouples two decisions that have been conflated:
+
+1. **The architecture decision** (unify writers, one formula, atomic writes, harness) — justified regardless of behavioral's value. Ships in every scenario.
+2. **The empirical bet** (behavioral improves tier quality) — gets a cheap, read-only test *before* launch: **Stage 0 validation study**: for traders with ≥10 resolved trades, regress resolved-trade accuracy (and STR-002-relevant hit rates) against stored `behavioral_modifier` and bonus components, controlling for base ELO and pnl_modifier. Three outcomes:
+   - Clear positive signal → launch `W_beh = 0.5` as designed.
+   - Weak/noisy signal → launch smaller (0.25), revisit with more data.
+   - Zero/negative signal → launch `W_beh = 0`: identical values to today, but the architecture is unified and behavioral becomes a one-constant flip whenever evidence arrives.
+
+This converts "the crux" from an argument into a measurement. **The migration does not depend on the answer.**
+
+### 3.4 The timing term: EXCLUDE from the bonus while timing is disabled
+
+CLAUDE.md warning #3: timing quality is intentionally disabled; all traders receive a neutral score. A neutral score (0.5) lands in the bonus step function's `0.4 ≤ t < 0.6` band → **+10 flat for every trader** — a constant offset with zero discrimination, i.e., pure inflation. Fix: pass `has_timing=False` into the bonus computation (its adaptive-weight system then rebalances kelly/patience to 50/50, already-coded behavior). Re-enable only when the timing column actually exists. *This also removes a +10×damp population mean shift that would otherwise pollute the Stage 4 drift measurement.*
+
+---
+
+## 4. DECISION 3 — The single-writer architecture
+
+### 4.1 The core move: one formula, one write shape
+
+**New module: `analysis/comprehensive_elo_formula.py`** — a pure function, no DB I/O, no imports from the ELO system:
+
+```python
+def compute_comprehensive_elo(base, beh_mult, bonus, pnl_raw, closed, resolved,
+                              w_beh=W_BEH, w_bonus=W_BONUS) -> EloResult
+# EloResult: comp, pnl_gated, beh_applied, gain_pnl, gain_beh, damp, cap_applied — full audit trail
+```
+
+**New write helper (in `monitoring/database.py`): `write_elo_result(conn, address, result, components)`** — writes the **full column set atomically, every time**: `comprehensive_elo, base_category_elo, behavioral_modifier, advanced_modifier, pnl_modifier, kelly_alignment_score, patience_score, timing_score, elo_last_updated` (canonical timestamp format — the O-3 writer fix lands here). **No caller may write any subset.** This single rule kills the entire artifact class that produced RQ-CONTESTED-001: "behavioral_modifier from Sunday, comprehensive_elo from Monday" becomes structurally impossible, because every write refreshes every column from one coherent computation.
+
+### 4.2 What each writer becomes
+
+| Writer | Today | Becomes |
+|---|---|---|
+| **A** — Sunday full recalc (`elo_bridge.full_elo_recalculation`) | Own formula: `(base×beh+bonus)×pnl`, soft cap | **Survives as the weekly full pass**: re-derives base ELO from trade history, refreshes behavioral + pnl caches, then calls `compute_comprehensive_elo` + `write_elo_result`. Its formula internals are deleted. |
+| **B** — daily (`apply_full_elo_modifiers.py`) | Own formula: `base + base×(pnl−1)×damp`, no behavioral | **Survives as the daily incremental pass**: refreshes pnl for traders with closed positions, **reads behavioral components from DB** (Sunday snapshots), calls the same `compute_comprehensive_elo` + `write_elo_result`. |
+| **C** — `integrate_behavioral_elo.py` | Disabled dead code since 2026-06-05 | **DELETE.** Its design flaw (behavioral without P&L) is superseded; it's also a rogue writer of `resolved_trades_count` (§7.1). The system_observer disable-comment block goes with it. |
+| **D** — `quick_elo_update_for_traders` | Dead since 2026-07-02 (O-13 side effect, verified §1a) | **Retire in cleanup stage**: remove the method, `_process_trader_chunk`, `_batch_store_elo_results`, and the `--quick-update` CLI branch. *Decision: do NOT rebuild a monitoring-cycle ELO writer — resolution-driven freshness is already handled by requeue → pnl worker → next daily pass; a third cadence is writer-proliferation, the exact disease.* |
+| **E** — simulation/archive | Guarded (a5f9bb7) | Out of scope, unchanged. |
+
+### 4.3 Two cadences, one writer — why keep the daily pass at all
+
+*Alternative rejected: Sunday-only writes (writer map option (a)).* STR-002 consumes comprehensive_elo daily for live tier-gating; killing the daily pass means up to 6-day-stale P&L in tier decisions for the ~20K traders with position flow — a real signal-quality regression to fix a purity concern. The disease was never "two schedules"; it was "two formulas." After Stage 3, both cadences produce **identical values for identical inputs** — last-writer-wins becomes harmless, because both writers are the same function.
+
+Division of labor (unchanged in spirit from today): **base ELO and behavioral re-derive weekly** (slow-moving, expensive — behavioral cache requires `analyze_all_traders()`); **P&L refreshes daily** (fast-moving, cheap). The daily pass reads Sunday's stored `base_category_elo` and `behavioral_modifier` — up to 6-day staleness on the slow components is the accepted cost, now applied *consistently* instead of by-accident-of-writer.
+
+### 4.4 `get_trader_global_elo` and its flag-soup
+
+The `apply_behavioral/apply_advanced/...` flag interface in `unified_elo_system.py` stays (other consumers use it for ad-hoc queries), but **no production comprehensive_elo write path calls it anymore** — writers call the canonical function with explicit inputs. This removes the trap where shell-script flags (`--skip-advanced-metrics`) silently reshape the stored formula.
+
+---
+
+## 5. DECISION 4 — The migration path
+
+Design constraints: live system, frozen area, every step individually reversible, every step verified before the next. The controlling idea: **separate plumbing changes (output-neutral, Stages 2–3) from the formula change (Stage 4, one constant)** — never both in one step.
+
+### Stage 0 — Precursors (no frozen-area contact)
+- **0a.** Wait for O-15 position-backlog drain to stabilize (fixed 2026-07-06, ~482K orphaned BUY-trades self-healing — this is *live input data movement* for pnl_modifier; baselining during the drain would bake a moving target into every diff). Gate: `BUY trades with no position record` harness count plateaus. **Estimate: ~1–2 weeks from today; verify, don't assume.**
+- **0b.** Behavioral validation study (§3.3), read-only. Output: recommended `W_beh` ∈ {0, 0.25, 0.5} with evidence. **Human reviews and picks.**
+- **0c.** Narrow O-5 precursors (§7): delete Writer C (also fixes rogue `resolved_trades_count` writer). *(Writer C deletion is technically frozen-area-adjacent but it's dead code — removing it changes no output. Verify with before/after DB snapshot on a full maintenance cycle.)*
+- **0d.** Add the harness invariants (§6) in **OBSERVE mode** — record today's failing baselines (e.g., behavioral-materialization fails by design pre-migration), gate nothing yet.
+- **Rollback:** trivial (0c is a dead-code delete; everything else is read-only).
+
+### Stage 1 — Shadow computation (zero production writes)
+- Build `comprehensive_elo_formula.py` + unit tests: golden-file tests pinning the worked examples (§2.4), property tests (monotonic in pnl_raw; bounded delta; cap/floor compliance; thin-sample gates), and an exact-equivalence test: `compute(..., w_beh=0, bonus off) == WriterB_formula(...)` across the input grid.
+- Nightly shadow job writes to a **side table** `elo_shadow(address, comp_v2, components..., computed_at)` — *not* a column on `traders` (no schema contact, trivially droppable).
+- **Deliverable: the delta report** — per-trader `comp_v2 − comp_v1` distribution; population mean/percentiles; tier-count changes at 1500/1800/2175; top-100 leaderboard diff; mean bonus (the §2.2c measurement). **Human reviews before Stage 2.**
+- **Rollback:** drop table. Nothing depends on it.
+
+### Stage 2 — Writer B onto canonical plumbing, output-neutral (`W_beh = 0`)
+- Replace `apply_full_elo_modifiers.py` formula internals with `compute_comprehensive_elo(w_beh=0)` + `write_elo_result`. With `W_beh=0`, the canonical formula **is algebraically Writer B** — so this cutover is provably value-neutral.
+- **Verification:** full dry-run on a DB snapshot — assert byte-identical `comprehensive_elo`/`pnl_modifier` for all ~20K against the old code path. Exactly **two intentional diffs allowed**: (i) `elo_last_updated` switches to canonical space-separated format (the O-3 writer fix — after this, the O-3 count stops growing); (ii) behavioral/advanced/snapshot columns now refresh atomically per §4.1 (value-identical if caches unchanged — assert that too).
+- **Rollback:** git revert; values were never different.
+
+### Stage 3 — Writer A onto canonical plumbing (still `W_beh = 0`; Sunday outputs DO change)
+- Replace `full_elo_recalculation`'s per-trader formula with the same canonical call. Sunday's output changes from `(base×beh+bonus)×pnl, soft-capped` to canonical-at-neutral (= gated/dampened base×pnl, dual-capped).
+- **Who actually changes lastingly:** the ~2.5K no-closed-positions traders (Writer B never overwrites them). For the other ~20K, Sunday values already get overwritten by (now-canonical) Writer B within 24h — the change shrinks their weekly 4.5-hour behavioral window to zero, which is the honest version of what the system already does for 163 of 168 hours a week.
+- **Verification:** pre-flip shadow diff scoped to exactly the 2.5K Sunday-retained population; human reviews (expect: values *drop* for high-behavioral thin traders — e.g., worked example T's 2,100 → 1,500 — this is the un-gated-pnl and thin-sample corrections landing, defensible and visible).
+- **After this stage the writer disease is dead:** both cadences compute the same function; interleaving is harmless; `comprehensive_elo` can only be computed one way. **This is O-7's structural deliverable, delivered before any formula change.**
+- **Rollback:** git revert; next Sunday rewrites old-style values (self-healing ≤ 7 days). Harness invariant #3 flips to gating mode at the END of this stage (formula-reproducibility now must hold).
+
+### Stage 4 — Enable behavioral (the one formula change)
+- Set `W_beh` to the Stage-0b-validated value in **one constant in one module**. Both cadences pick it up on their next run.
+- **Pre-flip:** final shadow report — exact per-trader deltas (bounded by `damp×(0.2×base+100)`); **tier-migration table** (traders crossing 1500/1800/2175 — the direct answer to "what does this do to STR-002's gates"); flag any trader moving >1 tier.
+- **Post-flip:** harness fully gating; watch population drift (invariant #6) and STR-002 tier composition for 2–3 weeks. STR-002's v2 pre-registration (the 2026-06-30 doc §6) should date its "post-fix" signal cohort from this flip.
+- **Rollback: set `W_beh = 0`.** Values self-restore within 24h for the ~20K (daily pass) and ≤7 days for the rest (Sunday). No data repair needed — this is the payoff of the `B + delta` decomposition.
+
+### Stage 5 — Cleanup and unfreeze
+- Retire Writer D remnants (`quick_elo_update_for_traders`, `_process_trader_chunk`, `_batch_store_elo_results`, `--quick-update` CLI).
+- One-time `elo_last_updated` backfill (the existing 23.5K non-canonical rows; generator already fixed in Stage 2) — closes O-3 entirely (`traders.elo_last_updated` was its last driver).
+- Update docs: CLAUDE.md ELO section, STR-002 registry description (either restore "6-dimensional" honestly or say what it is), memory files, ledger (O-3, O-6, O-7 closed).
+- **Unfreeze `recalculate_comprehensive_elo.py`** — the freeze's stated exit condition (Layer 2 done + harness clean) is met.
+
+---
+
+## 6. DECISION 5 — Harness coverage (currently ZERO formula invariants)
+
+To add to `audit_invariants.py`. Tiers follow the existing T1(critical)/T2(regression) convention.
+
+| # | Tier | Invariant | Why / notes |
+|---|---|---|---|
+| 1 | T1 | `400 ≤ comprehensive_elo ≤ 3500` for all non-NULL flagged | Runaway inflation/collapse. Passes today (479–3,315). |
+| 2 | T1 | `comp ≤ 1500 + resolved_trades_count×150 + ε` | Soft-cap compliance — would catch a writer bypassing caps. |
+| 3 | T1 | **Formula reproducibility**: for every flagged trader with complete components, `|comp − compute_comprehensive_elo(stored components)| < ε` | **The single-writer enforcement invariant.** Only possible because §4.1 writes all inputs atomically with the output. Any rogue writer, manual UPDATE, or formula drift trips it within one audit cycle. Gating from end of Stage 3. |
+| 4 | T1 | Write atomicity: 0 traders where `comprehensive_elo` is non-NULL but any component column is NULL, post-first-canonical-write | Detects partial writes (the RQ-CONTESTED-001 artifact class). |
+| 5 | T2 | **Behavioral materialization**: count of traders with `behavioral_modifier > 1.05 AND resolved ≥ 10` whose comp equals the `W_beh=0` value within ε — must be ~0 once Stage 4 ships with `W_beh > 0` | The direct regression test for THIS bug ever returning. Fails by design today (~8,026) — OBSERVE mode until Stage 4. If Stage 0b lands `W_beh=0`, this invariant stays OBSERVE with a comment, not deleted. |
+| 6 | T2 | Population drift: weekly mean within ±100 of trailing mean; tier counts (≥1500/≥1800/≥2175) change <20%/week | Slow-inflation detector; also catches upstream input corruption (pnl_cache, behavioral cache). |
+| 7 | T2 | Cadence consistency: the formula-reproducibility check reported split by last-writer cadence (Sunday vs daily) | Same check as #3 but the split localizes which pass broke. |
+| 8 | T2 | `elo_last_updated` canonical format, floor 0 (after Stage 5 backfill) | Folds the last O-3 driver into permanent coverage. |
+| 9 | T1 | Post-Sunday completeness: Monday audit asserts ≥99% of flagged traders have `elo_last_updated` within the last 8 days | Detects a silently-aborted Sunday run (today ~26 stragglers predate this week — set floor accordingly). |
+
+---
+
+## 7. DECISION 6 — O-5 sequencing, corrected
+
+The ledger says O-5 (non-ELO competing writers) "should precede Layer 2." Verified against what the canonical formula actually reads, **most of O-5 does not block O-7**:
+
+### 7.1 Real precursors (must land before Stage 2)
+- **`resolved_trades_count`** — feeds the soft cap AND the thin-sample gates. Verified today: live writers are `evaluate_new_trader_results.py:72` (legitimate, daily) and **`integrate_behavioral_elo.py:196` — dead Writer C**. (`recalculate_trader_stats.py:51` is a Python local, not a DB write.) **Deleting Writer C (Stage 0c) makes this column single-writer with zero additional work.**
+- **Positions-table integrity** (feeds `pnl_cache` → `pnl_raw` and `closed` — the confidence cap reads `closed_positions` **from pnl_cache/positions, NOT the contested `traders.closed_positions` column**; verified in `apply_full_elo_modifiers.py:177-178`). This is **O-15, fixed today** — the precursor is *waiting for the backlog drain to stabilize* (Stage 0a), not new work.
+
+### 7.2 NOT precursors (parallel track, on their own merits)
+- `trader_statistics.successful_trades` — not read by any ELO formula path.
+- `monitor.py`'s `traders.open/closed_positions` column writers — not read by the formula (see above; the column is display/aggregate only).
+- `analysis_scheduler.specialisation_ratio` — not read by the formula.
+
+**Corrected sequence:** `Stage 0c (Writer C delete) + Stage 0a (O-15 drain settles) → Stages 1–5.` The rest of O-5 proceeds independently whenever convenient. This pulls the ELO arc forward by whatever time full-O-5 would have cost.
+
+### 7.3 O-3 fold-in (from today's session finding)
+The remaining O-3 timestamp debt is entirely `traders.elo_last_updated`, generated by Writer B's `.isoformat()` (§1d). It folds into this migration cleanly and is already scheduled: **generator fix in Stage 2** (canonical write helper uses canonical format), **backfill in Stage 5**. No separate O-3 workstream needed for this column.
+
+---
+
+## 8. Uncertainties and explicitly-flagged judgment calls
+
+1. **`W_beh = 0.5` is a judgment, not a measurement** — the single most consequential free parameter. Mitigated by Stage 0b (validation study picks it) and Stage 4's one-constant rollback. *If you review only one number in this design, review this one.*
+2. **Behavioral predictiveness is unproven** (§3.2). The design is structured so this uncertainty cannot block the architecture value.
+3. **The 41/2,476 Sunday-formula residuals** (§1b) are unexplained in detail (suspected adaptive-weight NULL-score edge cases). They don't affect any decision here, but Stage 1's golden tests should include a few of these traders to pin exact current behavior before replacement.
+4. **Bonus step-function shape retained as-is** (kelly/patience thresholds) — inherited, not re-derived. Re-deriving it is out of scope; the compression via `W_bonus` and the thin-sample gate bound its damage either way.
+5. **Cluster D / non-flagged scope gap** (~100K non-flagged traders parked at 1,500) — **deliberately out of scope.** This design unifies how comprehensive_elo is computed, not who gets one. Widening scope mid-migration would confound every population diff. Revisit post-Stage-5 as its own item.
+6. **Advanced modifier exclusion** (§2.5) — means "6-dimensional ELO" remains aspirational (it becomes ~4-dimensional: base, behavioral-mult, behavioral-bonus, pnl). Docs must say so honestly (Stage 5).
+7. **Stage 0a's drain-stabilization estimate (1–2 weeks) is a guess** — gate on the harness plateau, not the calendar.
+8. **Writer A's ~5h46m Sunday runtime is untouched** by this design (same computation, different final arithmetic). If Sunday ever overruns into daily maintenance, that's an ops issue this design neither causes nor fixes.
+
+---
+
+## Appendix A — Verification run 2026-07-06 (all read-only)
+
+| Check | Result |
+|---|---|
+| Writer D call site | `git show ca30c07`: `quick_elo_update_for_traders` call was inside deleted `check_market_resolutions()` — dead 2026-07-02. Zero production callers remain (grep: only archive/ + CLI branch). |
+| No-op, Writer B population (written 2026-07-06) | 19,944/19,944 match `comp = base×pnl` (<1.0 pt), 100% |
+| Sunday population (written 2026-07-05) | 2,435/2,476 (98.3%) match `min((base×beh+bonus)×pnl, 1500+resolved×150)` (<2 pts), bonus reconstructed from stored kelly/patience/timing via the step function in `unified_elo_system.py:860-930` |
+| Last-writer split | 20,054 @ 2026-07-06 (Writer B) vs 2,491 @ 2026-07-05 (Writer A) — mechanism live |
+| Modifier distributions (flagged, non-excl) | behavioral 0.999 avg [0.80–1.40]; advanced 1.084 avg [1.00–1.10]; pnl 0.932 avg [0.40–2.20] |
+| Population | n=26,806, mean 1,400.5, range 479–3,315, ≥1800: 1,393 |
+| `resolved_trades_count` writers | `evaluate_new_trader_results.py:72` (live) + `integrate_behavioral_elo.py:196` (dead Writer C only) |
+| Confidence-cap input source | `apply_full_elo_modifiers.py:177-178` — pnl_cache (positions table), not `traders.closed_positions` |
+| O-3 generator | `apply_full_elo_modifiers.py:152` `datetime.now().isoformat()` → `elo_last_updated` T-format |
+| Sunday shell flags | `run_sunday_elo.sh` still passes `--skip-correlation --skip-contrarian --skip-advanced-metrics` |
+
+*Design complete 2026-07-06. No code changed. ELO subsystem remains frozen pending human review of this document.*
