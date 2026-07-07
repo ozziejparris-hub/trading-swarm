@@ -156,7 +156,7 @@ Active `comprehensive_elo` writers confirmed by grep:
 ### O-9 · trading-swarm data-layer audit
 **ITEM:** Run the same Phase 2–style invariant diagnostic on the `trading-swarm` repo's brain/ data layer (signals.json, findings.json, strategy-registry.md, agent-output files). Identify the writer-count / fact-in-multiple-places disease in the swarm's own data structures.  
 **SOURCE:** Sessions #38, #39, #40 (all carry "trading-swarm data-layer audit — same diagnostic applied to second repo")  
-**STATUS:** OPEN. Not done. `brain/agent-outputs/data-audit/` contains first-repo DB harness outputs only. No swarm-layer invariant scan has been built or run.  
+**STATUS:** **CLOSED 2026-07-07** — folded into and superseded by the Fable silent-failure audit's Class 6 (`2026-07-07-silent-failure-audit-FABLE.md`), which mapped the full trading-swarm ↔ first-repo write/read topology (3 code paths: `calculate_geo_elo.py`, `orchestrator/ollama_agent_loop.py`, read-only research scripts) and found real issues — see O-24 (agent write-allowlist prefix-match) below. No separate swarm-internal-only invariant scan was built; the cross-repo connection was judged the higher-leverage surface and is now covered.  
 **DEPENDENCIES:** Independent of ELO rebuild. Can be done any time. Useful before scaling the swarm.  
 **RISK/EFFORT:** Medium (mostly investigation/research; fixing findings is separate). Read-only diagnostic.  
 **FROZEN-AREA?** No.
@@ -270,6 +270,141 @@ Active `comprehensive_elo` writers confirmed by grep:
 
 ---
 
+## 2026-07-07 additions (O-19 through O-29)
+
+**Context:** two sessions today. Morning: orientation + verification of the Fable silent-failure audit's headline finding (O-7.1). Afternoon: Claude Fable ran a systematic 7-class silent-failure audit across both repos (`brain/decisions/2026-07-07-silent-failure-audit-FABLE.md`, committed `a8c07f2`) — its own synthesis is worth stating up front as standing guidance, not just a one-off finding: **almost every guard in this system tests presence, nothing tests absence or liveness.** Work that silently stops happening (a step that no-ops, a writer that stops firing, a backlog that stops draining) and columns that silently lose their last reader are both invisible to the current harness by construction. Most of O-22 through O-29 below are instances of that one theme. Keep it in mind when triaging future findings — "does this check for absence, not just wrong presence?" is now a standing design question for any new harness invariant.
+
+---
+
+### O-19 · `backup_database.py` corrupts backups taken while services are running
+**ITEM:** `scripts/backup_database.py` does a raw `shutil.copy2` of the live `.db` file. The database runs in WAL mode with a continuously-active writer (the monitoring service, 24/7 by design). A plain filesystem copy of a WAL-mode DB under concurrent write load is not crash-consistent — it can capture a torn page mid-write.  
+**SOURCE:** Discovered 2026-07-07 during the O-7.1 fix's mandated pre-write backup step. The first backup attempt (`backups/markets_20260707_211327.db`) **failed `PRAGMA integrity_check`**: `database disk image is malformed`, `invalid page number`. A second backup taken via SQLite's online backup API (`sqlite3 <db> ".backup <path>"`, WAL-safe) verified clean and was used for the O-7.1 write.  
+**STATUS:** OPEN — root cause confirmed, not fixed. **Every backup this script has ever taken while services were running is suspect** — that includes the pre-write safety-net backups this project has relied on all month per CLAUDE.md's "take a backup before any DB-writing operation" policy. The backup fleet's actual restorability is currently unknown.  
+**FIX (designed, not applied):** swap `shutil.copy2` for the online backup API — `sqlite3.connect(db).backup(dest_conn)` (Python stdlib, available since 3.7) or shell out to `sqlite3 <db> ".backup <path>"`. One-line-equivalent change. Run `PRAGMA integrity_check` on the result before reporting success (currently the script reports "OK" unconditionally after the copy, with no verification — a second instance of the presence-not-liveness theme).  
+**FOLLOW-UP NEEDED:** spot-check existing files in `backups/` for restorability (`PRAGMA integrity_check` against each, cheap) to scope how much of the existing fleet is actually damaged — do this before assuming any specific past backup is usable in an emergency.  
+**DEPENDENCIES:** None. No frozen-area contact. Should be fixed before the next scheduled DB-writing operation that leans on the backup-first policy.  
+**RISK/EFFORT:** Small fix, but **HIGH severity** — undermines the project's entire recovery posture for however long this has been true (script has no git-blame investigation yet to establish since-when).  
+**FROZEN-AREA?** No.
+
+---
+
+### O-20 · Stage-0a plateau has two live growth mechanisms — don't call it yet
+**ITEM:** The "BUY trades with no position record" metric (the Stage-0a gate for the ELO-migration arc, see O-7) is **not plateauing** — it grew intraday on 2026-07-07: 481,997 (06:00) → 493,783 (21:08) → 496,447 (21:22) → 498,661 (21:32). Prior sessions only sampled this at the daily 06:00 maintenance snapshot, which masked the intraday trend. Two confirmed mechanisms, independent of the O-15 pnl_worker datetime-bug fix and independent of each other:  
+**Mechanism 1 (dominant, self-limiting):** `background_backfill_worker.py` discovers previously-untracked traders (`total_trades > 0 AND 0 local trade records`) and bulk-inserts their full historical trade set in one shot (674,862 trades / 2,577 traders on 2026-07-07 alone) — but it **never resets `pnl_last_updated`**, so newly-backfilled traders aren't flagged for priority reprocessing by the pnl_worker; they wait for their own natural staleness cycle. Proven: **100% of the 2,594 traders backfilled today (2,594/2,594) currently have zero position rows.** Bounded, though: the candidate pool (`total_trades>0 AND 0 local records`) dropped from 13,436 to 10,999 over the same day — draining, not growing, roughly ~4 more days at today's rate.  
+**Mechanism 2 (smaller, recurring, genuinely stuck — not just lag):** `background_pnl_worker.py:263-336` wraps a trader's *entire* position-insert batch in one try/except with a single commit. If any one INSERT throws (confirmed live cause: `sqlite3.OperationalError: database is locked`), the whole batch rolls back — but `mark_trader_pnl_updated` still fires unconditionally afterward, so the trader is marked "done" with zero positions ever persisted. Architecturally the same failure shape as the original O-15 bug (one bad record voids the whole trader's batch), different trigger. Not a one-off: `Position insert failed` fired on **11 separate days from April 26 through July 5** (bursts up to 150/day), quiet the last two days.  
+**SOURCE:** 2026-07-07, read-only investigation requested after independently verifying (and correcting the severity of) the Fable audit's O-7.1 finding — see O-21. Fable's original framing implied the O-16 backfill cohort was "hidden" from the drain entirely; verification found the ordinary 24h staleness rotation *does* eventually sweep them (position counts on backfilled markets more than halved within hours during the same session), so O-7.1 only explains ~12% of the current gap. These two mechanisms explain the rest.  
+**STATUS:** OPEN — both mechanisms characterized, neither fixed (read-only investigation, as scoped). **This gates the ELO-arc's Stage 0a** (see O-7): do not baseline migration diffs against `pnl_modifier`/position data while this input is still actively moving.  
+**FIX (not designed in detail, natural shape noted):** Mechanism 1's structural fix mirrors O-21's own fix pattern — `background_backfill_worker.py` should reset `pnl_last_updated = NULL` after a successful backfill, the same signal-the-downstream-consumer principle O-21 just restored for the resolution-requeue path. Mechanism 2 needs the same per-item try/except O-15's fix pattern established (catch per-position, not per-batch) plus surfacing "trader marked updated with 0 positions persisted" as a harness-visible event rather than a log-only exception.  
+**WATCH:** sample the metric at multiple points across the day, not just 06:00 (that's what caught this). Don't call the plateau until Mechanism 1's contribution visibly tapers (watch the 10,999-candidate pool drain) **and** a few more days pass with no new Mechanism-2 clusters.  
+**DEPENDENCIES:** Gates Stage 0a of the ELO-migration critical path (O-7). Independent of O-19/O-21 otherwise.  
+**RISK/EFFORT:** Investigation done; both fixes are small (one-line + a refactor of the persist-loop's exception granularity) but not yet applied.  
+**FROZEN-AREA?** No — pnl_worker/backfill_worker are not part of the frozen `comprehensive_elo` chain, but the metric they produce feeds Stage 0a's gate decision.
+
+---
+
+### O-21 · Requeue event-time gate — FIXED 2026-07-07 (commit `f5fae64`, first-repo)
+**ITEM:** This is the Fable audit's finding 7.1, independently re-verified (and its severity corrected — see O-20's SOURCE note) before fixing, same day. `requeue_resolved_market_traders.py` gated newly-resolved-market detection on `resolution_date` (event-time). The O-16 backfills (193,520 markets, Tier-1 + Tier-2) wrote **historical** resolution dates (2020–2026, median well in the past) — structurally, at most 1 of those 193,520 markets could ever have passed an event-time gate on any day since insertion, confirmed by direct query. `legendary_positions_scan.py`'s two resolution-writers had the identical class of gap on a different axis: they never stamped `last_checked` at all (only `resolution_date`), which would have broken a naive switch to a `last_checked` gate for markets resolved via that (weekly) path.  
+**STATUS:** **RESOLVED 2026-07-07.** Both fixed together: (1) `legendary_positions_scan.py` now co-stamps `last_checked` at both write sites, matching the convention already used in `resolve_legendary_markets.py`; (2) `requeue_resolved_market_traders.py`'s gate switched from `resolution_date` to `last_checked` (write-time). Verified: full suite 73/73 green, plus a standalone script (not added to the permanent suite) proving both fixes against synthetic data shaped exactly like the real bug, including a negative control confirming the *old* gate provably would have missed the same backfill-shaped market. Ran `requeue_resolved_market_traders.py --force` once (idempotent, one-time catch-up): **8,971 traders** requeued; background P&L worker confirmed picking them up immediately post-run.  
+**SIDE EFFECT:** Surfaced O-19 (the pre-write backup this fix required turned out to be corrupted).  
+**SEVERITY CORRECTION FOR THE RECORD:** Fable's original framing treated this as the primary blocker for the O-15/Stage-0a plateau signal. Independent verification found the ordinary 24-hour staleness rotation in `background_pnl_worker.py` sweeps *all* traders regardless of this gate (it's a prioritization-delay bug, not a structural block) — position counts on affected markets were already draining fast before the fix landed. The real Stage-0a blocker is O-20's two mechanisms, only ~12% attributable to this bug. Don't re-cite this fix alone as sufficient grounds to declare the plateau reached.  
+**DEPENDENCIES:** None remaining. Closed.  
+**RISK/EFFORT:** None remaining.  
+**FROZEN-AREA?** No.
+
+---
+
+### O-22 · `backfill_market_categories.py` limit-comparison bug — daily no-op (Fable 7.7)
+**ITEM:** Line ~245 compares the script's **lifetime** cumulative state-file total (`total_classified + total_skipped`, currently 17,584) against the **per-run** `--limit 50` passed by `daily_maintenance.py`'s Step 15. Since the lifetime total passed 50 long ago, the comparison is true on the very first check of every run — the step exits immediately, every day, `exit 0`, logged as "OK (0.0s)". It has been structurally incapable of doing work for an unknown but likely long stretch.  
+**SOURCE:** Fable silent-failure audit, 2026-07-07, finding 7.7 (`2026-07-07-silent-failure-audit-FABLE.md`).  
+**STATUS:** OPEN — root cause identified, not fixed. Directly implicated in O-2's stalled drain: `trades.market_category='Unknown'` sits at 138,608 (REGRESSION vs floor 122,417) despite a "daily backfill" step that has actually been doing nothing.  
+**FIX (designed, not applied):** compare against a per-run counter instead of the lifetime state total — one-line change.  
+**DEPENDENCIES:** Unblocks O-2's drain once fixed (O-2 itself remains open/independent otherwise).  
+**RISK/EFFORT:** Trivial fix. **FIX-NOW candidate, next session.**  
+**FROZEN-AREA?** No.
+
+---
+
+### O-23 · Manual research exclusions silently reverted by the daily state machine (Fable 2.5)
+**ITEM:** `update_research_exclusions.py`'s `CLEAR_SQL` re-includes any `research_excluded=1` trader with `resolved_trades_count >= 20` and no `bot_suspect`/`wash_trade_suspect`/`bot_type` flag set — i.e., **any manual exclusion lacking a durable flag gets silently reverted within 24 hours** of the next daily run.  
+**SOURCE:** Fable silent-failure audit, finding 2.5, verified live 2026-07-07: trader `0x44a1159b` — manually excluded 2026-06-10, still documented as excluded in `brain/integration-contract.md` §6c — is confirmed back at `research_excluded=0`, `bot_type=NULL`, `resolved_trades_count=148` as of today. **Back in the research pool for ~4 weeks** with nobody aware. (`0xf0d3c90f`, excluded the same week, survived only because it received a durable `bot_type=LP_ARTIFACT` tag.) Same investigation surfaced that `wash_trade_audit.py` (the sole writer of `wash_trade_suspect`) is archived — wash-trade detection has been permanently frozen at 57 stale flags, recorded only in a code comment, nowhere in any doc an agent or future session would read.  
+**STATUS:** OPEN. Not fixed.  
+**FIX (designed, not applied):** give `update_research_exclusions.py` a durable manual-override mechanism the state machine never touches — e.g. a dedicated `bot_type='MANUAL_EXCLUDE'` value, or a separate `manual_override` column excluded from `CLEAR_SQL`'s WHERE clause. Re-exclude `0x44a1159b` durably once the mechanism exists. Update `integration-contract.md` §6c to match reality. Separately: decide whether to restore `wash_trade_audit.py` or formally retire the wash-detection axis (needs Oscar's judgment either way — see Fable audit's "needs judgment" list).  
+**DEPENDENCIES:** None. No frozen-area contact.  
+**RISK/EFFORT:** Small. **FIX-NOW candidate.**  
+**FROZEN-AREA?** No — but touches `research_excluded`, an input to every research/signal query pool definition; get it right.
+
+---
+
+### O-24 · Ollama agent write-allowlist is prefix-matched, not fully anchored (Fable 6.1)
+**ITEM:** `trading-swarm/orchestrator/ollama_agent_loop.py`'s SQL write-allowlist (lines ~54-71, checked at line ~293) matches queries by regex prefix, e.g. `^\s*UPDATE\s+traders\s+SET\s+geo_elo\b`. This matches `UPDATE traders SET geo_elo=1500, comprehensive_elo=9999 WHERE ...` — a local LLM agent has a live, allowlist-sanctioned write path into **`comprehensive_elo`, the frozen ELO column**, via a smuggled second assignment, bounded only by the 50,000-row write cap. The allowlist also permits bare `ALTER TABLE traders ADD COLUMN` (schema drift by agent, and DDL explicitly skips the row-count guard) and references `accuracy_pool` (a column dropped 2026-06-05) and `trader_notes` (a table that has never existed in the schema) — stale entries in both directions.  
+**SOURCE:** Fable silent-failure audit, finding 6.1.  
+**STATUS:** OPEN. Not fixed.  
+**FIX (stopgap, designed but not applied):** tighten each allowlist regex to reject additional comma-separated assignments (match up to the `=` value, then require the statement end there before `WHERE`, rejecting any bare `,` outside a quoted string); delete the `accuracy_pool`, `trader_notes`, and `ALTER TABLE` entries. **Proper fix (larger, not scoped for FIX-NOW):** replace raw-SQL agent writes with named, parameterized operations that route through the same canonical write helpers first-repo uses internally — regex-allowlisting arbitrary SQL text against an LLM's output is structurally unwinnable as a long-term posture.  
+**DEPENDENCIES:** Directly relevant to ELO-arc safety (O-7) — a write path into `comprehensive_elo` that bypasses the frozen-area discipline should be closed before Stage 1 (shadow computation) makes that column's integrity load-bearing for migration diffs.  
+**RISK/EFFORT:** Stopgap is small (regex tightening + dead-entry removal). **FIX-NOW candidate** for the stopgap; the named-operations rebuild is separate, larger, structural work (see O-29).  
+**FROZEN-AREA?** Adjacent — doesn't touch `comprehensive_elo` today, but is a live path that could.
+
+---
+
+### O-25 · `hydrate_stub_markets.py` has no rotation — same 200 markets grinding daily (Fable 7.6)
+**ITEM:** The query (`WHERE m.resolution_date IS NULL ... LIMIT 200`, no ordering, no attempted-marker) fetches the same 200 unfindable markets every single day. Confirmed in the retained daily-maintenance log: **≥7 consecutive `[HYDRATE] Done — updated=0, not_found=200` runs.** The thousands of stub markets behind those first 200 in insertion order are never reached. This is the exact pattern the O-13 round-robin fix (commit `6c08afc`, first-repo) already solved for the resolution-scan class of problem — just not applied here.  
+**SOURCE:** Fable silent-failure audit, finding 7.6.  
+**STATUS:** OPEN. Not fixed.  
+**FIX (not yet designed in detail; pattern exists):** apply the same rotation/attempt-marker approach as `6c08afc` — e.g. order by `last_checked ASC NULLS FIRST` and stamp an attempt timestamp on every pass (success or not-found), so the query naturally advances through the backlog instead of re-fetching the same head every day.  
+**DEPENDENCIES:** None. No frozen-area contact.  
+**RISK/EFFORT:** Small-medium — needs the rotation column/logic, not just a query tweak.  
+**FROZEN-AREA?** No.
+
+---
+
+### O-26 · Daily maintenance's "all steps succeeded" banner is unconditional (Fable 4.1)
+**ITEM:** `daily_maintenance.py`'s completion banner (`=== MAINTENANCE COMPLETE === ... all steps succeeded ===`) is a hardcoded string, printed regardless of any non-blocking step's failure, the test suite's outcome, or the final two post-steps' return values (which are discarded, not checked). Anyone — human or an AI orientation session — grepping the log for health is told "succeeded" even when it didn't.  
+**SOURCE:** Fable silent-failure audit, finding 4.1. Directly an instance of the audit's synthesis theme (presence-tested, not liveness/correctness-tested).  
+**STATUS:** OPEN. Not fixed. **We have been trusting this banner all month** as a first-pass health signal in orientation sessions.  
+**FIX (small, not yet applied):** derive the banner from an actual outcomes list — print `N steps, M failed: [names]` and exit nonzero if any blocking-tier concern occurred, including non-blocking-step failures and test-suite failure.  
+**DEPENDENCIES:** None. No frozen-area contact.  
+**RISK/EFFORT:** Small. Natural to bundle with O-27 (same file, same session).  
+**FROZEN-AREA?** No.
+
+---
+
+### O-27 · `daily_maintenance.py`'s `run_step()` has no subprocess timeout (Fable 3.1)
+**ITEM:** `run_step()` (the function every one of the 29+ daily-maintenance steps runs through) calls `subprocess.run()` with no `timeout=`. Any single step — a hung RPC call, a network stall, a slow query — can block the entire maintenance run indefinitely with no ceiling. This is the structural gap behind the two ~80-minute maintenance hangs already on record (the maker/taker RPC incident); a per-step timeout would have bounded both without needing the specific per-incident fix each required.  
+**SOURCE:** Fable silent-failure audit, finding 3.1, cross-referenced against known hang incidents.  
+**STATUS:** OPEN — **NOT fixed today.** Investigated as part of the day's work but deprioritized once O-7.1 (O-21) took precedence for the session's remaining time. Carries to next session.  
+**FIX (designed, not applied):** add a `timeout=` to `run_step()`'s `subprocess.run()` call — a per-step budget (e.g. a column on the `STEPS` tuples, default something like 3× the step's rolling median duration, hard cap ~2h). A timeout should be treated as a FAILED step, subject to the same blocking/non-blocking handling as any other failure (pairs naturally with O-26's honest-banner fix — same file, same session, do together).  
+**DEPENDENCIES:** None. No frozen-area contact.  
+**RISK/EFFORT:** Small implementation; the design is settled. **FIX-NOW candidate, next session** — this is the top carry-over item.  
+**FROZEN-AREA?** No.
+
+---
+
+### O-28 · Harness coverage gaps — 6 missing invariants + 2 broken existing checks (Fable 5.5, 5.1, 5.2)
+**ITEM:** Three distinct problems with `audit_invariants.py`, all found 2026-07-07:  
+1. **(5.5) Zero coverage for every recent burn class.** No standing invariant exists for: (a) `resolved=1 AND resolution_date IS NULL` (the O-17/O-18 class); (b) `resolved=0 AND end_date < -7d AND resolution_date IS NULL` (the O-16 class — would catch regrowth, including via any future writer bug like the one O-21 just fixed); (c) `pnl_skip=1` count (the O-15 class — floor-0 check would have alerted around 50 instead of 1,421); (d) open positions on resolved markets (the O-7.1/O-21 class — 8,971 was the real number today, no check would have caught it building up); (e) writer-liveness / max-write-age per governed column (the `behavioral_modifier` 7-month-silent-writer class); (f) maintenance-run freshness (a sentinel older than ~26h with no corresponding Telegram alert — would catch step-1 crashes and full hangs uniformly, superseding the need to guess at every individual failure mode).  
+2. **(5.1) The timestamp-format check tests the wrong thing on 3 axes.** It defines "canonical" per-column as *whichever format is currently the majority* rather than against `integration-contract.md` §16's actual space-separated standard — for `elo_last_updated` and `positions.entry/exit_timestamp` this is backwards (T-sep is "protected" as canonical, the opposite of the documented standard). It's also a binary `%T%` test blind to microsecond/timezone variants. And its headline status is computed from the **summed total** across columns, so one column's improvement can mask another's regression — confirmed live 2026-07-07: `elo_last_updated` was individually over its own per-column floor (a REGRESSION, visible only in the detail payload) while the headline read PASS because the O-16 fix's improvement to `resolution_date`/`end_date` more than offset it in the sum.  
+3. **(5.2) Floors never ratchet down.** Several Tier-3 floors are set far above current reality — e.g. `FLOOR_API_NO_LOCAL=114,047` vs an actual count around 11,000-13,000 as of today (O-20) — leaving an 8-10× silent-regression margin before the check would ever fire.  
+**SOURCE:** Fable silent-failure audit, findings 5.1, 5.2, 5.5 — the audit's own top-priority "add harness coverage" tier.  
+**STATUS:** OPEN. Not fixed — design work, not yet implemented.  
+**FIX (scoped, not applied):** (1) the six invariants above, each a small COUNT-based check, retro-covering O-15/16/17/18/O-7.1 as a class; (2) rebuild the timestamp check against `column_definitions.py`'s canonical definitions (space-sep, matching contract §16) with per-column gating so no column's regression can hide inside a sum; (3) move floors from hardcoded constants to a git-tracked JSON that auto-ratchets downward after N consecutive clean days, so every improvement permanently tightens the net instead of just resetting the baseline once.  
+**DEPENDENCIES:** None structurally, but this is explicitly the audit's highest-leverage prevention work — most future silent-failure classes this system will produce look like the ones already on this ledger, and these checks would catch the *next* instance of each automatically instead of requiring another manual audit.  
+**RISK/EFFORT:** Medium — six small checks plus one check rebuild plus one infra change (floor storage). No frozen-area contact (does not touch `comprehensive_elo` coverage, which rides the separate ELO-arc design's own 9 invariants).  
+**FROZEN-AREA?** No.
+
+---
+
+### O-29 · Convention-enforcement layer — shared write helpers + drift-guard rules (structural)
+**ITEM:** The multi-writer-drift class (O-6's `comprehensive_elo` history, O-17's resolution co-write gap, and now O-21's near-identical gap on `legendary_positions_scan.py`) keeps recurring because conventions live in comments and doc sections, not in code that mechanically enforces them. Two specific deferred pieces of structural work:  
+1. **`Database.mark_market_resolved()` shared helper** — O-17 scoped this (a single function all 8 `resolved=1` writers route through) but deferred the extraction. O-21 just patched `legendary_positions_scan.py` ad hoc (two inline `UPDATE` statements edited directly) rather than routing it through a shared helper — the fix is correct today but a 9th writer, or a 10th, can still reproduce the same gap tomorrow. Extracting the helper now would make this whole class structurally impossible to recur, not just fixed for the writers that happen to have been audited so far.  
+2. **Shared `connect()` + `db_now()` helpers, plus drift-guard rules** — a `connect()` wrapper baking in WAL + `busy_timeout` (many scripts still `sqlite3.connect()` without either, discovered during the O-7.1 verification work when a manual query hit `database is locked` on first attempt); a `db_now()` helper enforcing the canonical timestamp format at every write site (`resolve_legendary_markets.py`/`database.py` currently bind raw `datetime.now()` — space-sep-with-microseconds, non-canonical per contract §16 — while others use `strftime` correctly). Backed by new rules in the existing `check_canonical_definitions.py` drift-guard (already runs daily, already scans 252 files) banning raw `sqlite3.connect()` without `busy_timeout` and raw `datetime.now()`/`.isoformat()` as SQL bind-params in `scripts/`.  
+**SOURCE:** O-17 (original helper deferral), Fable silent-failure audit Class 2 (multi-writer convention drift, full writer census), and today's O-21 fix (which needed exactly this and didn't have it).  
+**STATUS:** OPEN. Scoped, not implemented.  
+**DEPENDENCIES:** None blocking. Worth sequencing before the *next* multi-writer column gets touched (candidates already visible: O-25's hydrate rotation, any future resolution-writer).  
+**RISK/EFFORT:** Medium — mostly mechanical extraction of existing logic into shared functions, plus drift-guard rule additions (small, the infrastructure already exists and runs daily).  
+**FROZEN-AREA?** No — but this is the exact discipline the frozen `comprehensive_elo` area's own single-writer requirement (O-7) depends on generalizing correctly to the rest of the schema.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
@@ -354,7 +489,7 @@ The `BUY trades with no position record` regression (363K vs 275K floor) is nota
 
 **What actually precedes Layer 2 (corrected):**
 1. Writer C deletion (folds into Stage 0c) — the only non-canonical writer of `resolved_trades_count`, an actual ELO-formula input.
-2. O-15 backlog drain plateau (Stage 0a) — pnl_modifier's input data is moving right now (self-healing since the 2026-07-06 fix); baselining mid-drain would bake a moving target into every migration diff.
+2. Backlog drain plateau (Stage 0a) — pnl_modifier's input data is moving right now, and as of 2026-07-07 this is **not just the O-15 self-heal** (see O-20): two additional live mechanisms are still growing/moving the "BUY trades with no position record" metric intraday. O-7.1 (O-21, fixed 2026-07-07) closed one small contributor (~12% of the gap); O-20's two mechanisms remain open. Do not baseline until O-20 is resolved or its growth demonstrably tapers — see O-20 for the specific metric to watch and why.
 
 Below this line: the original (now-superseded) session #38–42 analysis, kept for history.
 
@@ -411,4 +546,4 @@ Below this line: the original (now-superseded) session #38–42 analysis, kept f
 
 ---
 
-*Ledger last updated: 2026-07-01 (O-14 added and RESOLVED — offsite backup mount fix, ext4 label-truncation root cause). Earlier same day: O-13 added — monitoring service blocking-call stall, discovered during July 1 power-outage forensics. Earlier: 2026-06-30, O-12 added — resolution-collection ID-routing gap, permanent-loss class. Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
+*Ledger last updated: 2026-07-07 — O-19 through O-29 added (backup corruption, Stage-0a dual growth mechanisms, O-7.1 requeue fix closed, and the Fable silent-failure audit's fix-now/harness/structural backlog folded in); O-9 closed (superseded by Fable audit Class 6). Earlier: 2026-07-01 (O-14 added and RESOLVED — offsite backup mount fix, ext4 label-truncation root cause). Earlier same day: O-13 added — monitoring service blocking-call stall, discovered during July 1 power-outage forensics. Earlier: 2026-06-30, O-12 added — resolution-collection ID-routing gap, permanent-loss class. Earlier: 2026-06-29, O-6 updated with INVESTIGATED-COMPLETE findings. All statuses verified against live code and DB.*
