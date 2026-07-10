@@ -50,27 +50,69 @@ SIZE_CAP = 50 * 1024  # 50KB
 PROD_DB_PATH = "/home/parison/projects/first-repo/data/polymarket_tracker.db"
 HANDOFF_DIR = "/home/parison/trading-swarm/brain/agent-outputs/handoffs"
 
-# Allowlist for write tool: (human-readable name, compiled regex)
-_WRITE_ALLOWLIST: list[tuple[str, re.Pattern]] = [
-    ("UPDATE traders SET geo_elo",
+# Allowlist for write tool: (human-readable name, sole permitted column, prefix regex
+# identifying the UPDATE-traders-SET statement shape).
+#
+# O-24 fix (2026-07-10, Fable finding 6.1): the prefix regex alone is NOT sufficient —
+# `^\s*UPDATE\s+traders\s+SET\s+geo_elo\b` matches (and always matched) the START of
+# "UPDATE traders SET geo_elo=1500, comprehensive_elo=9999 WHERE ...", since re.match()
+# only anchors the beginning of the string and nothing here constrained what followed.
+# Every rule below is now paired with an exact-column check (see _assigned_columns /
+# _match_write_allowlist) that rejects the query unless its SET clause assigns EXACTLY
+# and ONLY the one named column — no smuggled second assignment can ride along behind
+# an allowed prefix, regardless of which allowed column is used as the carrier.
+#
+# Removed as part of this fix (confirmed dead/dangerous, 2026-07-10):
+#   - "UPDATE traders SET accuracy_pool"   — column dropped from schema 2026-06-05.
+#   - "INSERT INTO trader_notes"           — table has never existed in this schema.
+#   - "ALTER TABLE traders ADD COLUMN"     — unrestricted schema drift by an LLM agent,
+#     and DDL explicitly skipped the row-count guard below. No legitimate caller used it.
+_WRITE_ALLOWLIST: list[tuple[str, str, re.Pattern]] = [
+    ("UPDATE traders SET geo_elo", "geo_elo",
      re.compile(r"^\s*UPDATE\s+traders\s+SET\s+geo_elo\b", re.IGNORECASE)),
-    ("UPDATE traders SET geo_directionality_score",
+    ("UPDATE traders SET geo_directionality_score", "geo_directionality_score",
      re.compile(r"^\s*UPDATE\s+traders\s+SET\s+geo_directionality_score\b", re.IGNORECASE)),
-    ("UPDATE traders SET accuracy_pool",
-     re.compile(r"^\s*UPDATE\s+traders\s+SET\s+accuracy_pool\b", re.IGNORECASE)),
-    ("UPDATE traders SET geo_resolved_trades_count",
+    ("UPDATE traders SET geo_resolved_trades_count", "geo_resolved_trades_count",
      re.compile(r"^\s*UPDATE\s+traders\s+SET\s+geo_resolved_trades_count\b", re.IGNORECASE)),
-    ("ALTER TABLE traders ADD COLUMN",
-     re.compile(r"^\s*ALTER\s+TABLE\s+traders\s+ADD\s+COLUMN\b", re.IGNORECASE)),
-    ("INSERT INTO trader_notes",
-     re.compile(r"^\s*INSERT\s+INTO\s+trader_notes\b", re.IGNORECASE)),
-    ("UPDATE traders SET bot_type",
+    ("UPDATE traders SET bot_type", "bot_type",
      re.compile(r"^\s*UPDATE\s+traders\s+SET\s+bot_type\b", re.IGNORECASE)),
-    ("UPDATE traders SET research_excluded",
+    ("UPDATE traders SET research_excluded", "research_excluded",
      re.compile(r"^\s*UPDATE\s+traders\s+SET\s+research_excluded\b", re.IGNORECASE)),
 ]
 MAX_WRITE_ROWS = 50_000
 _DDL_RE = re.compile(r"^\s*ALTER\b", re.IGNORECASE)
+
+# Extracts the SET-clause portion of "UPDATE traders SET ..." (everything between SET
+# and an optional WHERE), then every column name it assigns. DOTALL so a multi-line
+# query still matches. Deliberately conservative: a quoted value containing "word="
+# (e.g. bot_type='a=b') will be counted as an extra assignment and the write will be
+# rejected — a false-positive-safe direction (deny), not a false-negative-unsafe one.
+_SET_CLAUSE_RE = re.compile(
+    r"^\s*UPDATE\s+traders\s+SET\s+(.*?)(?:\s+WHERE\b.*)?$",
+    re.IGNORECASE | re.DOTALL,
+)
+_ASSIGNED_COLUMN_RE = re.compile(r"(\w+)\s*=")
+
+
+def _assigned_columns(query: str) -> list[str] | None:
+    """Every column assigned in an UPDATE-traders-SET query's SET clause, lowercased.
+    None if `query` isn't shaped like an UPDATE traders SET ... statement at all."""
+    m = _SET_CLAUSE_RE.match(query)
+    if not m:
+        return None
+    return [c.lower() for c in _ASSIGNED_COLUMN_RE.findall(m.group(1))]
+
+
+def _match_write_allowlist(query: str) -> str:
+    """Returns the matched rule's human-readable name if `query` is a permitted write,
+    else "". A query only matches if its SET clause assigns EXACTLY one column and that
+    column is the one the matched rule names — closes the O-24 smuggling hole."""
+    for pattern_name, allowed_column, pattern_re in _WRITE_ALLOWLIST:
+        if not pattern_re.match(query):
+            continue
+        if _assigned_columns(query) == [allowed_column]:
+            return pattern_name
+    return ""
 
 ENV_FILE = Path.home() / ".env_trading"
 
@@ -289,14 +331,10 @@ def tool_run_sql_write(db_path: str, query: str, params: list | None = None) -> 
             "timestamp": ts,
         }
 
-    matched_pattern = ""
-    for pattern_name, pattern_re in _WRITE_ALLOWLIST:
-        if pattern_re.match(query):
-            matched_pattern = pattern_name
-            break
+    matched_pattern = _match_write_allowlist(query)
 
     if not matched_pattern:
-        allowed = "\n  - ".join(name for name, _ in _WRITE_ALLOWLIST)
+        allowed = "\n  - ".join(name for name, _, _ in _WRITE_ALLOWLIST)
         return {
             "status": "rejected",
             "rows_affected": 0,
