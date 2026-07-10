@@ -268,7 +268,7 @@ def main():
                     'profile_date': p.get('profile_date'),
                     'geo_elo_active': p.get('geo_elo_active'),
                 }
-        except:
+        except Exception:
             pass
 
     index_path = PROFILES_DIR / '_index.json'
