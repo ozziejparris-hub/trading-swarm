@@ -44,7 +44,18 @@ OLLAMA_API_URL = "http://localhost:11434/api/chat"
 OLLAMA_TIMEOUT_S = 600  # per-call socket timeout
 
 READ_PREFIX = "/home/parison/"
-WRITE_PREFIX = "/home/parison/trading-swarm/"
+# Agent write tools are confined to this directory tree. The boundary check
+# (_confined_write_path) resolves symlinks and ".." to a real absolute path
+# BEFORE comparing — the O-24-class fix for Fable finding 2d/4: the old
+# `path.startswith(WRITE_PREFIX)` guard let
+# "/home/parison/trading-swarm/../projects/first-repo/..." (and
+# ".../../.env_trading", ".../../.bashrc") pass while resolving OUTSIDE the repo,
+# into first-repo code, the frozen ELO writer, credentials, and cron wrappers.
+# brain/ is the full legitimate write scope for these tools (agent outputs,
+# handoffs, and the signals/findings bus); agent run-logs are written by the
+# wrapper's own logging, not by these tools. Narrowing to brain/ also closes the
+# in-repo exposure of the enforcement layer (orchestrator/, scripts/cron_wrappers/).
+WRITE_ROOT = Path("/home/parison/trading-swarm/brain").resolve()
 SIZE_CAP = 50 * 1024  # 50KB
 
 PROD_DB_PATH = "/home/parison/projects/first-repo/data/polymarket_tracker.db"
@@ -187,13 +198,41 @@ def tool_read_file(path: str) -> str | dict:
 
 
 # ─────────────────────────────────────────────
+# WRITE-PATH CONFINEMENT (O-24-class boundary check)
+# ─────────────────────────────────────────────
+
+def _confined_write_path(path: str) -> Path | dict:
+    """Resolve `path` to a real absolute path and confirm it is strictly INSIDE
+    WRITE_ROOT. Returns the resolved Path on success, or an {"error": ...} dict if
+    the target escapes confinement (via "..", a symlink, or an absolute path
+    elsewhere). Resolution happens before the boundary check, so no traversal
+    survives it. Callers must use the RETURNED path for the actual write, so the
+    check and the write target are the same normalized path (no TOCTOU gap).
+
+    Uses `WRITE_ROOT not in target.parents` (component-wise) rather than a string
+    prefix, so a sibling like ".../brain-evil/x" cannot slip past on a prefix match.
+    A path resolving to WRITE_ROOT itself is rejected — cannot write over the dir.
+    """
+    try:
+        target = Path(path).resolve()
+    except (OSError, RuntimeError) as e:  # RuntimeError = symlink loop
+        return {"error": f"cannot resolve path: {e}"}
+    if WRITE_ROOT not in target.parents:
+        return {"error": (
+            f"path escapes the permitted write directory {str(WRITE_ROOT)!r}: "
+            f"{path!r} resolves to {str(target)!r}"
+        )}
+    return target
+
+
+# ─────────────────────────────────────────────
 # TOOL: write_file
 # ─────────────────────────────────────────────
 
 def tool_write_file(path: str, content: str) -> dict:
-    if not path.startswith(WRITE_PREFIX):
-        return {"error": f"path must start with {WRITE_PREFIX!r}"}
-    p = Path(path)
+    p = _confined_write_path(path)
+    if isinstance(p, dict):
+        return p
     try:
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(content)
@@ -209,10 +248,10 @@ def tool_write_file(path: str, content: str) -> dict:
 def tool_append_to_json_array(path: str, array_key: str, entry: dict) -> dict:
     if not isinstance(entry, dict):
         return {"error": "entry must be a dict"}
-    if not path.startswith(WRITE_PREFIX):
-        return {"error": f"path must start with {WRITE_PREFIX!r}"}
+    p = _confined_write_path(path)
+    if isinstance(p, dict):
+        return p
 
-    p = Path(path)
     try:
         p.parent.mkdir(parents=True, exist_ok=True)
         p.touch(exist_ok=True)
@@ -427,8 +466,9 @@ def tool_write_handoff(
     next_agent_instructions: str,
     token_estimate: int,
 ) -> dict:
-    if not handoff_path.startswith(WRITE_PREFIX):
-        return {"error": f"handoff_path must start with {WRITE_PREFIX!r}"}
+    p = _confined_write_path(handoff_path)
+    if isinstance(p, dict):
+        return p
     if not isinstance(results, dict):
         return {"error": "results must be a dict"}
     if not isinstance(files_written, list):
@@ -445,7 +485,6 @@ def tool_write_handoff(
         "token_estimate": token_estimate,
     }
 
-    p = Path(handoff_path)
     try:
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(json.dumps(handoff, indent=2))
@@ -605,7 +644,7 @@ TOOL_DEFINITIONS: list[dict] = [
             "name": "write_file",
             "description": (
                 "Write text content to a file, creating parent directories if needed. "
-                "Path must start with /home/parison/trading-swarm/."
+                "Path must be under /home/parison/trading-swarm/brain/."
             ),
             "parameters": {
                 "type": "object",
@@ -630,7 +669,7 @@ TOOL_DEFINITIONS: list[dict] = [
             "description": (
                 "Atomically append a dict entry to a named array in a JSON file. "
                 "Uses an exclusive file lock to prevent concurrent write corruption. "
-                "Path must start with /home/parison/trading-swarm/."
+                "Path must be under /home/parison/trading-swarm/brain/."
             ),
             "parameters": {
                 "type": "object",
@@ -736,7 +775,7 @@ TOOL_DEFINITIONS: list[dict] = [
                 "Write a structured JSON handoff file for a Tier 3 agent to consume. "
                 "Tier 2.5 agents use this to pass pre-computed results without the Tier 3 "
                 "agent needing to re-read all of brain/. "
-                "handoff_path must start with /home/parison/trading-swarm/ and should be "
+                "handoff_path must be under /home/parison/trading-swarm/brain/ and should be "
                 "under brain/agent-outputs/handoffs/. "
                 "Returns {ok, path, token_estimate} on success."
             ),
