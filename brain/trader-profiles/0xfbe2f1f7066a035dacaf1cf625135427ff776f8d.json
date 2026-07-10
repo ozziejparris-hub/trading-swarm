@@ -1,0 +1,65 @@
+{
+  "address": "0xfbe2f1f7066a035dacaf1cf625135427ff776f8d",
+  "profile_date": "2026-07-06",
+  "geo_elo_active": 2192.7,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "332 resolved geo/elections trades. Iran_ME is the dominant domain: 253 trades, 64% accuracy, 155 contested (61% contested rate). Trump_US is a CONFIRMED BLIND SPOT: 40 trades, 28% accuracy — catastrophically below chance, an anti-edge. Russia_UKR is also a CONFIRMED BLIND SPOT: 39 trades, 41% accuracy — below chance. PNL = -$18 (essentially neutral, not anomalous). geo_elo_active = 2192.7, marginally above LEGENDARY threshold of 2175 — at high risk of decay below threshold. geo_resolved_trades_count = 22 in traders table vs 332 actual — same pipeline discrepancy pattern as Jun 29 data integrity alert. Last 10 overall accuracy = 40% (below 45% threshold — performance deterioration flag). The recent 10 include multiple near-certainty entries (0.08-0.09 range cheap-side, 0.985 near-cert) and some contested wins, suggesting mixed methodology. Iran_ME at 64% on 253 trades is solid and the primary signal source. The Trump_US and Russia_UKR blind spots are unusually severe and must be explicitly excluded from any signal use. Confidence LOW: borderline LEGENDARY status + geo_trades discrepancy + recent performance deterioration flag create too many uncertainties for MEDIUM confidence.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME"
+  ],
+  "domain_blindspots": [
+    "Trump_US: 40 trades, 28% accuracy — CONFIRMED ANTI-EDGE. If this trader is long Trump_US, consider it a potential sell signal.",
+    "Russia_UKR: 39 trades, 41% accuracy — below chance, confirmed blind spot",
+    "All non-Iran_ME domains must be excluded from signal use"
+  ],
+  "domain_summary": "Iran_ME specialist only. 64% accuracy on 253 trades at 61% contested rate is a genuine edge. Trump_US and Russia_UKR are both confirmed blind spots — the 28% Trump_US accuracy is an anti-edge that should be monitored as a potential contrarian indicator. geo_elo_active barely above LEGENDARY threshold.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Iran_ME accuracy is sufficient for DOMAIN_ONLY weight in that domain. However: (1) geo_elo_active barely above LEGENDARY threshold (2192.7 vs 2175) — at risk of decay, (2) geo_resolved_trades_count discrepancy (22 stored vs 332 actual), (3) last 10 accuracy = 40% (performance deterioration flag), (4) mandatory new-qualifier human review. Setting to MINIMAL rather than DOMAIN_ONLY pending all four items clearing. After human review: promote to DOMAIN_ONLY (Iran_ME only) if items clear.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Trump_US",
+    "Russia_UKR",
+    "Other"
+  ],
+  "behavioural_flags": [
+    "geo_resolved_trades_count discrepancy: traders table shows 22, actual DB count is 332 — same pipeline issue as Jun 29 data integrity alert",
+    "Trump_US anti-edge: 28% accuracy on 40 trades — potential contrarian indicator if this trader takes Trump_US positions",
+    "PERFORMANCE_DETERIORATION: last 10 overall = 40% accuracy (below 45% threshold) — includes near-certainty losses on Iran airspace (bought cheap YES side at 0.08 and lost)",
+    "Multiple entries at 0.08 on Iran airspace closure: buying the cheap side repeatedly on same market — potential contrarian or volatility strategy",
+    "geo_elo_active marginally above LEGENDARY threshold (2192.7 vs 2175) — one bad week of decay moves this to NEAR_LEGENDARY"
+  ],
+  "risk_patterns": [
+    "Borderline LEGENDARY status — very likely to decay to NEAR_LEGENDARY in next 1-2 cycles without new winning trades",
+    "geo_resolved_trades_count pipeline discrepancy needs resolution before treating as validated LEGENDARY",
+    "Performance deterioration (40% last 10) on a recently qualified trader is a yellow flag"
+  ],
+  "notable_calls": [
+    {
+      "market": "US x Iran permanent peace deal by May 31, 2026",
+      "side": "YES",
+      "entry_price": 0.15,
+      "result": "WON",
+      "significance": "Contested entry at 15 cents on Iran peace deal that won — representative of the Iran_ME contested-price edge at cheap-end prices"
+    }
+  ],
+  "open_positions_summary": "Not yet assessed — initial profile. Open positions to be evaluated at next weekly cycle or after human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any STR-003 inclusion. Priority: (1) confirm geo_trades discrepancy is pipeline issue, (2) verify geo_elo basis",
+    "geo_elo_active at 2192.7 — barely LEGENDARY. Watch for decay below 2175 at next weekly cycle — likely if no new winning trades",
+    "Performance deterioration (40% last 10): if next 5+ trades confirm continued poor performance in Iran_ME, reconsider DOMAIN_ONLY candidacy",
+    "Trump_US contrarian signal potential: if this trader enters Trump_US markets, log position direction for potential counter-trade intelligence"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "New LEGENDARY qualifier with Iran_ME domain strength (64% accuracy, 253 trades, 155 contested). Trump_US and Russia_UKR are confirmed blind spots — 28% and 41% accuracy respectively. Signal weight MINIMAL pending human review of geo_trades count discrepancy, borderline LEGENDARY status, and recent performance deterioration (40% last 10). After human review: Iran_ME only DOMAIN_ONLY promotion is the candidate path, with explicit Trump_US and Russia_UKR exclusions documented. Trump_US anti-edge (28%) should be noted as a potential contrarian indicator.",
+  "data_snapshot": {
+    "geo_elo": 2637.9,
+    "geo_elo_active": 2192.7,
+    "resolved_trades": 332,
+    "distinct_markets": 0,
+    "directionality": 0.941,
+    "pnl": -18.2
+  }
+}

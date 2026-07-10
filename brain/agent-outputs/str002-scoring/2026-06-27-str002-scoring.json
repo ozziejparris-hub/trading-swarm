@@ -1,0 +1,402 @@
+{
+  "strategy": "STR-002",
+  "generated_at": "2026-06-27T08:43:25Z",
+  "summary": {
+    "total_scored": 39,
+    "accuracy": 0.2308,
+    "correct": 9,
+    "avg_edge": -0.0548
+  },
+  "scored_signals": [
+    {
+      "signal_id": "STR002-0005",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.05,
+      "market_title": "US x Iran permanent peace deal by June 7, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0006",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Israel announces Lebanon ceasefire extension by June 7?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0007",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0099,
+      "market_title": "Will Shenna Bellows win the 2026 Maine Governor Democratic primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0008",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.28,
+      "market_title": "Will Troy Jackson win the 2026 Maine Governor Democratic primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0010",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.13,
+      "market_title": "Will Ben Midgley win the 2026 Maine Governor Republican primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0011",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.28,
+      "market_title": "Will Pamela Evette win the 2026 South Carolina Governor Republican primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0014",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.48,
+      "market_title": "Will Nirav Shah win the 2026 Maine Governor Democratic primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0015",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.93,
+      "market_title": "US x Iran permanent peace deal by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0016",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.18,
+      "market_title": "Israel closes its airspace by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0017",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Iran closes its airspace by June 15?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0018",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.014,
+      "market_title": "Strait of Hormuz traffic returns to normal by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0019",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0295,
+      "market_title": "Israel closes its airspace by June 8?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0020",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.83,
+      "market_title": "Will Donald Trump announce that the United States blockade of the Strait of Hormuz has been lifted by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0021",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.024,
+      "market_title": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-17 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0022",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.005,
+      "market_title": "Will the Fed decrease interest rates by 25 bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0023",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.009,
+      "market_title": "Will there be no change in Fed interest rates after the June 2026 meeting?",
+      "winning_outcome": "YES",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0024",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.002,
+      "market_title": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0025",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.002,
+      "market_title": "Will the Fed increase interest rates by 50+ bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0026",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.749,
+      "market_title": "US x Iran permanent peace deal by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0027",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.024,
+      "market_title": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-17 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0028",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.01,
+      "market_title": "Will Iran close its airspace by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-16 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0029",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.11,
+      "market_title": "Will Ivan Cepeda Castro win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0030",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Daniel Quintero win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0031",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.009,
+      "market_title": "Will the Bank of Brazil increase the Selic rate after June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-16T00:00:00Z"
+    },
+    {
+      "signal_id": "STR002-0032",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Vicky D\u00e1vila win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0033",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Gustavo Bol\u00edvar win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0034",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0526,
+      "market_title": "Will Jack Schlossberg be the democratic nominee for NY-12?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0035",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.043,
+      "market_title": "Will Effie Phillips-Staley be the Democratic nominee for NY-17?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0036",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.11,
+      "market_title": "Will Nate Blouin be the Democratic nominee for UT-01?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0037",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.002,
+      "market_title": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0038",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Juan Carlos Pinz\u00f3n win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0039",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.0011,
+      "market_title": "Will Sergio Fajardo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0040",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Luis Gilberto Murillo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0041",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will David Luna S\u00e1nchez win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0042",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Juan Daniel Oviedo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0043",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Roy Barreras win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0044",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.002,
+      "market_title": "Will Claudia L\u00f3pez win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0045",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.001,
+      "market_title": "Will Juan Daniel Oviedo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0046",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Juan Manuel Gal\u00e1n win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    }
+  ]
+}

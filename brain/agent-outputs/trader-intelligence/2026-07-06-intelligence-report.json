@@ -1,0 +1,354 @@
+{
+  "report_date": "2026-07-06",
+  "profiles_updated": [
+    {
+      "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+      "new_resolved_trades": 1,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "tier_changed": true,
+      "tier_change": "LEGENDARY → NEAR_LEGENDARY",
+      "what_changed": "One new win: Waymo Dallas NO @ 0.910 (Jun 27) — near-certainty outside trusted domain, consistent with existing non-core yield behaviour. Critical: geo_elo_active decayed from 2240.1 to 2037.1, dropping below LEGENDARY threshold of 2175. Tier updated to NEAR_LEGENDARY. DOMAIN_ONLY signal weight and Russia_UKR/Europe trusted domains unchanged. Last 10 accuracy = 100% (all near-certainty wins). No archetype change on 1 new trade. Russia x Ukraine ceasefire Jun 30 YES @ 0.03 (10,219 shares) resolved as LOST — large speculative loss now historical."
+    },
+    {
+      "address": "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68",
+      "new_resolved_trades": 1,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "tier_changed": false,
+      "what_changed": "One new win: Cape Verde FIFA World Cup knockouts YES @ 0.460 (Jun 21) — sports market, hard-rule excluded from agent scope. Does not affect geo/elections archetype. Critical: last 10 overall accuracy = 20% (severe performance deterioration flag raised). The 8 prior losses are all cheap speculative long-shots on obscure US primary candidates (avg 0.034), consistent with existing lottery-ticket behavioral flag but now a sustained losing streak. overall_signal_value downgraded from MEDIUM to LOW. geo_elo_active decayed from 1913.83 to 1844.4 (still NEAR_LEGENDARY > 1800)."
+    },
+    {
+      "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "new_resolved_trades": 2,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "tier_changed": false,
+      "what_changed": "Two new losses: Mexico to win second half YES @ 0.390 (Jun 30), DR Congo Round of 16 YES @ 0.540 (Jul 1) — both FIFA World Cup sports markets, hard-rule excluded from agent scope. Watch item for 'contested entries' technically fired (prices 0.39 and 0.54), BUT sports markets do not qualify as YIELD_HARVESTER waking up evidence — only geo/elections contested entries count for that pattern. EXCLUDE status and YIELD_HARVESTER archetype unchanged. Performance deterioration flag: last 10 overall = 40% accuracy (below 45% threshold). geo_elo_active decayed from 2470.8 to 2395.8 (still LEGENDARY)."
+    }
+  ],
+  "archetype_drift_flags": [
+    {
+      "pattern": "performance_deterioration",
+      "trader": "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68",
+      "severity": "HIGH",
+      "evidence": {
+        "last_10_accuracy": 0.20,
+        "last_10_breakdown": "2 wins (Platner early entry WON, Cape Verde sports WON), 8 losses (Jermaine Johnson 0.060, Terri Pickens 0.026, Everton Blair 0.029, Mike Thurmond 0.050 + others at cheap long-shot prices)",
+        "loss_pattern": "Systematic cheap speculative long-shots on obscure US primary candidates, avg entry ~0.034"
+      },
+      "data_depth": "moderate (111 total resolved trades)",
+      "n_new_trades": 1,
+      "interpretation": "NEAR_LEGENDARY VOLUME_SPECIALIST (Trump_US trusted domain) is in a sustained losing streak driven by cheap speculative entries on obscure US primary candidates, not Trump_US directional calls. This is the lottery-ticket behavior flagged at Jun 10 baseline now showing measurable impact on performance. The core Trump_US contested-price accuracy (60% at Jun 10 baseline) has not been tested this cycle — the deterioration is in out-of-domain noise trading. Signal weight DOMAIN_ONLY maintained but overall_signal_value downgraded to LOW until Trump_US accuracy is confirmed in the 2026 midterm cycle.",
+      "reclassified": false
+    },
+    {
+      "pattern": "performance_deterioration",
+      "trader": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "severity": "MEDIUM",
+      "evidence": {
+        "last_10_accuracy": 0.40,
+        "new_trade_losses": "Mexico second half YES 0.390 LOST, DR Congo Round of 16 YES 0.540 LOST",
+        "market_category": "Sports (FIFA World Cup 2026) — hard-rule excluded from agent scope"
+      },
+      "data_depth": "thin (2 new resolved trades)",
+      "n_new_trades": 2,
+      "interpretation": "LEGENDARY YIELD_HARVESTER (EXCLUDE) making contested-price bets in sports markets that are losing. Watch item for contested geo/elections entries did not fire — these are sports, outside scope. Performance deterioration (40% last 10) is noted but secondary for an EXCLUDE trader. The sports activity pattern is potentially a behavioral shift worth monitoring but does not constitute evidence of geo/elections forecasting capability.",
+      "reclassified": false
+    },
+    {
+      "pattern": "yield_harvester_contested_entries",
+      "trader": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "severity": "LOW",
+      "evidence": {
+        "contested_entries": [
+          {"market": "Mexico to win the second half", "direction": "Yes", "entry_price": 0.390, "result": "lost"},
+          {"market": "Will DR Congo reach the Round of 16 at the 2026 FIFA World Cup", "direction": "Yes", "entry_price": 0.540, "result": "lost"}
+        ],
+        "market_category": "Sports — EXCLUDED from geo/elections scope"
+      },
+      "data_depth": "thin (2 new resolved trades)",
+      "n_new_trades": 2,
+      "interpretation": "Watch item triggered (contested entries observed) but DISQUALIFIED as YIELD_HARVESTER waking up evidence: both contested entries are in sports markets (FIFA World Cup), which are hard-rule excluded from all agent scope. A YIELD_HARVESTER making contested-price sports bets while still harvesting yield in geo/elections does not indicate a forecasting awakening in the geo/elections domain. Flag severity LOW. Revisit if contested GEO/ELECTIONS entries appear.",
+      "reclassified": false
+    }
+  ],
+  "new_traders_qualified": [
+    {
+      "address": "0xc624cccd414dc90ea329f06cf535fafa40d2ee24",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2258.6,
+      "geo_elo": 2584.5,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "Iran_ME/Trump_US DOMAIN_SPECIALIST with 744 resolved geo trades and 64% overall accuracy. Iran_ME is the dominant strength: 462 trades, 63% accuracy, 290 contested (63% contested rate). Trump_US is a strong secondary: 140 trades, 75% accuracy, 73 contested — among the strongest Trump_US accuracy profiles observed. Russia_UKR is near-chance (54% on 50 trades) and explicitly excluded. PNL = $1,777. geo_elo_active = 2258.6, marginally above LEGENDARY threshold. Discovery source: leaderboard. KEY ANOMALY: geo_resolved_trades_count in traders table shows 170 vs 744 actual — same pipeline discrepancy seen in June 29 data integrity alert. Requires investigation before promoting to DOMAIN_ONLY.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "blocking_items": [
+        "geo_resolved_trades_count discrepancy: traders table shows 170, actual count 744 — pipeline issue same as Jun 29 alert",
+        "geo_elo_active marginally above LEGENDARY threshold (2258.6 vs 2175) — verify basis",
+        "Standard new-qualifier human review before STR-003 inclusion"
+      ],
+      "recommended_upgrade": "DOMAIN_ONLY (Iran_ME, Trump_US) after human review clears above items"
+    },
+    {
+      "address": "0xfbe2f1f7066a035dacaf1cf625135427ff776f8d",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2192.7,
+      "geo_elo": 2637.9,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "first_read": "Iran_ME specialist with 332 geo trades, 57% overall accuracy, 64% in Iran_ME specifically (253 trades, 155 contested). Trump_US is a CONFIRMED ANTI-EDGE (28% accuracy on 40 trades) — not a blind spot but an active counter-indicator. Russia_UKR also below chance (41% on 39 trades). PNL = -$18. geo_elo_active = 2192.7, barely above LEGENDARY threshold — likely to decay below 2175 by next weekly cycle without new wins. geo_resolved_trades_count shows 22 in traders table vs 332 actual (same pipeline bug). Last 10 accuracy = 40% (performance deterioration flag). Confidence LOW given borderline status + pipeline discrepancy + recent poor form.",
+      "human_review_required": true,
+      "review_priority": "MEDIUM",
+      "blocking_items": [
+        "geo_resolved_trades_count discrepancy: 22 stored vs 332 actual — pipeline investigation needed",
+        "geo_elo_active barely above LEGENDARY (2192.7 vs 2175) — likely NEAR_LEGENDARY within 1-2 weeks",
+        "Last 10 accuracy = 40% (performance deterioration flag)",
+        "Standard new-qualifier human review"
+      ],
+      "recommended_upgrade": "DOMAIN_ONLY (Iran_ME only) after human review — explicit Trump_US and Russia_UKR exclusion required. Trump_US anti-edge (28%) should be monitored as contrarian indicator."
+    }
+  ],
+  "emerging_consensus": [
+    {
+      "market": "Will the Iranian regime fall before 2027?",
+      "market_id": null,
+      "direction": "No",
+      "end_date": "2026-12-31",
+      "days_remaining": 178,
+      "traders": [
+        {
+          "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "in_trusted_domain": false,
+          "avg_price": 0.870,
+          "net_shares": 94,
+          "contested": false
+        },
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "in_trusted_domain": false,
+          "avg_price": 0.870,
+          "net_shares": 0,
+          "contested": false
+        }
+      ],
+      "interpretation": "Two eligible traders hold NO on Iranian regime fall — but both at near-certainty prices (~0.87). Neither Russia_UKR/Europe specialist (0x2884) nor the Russia_UKR VOLUME_SPECIALIST (0xd44e974a) has Iran_ME as a trusted domain. Both entries are near-certainty yield collection, not contested directional forecasting. NOT qualified for STR-003: positions not contested (>0.80) and neither trader is in their trusted domain for Iran_ME. Informationally: the absence of any Iran_ME specialist (0xc722c1a1 or new qualifiers) taking a contested position on this market in either direction is itself notable.",
+      "str003_eligible": false,
+      "str003_reason": "Both positions near-certainty (avg 0.870), neither trader in trusted Iran_ME domain"
+    }
+  ],
+  "direction_reversals": [
+    {
+      "trader": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+      "market": "Will New People (NL) gain the most seats in the next Russian elections?",
+      "market_id": null,
+      "archetype": "DOMAIN_SPECIALIST",
+      "signal_weight": "DOMAIN_ONLY",
+      "trusted_domain": "Russia_UKR",
+      "status": "PERSISTING from Jun 29",
+      "from": "No (106 shares at 0.669)",
+      "to": "Yes (886 shares at 0.345, dominant)",
+      "old_leg": {"avg_price": 0.669, "shares": 106},
+      "new_leg": {"avg_price": 0.345, "shares": 886},
+      "end_date": "2026-09-30",
+      "interpretation": "Russia_UKR DOMAIN_SPECIALIST continues to hold bidirectional positions on this market (first noted Jun 29): 106 shares NO at 0.669 (earlier entry) and 886 shares YES at 0.345 (dominant position). No new entries since Jun 29. The dominant thesis — YES at 0.345 CONTESTED that New People top the Russian Duma — represents genuine Russia_UKR domain forecasting at a contested price. This trader is now NEAR_LEGENDARY tier (geo_elo_active decayed below 2175) but the position predates the tier change. Resolves Sep 30 2026. Worth monitoring for additional LEGENDARY pool traders entering this market.",
+      "data_depth": "thin (1 new trade, bidirectional unchanged)"
+    }
+  ],
+  "approaching_resolutions": [
+    {
+      "market": "Will Trump attend NATO Summit?",
+      "market_id": null,
+      "end_date": "2026-07-08",
+      "days_remaining": 2,
+      "positions": [],
+      "pre_res_scan_ref": "Jul 5 pre-res scan: ELITE tier only, 5 elite traders holding NO. 0 LEGENDARY pool members in this market. Pre-res signal at ELITE tier: NO at 0% smart_money vs 65.2% market price — large gap. Our LEGENDARY pool has no eligible positions on this market.",
+      "pool_intel": "No eligible LEGENDARY trader holds a position on Trump NATO Summit. GENUINE_FORECASTER (0xecaa8806) holds NO on this market that already resolved WON — position cleared."
+    },
+    {
+      "market": "US x Iran permanent peace deal by July 31, 2026?",
+      "market_id": null,
+      "end_date": "2026-07-31",
+      "days_remaining": 25,
+      "positions": [
+        {
+          "address": "0xc722c1a1a0bfddf4e0edb3286f7ebce127221334",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "domain": "Iran_ME",
+          "direction": "Yes",
+          "avg_price": 0.430,
+          "net_shares": 698,
+          "contested": true
+        }
+      ],
+      "pre_res_scan_ref": "Not in Jul 5 pre-res scan (scan covered 15 markets). Market approaches Jul 31 — next weekly cycle will overlap resolution.",
+      "pool_intel": "Iran_ME specialist 0xc722c1a1 (MINIMAL, pending human review) holds YES @ 0.430 CONTESTED, 698 shares. This is the only LEGENDARY pool position on this market. MINIMAL weight means it cannot contribute to STR-003, but it is notable: the strongest Iran_ME accuracy new qualifier (0xc624cccd) has no position visible on this market."
+    }
+  ],
+  "overdue_markets_persisting": [
+    {
+      "market": "Will Keiko Fujimori win the 2026 Peruvian presidential election?",
+      "end_date": "2026-06-07",
+      "days_overdue": 29,
+      "positions": [
+        {
+          "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+          "archetype": "GENUINE_FORECASTER",
+          "signal_weight": "FULL",
+          "direction": "Yes",
+          "avg_price": 0.470,
+          "net_shares": 8611
+        },
+        {
+          "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "direction": "Yes",
+          "avg_price": 0.680,
+          "net_shares": 11
+        }
+      ],
+      "status": "PIPELINE FAILURE — 29 days past end_date, DB still shows pending. Not resolved in daily maintenance. Two consecutive weekly intelligence reports have flagged this. Oscar must investigate resolution pipeline for this market specifically. The GENUINE_FORECASTER (0xecaa8806) has 8,611 shares YES at 0.470 that should have resolved by now — STR003-006 was already marked RESOLVED_WRONG (López Aliaga not Fujimori). Check if this is a different market (Fujimori ≠ López Aliaga) or if DB has two separate Peruvian election markets with different resolution status."
+    },
+    {
+      "market": "US x Iran diplomatic meeting by April 16, 2026?",
+      "end_date": "2026-04-30",
+      "days_overdue": 67,
+      "positions": [
+        {
+          "address": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+          "archetype": "VOLUME_SPECIALIST",
+          "signal_weight": "DOMAIN_ONLY",
+          "direction": "No",
+          "avg_price": 0.710,
+          "net_shares": 843
+        }
+      ],
+      "status": "67 days overdue — April 30 end_date, still pending in DB. VOLUME_SPECIALIST holds NO (843 shares). This is a different market from the June-Jul Iran positions. Likely did not resolve correctly in pipeline."
+    },
+    {
+      "market": "Will Nithya Raman win the 2026 Los Angeles mayoral election?",
+      "end_date": "2026-06-02",
+      "days_overdue": 34,
+      "positions": [
+        {
+          "address": "0xedc2834124c0465fb2ccbf239896ef65f975ad9f",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "direction": "Yes",
+          "avg_price": 0.170,
+          "net_shares": 101
+        }
+      ],
+      "status": "34 days overdue — same recurring pipeline issue."
+    }
+  ],
+  "tier_demotion_reviews": [
+    {
+      "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+      "stored_tier": "LEGENDARY",
+      "new_tier": "NEAR_LEGENDARY",
+      "current_geo_elo_active": 2037.1,
+      "archetype": "DOMAIN_SPECIALIST",
+      "signal_weight": "DOMAIN_ONLY",
+      "note": "NEW THIS WEEK. geo_elo_active decayed from 2240.1 (Jun 10) to 2037.1 (Jul 6) — 203-point drop in 26 days, primarily recency decay from relative inactivity. Profile tier updated to NEAR_LEGENDARY. Signal weight and archetype unchanged. Human review recommended. If geo_elo_active drops below 1800 before next cycle, will require NEAR_LEGENDARY demotion review."
+    },
+    {
+      "address": "0x9aa516edbff66857c1680c95d5e48a1c7f39acdb",
+      "stored_tier": "LEGENDARY",
+      "current_geo_elo_active": 2052.4,
+      "archetype": "YIELD_HARVESTER",
+      "signal_weight": "EXCLUDE",
+      "note": "Persisting from prior cycles. YIELD_HARVESTER already EXCLUDE — tier demotion review is administrative only. Profile not updated this cycle (no new resolved trades). Flagged for human review."
+    },
+    {
+      "address": "0x44a1159b925c14b2d31c2a4dc7e5d95e7b3ac8c3",
+      "stored_tier": "LEGENDARY",
+      "current_geo_elo_active": 2121.0,
+      "archetype": "YIELD_HARVESTER",
+      "signal_weight": "EXCLUDE",
+      "note": "Persisting. YIELD_HARVESTER EXCLUDE — administrative review only. No new trades this cycle."
+    },
+    {
+      "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+      "stored_tier": "NEAR_LEGENDARY",
+      "current_geo_elo_active": 1673.3,
+      "archetype": "GENUINE_FORECASTER",
+      "signal_weight": "MINIMAL",
+      "note": "Persisting from Jun 29 report. GENUINE_FORECASTER with MINIMAL weight, geo_elo_active=1673.3 (well below 1800 threshold, declining). No new trades this cycle. Profile not deleted per Rule 7. Recommend Oscar decides whether to retain for historical tracking or formally retire."
+    },
+    {
+      "address": "0x4ecefb5b148a5a2b4e2e3d5af0e6a6e451e89a2b",
+      "stored_tier": "NEAR_LEGENDARY",
+      "current_geo_elo_active": 1700.7,
+      "archetype": "GENUINE_FORECASTER",
+      "signal_weight": "FULL",
+      "note": "NEW this week. GENUINE_FORECASTER with FULL signal weight has dropped below NEAR_LEGENDARY threshold (1700.7 < 1800). If this trader has FULL weight, the demotion is signal-relevant. Oscar must review — if the trader is inactive and geo_elo_active has decayed, consider suspending their FULL weight signal until they re-qualify."
+    }
+  ],
+  "data_integrity_status": {
+    "june_29_alert_resolved": false,
+    "pool_c_recovery": "Pool C partially recovered: 2157 (Jun 29) → 2610 (Jul 6). However, the 9 Russia_UKR DOMAIN_SPECIALISTs flagged in Jun 29 remain with geo_accuracy_pool=0 and geo_elo_active=0. Sample verification: 0xbbd22b1ace7f8933 still shows stored_geo_trades=4, actual=1904, pool_c=0, geo_elo=5469. The recovery in Pool C count (2157→2610) is likely from new traders entering rather than the June 29 bug being fixed.",
+    "affected_profiles": [
+      "0xbbd22b1ace7f8933e2862a0827ad6a63dbad3c10",
+      "0x40173a531f84e7fde7f806fd72c154886a02fb23",
+      "0x55055087699c7436fde338b7017c20378b9baa5a",
+      "0x51d2063dc67f9de481223cb1cf329d0234f2eaa8",
+      "0x4f2365287b87b4437bee646b269656817151e0d3",
+      "0xca0acc6f272eb35229c2ca4be66049e7058193a4",
+      "0x9f162cab9822be4ce687a1a12d8114dc9d14884d",
+      "0x474ea661f6be8c9d49438353a42acedd229c938b",
+      "0x4c34beb16ddedf02116413693b07a709e0a1dcce"
+    ],
+    "new_anomaly": "Two new LEGENDARY qualifiers (0xc624cccd, 0xfbe2f1f7) also show geo_resolved_trades_count discrepancies: 170 stored vs 744 actual and 22 stored vs 332 actual respectively. This confirms the June 29 pipeline bug is broader than the 9 Russia_UKR specialists — it affects all traders whose geo_elo uses a non-standard trade subset for counting."
+  },
+  "pool_health": {
+    "legendary_clean": 13,
+    "near_legendary_clean": 34,
+    "profiles_current": 48,
+    "profiles_stale": 0,
+    "profiles_updated_this_run": 3,
+    "new_profiles_created": 2,
+    "note": "Pool C = 2,610 (above alert threshold of 2,500 — recovered from 2,157 on Jun 29). legendary_clean dropped from 16 to 13 (expected: tier decay on 3 YIELD_HARVESTERs + 0x2884 moving to NEAR_LEGENDARY). near_legendary_clean dropped from 41 to 34 (recency decay). 48 total profiles (46 prior + 2 new). profiles_stale=0 — all traders with new resolved trades were updated. 23 unprofiled NEAR_LEGENDARY qualifiers remain from prior cycles (25 total unprofiled - 2 new LEGENDARY profiled this run)."
+  },
+  "action_items": [
+    "URGENT — DATA INTEGRITY (SECOND CONSECUTIVE WEEK): The June 29 geo_resolved_trades_count pipeline bug remains UNFIXED. 9 Russia_UKR DOMAIN_SPECIALISTs still show pool_c=0 with geo_elo_active=0 (e.g., 0xbbd22b: stored 4 trades, actual 1,904). Additionally: new LEGENDARY qualifiers 0xc624cccd (170 stored vs 744 actual) and 0xfbe2f1f7 (22 stored vs 332 actual) confirm the bug is systemic, not limited to Russia_UKR traders. Oscar must fix update_geo_elo.py or the geo_resolved_trades_count calculation before next weekly cycle.",
+    "HUMAN REVIEW REQUIRED — 0xc624cccd (NEW LEGENDARY, elo_active=2259): Strong Iran_ME/Trump_US DOMAIN_SPECIALIST — 462 Iran_ME trades at 63% acc and 140 Trump_US trades at 75% acc, both at robust contested-price rates. Highest-priority new qualifier. Recommend DOMAIN_ONLY (Iran_ME, Trump_US) after human review clears geo_trades count anomaly. This trader could fill the Iran_ME signal gap in STR-003.",
+    "TIER DEMOTION + HUMAN REVIEW — 0x2884f98185 (Russia_UKR DOMAIN_SPECIALIST): geo_elo_active decayed from 2240 to 2037, dropping below LEGENDARY threshold. Profile tier updated to NEAR_LEGENDARY this run. DOMAIN_ONLY signal weight for Russia_UKR maintained, but the decay trajectory (203 points in 26 days) should be reviewed. If inactive, signal weight may need review at next cycle.",
+    "PIPELINE FAILURE (THIRD CONSECUTIVE WEEK) — Peru Fujimori market: 0xecaa8806 (GENUINE_FORECASTER FULL) holds 8,611 shares YES @ 0.470. Market end_date was Jun 7 — now 29 days overdue. Daily maintenance has not resolved this position. Oscar must investigate: confirm whether this is the same market as the already-marked STR003-006 (López Aliaga, RESOLVED_WRONG) or a separate Fujimori market, and fix the resolution pipeline for it.",
+    "WATCH — FULL-WEIGHT GENUINE_FORECASTER DEMOTION: 0x4ecefb5b (GENUINE_FORECASTER, FULL signal weight) has dropped below NEAR_LEGENDARY threshold (geo_elo_active=1700.7 < 1800). A FULL-weight trader falling below pool qualification threshold is signal-relevant. Oscar should review: if inactive and decaying, suspend FULL signal weight until re-qualification.",
+    "PERFORMANCE DETERIORATION — 0x686d5bfc5a (NEAR_LEGENDARY VOLUME_SPECIALIST, Trump_US): last 10 resolved = 20% accuracy. Sustained losing streak on lottery-ticket US primary entries. overall_signal_value downgraded to LOW. Monitor next 5 resolved Trump_US contested entries — if below 45%, downgrade signal_weight to MINIMAL.",
+    "PROFILE DEBT — 23 unprofiled NEAR_LEGENDARY qualifiers remain in Pool C. Top candidates by geo_elo_active: 0xc624cccd (profiled this run, now LEGENDARY), 0xfbe2f1f7 (profiled this run), next unprofiled: 0xcc2620f9e3cb4498 (elo_active=2171, 43 trades, pnl=-16488), 0xdc700b60c6ed2f9e (elo_active=2115, 38 trades, pnl=931). Oscar to authorize a dedicated NEAR_LEGENDARY profiling run. Priority: traders with elo_active > 2000 and positive PNL."
+  ],
+  "run_metadata": {
+    "agent": "trader-intelligence-agent",
+    "run_date": "2026-07-06",
+    "profiles_scanned": 46,
+    "profiles_with_new_resolved_trades": 3,
+    "new_qualifiers_profiled": 2,
+    "near_legendary_qualifiers_flagged_unprofiled": 23,
+    "tier_demotion_reviews": 5,
+    "contract_version_read": "v2.13 (Section 10 canonical definitions, Section 11 archetypes)",
+    "schema_change_log_read": "SCL-001 through SCL-012 reviewed; no new PROPAGATION INCOMPLETE items affecting this read-only agent",
+    "contract_validation": "PASS — pool_c=2,610 above alert threshold of 2,500",
+    "pool_sizes_at_run": {
+      "legendary_clean": 13,
+      "near_legendary_clean": 34,
+      "pool_c": 2610,
+      "profiles_total": 48,
+      "wal_mode": "wal"
+    },
+    "alert_flags": [
+      "geo_resolved_trades_count pipeline bug UNFIXED (second consecutive week) — 9 Russia_UKR traders + 2 new qualifiers affected",
+      "Peru Fujimori market still unresolved in DB (29 days overdue, third consecutive flag)",
+      "0x4ecefb5b GENUINE_FORECASTER FULL weight dropped below NEAR_LEGENDARY threshold — signal-relevant",
+      "0x2884f98185 Russia_UKR DOMAIN_SPECIALIST decayed from LEGENDARY to NEAR_LEGENDARY this week"
+    ]
+  }
+}

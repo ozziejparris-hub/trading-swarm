@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-06",
+  "markets_checked": 27,
+  "signals_found": 1,
+  "signals": [
+    {
+      "market": "Will Trump attend NATO Summit?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0023,
+      "market_price_pct": 0.652,
+      "gap_pt": 65.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-08"
+    }
+  ],
+  "scan_timestamp": "2026-07-06T08:04:07.570347+00:00"
+}

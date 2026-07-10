@@ -454,13 +454,14 @@
       "to": "orchestrator",
       "type": "telegram_notification",
       "payload": {
-        "message": "*Signal Agent — 2026-07-06 08:00 UTC*\n──────────────────────────────\n🔍 Rescan: 4 active | 0 new signals\n\n📊 *Signal Status:*\n• STR003-001 (Newsom NO): $3,475 intact, 57d to Sept 1 — below threshold\n• STR003-004 (Putin NO): OVERDUE ⚠️ — 6d past June 30, resolved=0 in DB\n• STR003-007 (Iran NO): RESOLVED_CORRECT ✅ (scored Jul 4, non-scorable)\n• STR003-008 (EU Security NO): RESOLVED_CORRECT ✅ (Gate 3: 2/5=40%)\n\n🔵 *LEGENDARY Pool: 11 qualifying, 7 in market limit, 0 signals*\nAll positions: too small (<$2k), near-certainty, or stale overdue\n\n⚠️ *Action Required:*\n• Putin market OVERDUE — Oscar verify NO + trigger resolution\n• 0x44a1159b discrepancy (ongoing)\n👀 Watch: 0xcc2620f9 at ELO 2171 (4 from LEGENDARY) — 113 geo markets resolving this week\n\nReport: brain/agent-outputs/signal-agent/2026-07-06-08-signal-report.md",
+        "message": "*Signal Agent \u2014 2026-07-06 08:00 UTC*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\ud83d\udd0d Rescan: 4 active | 0 new signals\n\n\ud83d\udcca *Signal Status:*\n\u2022 STR003-001 (Newsom NO): $3,475 intact, 57d to Sept 1 \u2014 below threshold\n\u2022 STR003-004 (Putin NO): OVERDUE \u26a0\ufe0f \u2014 6d past June 30, resolved=0 in DB\n\u2022 STR003-007 (Iran NO): RESOLVED_CORRECT \u2705 (scored Jul 4, non-scorable)\n\u2022 STR003-008 (EU Security NO): RESOLVED_CORRECT \u2705 (Gate 3: 2/5=40%)\n\n\ud83d\udd35 *LEGENDARY Pool: 11 qualifying, 7 in market limit, 0 signals*\nAll positions: too small (<$2k), near-certainty, or stale overdue\n\n\u26a0\ufe0f *Action Required:*\n\u2022 Putin market OVERDUE \u2014 Oscar verify NO + trigger resolution\n\u2022 0x44a1159b discrepancy (ongoing)\n\ud83d\udc40 Watch: 0xcc2620f9 at ELO 2171 (4 from LEGENDARY) \u2014 113 geo markets resolving this week\n\nReport: brain/agent-outputs/signal-agent/2026-07-06-08-signal-report.md",
         "priority": "MEDIUM",
         "bot": "agents",
         "run_id": "signal-20260706"
       },
       "timestamp": "2026-07-06T08:05:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-07-06T08:11:01.413054"
     },
     {
       "from": "feedback-loop-agent",
@@ -574,26 +575,26 @@
         "legendary_qualifying_str003": 11,
         "legendary_within_market_limit": 7,
         "signal_statuses": {
-          "STR003-001": "ACTIVE_BELOW_THRESHOLD — position intact $3,475 NO (57 days to Sept 1). Trader geo_elo_active ~820, fails 2175 threshold. thin sample flag retained. No change.",
-          "STR003-004": "ACTIVE_OVERDUE — market resolved=0 in DB, 6 days past June 30 resolution date. Position intact $7,191 NO. Expected outcome: CORRECT (Putin did not invade). Action required: Oscar to verify + trigger resolution.",
-          "STR003-007": "RESOLVED_CORRECT — already scored 2026-07-04. Market resolved=1 winning_outcome=No. Non-scorable for validation. No action.",
-          "STR003-008": "RESOLVED_CORRECT — already scored 2026-07-04. Market resolved=1 winning_outcome=No. Counted for Gate 3 (2/5=40%)."
+          "STR003-001": "ACTIVE_BELOW_THRESHOLD \u2014 position intact $3,475 NO (57 days to Sept 1). Trader geo_elo_active ~820, fails 2175 threshold. thin sample flag retained. No change.",
+          "STR003-004": "ACTIVE_OVERDUE \u2014 market resolved=0 in DB, 6 days past June 30 resolution date. Position intact $7,191 NO. Expected outcome: CORRECT (Putin did not invade). Action required: Oscar to verify + trigger resolution.",
+          "STR003-007": "RESOLVED_CORRECT \u2014 already scored 2026-07-04. Market resolved=1 winning_outcome=No. Non-scorable for validation. No action.",
+          "STR003-008": "RESOLVED_CORRECT \u2014 already scored 2026-07-04. Market resolved=1 winning_outcome=No. Counted for Gate 3 (2/5=40%)."
         },
-        "upgrade_check": "No upgrade possible — no active signal has 2+ independent LEGENDARY traders on same side. STR003-004 and STR003-001 both have single below-threshold traders.",
+        "upgrade_check": "No upgrade possible \u2014 no active signal has 2+ independent LEGENDARY traders on same side. STR003-004 and STR003-001 both have single below-threshold traders.",
         "new_signal_scan": "0 new STR-003 signals. 11 LEGENDARY qualifying traders, 7 within market limit. All disqualified by: insufficient position size (<$2,000), near-certainty prices (outside 0.10-0.80 anti-arb range), or stale/overdue positions.",
         "near_legendary_watch": [
-          "0xcc2620f9 (geo_elo_active 2171.0, directionality 0.983) — 4 ELO from LEGENDARY threshold. Bidirectional and near-certainty positions — caution YIELD_HARVESTER. Watch after this week's 113 geo market resolutions.",
-          "0xdc700b60 (geo_elo_active 2115.3, directionality 0.907, pnl +$931) — 60 ELO from threshold",
-          "0x9aa516ed (geo_elo_active 2052.4, directionality 1.000, pnl -$6) — 123 ELO from threshold"
+          "0xcc2620f9 (geo_elo_active 2171.0, directionality 0.983) \u2014 4 ELO from LEGENDARY threshold. Bidirectional and near-certainty positions \u2014 caution YIELD_HARVESTER. Watch after this week's 113 geo market resolutions.",
+          "0xdc700b60 (geo_elo_active 2115.3, directionality 0.907, pnl +$931) \u2014 60 ELO from threshold",
+          "0x9aa516ed (geo_elo_active 2052.4, directionality 1.000, pnl -$6) \u2014 123 ELO from threshold"
         ],
         "anomalies": [
-          "STR003-004 (Putin NO) OVERDUE — 6 days past June 30 resolution, DB still resolved=0. fast_resolution_check.py should catch on next run. Oscar action needed.",
-          "0x44a1159b DB discrepancy (ongoing) — contract says research_excluded=1 but DB shows 0. Oscar to reconcile.",
-          "0xcc2620f9 approaching LEGENDARY threshold (4 ELO) — archetype check needed if threshold crossed.",
-          "legendary_clean declining 3rd consecutive week: 17 → 16 → 14 → 13. Not at alert level but trend warrants monitoring.",
-          "113 geo markets resolving this week — ELO updates expected, near-legendary pool may shift substantially."
+          "STR003-004 (Putin NO) OVERDUE \u2014 6 days past June 30 resolution, DB still resolved=0. fast_resolution_check.py should catch on next run. Oscar action needed.",
+          "0x44a1159b DB discrepancy (ongoing) \u2014 contract says research_excluded=1 but DB shows 0. Oscar to reconcile.",
+          "0xcc2620f9 approaching LEGENDARY threshold (4 ELO) \u2014 archetype check needed if threshold crossed.",
+          "legendary_clean declining 3rd consecutive week: 17 \u2192 16 \u2192 14 \u2192 13. Not at alert level but trend warrants monitoring.",
+          "113 geo markets resolving this week \u2014 ELO updates expected, near-legendary pool may shift substantially."
         ],
-        "action_required": "Oscar: (1) verify Putin invasion market resolved NO and trigger DB resolution. (2) reconcile 0x44a1159b research_excluded discrepancy. Quant-research-agent: RQ-GEO-ELO-001 Phase 1 42 days overdue — Phase 5 Gate 4 blocked.",
+        "action_required": "Oscar: (1) verify Putin invasion market resolved NO and trigger DB resolution. (2) reconcile 0x44a1159b research_excluded discrepancy. Quant-research-agent: RQ-GEO-ELO-001 Phase 1 42 days overdue \u2014 Phase 5 Gate 4 blocked.",
         "report_path": "brain/agent-outputs/signal-agent/2026-07-06-08-signal-report.md"
       }
     },
@@ -847,19 +848,29 @@
       "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time.",
       "rescan_2026-06-15": "ACTIVE_NON_SCORABLE \u2014 15 days to June 30 resolution. Market near-fully resolved (NO dominant, Iran regime intact). DB confirms 0 LEGENDARY traders (geo_elo_active\u22652175) in top-20 positions for this market; largest holders are geo_elo_active 1455-1725 range. Registered retrospectively 2026-06-09 \u2014 non_scorable_for_validation confirmed. Original '7 LEGENDARY' claim based on prior ELO thresholds or registration criteria that differ from current geo_elo_active standard. Monitor for June 30 resolution. Do not use for STR-003 accuracy scoring.",
       "counter_signal_v2": {
-        "counter_signal_detected": false,
+        "counter_signal_detected": true,
         "mode": "market_level",
-        "evaluated_at": "2026-07-05T08:55:58Z",
+        "evaluated_at": "2026-07-10T07:46:11Z",
         "signal_date_cutoff": "2026-06-09",
-        "confirming_count": 9,
-        "exited_count": 10,
+        "confirming_count": 8,
+        "exited_count": 11,
         "reversed_count": 1,
-        "new_post_reg_exits": 0,
+        "new_post_reg_exits": 1,
         "new_post_reg_reversals": 0,
-        "credibility_adjustment": 0.0,
+        "credibility_adjustment": -5.0,
         "scs_floor_applied": 25.0,
         "reversals": [],
-        "exits": [],
+        "exits": [
+          {
+            "address": "0x51aa6b8fbd20ae",
+            "geo_elo": 1801.0,
+            "net_signal_side": 0.0,
+            "net_opposing": 0.0,
+            "last_trade": "2026-06-15 05:47:58",
+            "post_reg_activity": true,
+            "is_legendary": false
+          }
+        ],
         "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
       },
       "edge_at_entry": 0.007,
@@ -899,7 +910,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-05T08:55:58Z",
+        "evaluated_at": "2026-07-10T07:46:11Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 2,
         "exited_count": 0,

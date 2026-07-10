@@ -110,3 +110,565 @@ total size is 2,554,849  speedup is 10.43
 [2026-06-15T02:02:22Z] Pruning old backups (keeping 14 days)...
 [2026-06-15T02:02:22Z] Backup complete. Drive usage: 9.3G used
 [2026-06-15T02:02:22Z] Backup complete. Drive usage: 9.3G used
+[2026-06-16T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-16
+[2026-06-16T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-16
+[2026-06-16T02:00:01Z] Checkpointing WAL...
+[2026-06-16T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-06-16T02:00:01Z] Backing up database...
+[2026-06-16T02:00:01Z] Backing up database...
+[2026-06-16T02:02:34Z] DB backup complete: 2.6G
+[2026-06-16T02:02:34Z] DB backup complete: 2.6G
+[2026-06-16T02:02:34Z] Backing up brain/...
+[2026-06-16T02:02:34Z] Backing up brain/...
+sending incremental file list
+./
+feedback_loop_state.json
+findings.json
+integration-contract.md
+integration-health.json
+kpis.md
+polymarket_changelog_state.json
+signals.json
+agent-outputs/
+agent-outputs/feedback-loop/
+agent-outputs/feedback-loop/2026-06-15-weekly-audit.md
+agent-outputs/performance-analyst/
+agent-outputs/performance-analyst/2026-06-15-weekly.md
+agent-outputs/positions-scan/
+agent-outputs/positions-scan/2026-06-15-positions-scan.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-06-15-pre-res-scan.json
+agent-outputs/signal-agent/
+agent-outputs/signal-agent/2026-06-15-08-signal-report.md
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-06-15-str002-scoring.json
+agent-outputs/trader-intelligence/
+agent-outputs/trader-intelligence/2026-06-15-intelligence-report.json
+decisions/
+decisions/2026-06-15-gate3-risk-and-research-urgency.md
+decisions/2026-06-15-session-summary.md
+research-scout/pending-review/
+research-scout/pending-review/2026-06-15-20-2604-07355-prediction-arena-benchmarking-ai-models.md
+research-scout/pending-review/2026-06-15-20-2605-00493-foresightflow-information-leakage-score.md
+research-scout/pending-review/2026-06-15-20-2605-02287-per-market-information-leakage-and-orde.md
+research-scout/pending-review/2026-06-15-20-2606-07811-when-do-markets-fully-process-public-in.md
+research-scout/pending-review/2026-06-15-20-deepseek-v4-released-april-24-2026-1-6t-moe-1m-con.md
+research-scout/pending-review/2026-06-15-20-polymarket-changelog-rate-limits-raised-faster-sub.md
+research-scout/pending-review/2026-06-15-20-polymarket-exchange-upgrade-april-28-2026-pusd-mig.md
+trader-profiles/
+trader-profiles/0x197040709ae61627d3685a8d6ce1f9e82e6b398d.json
+trader-profiles/0x40f3fcf1dc83bb5a1036f63684c4e061f85c4e7e.json
+trader-profiles/0x44a1159b925c145e70f746bb3f0f58380553bd21.json
+trader-profiles/0x4ecefb5b148a5ac4f414b277c54cd328ae3a3893.json
+trader-profiles/0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33.json
+trader-profiles/0x6014e4a02567f009a02e94c57785f4f970c5f9a4.json
+trader-profiles/0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68.json
+trader-profiles/0x7a3b6452a73cfdada92a9bcd6c13cd9dd7782138.json
+trader-profiles/0x821ebe19a8979904476f3ab6d23879dbccf6e7a9.json
+trader-profiles/0x9aa516edbff6688595987727b4edc530cff14010.json
+trader-profiles/0xaf409e50577bd9cba48378656548a2d28d1a5662.json
+trader-profiles/0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f.json
+trader-profiles/0xc9ad18bc5d11639af167cc879fbc1333e22e79d0.json
+trader-profiles/0xdde1a0257ddcc19522df5128049ce5619944f1d7.json
+trader-profiles/0xe0bc6311306558d71f68fc085c26f0337996ad7c.json
+trader-profiles/0xe78e4a3e1b794c710a853c29f096fcea31093c5b.json
+trader-profiles/0xfa323e40632edca701abc6c8cf1f82175909bd9a.json
+trader-profiles/_index.json
+
+sent 414,848 bytes  received 900 bytes  277,165.33 bytes/sec
+total size is 2,656,436  speedup is 6.39
+[2026-06-16T02:02:35Z] Brain backup complete
+[2026-06-16T02:02:35Z] Brain backup complete
+[2026-06-16T02:02:35Z] Pruning old backups (keeping 14 days)...
+[2026-06-16T02:02:35Z] Pruning old backups (keeping 14 days)...
+[2026-06-16T02:02:35Z] Backup complete. Drive usage: 12G used
+[2026-06-16T02:02:35Z] Backup complete. Drive usage: 12G used
+[2026-06-17T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-17
+[2026-06-17T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-17
+[2026-06-17T02:00:01Z] Checkpointing WAL...
+[2026-06-17T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-06-17T02:00:01Z] Backing up database...
+[2026-06-17T02:00:01Z] Backing up database...
+[2026-06-17T02:02:39Z] DB backup complete: 2.7G
+[2026-06-17T02:02:39Z] DB backup complete: 2.7G
+[2026-06-17T02:02:39Z] Backing up brain/...
+[2026-06-17T02:02:39Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+deleting research-scout/pending-review/2026-06-15-20-polymarket-exchange-upgrade-april-28-2026-pusd-mig.md
+deleting research-scout/pending-review/2026-06-15-20-polymarket-changelog-rate-limits-raised-faster-sub.md
+deleting research-scout/pending-review/2026-06-15-20-deepseek-v4-released-april-24-2026-1-6t-moe-1m-con.md
+deleting research-scout/pending-review/2026-06-15-20-2606-07811-when-do-markets-fully-process-public-in.md
+deleting research-scout/pending-review/2026-06-15-20-2605-02287-per-market-information-leakage-and-orde.md
+deleting research-scout/pending-review/2026-06-15-20-2605-00493-foresightflow-information-leakage-score.md
+deleting research-scout/pending-review/2026-06-15-20-2604-07355-prediction-arena-benchmarking-ai-models.md
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-06-16-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-06-16-str002-scoring.json
+decisions/
+decisions/2026-06-16-session-summary.md
+research-scout/pending-review/
+research-scout/pending-review/2026-06-16-20-arxiv-2605-00493-foresightflow-information-leakage.md
+research-scout/pending-review/2026-06-16-20-arxiv-2605-02287-per-market-information-leakage-an.md
+research-scout/pending-review/2026-06-16-20-arxiv-2606-07811-when-do-markets-fully-process-pub.md
+research-scout/pending-review/2026-06-16-20-deepseek-v4-pro-1-6t-params-mit-open-weights-and-v.md
+research-scout/pending-review/2026-06-16-20-polymarket-clob-rate-limits-raised-120-000-request.md
+research-scout/pending-review/2026-06-16-20-polymarket-exchange-upgrade-april-28-2026-v2-sdk-p.md
+research-scout/reviewed/
+research-scout/reviewed/2026-06-15-20-2604-07355-prediction-arena-benchmarking-ai-models.md
+research-scout/reviewed/2026-06-15-20-2605-00493-foresightflow-information-leakage-score.md
+research-scout/reviewed/2026-06-15-20-2605-02287-per-market-information-leakage-and-orde.md
+research-scout/reviewed/2026-06-15-20-2606-07811-when-do-markets-fully-process-public-in.md
+research-scout/reviewed/2026-06-15-20-deepseek-v4-released-april-24-2026-1-6t-moe-1m-con.md
+research-scout/reviewed/2026-06-15-20-polymarket-changelog-rate-limits-raised-faster-sub.md
+research-scout/reviewed/2026-06-15-20-polymarket-exchange-upgrade-april-28-2026-pusd-mig.md
+strategy-notes/
+strategy-notes/calibration-metric-decision-2026-06-16.md
+strategy-notes/research-synthesis-2026-06-16.md
+strategy-notes/rq-ils-001-preregistration-2026-06-06.md
+
+sent 180,892 bytes  received 1,208 bytes  364,200.00 bytes/sec
+total size is 2,685,175  speedup is 14.75
+[2026-06-17T02:02:39Z] Brain backup complete
+[2026-06-17T02:02:39Z] Brain backup complete
+[2026-06-17T02:02:39Z] Pruning old backups (keeping 14 days)...
+[2026-06-17T02:02:39Z] Pruning old backups (keeping 14 days)...
+[2026-06-17T02:02:39Z] Backup complete. Drive usage: 15G used
+[2026-06-17T02:02:39Z] Backup complete. Drive usage: 15G used
+[2026-06-18T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-18
+[2026-06-18T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-18
+[2026-06-18T02:00:01Z] Checkpointing WAL...
+[2026-06-18T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-06-18T02:00:01Z] Backing up database...
+[2026-06-18T02:00:01Z] Backing up database...
+[2026-06-18T02:02:38Z] DB backup complete: 2.7G
+[2026-06-18T02:02:38Z] DB backup complete: 2.7G
+[2026-06-18T02:02:38Z] Backing up brain/...
+[2026-06-18T02:02:38Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-06-17-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-06-17-str002-scoring.json
+decisions/
+decisions/2026-06-17-session-summary.md
+research-scout/pending-review/
+research-scout/pending-review/2026-06-17-08-deepseek-v4-pro-1-6t-params-mit-open-weights-relea.md
+research-scout/pending-review/2026-06-17-08-foresightflow-information-leakage-score-framework-.md
+research-scout/pending-review/2026-06-17-08-per-market-information-leakage-and-order-flow-skil.md
+research-scout/pending-review/2026-06-17-08-polymarket-clob-rate-limits-raised-to-120-000-requ.md
+research-scout/pending-review/2026-06-17-08-polymarket-exchange-upgrade-april-28-2026-v2-sdk-p.md
+research-scout/pending-review/2026-06-17-08-polymarket-v1-database-complete-on-chain-trade-arc.md
+research-scout/pending-review/2026-06-17-08-prediction-arena-benchmarking-ai-models-on-real-wo.md
+research-scout/pending-review/2026-06-17-08-the-anatomy-of-a-decentralised-prediction-market-a.md
+research-scout/pending-review/2026-06-17-08-unlocking-the-forecasting-economy-datasets-for-ful.md
+research-scout/pending-review/2026-06-17-08-when-do-markets-fully-process-public-information-e.md
+
+sent 167,525 bytes  received 385 bytes  111,940.00 bytes/sec
+total size is 2,703,024  speedup is 16.10
+[2026-06-18T02:02:39Z] Brain backup complete
+[2026-06-18T02:02:39Z] Brain backup complete
+[2026-06-18T02:02:39Z] Pruning old backups (keeping 14 days)...
+[2026-06-18T02:02:39Z] Pruning old backups (keeping 14 days)...
+[2026-06-18T02:02:39Z] Backup complete. Drive usage: 18G used
+[2026-06-18T02:02:39Z] Backup complete. Drive usage: 18G used
+[2026-06-19T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-19
+[2026-06-19T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-06-19
+[2026-06-19T02:00:01Z] Checkpointing WAL...
+[2026-06-19T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-06-19T02:00:01Z] Backing up database...
+[2026-06-19T02:00:01Z] Backing up database...
+[2026-06-19T02:02:42Z] DB backup complete: 2.8G
+[2026-06-19T02:02:42Z] DB backup complete: 2.8G
+[2026-06-19T02:02:42Z] Backing up brain/...
+[2026-06-19T02:02:42Z] Backing up brain/...
+sending incremental file list
+./
+findings.json
+integration-contract.md
+integration-health.json
+signals.json
+agent-outputs/
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-06-18-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-06-18-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-06-18-str002-scoring.json
+decisions/
+decisions/2026-06-18-session-summary.md
+
+sent 265,992 bytes  received 240 bytes  532,464.00 bytes/sec
+total size is 2,756,224  speedup is 10.35
+[2026-06-19T02:02:42Z] Brain backup complete
+[2026-06-19T02:02:42Z] Brain backup complete
+[2026-06-19T02:02:42Z] Pruning old backups (keeping 14 days)...
+[2026-06-19T02:02:42Z] Pruning old backups (keeping 14 days)...
+[2026-06-19T02:02:42Z] Backup complete. Drive usage: 20G used
+[2026-06-19T02:02:42Z] Backup complete. Drive usage: 20G used
+[2026-06-20T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-20T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-21T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-21T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-22T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-22T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-23T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-23T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-24T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-24T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-25T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-25T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-26T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-26T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-27T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-27T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-28T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-28T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-29T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-29T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-30T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-06-30T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-07-01T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-07-01T02:00:01Z] ERROR: Backup drive not mounted at /mnt/backup — aborting
+[2026-07-01T18:30:00Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-01
+[2026-07-01T18:30:00Z] Checkpointing WAL...
+[2026-07-01T18:30:00Z] Backing up database...
+[2026-07-01T18:32:48Z] DB backup complete: 2.9G
+[2026-07-01T18:32:48Z] Backing up brain/...
+[2026-07-01T18:32:49Z] Brain backup complete
+[2026-07-01T18:32:49Z] Pruning old backups (keeping 14 days)...
+[2026-07-01T18:32:49Z] Backup complete. Drive usage: 23G used
+[2026-07-02T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-02
+[2026-07-02T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-02
+[2026-07-02T02:00:01Z] Checkpointing WAL...
+[2026-07-02T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-02T02:00:01Z] Backing up database...
+[2026-07-02T02:00:01Z] Backing up database...
+[2026-07-02T02:02:53Z] DB backup complete: 2.9G
+[2026-07-02T02:02:53Z] DB backup complete: 2.9G
+[2026-07-02T02:02:53Z] Backing up brain/...
+[2026-07-02T02:02:53Z] Backing up brain/...
+sending incremental file list
+agent-outputs/data-audit/2026-07-01-audit.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-01-o13-monitoring-blocking-stall-design.md
+decisions/2026-07-01-o16-resolution-collection-gap-quantified.md
+decisions/2026-07-01-o17-resolution-date-cowrite-gap-design.md
+decisions/2026-07-01-session-summary.md
+
+sent 178,762 bytes  received 183 bytes  357,890.00 bytes/sec
+total size is 3,937,534  speedup is 22.00
+[2026-07-02T02:02:53Z] Brain backup complete
+[2026-07-02T02:02:53Z] Brain backup complete
+[2026-07-02T02:02:53Z] Pruning old backups (keeping 14 days)...
+[2026-07-02T02:02:53Z] Pruning old backups (keeping 14 days)...
+[2026-07-02T02:02:53Z] Backup complete. Drive usage: 26G used
+[2026-07-02T02:02:53Z] Backup complete. Drive usage: 26G used
+[2026-07-03T02:00:04Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-03
+[2026-07-03T02:00:04Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-03
+[2026-07-03T02:00:04Z] Checkpointing WAL...
+[2026-07-03T02:00:04Z] Checkpointing WAL...
+1|1|0
+[2026-07-03T02:00:04Z] Backing up database...
+[2026-07-03T02:00:04Z] Backing up database...
+[2026-07-03T02:02:53Z] DB backup complete: 2.9G
+[2026-07-03T02:02:53Z] DB backup complete: 2.9G
+[2026-07-03T02:02:53Z] Backing up brain/...
+[2026-07-03T02:02:53Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-02-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-02-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-02-str002-scoring.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-02-o18-market-ids.txt
+decisions/2026-07-02-o18-pre-bug-null-resolution-dates.md
+decisions/2026-07-02-session-summary.md
+
+sent 277,240 bytes  received 276 bytes  555,032.00 bytes/sec
+total size is 3,987,888  speedup is 14.37
+[2026-07-03T02:02:54Z] Brain backup complete
+[2026-07-03T02:02:54Z] Brain backup complete
+[2026-07-03T02:02:54Z] Pruning old backups (keeping 14 days)...
+[2026-07-03T02:02:54Z] Pruning old backups (keeping 14 days)...
+[2026-07-03T02:02:54Z] Backup complete. Drive usage: 29G used
+[2026-07-03T02:02:54Z] Backup complete. Drive usage: 29G used
+[2026-07-04T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-04
+[2026-07-04T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-04
+[2026-07-04T02:00:01Z] Checkpointing WAL...
+[2026-07-04T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-04T02:00:01Z] Backing up database...
+[2026-07-04T02:00:01Z] Backing up database...
+[2026-07-04T02:02:54Z] DB backup complete: 3.0G
+[2026-07-04T02:02:54Z] DB backup complete: 3.0G
+[2026-07-04T02:02:54Z] Backing up brain/...
+[2026-07-04T02:02:54Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+agent-outputs/code-hygiene/
+agent-outputs/code-hygiene/2026-07-03-weekly.md
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-03-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-03-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-03-str002-scoring.json
+research-scout/pending-review/
+research-scout/pending-review/2026-07-03-08-per-market-information-leakage-and-order-flow-skil.md
+research-scout/pending-review/2026-07-03-08-polymarket-us-retail-api-removes-lastpricesample-f.md
+
+sent 231,944 bytes  received 260 bytes  464,408.00 bytes/sec
+total size is 4,037,794  speedup is 17.39
+[2026-07-04T02:02:54Z] Brain backup complete
+[2026-07-04T02:02:54Z] Brain backup complete
+[2026-07-04T02:02:54Z] Pruning old backups (keeping 14 days)...
+[2026-07-04T02:02:54Z] Pruning old backups (keeping 14 days)...
+[2026-07-04T02:02:54Z] Backup complete. Drive usage: 32G used
+[2026-07-04T02:02:54Z] Backup complete. Drive usage: 32G used
+[2026-07-05T02:00:04Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-05
+[2026-07-05T02:00:04Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-05
+[2026-07-05T02:00:04Z] Checkpointing WAL...
+[2026-07-05T02:00:04Z] Checkpointing WAL...
+0|0|0
+[2026-07-05T02:00:04Z] Backing up database...
+[2026-07-05T02:00:04Z] Backing up database...
+[2026-07-05T02:02:56Z] DB backup complete: 3.0G
+[2026-07-05T02:02:56Z] DB backup complete: 3.0G
+[2026-07-05T02:02:56Z] Backing up brain/...
+[2026-07-05T02:02:56Z] Backing up brain/...
+sending incremental file list
+./
+findings.json
+integration-health.json
+lessons-learned.md
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-04-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-04-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-04-str002-scoring.json
+agent-outputs/training-librarian/
+agent-outputs/training-librarian/2026-07-04-weekly.md
+agent-outputs/training-librarian/contract-checks.log
+
+sent 282,451 bytes  received 264 bytes  565,430.00 bytes/sec
+total size is 4,098,340  speedup is 14.50
+[2026-07-05T02:02:56Z] Brain backup complete
+[2026-07-05T02:02:56Z] Brain backup complete
+[2026-07-05T02:02:56Z] Pruning old backups (keeping 14 days)...
+[2026-07-05T02:02:56Z] Pruning old backups (keeping 14 days)...
+[2026-07-05T02:02:56Z] Backup complete. Drive usage: 35G used
+[2026-07-05T02:02:56Z] Backup complete. Drive usage: 35G used
+[2026-07-06T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-06
+[2026-07-06T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-06
+[2026-07-06T02:00:01Z] Checkpointing WAL...
+[2026-07-06T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-06T02:00:01Z] Backing up database...
+[2026-07-06T02:00:01Z] Backing up database...
+[2026-07-06T02:02:56Z] DB backup complete: 3.0G
+[2026-07-06T02:02:56Z] DB backup complete: 3.0G
+[2026-07-06T02:02:56Z] Backing up brain/...
+[2026-07-06T02:02:56Z] Backing up brain/...
+sending incremental file list
+./
+findings.json
+integration-health.json
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-05-audit.json
+agent-outputs/integration-test/
+agent-outputs/integration-test/2026-07-05-sunday-report.md
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-05-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-05-str002-scoring.json
+
+sent 241,867 bytes  received 222 bytes  484,178.00 bytes/sec
+total size is 4,151,880  speedup is 17.15
+[2026-07-06T02:02:56Z] Brain backup complete
+[2026-07-06T02:02:56Z] Brain backup complete
+[2026-07-06T02:02:56Z] Pruning old backups (keeping 14 days)...
+[2026-07-06T02:02:56Z] Pruning old backups (keeping 14 days)...
+[2026-07-06T02:02:56Z] Backup complete. Drive usage: 38G used
+[2026-07-06T02:02:56Z] Backup complete. Drive usage: 38G used
+[2026-07-07T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-07
+[2026-07-07T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-07
+[2026-07-07T02:00:01Z] Checkpointing WAL...
+[2026-07-07T02:00:01Z] Checkpointing WAL...
+1|2|2
+[2026-07-07T02:00:01Z] Backing up database...
+[2026-07-07T02:00:01Z] Backing up database...
+[2026-07-07T02:02:52Z] DB backup complete: 3.0G
+[2026-07-07T02:02:52Z] DB backup complete: 3.0G
+[2026-07-07T02:02:52Z] Backing up brain/...
+[2026-07-07T02:02:52Z] Backing up brain/...
+sending incremental file list
+./
+feedback_loop_state.json
+findings.json
+integration-health.json
+kpis.md
+polymarket_changelog_state.json
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-06-audit.json
+agent-outputs/feedback-loop/
+agent-outputs/feedback-loop/2026-07-06-weekly-audit.md
+agent-outputs/performance-analyst/
+agent-outputs/performance-analyst/2026-07-06-weekly.md
+agent-outputs/positions-scan/
+agent-outputs/positions-scan/2026-07-06-positions-scan.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-06-pre-res-scan.json
+agent-outputs/signal-agent/
+agent-outputs/signal-agent/2026-07-06-08-signal-report.md
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-06-str002-scoring.json
+agent-outputs/trader-intelligence/
+agent-outputs/trader-intelligence/2026-07-06-intelligence-report.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-06-brier-target-crossed.md
+decisions/2026-07-06-elo-arc-design-FABLE.md
+decisions/2026-07-06-session-summary.md
+research-scout/pending-review/
+research-scout/pending-review/2026-07-06-08-polymarket-us-api-portfolio-positions-endpoint-now.md
+trader-profiles/
+trader-profiles/0x2884f98185d2005691d245f3e2e70b15d1e1d0c3.json
+trader-profiles/0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68.json
+trader-profiles/0xc624cccd414dc90ea329f06cf535fafa40d2ee24.json
+trader-profiles/0xd218e474776403a330142299f7796e8ba32eb5c9.json
+trader-profiles/0xfbe2f1f7066a035dacaf1cf625135427ff776f8d.json
+
+sent 468,014 bytes  received 578 bytes  937,184.00 bytes/sec
+total size is 4,344,613  speedup is 9.27
+[2026-07-07T02:02:52Z] Brain backup complete
+[2026-07-07T02:02:52Z] Brain backup complete
+[2026-07-07T02:02:52Z] Pruning old backups (keeping 14 days)...
+[2026-07-07T02:02:52Z] Pruning old backups (keeping 14 days)...
+[2026-07-07T02:02:52Z] Backup complete. Drive usage: 39G used
+[2026-07-07T02:02:52Z] Backup complete. Drive usage: 39G used
+[2026-07-08T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-08
+[2026-07-08T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-08
+[2026-07-08T02:00:01Z] Checkpointing WAL...
+[2026-07-08T02:00:01Z] Checkpointing WAL...
+1|1|0
+[2026-07-08T02:00:01Z] Backing up database...
+[2026-07-08T02:00:01Z] Backing up database...
+[2026-07-08T02:03:13Z] DB backup complete: 3.3G
+[2026-07-08T02:03:13Z] DB backup complete: 3.3G
+[2026-07-08T02:03:13Z] Backing up brain/...
+[2026-07-08T02:03:13Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-07-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-07-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-07-str002-scoring.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-07-session-summary.md
+decisions/2026-07-07-silent-failure-audit-FABLE.md
+research-scout/pending-review/
+research-scout/pending-review/2026-07-07-20-manipulation-insider-information-and-regulation-in.md
+
+sent 370,391 bytes  received 283 bytes  741,348.00 bytes/sec
+total size is 4,449,687  speedup is 12.00
+[2026-07-08T02:03:13Z] Brain backup complete
+[2026-07-08T02:03:13Z] Brain backup complete
+[2026-07-08T02:03:13Z] Pruning old backups (keeping 14 days)...
+[2026-07-08T02:03:13Z] Pruning old backups (keeping 14 days)...
+[2026-07-08T02:03:13Z] Backup complete. Drive usage: 39G used
+[2026-07-08T02:03:13Z] Backup complete. Drive usage: 39G used
+[2026-07-09T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-09
+[2026-07-09T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-09
+[2026-07-09T02:00:01Z] Checkpointing WAL...
+[2026-07-09T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-09T02:00:01Z] Backing up database...
+[2026-07-09T02:00:01Z] Backing up database...
+[2026-07-09T02:03:23Z] DB backup complete: 3.5G
+[2026-07-09T02:03:23Z] DB backup complete: 3.5G
+[2026-07-09T02:03:23Z] Backing up brain/...
+[2026-07-09T02:03:23Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-08-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-08-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-08-str002-scoring.json
+
+sent 252,590 bytes  received 193 bytes  505,566.00 bytes/sec
+total size is 4,495,258  speedup is 17.78
+[2026-07-09T02:03:23Z] Brain backup complete
+[2026-07-09T02:03:23Z] Brain backup complete
+[2026-07-09T02:03:23Z] Pruning old backups (keeping 14 days)...
+[2026-07-09T02:03:23Z] Pruning old backups (keeping 14 days)...
+[2026-07-09T02:03:24Z] Backup complete. Drive usage: 41G used
+[2026-07-09T02:03:24Z] Backup complete. Drive usage: 41G used
+[2026-07-10T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-10
+[2026-07-10T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-10
+[2026-07-10T02:00:01Z] Checkpointing WAL...
+[2026-07-10T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-10T02:00:01Z] Backing up database...
+[2026-07-10T02:00:01Z] Backing up database...
+[2026-07-10T02:03:29Z] DB backup complete: 3.5G
+[2026-07-10T02:03:29Z] DB backup complete: 3.5G
+[2026-07-10T02:03:29Z] Backing up brain/...
+[2026-07-10T02:03:29Z] Backing up brain/...
+sending incremental file list
+findings.json
+integration-health.json
+signals.json
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-09-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-09-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-09-str002-scoring.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-09-session-summary.md
+research-scout/pending-review/
+research-scout/pending-review/2026-07-09-08-deepseek-v4-official-release-scheduled-mid-july-20.md
+
+sent 356,371 bytes  received 264 bytes  713,270.00 bytes/sec
+total size is 4,557,544  speedup is 12.78
+[2026-07-10T02:03:29Z] Brain backup complete
+[2026-07-10T02:03:29Z] Brain backup complete
+[2026-07-10T02:03:29Z] Pruning old backups (keeping 14 days)...
+[2026-07-10T02:03:29Z] Pruning old backups (keeping 14 days)...
+[2026-07-10T02:03:29Z] Backup complete. Drive usage: 42G used
+[2026-07-10T02:03:29Z] Backup complete. Drive usage: 42G used

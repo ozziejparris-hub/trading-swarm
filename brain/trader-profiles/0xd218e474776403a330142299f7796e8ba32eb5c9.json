@@ -1,47 +1,55 @@
 {
   "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
-  "profile_date": "2026-06-29",
-  "geo_elo_active": 2470.8,
+  "profile_date": "2026-07-06",
+  "geo_elo_active": 2395.8,
   "tier": "LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
-  "archetype_reasoning": "264 resolved geo trades with 89% accuracy at avg price 0.885 and 83% near-certain entries (16% contested). This is a textbook YIELD_HARVESTER: predominantly buying high-probability outcomes at 0.88-0.97 and winning 89% of the time. Iran_ME is the primary domain (189 trades, 92% accuracy, avg 0.906, 13% contested). Trump_US: 39 trades, 100% accuracy at avg 0.974 — pure near-certainty harvesting. Directionality=0.96. Realized_pnl=$260 on 264 resolved trades is consistent with small-premium-per-trade collection (typical yield harvester economics). No forecasting signal value.",
+  "archetype_reasoning": "Profiled 2026-06-29 as textbook YIELD_HARVESTER (83% near-certain entries at 0.885 avg, 89% accuracy, 264 resolved trades). 2 new resolved trades since Jun 29: Mexico to win second half YES @ 0.390 LOST (Jun 30), DR Congo Round of 16 YES @ 0.540 LOST (Jul 1). Both are SPORTS markets — category=Unknown in DB, titles confirm FIFA World Cup 2026. Both are at contested prices (0.39, 0.54) which triggered the watch_item. HOWEVER: these are sports markets, which are hard-rule excluded from agent scope and do not constitute evidence of geo/elections forecasting behavior. The watch item was for contested entries in geo/elections markets — sports market contested bets do not qualify as a YIELD_HARVESTER waking up signal. Archetype unchanged. EXCLUDE status unchanged. Data depth for reclassification: 2 new trades vs 30-trade threshold — far below. Performance deterioration flag NEW: last 10 overall = 40% accuracy (4W/6L) including these 2 losses. Previous archetype: YIELD_HARVESTER (set 2026-06-29, confirmed unchanged 2026-07-06).",
   "primary_domain": "Iran_ME",
   "domain_strengths": [],
   "domain_blindspots": [
-    "All domains: 83% near-certain entries confirm yield harvesting not forecasting. No genuine contested-price edge identifiable."
+    "All geo/elections domains: 83% near-certain entries confirm yield harvesting not forecasting",
+    "Sports: making contested-price sports bets (0.39, 0.54) that are losing — outside agent scope"
   ],
-  "domain_summary": "Classic yield harvester across Iran_ME and Trump_US. High ELO reflects the mathematical benefit of near-certainty accuracy — not predictive skill on genuinely uncertain outcomes.",
+  "domain_summary": "Classic yield harvester across Iran_ME and Trump_US in geo/elections. New activity in sports markets at contested prices but these are out-of-scope for this agent. High ELO reflects near-certainty accuracy math, not predictive skill.",
   "trusted_domains": [],
   "discounted_domains": [
     "Iran_ME",
     "Trump_US",
     "Other",
-    "LatAm"
+    "LatAm",
+    "Sports"
   ],
   "signal_weight": "EXCLUDE",
-  "signal_weight_reasoning": "Yield harvester: 83% near-certain entries, 89% accuracy at 0.885 avg price. No contested-price forecasting signal. EXCLUDE.",
+  "signal_weight_reasoning": "Yield harvester: 83% near-certain entries at 0.885 avg in geo/elections. New sports market bets at contested prices are outside agent scope and do not change the geo/elections archetype. EXCLUDE permanently.",
   "behavioural_flags": [
-    "83% near-certain entries at avg 0.885 — textbook yield harvesting",
+    "83% near-certain entries at avg 0.885 in geo/elections — textbook yield harvesting",
     "Trump_US at 100% accuracy avg 0.974 — pure near-certainty premium collection",
-    "geo_resolved_trades_count stored=54 while actual=264 — data integrity discrepancy"
+    "geo_resolved_trades_count stored mismatch vs actual (data integrity issue flagged Jun 29)",
+    "NEW: Sports market contested bets — Mexico second half YES @ 0.390 LOST (Jun 30), DR Congo Round of 16 YES @ 0.540 LOST (Jul 1). Sports are hard-rule excluded. Watch_item fired but in wrong domain.",
+    "PERFORMANCE_DETERIORATION: last 10 overall = 40% accuracy (below 45% threshold). Driven by 2 new sports losses plus prior pattern. HIGH severity."
   ],
   "risk_patterns": [
-    "Standard yield harvester tail risk: rare low-probability events resolving YES would sweep through near-certainty NO positions"
+    "Standard yield harvester tail risk: rare low-probability events resolving YES sweep near-certainty NO positions",
+    "Sports market engagement at contested prices suggests behavioral drift outside core strategy",
+    "Performance decline: 40% last 10 — if this continues in geo/elections domain, revisit EXCLUDE assignment and consider whether this trader has any remaining predictive value"
   ],
   "notable_calls": [],
   "open_positions_summary": "Not assessed — EXCLUDE archetype.",
   "watch_items": [
-    "Monitor for any shift toward contested entries (0.10-0.80) that would indicate behavioral change"
+    "Watch for contested entries (0.10-0.80) specifically in GEO/ELECTIONS markets (not sports) — sports contested bets do not trigger YIELD_HARVESTER waking-up analysis",
+    "Performance deterioration in geo/elections domain: if last 10 GEO-only trades drop below 45%, review archetype entirely",
+    "geo_elo_active decayed from 2470.8 (Jun 29) to 2395.8 (Jul 6) — modest decay, still LEGENDARY"
   ],
   "overall_signal_value": "NOISE",
-  "summary": "Textbook yield harvester. 83% near-certain entries at 0.885 average across 264 resolved geo trades. EXCLUDE permanently.",
+  "summary": "Textbook yield harvester with EXCLUDE status. Two new losses since Jun 29 both in sports markets (FIFA World Cup) at contested prices — the watch item for 'contested entries' fired technically, but sports markets are hard-rule excluded from agent scope and do not constitute evidence of geo/elections forecasting behavior change. Performance deterioration flag raised: last 10 overall = 40% accuracy. EXCLUDE status permanent pending evidence of geo/elections contested-price forecasting activity.",
   "data_snapshot": {
     "geo_elo": 2528.5,
-    "geo_elo_active": 2470.8,
-    "resolved_trades": 264,
-    "distinct_markets": 57,
+    "geo_elo_active": 2395.8,
+    "resolved_trades": 266,
+    "distinct_markets": 59,
     "directionality": 0.96,
-    "pnl": 260.0
+    "pnl": 260.1
   }
 }

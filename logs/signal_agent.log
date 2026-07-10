@@ -217,3 +217,75 @@ Kill it:    tmux kill-session -t signal-agent-signal-20260615
 
 Routing decisions: /brain/model-routing.md
 [2026-06-15T08:00:02Z] Finished signal-agent (exit: 0)
+[2026-06-22T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260622
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260622
+HEAD is now at 5eff9ee session #39 close: training-librarian weekly run 2026-06-20
+Spawning tmux session: signal-agent-signal-20260622
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260622
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260622
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260622.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260622
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260622
+
+Routing decisions: /brain/model-routing.md
+[2026-06-22T08:00:01Z] Finished signal-agent (exit: 0)
+[2026-06-29T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260629
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260629
+HEAD is now at 1835488 docs: trader-intelligence weekly run 2026-06-29 — 7 new LEGENDARY profiles, critical data integrity alert
+Spawning tmux session: signal-agent-signal-20260629
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260629
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260629
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260629.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260629
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260629
+
+Routing decisions: /brain/model-routing.md
+[2026-06-29T08:00:02Z] Finished signal-agent (exit: 0)
+[2026-07-06T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260706
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260706
+HEAD is now at 740dc7b docs: 2026-07-06 weekly performance analysis — Brier below 0.20 for first time, Gate 3 2/5=40%
+Spawning tmux session: signal-agent-signal-20260706
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260706
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260706
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260706.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260706
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260706
+
+Routing decisions: /brain/model-routing.md
+[2026-07-06T08:00:01Z] Finished signal-agent (exit: 0)

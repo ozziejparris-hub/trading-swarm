@@ -1,24 +1,24 @@
 {
   "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 2240.1086,
-  "tier": "LEGENDARY",
+  "profile_date": "2026-07-06",
+  "geo_elo_active": 2037.1,
+  "tier": "NEAR_LEGENDARY",
   "archetype": "DOMAIN_SPECIALIST",
   "archetype_confidence": "HIGH",
-  "archetype_reasoning": "This trader has a dominant concentration in Russia_UKR (227 total trades) and Europe (135 trades), with strong accuracy in both domains (68.7% and 71.9% respectively). Outside these domains, performance degrades sharply \u2014 especially in 'Other' (26.7%) and Iran_ME (52.7%), indicating domain-specific edge rather than broad forecasting skill. The extremely high directionality (0.951) suggests a consistent positional view rather than LP or arbitrage behaviour.",
+  "archetype_reasoning": "Russia_UKR and Europe remain confirmed trusted domains with strong accuracy (68.7% and 71.9% respectively on large samples at Jun 10 baseline). The one new resolved trade since Jun 10 (Waymo Dallas NO @ 0.910, WON, Jun 27) is a single near-certainty entry outside core domain — consistent with behavioural flag about mixing near-certainty positions outside comfort zone. No reclassification warranted on 1 new trade. Archetype unchanged from Jun 10 baseline. NOTE: geo_elo_active decayed from 2240.1 to 2037.1 (below LEGENDARY threshold of 2175) — primary cause is recency decay from relative inactivity post-Jun-10. Tier updated LEGENDARY → NEAR_LEGENDARY. Archetype and signal weight unchanged. Previous archetype: DOMAIN_SPECIALIST (set 2026-06-10, confirmed unchanged 2026-07-06).",
   "primary_domain": "Russia_UKR",
   "domain_strengths": [
     "Russia_UKR",
     "Europe"
   ],
   "domain_blindspots": [
-    "Other: 26.7% accuracy, well below chance on non-core markets \u2014 signals noise trading outside comfort zone",
+    "Other: 26.7% accuracy, well below chance on non-core markets — signals noise trading outside comfort zone",
     "Iran_ME: 52.7% accuracy barely above coin-flip across 112 trades, suggesting no genuine edge in Middle East dynamics",
     "Trump_US: 62.8% is respectable but limited sample and recent losses on Trump-Xi meeting suggest overconfidence in geopolitical meeting predictions"
   ],
-  "domain_summary": "Genuine edge in Russia-Ukraine and European geopolitics, with above-average accuracy across a high trade volume. Signals from Iran/ME and 'Other' categories should be treated as noise given near-random historical accuracy in those domains.",
+  "domain_summary": "Genuine edge in Russia-Ukraine and European geopolitics, with above-average accuracy across a high trade volume. Single new trade since Jun 10 (Waymo NO near-certain) is outside domain and does not alter the domain picture. Signals from Iran/ME and Other categories remain noise.",
   "signal_weight": "DOMAIN_ONLY",
-  "signal_weight_reasoning": "Strong and consistent track record in Russia_UKR and Europe across large sample sizes justifies full trust within those domains. Iran_ME and Other show no edge and should be discounted. realized_pnl of 0.0 is a data gap but ELO performance validates skill in core domains.",
+  "signal_weight_reasoning": "Strong and consistent track record in Russia_UKR and Europe across large sample sizes justifies full trust within those domains. geo_elo_active decay to 2037 (below LEGENDARY) warrants tier downgrade but not signal weight change — archetype confidence remains HIGH based on Jun 10 baseline data. Iran_ME and Other remain discounted. PNL=0.0 is a persistent data gap.",
   "trusted_domains": [
     "Russia_UKR",
     "Europe"
@@ -29,71 +29,84 @@
     "China_Asia"
   ],
   "behavioural_flags": [
-    "Extremely high directionality (0.951) \u2014 almost always trades one side, suggesting strong conviction-based approach rather than hedging",
-    "Repeated entry into the same market at similar prices (Israel x Hamas ceasefire No at 0.73 five times) \u2014 possible doubling-down or conviction averaging",
-    "Mixed near-certainty entries in open positions (Russia ceasefire No at 0.975, US-Iran No at 0.964) alongside genuinely contested bets (Zelensky suit Yes at 0.15, Ukraine Tomahawk Yes at 0.09)",
-    "Recent resolved trades are predominantly losses \u2014 possible cold streak or overconfidence in short-term ceasefire/meeting predictions",
-    "Entering markets at late-stage high prices (Trump-Xi Yes at 0.85) suggests some momentum-chasing or conviction override of market pricing"
+    "Extremely high directionality (0.911) — almost always trades one side",
+    "Repeated entry into the same market at similar prices (Israel x Hamas ceasefire No at 0.73 five times) — sunk-cost doubling pattern",
+    "Mixed near-certainty entries alongside genuinely contested bets — partially yield-harvesting outside core domain",
+    "Opportunistic near-certainty entry outside domain: Waymo Dallas NO @ 0.910 (Jun 27, WON) — consistent with non-core yield behaviour",
+    "geo_elo_active decayed from 2240.1 (Jun 10) to 2037.1 (Jul 6) — 203-point drop in 26 days, primarily recency decay from inactivity"
   ],
   "risk_patterns": [
-    "Sunk-cost behaviour: repeated entries on Israel-Hamas No ceasefire across multiple date thresholds, suggesting commitment to a thesis despite repeated losses",
-    "Near-certainty positioning on some open trades (Russia ceasefire No at 0.975, US-Iran No at 0.964) with minimal upside \u2014 yield harvesting risk in non-core domain",
-    "Concentration risk: massive open position in Russia x Ukraine ceasefire Yes at 0.03 (10,219 shares) \u2014 a low-probability contrarian long that could represent a speculative tail bet or loss recovery attempt",
-    "Recent resolved trades show a string of losses across diverse markets, suggesting possible overextension beyond core competency"
+    "Sunk-cost averaging: repeated entries on Israel-Hamas No ceasefire",
+    "Near-certainty positioning outside trusted domains (Waymo, US-Iran No) — yield harvesting risk in non-core domain",
+    "Concentration risk: large contrarian ceasefire positions",
+    "Tier decay: geo_elo_active now NEAR_LEGENDARY range; may drop below 1800 with continued inactivity"
   ],
   "notable_calls": [
     {
       "market": "Russia x Ukraine ceasefire by June 30, 2026",
       "side": "YES",
       "entry_price": 0.03,
-      "result": "OPEN",
-      "significance": "Massive contrarian long (10,219 shares at 3 cents) \u2014 either a calculated tail-risk bet or speculative recovery play; outcome will significantly affect PnL and archetype reassessment"
+      "result": "LOST",
+      "significance": "Massive contrarian long (10,219 shares at 3 cents) — ceasefire did not occur by Jun 30, position resolved as loss. A rare large-scale speculative failure in this trader's record."
     },
     {
       "market": "Israel x Hamas ceasefire by October 31",
       "side": "NO",
       "entry_price": 0.73,
       "result": "LOST",
-      "significance": "Repeated 5x entry at same price on a position that ultimately lost \u2014 textbook sunk-cost doubling, and a rare failure case in a normally strong trader"
+      "significance": "Repeated 5x entry at same price on a position that ultimately lost — textbook sunk-cost doubling, rare failure case"
     },
     {
-      "market": "Rafa\u0142 Trzaskowski next President of Poland",
+      "market": "Rafał Trzaskowski next President of Poland",
       "side": "YES",
       "entry_price": 0.59,
       "result": "LOST",
-      "significance": "Contested price entry in core Europe domain but still lost \u2014 notable because it challenges the Europe accuracy narrative at mid-range prices"
+      "significance": "Contested entry in core Europe domain but still lost — challenges Europe accuracy narrative at mid-range prices"
     },
     {
       "market": "Israel x Hamas ceasefire by September 15",
       "side": "NO",
       "entry_price": 0.95,
       "result": "LOST",
-      "significance": "Near-certainty entry that lost \u2014 rare but significant failure; highlights Iran_ME domain unreliability even at ostensibly safe prices"
+      "significance": "Near-certainty entry that lost — rare but significant failure; Iran_ME domain unreliability even at ostensibly safe prices"
     },
     {
-      "market": "Russia x Ukraine ceasefire by October 31",
+      "market": "NATO x Russia military clash by June 30, 2026",
+      "side": "NO",
+      "entry_price": 0.965,
+      "result": "WON",
+      "significance": "Near-certainty Russia_UKR domain win — corroborated by multiple other eligible traders"
+    },
+    {
+      "market": "Russia x Ukraine ceasefire by June 30",
       "side": "NO",
       "entry_price": 0.975,
-      "result": "OPEN",
-      "significance": "Classic yield-harvest position at near-certainty price; contrasts sharply with the speculative YES ceasefire bet \u2014 trader may be hedging their own thesis"
+      "result": "WON",
+      "significance": "Near-certainty Russia_UKR domain win on the NO side — contrasts with the simultaneous speculative YES long on same theme"
+    },
+    {
+      "market": "Waymo launch in Dallas by June 30 2026",
+      "side": "NO",
+      "entry_price": 0.910,
+      "result": "WON",
+      "significance": "Near-certainty entry outside trusted domains (tech market) — opportunistic yield collection, adds to non-core near-certainty pattern"
     }
   ],
-  "open_positions_summary": "Current portfolio is heavily oriented around Russia-Ukraine peace process pessimism (multiple No ceasefire positions at high confidence prices) while paradoxically holding a massive speculative long on a June 2026 ceasefire at 3 cents. Secondary positions include Iran leadership stability (Khamenei No), US-Iran deal (No), and several Ukraine-related geopolitical event bets. The overall thesis appears to be: no imminent peace deal, no major leadership changes, but maintaining a speculative tail-bet on sudden ceasefire resolution. The Zelensky suit bet (Yes at 15 cents) is a quirky low-stakes market signal.",
+  "open_positions_summary": "Russia-Ukraine peace process pessimism dominates the open book: multiple NO positions at contested and near-certainty prices (Russia-Ukraine ceasefire Dec NO at 0.661, ceasefire Oct NO at 0.785, Ukraine cede territory implicitly priced). Secondary: New People Russia elections — bidirectional, YES at 0.345 CONTESTED (886 shares, dominant) and NO at 0.669 CONTESTED (106 shares, smaller); the dominant capital is on YES at 0.345 suggesting a new Iran-ME-adjacent political intelligence thesis. Several near-certainty positions on leadership stability (Putin out NO, Zelenskyy out NO, Trump resign NO) represent yield collection outside contested forecasting.",
   "watch_items": [
-    "Resolution of the 10,219-share Russia ceasefire Yes at 0.03 position \u2014 this will be the single largest PnL event and tests whether this is strategic or desperation",
-    "Whether the trader continues to enter Iran_ME markets despite persistent underperformance in that domain",
-    "Further entries on Israel-Hamas ceasefire markets \u2014 monitor for continued sunk-cost behaviour",
-    "ELO trajectory if recent losing streak continues \u2014 geo_elo_active is 17 points below geo_elo, suggesting mild recent decay",
-    "Whether directionality holds above 0.90 \u2014 a drop would indicate strategy shift or increasing uncertainty"
+    "New People Russia YES at 0.345 (886 shares CONTESTED) — new thesis since Jun 10, resolves Sep 30. If this wins, re-evaluate contested accuracy and consider increasing signal weight.",
+    "Russia ceasefire Dec 2026 NO at 0.661 CONTESTED (122 shares) — contested Russia_UKR directional call in trusted domain.",
+    "geo_elo_active trajectory: at 2037 and decaying. If it drops below 1800 before next weekly run, execute full demotion review.",
+    "Performance pattern: last 10 resolved = 100% (all near-certainty). No Russia_UKR contested-price resolution data since Jun 10 — core domain accuracy unconfirmed this cycle."
   ],
   "overall_signal_value": "MEDIUM",
-  "summary": "This is a LEGENDARY-tier trader with genuine, statistically validated edge in Russia-Ukraine and European geopolitics across a large resolved trade sample. However, the recent resolved trade log is almost entirely losses, a concerning short-term pattern that may reflect domain overextension or a difficult market environment. The massive contrarian ceasefire long at 3 cents and repeated doubling-down on lost ceasefire positions introduce meaningful behavioural risk flags. Follow this trader closely in Russia_UKR and Europe domains, but discount or ignore Iran_ME, China_Asia, and Other signals entirely.",
+  "summary": "Russia_UKR and Europe DOMAIN_SPECIALIST with confirmed edge in those domains at Jun 10 baseline. Tier downgraded to NEAR_LEGENDARY this week as geo_elo_active decayed from 2240 to 2037 (below LEGENDARY threshold 2175), driven by relative inactivity over 26 days. The one new resolved trade is a near-certainty opportunistic win outside domain — not a forecasting signal. The significant contested directional call this profile holds is the New People Russia YES at 0.345 (886 shares) which post-dates the Jun 10 profiling. Russia_UKR signal weight DOMAIN_ONLY maintained. Human review recommended given LEGENDARY→NEAR_LEGENDARY demotion.",
   "data_snapshot": {
-    "geo_elo": 2257.4276750230824,
-    "geo_elo_active": 2240.1086,
-    "resolved_trades": 214,
-    "distinct_markets": 40,
-    "directionality": 0.9507841849248733,
+    "geo_elo": 2260.3,
+    "geo_elo_active": 2037.1,
+    "resolved_trades": 215,
+    "distinct_markets": 41,
+    "directionality": 0.911,
     "pnl": 0.0
   }
 }

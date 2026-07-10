@@ -1,0 +1,63 @@
+{
+  "date": "2026-07-02",
+  "markets_checked": 31,
+  "signals_found": 5,
+  "signals": [
+    {
+      "market": "Will Germany reach the Round of 16 at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.5754,
+      "market_price_pct": 0.17,
+      "gap_pt": 40.5,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-04"
+    },
+    {
+      "market": "Will USA reach the Round of 16 at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.78,
+      "gap_pt": 78.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-04"
+    },
+    {
+      "market": "Will Switzerland reach the Round of 16 at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9856,
+      "market_price_pct": 0.59,
+      "gap_pt": 39.6,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-04"
+    },
+    {
+      "market": "Will Paraguay reach the Round of 16 at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.8723,
+      "market_price_pct": 0.32,
+      "gap_pt": 55.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-04"
+    },
+    {
+      "market": "Will Trump attend NATO Summit?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0023,
+      "market_price_pct": 0.94,
+      "gap_pt": 93.8,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-08"
+    }
+  ],
+  "scan_timestamp": "2026-07-02T17:38:18.635704+00:00"
+}

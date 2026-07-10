@@ -1,0 +1,184 @@
+{
+  "date": "2026-07-09",
+  "markets_checked": 46,
+  "signals_found": 16,
+  "signals": [
+    {
+      "market": "GPT-5.6 released by July 10, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5402,
+      "market_price_pct": 0.9878,
+      "gap_pt": 44.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-10"
+    },
+    {
+      "market": "Will a team from LCK (South Korea) win MSI 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.65,
+      "gap_pt": 35.0,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will a team from LEC (Europe / EMEA) win MSI 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.014,
+      "gap_pt": 98.6,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will a team from LPL (China) win MSI 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6224,
+      "market_price_pct": 0.2996,
+      "gap_pt": 32.3,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will Paraguay reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0631,
+      "gap_pt": 93.7,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Spain reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9969,
+      "market_price_pct": 0.75,
+      "gap_pt": 24.7,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will USA reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.927,
+      "market_price_pct": 0.07,
+      "gap_pt": 85.7,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Switzerland reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8879,
+      "market_price_pct": 0.18,
+      "gap_pt": 70.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Colombia reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9554,
+      "market_price_pct": 0.171,
+      "gap_pt": 78.4,
+      "elite_traders": 7,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Japan reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.872,
+      "market_price_pct": 0.1,
+      "gap_pt": 77.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "GPT-5.6 released by July 13, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0214,
+      "market_price_pct": 0.93,
+      "gap_pt": 90.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Egypt reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8234,
+      "market_price_pct": 0.033,
+      "gap_pt": 79.0,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by July 15?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.2742,
+      "market_price_pct": 0.0079,
+      "gap_pt": 26.6,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Israel closes its airspace by August 31?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.18,
+      "gap_pt": 18.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Iran full airspace closure by July 15?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.7931,
+      "market_price_pct": 0.0978,
+      "gap_pt": 69.5,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Will the Bank of Korea increase the base rate after the July Meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.6506,
+      "gap_pt": 34.9,
+      "elite_traders": 14,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-16"
+    }
+  ],
+  "scan_timestamp": "2026-07-09T08:16:38.099677+00:00"
+}

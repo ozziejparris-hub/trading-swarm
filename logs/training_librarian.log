@@ -142,3 +142,75 @@ Kill it:    tmux kill-session -t training-librarian-agent-librarian-20260613
 
 Routing decisions: /brain/model-routing.md
 [2026-06-13T09:00:01Z] Finished training-librarian-agent (exit: 0)
+[2026-06-20T09:00:01Z] Starting training-librarian-agent
+──────────────────────────────────────
+Spawning agent: training-librarian-agent-librarian-20260620
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly brain maintenance. Audit reference library, update failure taxonomy, check agent templates, identify knowledge gaps, update lessons learned.
+──────────────────────────────────────
+Creating git worktree: feat/librarian-20260620
+HEAD is now at 46130cf chore: weekly code hygiene 2026-06-19 — logs archived, report written
+Spawning tmux session: training-librarian-agent-librarian-20260620
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  training-librarian-agent-librarian-20260620
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/librarian-20260620
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/librarian-20260620.log
+
+Watch it:   tmux attach -t training-librarian-agent-librarian-20260620
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t training-librarian-agent-librarian-20260620
+
+Routing decisions: /brain/model-routing.md
+[2026-06-20T09:00:01Z] Finished training-librarian-agent (exit: 0)
+[2026-06-27T09:00:01Z] Starting training-librarian-agent
+──────────────────────────────────────
+Spawning agent: training-librarian-agent-librarian-20260627
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly brain maintenance. Audit reference library, update failure taxonomy, check agent templates, identify knowledge gaps, update lessons learned.
+──────────────────────────────────────
+Creating git worktree: feat/librarian-20260627
+HEAD is now at 704a48c docs: session #42 summary — behavioral snapshot staleness diagnosed + fixed at source, all 8 tests green
+Spawning tmux session: training-librarian-agent-librarian-20260627
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  training-librarian-agent-librarian-20260627
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/librarian-20260627
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/librarian-20260627.log
+
+Watch it:   tmux attach -t training-librarian-agent-librarian-20260627
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t training-librarian-agent-librarian-20260627
+
+Routing decisions: /brain/model-routing.md
+[2026-06-27T09:00:01Z] Finished training-librarian-agent (exit: 0)
+[2026-07-04T09:00:01Z] Starting training-librarian-agent
+──────────────────────────────────────
+Spawning agent: training-librarian-agent-librarian-20260704
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly brain maintenance. Audit reference library, update failure taxonomy, check agent templates, identify knowledge gaps, update lessons learned.
+──────────────────────────────────────
+Creating git worktree: feat/librarian-20260704
+HEAD is now at f089341 docs: 2026-07-03 hygiene — contract stale signal, 7 logs archived, weekly report
+Spawning tmux session: training-librarian-agent-librarian-20260704
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  training-librarian-agent-librarian-20260704
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/librarian-20260704
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/librarian-20260704.log
+
+Watch it:   tmux attach -t training-librarian-agent-librarian-20260704
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t training-librarian-agent-librarian-20260704
+
+Routing decisions: /brain/model-routing.md
+[2026-07-04T09:00:01Z] Finished training-librarian-agent (exit: 0)

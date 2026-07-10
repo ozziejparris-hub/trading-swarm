@@ -15,23 +15,6 @@
       "retries": 1,
       "pr": null,
       "verified": false
-    },
-    {
-      "id": "integration-20260705",
-      "agent": "integration-test-agent",
-      "description": "Run full integration test suite. Check all 6 suites: signal bus, agent cadence, feedback loop, registry consistency, CI pipeline, brain completeness.",
-      "branch": "feat/integration-20260705",
-      "tmux_session": "integration-test-agent-integration-20260705",
-      "model": "claude-sonnet-4-6 (Tier 3)",
-      "tier": "3",
-      "worktree": "/tmp/trading-swarm-worktrees/integration-20260705",
-      "log": "/home/parison/trading-swarm/logs/agent_logs/integration-20260705.log",
-      "started_at": "2026-07-05T23:00:01.898428",
-      "status": "done",
-      "retries": 0,
-      "pr": null,
-      "verified": false,
-      "completed_at": "2026-07-05T23:00:00Z"
     }
   ]
 }

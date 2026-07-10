@@ -1,0 +1,30 @@
+{
+  "date": "2026-07-07",
+  "markets_checked": 33,
+  "signals_found": 2,
+  "signals": [
+    {
+      "market": "Will Trump attend NATO Summit?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0023,
+      "market_price_pct": 0.652,
+      "gap_pt": 65.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-08"
+    },
+    {
+      "market": "Will Colombia reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.936,
+      "market_price_pct": 0.2303,
+      "gap_pt": 70.6,
+      "elite_traders": 2,
+      "legendary_traders": 1,
+      "resolution_date": "2026-07-13"
+    }
+  ],
+  "scan_timestamp": "2026-07-07T08:14:57.380944+00:00"
+}

@@ -1,44 +1,46 @@
 {
   "address": "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 1884.6492,
+  "profile_date": "2026-07-06",
+  "geo_elo_active": 1844.4,
   "tier": "NEAR_LEGENDARY",
   "archetype": "VOLUME_SPECIALIST",
   "archetype_confidence": "MEDIUM",
-  "archetype_reasoning": "This trader concentrates heavily on single markets \u2014 most recently placing 11 separate YES trades on the Graham Platner Maine Senate primary, buying at prices ranging from 0.48 to 0.89. Directionality of 1.0 confirms they almost exclusively take one side across trades. The pattern of averaging into a single market theme with repeated entries resembles volume specialization rather than broad genuine forecasting, though the 33 distinct markets suggests some breadth.",
-  "primary_domain": "Other",
+  "archetype_reasoning": "Jun 10 baseline characterisation as Trump_US-focused VOLUME_SPECIALIST confirmed by ongoing pattern. 1 new resolved trade since Jun 10: Cape Verde FIFA World Cup YES @ 0.460 CONTESTED, WON (Jun 21) — a sports market, hard-rule excluded from agent scope, outside all trusted domains. No reclassification warranted (1 new trade). Critical new finding: last 10 overall resolved trades = 20% accuracy (2 wins, 8 losses) — severe performance deterioration flag. The 8 losses are cheap long-shots on obscure US primary candidates (0.026–0.060 range), consistent with existing lottery-ticket behavioral flag but now showing a sustained losing streak. No archetype change on 1 new geo trade. Previous archetype: VOLUME_SPECIALIST (set 2026-06-10, confirmed unchanged 2026-07-06).",
+  "primary_domain": "Trump_US",
   "domain_strengths": [
-    "Trump_US",
-    "Other"
+    "Trump_US"
   ],
   "domain_blindspots": [
-    "LatAm: only 3 trades, 33% accuracy \u2014 insufficient sample and poor results",
-    "Iran_ME: 1 win 1 loss, no meaningful edge demonstrated"
+    "LatAm: only 3 trades, 33% accuracy — insufficient sample and poor results",
+    "Iran_ME: 1 win 1 loss, no meaningful edge demonstrated",
+    "Sports: makes contested sports bets (Cape Verde FIFA WC YES @ 0.460) — outside agent scope; not counted as geo signal"
   ],
-  "domain_summary": "Best demonstrated edge is in Trump_US markets at 60% accuracy across 50 trades, which is modest but meaningful. The 'Other' domain (93 trades, 48.4%) is slightly below breakeven and suggests the trader overextends into markets outside their comfort zone.",
+  "domain_summary": "Best demonstrated edge is in Trump_US markets at ~60% accuracy (Jun 10 baseline). New resolve data since Jun 10 is a single sports market win — outside scope. Overall last 10 accuracy has collapsed to 20%, driven by cheap speculative losses on US primary long-shots. Core Trump_US accuracy unconfirmed this cycle.",
   "signal_weight": "DOMAIN_ONLY",
-  "signal_weight_reasoning": "Trump_US is the only domain with enough volume and above-breakeven accuracy to warrant signal use. The trader's 1.0 directionality and repeated hammering of single markets (Maine primary, Mamdani) introduces noise from averaging behavior rather than independent forecasting signals. Open positions are predominantly low-probability long-shot bets at 0.5-2.6 cents which are near-certainty/yield territory in reverse (speculative lottery tickets), further diluting signal quality.",
+  "signal_weight_reasoning": "Trump_US remains the only domain with demonstrated above-chance accuracy. Signal weight maintained at DOMAIN_ONLY but the performance deterioration flag (20% last 10) warrants close monitoring. If the losing streak continues into the 2026 midterm cycle with 5+ more losses in Trump_US markets specifically, downgrade to MINIMAL should be considered.",
   "trusted_domains": [
     "Trump_US"
   ],
   "discounted_domains": [
     "LatAm",
     "Iran_ME",
-    "Other"
+    "Other",
+    "Sports"
   ],
   "behavioural_flags": [
     "Averaging into single markets with 5-11 separate entries (Graham Platner: 11 trades, Mamdani: multiple entries)",
-    "Bought Mamdani YES at 0.943 \u2014 near-certainty price for a contested outcome, a clear misjudgment of pricing",
-    "Open positions dominated by extreme long-shots at 0.2-2.6 cents (French presidential candidates, obscure primaries)",
-    "Directionality of 1.0 \u2014 never takes NO side except on resolved positions, extremely one-directional",
-    "Entry at both contested and near-certainty prices suggests inconsistent methodology",
-    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1913.83, ELO recalculated post June 10 profiling). No archetype change."
+    "Bought Mamdani YES at 0.943 — near-certainty price for a contested outcome, a clear misjudgment of pricing",
+    "Open positions dominated by extreme long-shots below 5 cents (French presidential candidates, obscure primaries) — lottery-ticket accumulation",
+    "Directionality of 1.0 — never takes NO side, extremely one-directional",
+    "PERFORMANCE_DETERIORATION: last 10 resolved trades = 20% accuracy (2W/8L) — below 45% threshold. Driven by cheap long-shot speculative losses on obscure US primaries (avg entry 0.034). HIGH severity.",
+    "Sports market entry: Cape Verde FIFA WC YES @ 0.460 WON (Jun 21) — hard-rule excluded market. Pattern of looking outside geo/elections for action.",
+    "TIER_UPDATED_2026-06-15: ELITE → NEAR_LEGENDARY (geo_elo_active=1913.83)"
   ],
   "risk_patterns": [
-    "Sunk-cost averaging: repeatedly buying into losing/uncertain positions in same market",
-    "Lottery-ticket accumulation: open book full of <1 cent positions that will mostly expire worthless",
-    "Overconfidence risk: 0.943 entry on Mamdani primary shows willingness to chase at dangerous prices",
-    "Concentration risk: cluster of Platner trades means single market can dominate recent P&L"
+    "Sunk-cost averaging: repeatedly buying into uncertain positions in same market",
+    "Lottery-ticket accumulation: persistent sub-5-cent bets that will mostly expire worthless",
+    "Performance deterioration: 20% on last 10 signals potential strategy failure or bad run",
+    "Out-of-scope market entry: sports bets outside agent mandate"
   ],
   "notable_calls": [
     {
@@ -53,7 +55,7 @@
       "side": "YES",
       "entry_price": 0.943,
       "result": "LOST",
-      "significance": "Near-certainty buy on contested market \u2014 worst kind of entry, lost a near-lock priced bet"
+      "significance": "Near-certainty buy on contested market — worst kind of entry, lost a near-lock priced bet"
     },
     {
       "market": "Zohran Mamdani NYC mayoral election",
@@ -63,28 +65,28 @@
       "significance": "General election bet at high price also lost; double exposure to same thesis"
     },
     {
-      "market": "Andrew Cuomo second place NYC mayoral",
+      "market": "Cape Verde advance to 2026 FIFA World Cup knockouts",
       "side": "YES",
-      "entry_price": 0.14,
-      "result": "LOST",
-      "significance": "Contested entry, non-obvious call, but wrong \u2014 shows limits of NYC political read"
+      "entry_price": 0.460,
+      "result": "WON",
+      "significance": "Sports market — outside agent scope. Contested price entry that won. Does not count as geo/elections signal but demonstrates the trader's appetite for out-of-scope markets."
     }
   ],
-  "open_positions_summary": "Current open book is almost entirely sub-2-cent long-shot bets on obscure candidates in French 2027 presidential race, Peruvian election, LA mayor, Idaho governor, and various US primaries. These are speculative portfolio-spreading positions implying no strong thesis \u2014 the trader appears to be buying optionality cheaply across many low-probability outcomes. The Elly Schlein Italy PM position at 14.9 cents is the only meaningfully priced open bet and represents a genuine directional call.",
+  "open_positions_summary": "Open book remains dominated by sub-5-cent long-shots on obscure 2026 US primary candidates and 2027 French presidential race. These are speculative lottery-ticket positions with minimal forecasting value. Most will likely expire worthless given the cheap entry prices. No meaningful contested-price positions in Trump_US domain currently visible.",
   "watch_items": [
-    "Monitor whether the Platner-style averaging pattern repeats in upcoming 2026 primaries \u2014 if so, early entries are the signal, late ones are noise",
-    "Track Elly Schlein Italy open position as the most substantive current directional bet",
-    "Watch if lottery-ticket open positions begin to close at a loss pattern \u2014 could indicate shift to higher-quality entry discipline",
-    "Observe if Trump_US accuracy holds above 0.60 in 2026 midterm cycle markets"
+    "CRITICAL: performance deterioration flag active (20% last 10). Monitor next 5+ resolved Trump_US trades specifically — if below 45%, downgrade signal_weight to MINIMAL.",
+    "Whether the lottery-ticket open positions begin systematically resolving to zero, suggesting poor capital discipline worsening.",
+    "Any new entries into 2026 US midterm cycle markets at contested prices (0.10-0.80) — would be the signal the Jun 10 profile was optimistic about.",
+    "geo_elo_active at 1844 — still NEAR_LEGENDARY but declining. If it drops below 1800, execute full demotion review."
   ],
-  "overall_signal_value": "MEDIUM",
-  "summary": "A moderately capable trader with genuine edge in Trump_US markets (60% over 50 trades) but significant behavioral noise from averaging into single markets and chasing near-certainty prices on contested outcomes. The 1.0 directionality and open book of lottery-ticket positions suggest a speculative streak that undermines forecasting credibility. Realized PnL of ~$390 is modest relative to trade volume, consistent with a trader who wins often but over-extends. Best used as a DOMAIN_ONLY signal source for Trump_US political calls, with heavy discounting applied to any entries above 0.85 or below 0.05.",
+  "overall_signal_value": "LOW",
+  "summary": "Trump_US VOLUME_SPECIALIST with confirmed edge at Jun 10 baseline now showing severe performance deterioration: last 10 resolved trades = 20% accuracy. The new resolved trade since Jun 10 is a sports market win (outside scope). Ongoing lottery-ticket open positions suggest capital is deployed in noise-generating speculative entries rather than genuine forecasting. Signal value downgraded from MEDIUM to LOW pending recovery of performance in next cycle. Continue monitoring Trump_US accuracy specifically; do not use this trader's signals until the losing streak ends across 5+ more resolved trades.",
   "data_snapshot": {
-    "geo_elo": 1891.9206119316975,
-    "geo_elo_active": 1913.83,
-    "resolved_trades": 110,
+    "geo_elo": 1969.2,
+    "geo_elo_active": 1844.4,
+    "resolved_trades": 111,
     "distinct_markets": 33,
     "directionality": 1.0,
-    "pnl": 389.93798750146095
+    "pnl": 389.9
   }
 }

@@ -1,0 +1,206 @@
+{
+  "date": "2026-07-08",
+  "markets_checked": 39,
+  "signals_found": 18,
+  "signals": [
+    {
+      "market": "GPT-5.6 released by July 9, 2026?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.81,
+      "gap_pt": 81.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-09"
+    },
+    {
+      "market": "GPT-5.6 released by July 10, 2026?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.4541,
+      "market_price_pct": 0.6695,
+      "gap_pt": 21.5,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-10"
+    },
+    {
+      "market": "Will a team from LCK (South Korea) win MSI 2026?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.71,
+      "gap_pt": 29.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will a team from LEC (Europe / EMEA) win MSI 2026?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9757,
+      "market_price_pct": 0.014,
+      "gap_pt": 96.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will a team from LPL (China) win MSI 2026?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.2996,
+      "gap_pt": 70.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will Colombia finish second in Group K in the 2026 FIFA World Cup Group Stage?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.54,
+      "gap_pt": 46.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-12"
+    },
+    {
+      "market": "Will Paraguay reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0631,
+      "gap_pt": 93.7,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Argentina reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.4185,
+      "market_price_pct": 0.72,
+      "gap_pt": 30.2,
+      "elite_traders": 2,
+      "legendary_traders": 1,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Spain reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.75,
+      "gap_pt": 25.0,
+      "elite_traders": 1,
+      "legendary_traders": 1,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will USA reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.899,
+      "market_price_pct": 0.07,
+      "gap_pt": 82.9,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Brazil reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7222,
+      "market_price_pct": 0.36,
+      "gap_pt": 36.2,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Switzerland reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.6228,
+      "market_price_pct": 0.18,
+      "gap_pt": 44.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Colombia reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.651,
+      "market_price_pct": 0.171,
+      "gap_pt": 48.0,
+      "elite_traders": 2,
+      "legendary_traders": 1,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Japan reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.6135,
+      "market_price_pct": 0.1,
+      "gap_pt": 51.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Egypt reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9004,
+      "market_price_pct": 0.033,
+      "gap_pt": 86.7,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by July 15?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.2997,
+      "market_price_pct": 0.0079,
+      "gap_pt": 29.2,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Israel closes its airspace by July 15?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.2289,
+      "market_price_pct": 0.027,
+      "gap_pt": 20.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Iran charges Hormuz fees by July 15?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4876,
+      "market_price_pct": 0.08,
+      "gap_pt": 40.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    }
+  ],
+  "scan_timestamp": "2026-07-08T08:15:38.259430+00:00"
+}

@@ -1,7 +1,7 @@
 {
   "summary": {
     "audit_date": "2026-06-26",
-    "run_at": "2026-06-26T06:01:21",
+    "run_at": "2026-06-26T19:03:02",
     "total": 20,
     "pass": 14,
     "regression": 6,
@@ -85,7 +85,7 @@
       "name": "pending on resolved non-gap markets (flagged traders)",
       "tier": 2,
       "floor": 0,
-      "count": 475,
+      "count": 895,
       "status": "REGRESSION",
       "examples": []
     },
@@ -93,7 +93,7 @@
       "name": "pending on resolved non-gap geo/elections markets",
       "tier": 2,
       "floor": 0,
-      "count": 2901,
+      "count": 3531,
       "status": "REGRESSION",
       "examples": []
     },
@@ -101,7 +101,7 @@
       "name": "trades.market_category='Unknown' where market.category is known",
       "tier": 2,
       "floor": 122417,
-      "count": 130825,
+      "count": 131749,
       "status": "REGRESSION",
       "examples": []
     },
@@ -109,7 +109,7 @@
       "name": "timestamp mixed formats (per-column breakdown)",
       "tier": 2,
       "floor": 24996,
-      "count": 27026,
+      "count": 27525,
       "status": "REGRESSION",
       "examples": [
         {
@@ -122,21 +122,21 @@
         {
           "column": "markets.end_date",
           "canonical": "space-sep",
-          "non_canonical": 1905,
+          "non_canonical": 2167,
           "floor": 946,
           "status": "REGRESSION"
         },
         {
           "column": "markets.resolution_date",
           "canonical": "space-sep",
-          "non_canonical": 1787,
+          "non_canonical": 2025,
           "floor": 881,
           "status": "REGRESSION"
         },
         {
           "column": "traders.elo_last_updated",
           "canonical": "T-sep",
-          "non_canonical": 23334,
+          "non_canonical": 23333,
           "floor": 23163,
           "status": "REGRESSION"
         },
@@ -267,7 +267,7 @@
       "name": "traders with API total_trades but 0 local records",
       "tier": 3,
       "floor": 114047,
-      "count": 1758,
+      "count": 1990,
       "status": "PASS",
       "examples": []
     },
@@ -275,7 +275,7 @@
       "name": "BUY trades with no position record",
       "tier": 3,
       "floor": 275254,
-      "count": 319839,
+      "count": 333079,
       "status": "REGRESSION",
       "examples": []
     },
@@ -291,7 +291,7 @@
       "name": "total_invested vs SUM(entry_total_cost) mismatch >5%",
       "tier": 3,
       "floor": 0,
-      "count": 71,
+      "count": 79,
       "status": "REGRESSION",
       "examples": []
     },

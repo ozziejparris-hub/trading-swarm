@@ -322,3 +322,255 @@
 [LEGEND] Computing Signal Credibility Scores for 0 market(s)...
 [LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-06-15-positions-scan.json
 [LEGEND] Done — 8 scanned, 0 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-06-15-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 20 overdue open market(s) — checking Gamma API...
+  Checking: Will Ivan Cepeda Castro win the 2026 Colombian presidential election? (end 2026-06-21)
+    → Not yet resolved on Gamma
+  Checking: Will Jorge Nieto win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Roberto Sánchez Palomino win the 2026 Peruvian presidential elect (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Rafael López Aliaga win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Keiko Fujimori win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will another candidate win the first round of the 2026 Los Angeles May (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Spencer Pratt win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Sorin Grindeanu be the next Prime Minister of Romania? (end 2026-05-31)
+    → Not yet resolved on Gamma
+  Checking: Will Ilie Bolojan be the next Prime Minister of Romania? (end 2026-05-31)
+    → Not yet resolved on Gamma
+  Checking: Will Christine Drazan win the 2026 Oregon Governor Republican primary  (end 2026-05-19)
+    → UPDATED: resolved=1, winning_outcome=Yes
+  Checking: Will John Fleming be the republican nominee for Senate in Louisiana? (end 2026-05-16)
+    → Not yet resolved on Gamma
+  Checking: Will Carlos Álvarez win the 2026 Peruvian presidential election? (end 2026-04-12)
+    → Not yet resolved on Gamma
+  Checking: Ukraine recognizes Russian sovereignty over its territory by June 30,  (end 2025-12-31)
+    → Not yet resolved on Gamma
+  Checking: Ukraine election held by June 30, 2026? (end 2025-12-31)
+    → Not yet resolved on Gamma
+  Checking: NATO/EU troops fighting in Ukraine in June 30, 2026? (end 2025-12-31)
+    → Not yet resolved on Gamma
+  Checking: Will turnout in the 2025 Honduran general election be between 60% and  (end 2025-11-30)
+    → UPDATED: resolved=1, winning_outcome=Yes
+  Checking: Will UP win the most seats in the Chamber of Deputies following the 20 (end 2025-10-26)
+    → UPDATED: resolved=1, winning_outcome=No
+  Checking: Will UP hold the most seats in the Chamber of Deputies following the 2 (end 2025-10-26)
+    → UPDATED: resolved=1, winning_outcome=No
+  Checking: Will Jorge “Tuto” Quiroga win the 2025 Bolivia presidential election? (end 2025-10-19)
+    → UPDATED: resolved=1, winning_outcome=No
+[LEGEND] 39 market(s) with >= 2 LEGENDARY traders
+[LEGEND] Skipped 4 market(s) overdue by >7 days (likely resolved, DB not yet updated)
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-06-22 07:32 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 31  (skipped no-price: 0, stale-price: 0, overdue: 4)
+======================================================================
+    1. [ 5 LEG] NO  ▼  93% vs mkt 52.5%  gap=+45.3pt  cap=$1.1K  res=8d
+       Will the Iranian regime fall by June 30?
+
+    2. [ 3 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$7.9K  res=?
+       Kharg Island no longer under Iranian control by April 30?
+
+    3. [ 3 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$31  res=?
+       US obtains Iranian enriched uranium by May 31?
+
+    4. [ 3 LEG] NO  ▼  97% vs mkt 52.5%  gap=+49.1pt  cap=$733  res=?
+       US x Iran diplomatic meeting by April 22, 2026?
+
+    5. [ 3 LEG] YES ▲  98% vs mkt 52.5%  gap=+45.6pt  cap=$401  res=?
+       Will Trump visit China by May 31?
+
+    6. [ 3 LEG] YES ▲  72% vs mkt 52.5%  gap=+20.0pt  cap=$176  res=? [MIXED_SIGNAL]
+       Will another country strike Iran by March 31?
+
+    7. [ 3 LEG] NO  ▼  67% vs mkt 52.5%  gap=+19.7pt  cap=$274  res=? [MIXED_SIGNAL]
+       US x Iran ceasefire by March 31?
+
+    8. [ 2 LEG] YES ▲  100% vs mkt 24.5%  gap=+75.5pt  cap=$589  res=312d
+       Will Jordan Bardella win the 2027 French presidential election?
+
+    9. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$5.2K  res=8d
+       Kharg Island no longer under Iranian control by June 30?
+
+   10. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$3.4K  res=?
+       Will Trump agree to Iranian Oil sanction relief in April?
+
+   11. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$1.8K  res=192d
+       US obtains Iranian enriched uranium by December 31?
+
+   12. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$242  res=?
+       Will Donald Trump announce that the United States blockade of the St
+
+   13. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$31  res=?
+       Will the Iranian regime fall by April 30?
+
+   14. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.5pt  cap=$24  res=?
+       Iran closes its airspace by May 15?
+
+   15. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.3pt  cap=$1  res=8d
+       Will J.D. Vance attend the next US x Iran diplomatic meeting?
+
+   16. [ 2 LEG] NO  ▼  100% vs mkt 52.5%  gap=+52.1pt  cap=$537  res=?
+       Will the Iran ceasefire continue through May 22?
+
+   17. [ 2 LEG] NO  ▼  99% vs mkt 52.5%  gap=+51.2pt  cap=$760  res=?
+       US x Iran ceasefire by April 30?
+
+   18. [ 2 LEG] NO  ▼  98% vs mkt 52.5%  gap=+50.1pt  cap=$192  res=?
+       Ruben Rocha out as Governor of Sinaloa by May 31?
+
+   19. [ 2 LEG] NO  ▼  97% vs mkt 52.5%  gap=+49.4pt  cap=$8.4K  res=8d
+       NATO x Russia military clash by June 30, 2026?
+
+   20. [ 2 LEG] NO  ▼  96% vs mkt 52.5%  gap=+48.7pt  cap=$138  res=?
+       US strikes Iran by February 20, 2026?
+
+   21. [ 2 LEG] YES ▲  100% vs mkt 52.5%  gap=+47.5pt  cap=$3.3K  res=?
+       Will Tisza win the most national list votes in the 2026 Hungarian pa
+
+   22. [ 2 LEG] YES ▲  100% vs mkt 52.5%  gap=+47.5pt  cap=$137  res=8d
+       Putin out as President of Russia by June 30?
+
+   23. [ 2 LEG] YES ▲  100% vs mkt 52.5%  gap=+47.5pt  cap=$56  res=192d
+       Will Kash Patel leave the Trump administration before 2027?
+
+   24. [ 2 LEG] YES ▲  100% vs mkt 52.5%  gap=+47.5pt  cap=$50  res=?
+       US x Iran diplomatic meeting by April 24, 2026?
+
+   25. [ 2 LEG] YES ▲  100% vs mkt 52.5%  gap=+47.5pt  cap=$17  res=8d
+       Will the next diplomatic US-Iran meeting be in Pakistan?
+
+   26. [ 2 LEG] YES ▲  100% vs mkt 52.5%  gap=+47.4pt  cap=$2.6K  res=192d
+       Will Trump acquire Greenland before 2027?
+
+   27. [ 2 LEG] NO  ▼  100% vs mkt 37.4%  gap=+37.3pt  cap=$45  res=869d
+       Will J.D. Vance win the 2028 Republican presidential nomination?
+
+   28. [ 2 LEG] NO  ▼  100% vs mkt 29.5%  gap=+29.5pt  cap=$3.7K  res=192d
+       Ukraine signs peace deal with Russia before 2027?
+
+   29. [ 2 LEG] YES ▲  73% vs mkt 52.5%  gap=+20.1pt  cap=$7  res=? [MIXED_SIGNAL]
+       Will Donald Trump announce that the United States blockade of the St
+
+   30. [ 2 LEG] YES ▲  100% vs mkt 80.5%  gap=+19.5pt  cap=$98  res=134d
+       Will the Democratic Party control the House after the 2026 Midterm e
+
+   31. [ 2 LEG] YES ▲  71% vs mkt 52.5%  gap=+18.9pt  cap=$35  res=? [MIXED_SIGNAL]
+       Will Benoît Payan win the Marseille mayor election?
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 31 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-06-22-positions-scan.json
+[LEGEND] Done — 39 scanned, 31 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-06-22-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 13 overdue open market(s) — checking Gamma API...
+  Checking: Will Jorge Nieto win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Roberto Sánchez Palomino win the 2026 Peruvian presidential elect (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Rafael López Aliaga win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Keiko Fujimori win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Rae Huang win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Spencer Pratt win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Sorin Grindeanu be the next Prime Minister of Romania? (end 2026-05-31)
+    → Not yet resolved on Gamma
+  Checking: Will Ilie Bolojan be the next Prime Minister of Romania? (end 2026-05-31)
+    → Not yet resolved on Gamma
+  Checking: Will John Fleming be the republican nominee for Senate in Louisiana? (end 2026-05-16)
+    → Not yet resolved on Gamma
+  Checking: Will Carlos Álvarez win the 2026 Peruvian presidential election? (end 2026-04-12)
+    → Not yet resolved on Gamma
+  Checking: Ukraine election held by June 30, 2026? (end 2025-12-31)
+    → Not yet resolved on Gamma
+  Checking: NATO/EU troops fighting in Ukraine in June 30, 2026? (end 2025-12-31)
+    → Not yet resolved on Gamma
+[LEGEND] 44 market(s) with >= 2 LEGENDARY traders
+[LEGEND] Skipped 34 market(s) with stale Gamma default price (0.510–0.520)
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-06-29 07:32 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 5  (skipped no-price: 0, stale-price: 34, overdue: 0)
+======================================================================
+    1. [ 3 LEG] NO  ▼  100% vs mkt 26.5%  gap=+26.5pt  cap=$4.3K  res=185d
+       Ukraine signs peace deal with Russia before 2027?
+
+    2. [ 2 LEG] YES ▲  100% vs mkt 25.5%  gap=+74.5pt  cap=$589  res=305d
+       Will Jordan Bardella win the 2027 French presidential election?
+
+    3. [ 2 LEG] YES ▲  100% vs mkt 44.5%  gap=+55.5pt  cap=$56  res=185d
+       Will Kash Patel leave the Trump administration before 2027?
+
+    4. [ 2 LEG] NO  ▼  100% vs mkt 37.8%  gap=+37.7pt  cap=$45  res=862d
+       Will J.D. Vance win the 2028 Republican presidential nomination?
+
+    5. [ 2 LEG] YES ▲  100% vs mkt 82.5%  gap=+17.5pt  cap=$98  res=127d
+       Will the Democratic Party control the House after the 2026 Midterm e
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 5 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-06-29-positions-scan.json
+[LEGEND] Done — 44 scanned, 5 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-06-29-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 9 overdue open market(s) — checking Gamma API...
+  Checking: Will Roberto Sánchez Palomino win the 2026 Peruvian presidential elect (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Keiko Fujimori win the 2026 Peruvian presidential election? (end 2026-06-07)
+    → Not yet resolved on Gamma
+  Checking: Will Rae Huang win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+  Checking: US x Iran diplomatic meeting by April 16, 2026? (end 2026-04-30)
+    → Not yet resolved on Gamma
+  Checking: Will Trump say "Dead by June" in April? (end 2026-04-30)
+    → Not yet resolved on Gamma
+  Checking: Will Hezbollah conduct military action against Israel on April 10, 202 (end 2026-04-30)
+    → Not yet resolved on Gamma
+  Checking: Will Fidesz-KDNP win the national list vote in the 2026 Hungarian Parl (end 2026-04-12)
+    → Not yet resolved on Gamma
+  Checking: Will SPD win the second most seats in the 2026 Rhineland-Palatinate pa (end 2026-03-22)
+    → Not yet resolved on Gamma
+[LEGEND] 16 market(s) with >= 2 LEGENDARY traders
+[LEGEND] Skipped 9 market(s) with stale Gamma default price (0.510–0.520)
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-07-06 07:31 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 5  (skipped no-price: 0, stale-price: 9, overdue: 0)
+======================================================================
+    1. [ 2 LEG] YES ▲  100% vs mkt 25.5%  gap=+74.5pt  cap=$589  res=298d
+       Will Jordan Bardella win the 2027 French presidential election?
+
+    2. [ 2 LEG] YES ▲  100% vs mkt 37.0%  gap=+63.0pt  cap=$56  res=178d
+       Will Kash Patel leave the Trump administration before 2027?
+
+    3. [ 2 LEG] NO  ▼  100% vs mkt 40.8%  gap=+40.8pt  cap=$45  res=855d
+       Will J.D. Vance win the 2028 Republican presidential nomination?
+
+    4. [ 2 LEG] NO  ▼  100% vs mkt 19.5%  gap=+19.5pt  cap=$3.7K  res=178d
+       Ukraine signs peace deal with Russia before 2027?
+
+    5. [ 2 LEG] YES ▲  100% vs mkt 83.5%  gap=+16.5pt  cap=$98  res=120d
+       Will the Democratic Party control the House after the 2026 Midterm e
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 5 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-06-positions-scan.json
+[LEGEND] Done — 16 scanned, 5 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-06-positions-scan.json
