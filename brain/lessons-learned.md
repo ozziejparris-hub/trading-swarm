@@ -601,3 +601,34 @@ This document grows more valuable every week.
 - URGENT: Positions scan stale-price rate returned to 77% — API refresh mechanism needs investigation.
 - MEDIUM: score_str003_signals script deduplication — eliminate daily identical writes to findings.json.
 - ONGOING: LEGENDARY dormancy — post-June 30, are top geo_elo traders re-engaging in active markets? Check July positions scan.
+
+---
+
+## Lessons added 2026-07-11
+
+### Strategy Insights
+- 2026-07-11: STR-003 remains at 3/6 (50%), no new resolutions this week. LEGENDARY-tier subset holds at 2/3 (66.7%). Gate 3 requires 60% over 10+ markets — need 4 more resolutions at ≥60% rate. At current rate of ~2 resolutions/month, Gate 3 will not be met before September 2026 without new active signals. (Source: training-librarian 2026-07-11)
+
+### Calibration Findings
+- 2026-07-11: BRIER MILESTONE — 30-day Brier crossed below 0.20 target for the first time: Geo 0.1798, Elections 0.1912 (as of Jul 6, n=157 markets). This is 4 consecutive weeks of improvement. The 7d Brier (0.0519 Geo) is artificially low due to 88 near-certainty June 30 deadline markets resolving NO en masse — not predictive difficulty, just deadline mechanics. The 30d figure is authoritative and actionable. (Source: performance-analyst 2026-07-06-weekly.md)
+
+- 2026-07-11: ELO weekly calibration snapshot (2026-07-06): LEGENDARY 41% (n=157), ELITE 71% (n=218), QUALIFIED 67% (n=253). This is the LEGENDARY tier's lowest weekly reading in 16 weeks. ELITE tier (71%) now outperforms LEGENDARY (41%) on the unfiltered snapshot. Interpretation: LEGENDARY traders concentrated in hard contested markets; ELITE traded more broadly with better average outcomes. The contested-market filter (0.35–0.65 price band) remains essential for seeing LEGENDARY edge. Unfiltered LEGENDARY numbers should never be used for strategy validation. (Source: 2026-07-06-ELO-LEGENDARY-001)
+
+### System Architecture Lessons
+- 2026-07-11: pool_c RECOVERED to 3,213 — first PASS in 3 weeks (was 2,155 Jun 27 → 2,463 Jul 4 → 3,213 Jul 11). All integration contract metrics pass. Root cause of the June 20→27 drop (3,660 → 2,155) remains unknown. Recovery is self-correcting, but without root cause identification another drop could recur. Monitor next 2 weeks — if pool_c holds above 2,500, treat as resolved; if it drops again, escalate with DB investigation. (Source: training-librarian Responsibility 10, 2026-07-11)
+
+- 2026-07-11: CI now GREEN after 10 consecutive weeks of lint blockage. Two fixes: (1) `run_trader_profiling.py` bare `except:` → `except Exception:`, (2) retirement of `calculate_geo_elo.py` script. Both are now committed. CI-dependent agents (integration-test, feedback-loop) should resume normal operation. This was the longest CI failure in the system's history. Root cause was an f-string formatting error that went undetected for 9+ weeks — suggests CI feedback loop is not tightly integrated into the agent spawn workflow. (Source: git history 2026-07-10/11)
+
+- 2026-07-11: The template consistency Check 3 (Pool B filter completeness) produces a high false-positive rate because it matches on keywords "accuracy/brier/research" regardless of SQL context. 9 templates flagged this week, all false positives. The check is useful for catching actual Pool B queries that omit filters, but the broad keyword trigger needs scoping to SQL query blocks only. Until the check is improved, do not action Check 3 flags without reading the flagged context. (Source: training-librarian Responsibility 8, 2026-07-11)
+
+### Positions Scan (July 6)
+- 2026-07-11: July 6 positions scan produced 5 markets, all with only 2 LEGENDARY traders — no HIGH conviction signals (≥4 LEGENDARY, ≥30pt), no MIXED_SIGNAL markets. Stale-price issue appears resolved (16 markets scanned, down from 44 last week with 77% stale). Top market: Bardella 2027 French presidential (2 LEGENDARY YES, 74.5pt gap, MEDIUM SCI). Iran and Ukraine June 30 cluster fully resolved — no immediate strong signals active. LEGENDARY activity at post-peak low (14 clean). (Source: 2026-07-06-positions-scan.json)
+
+### Open Questions (updated)
+- RESOLVED: pool_c root cause still unknown, but recovery confirmed (3,213 Jul 11). Downgrade from URGENT to MONITOR.
+- RESOLVED: Positions scan stale-price rate — returned to normal range this week.
+- ONGOING: score_str003_signals deduplication — 4th consecutive week of identical daily writes. (7 superseded this run)
+- ONGOING: trader-intelligence-agent.md market_category intent — Oscar decision pending (3rd request).
+- URGENT: RQ-GEO-ELO-001 Phase 1 — 43+ days past July 1 deadline. Phase 5 Gate 4 BLOCKED. Highest-impact research action in system.
+- URGENT: RQ0 monthly gate — 5+ weeks overdue, 39 traders above ELO 3,500 unclassified.
+- NEW: LEGENDARY pool at 14 clean — 3 consecutive week decline. Monitor for impact on Gate 3 signal generation pipeline.
