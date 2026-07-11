@@ -5,11 +5,15 @@ Runs every 10 minutes. Reads signals, checks agents,
 verifies outputs, spawns new work, reports to Telegram.
 """
 
+import fcntl
 import json
 import os
+import shutil
 import subprocess
+import tempfile
 import time
 import logging
+from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -21,6 +25,8 @@ BASE_DIR = Path("/home/parison/trading-swarm")
 BRAIN_DIR = BASE_DIR / "brain"
 REGISTRY_FILE = BASE_DIR / "orchestrator" / "agent_registry.json"
 SIGNALS_FILE = BRAIN_DIR / "signals.json"
+SIGNALS_LOCK_FILE = BRAIN_DIR / "signals.json.lock"
+SIGNALS_BAK_FILE = BRAIN_DIR / "signals.json.bak"
 FEEDBACK_FILE = BRAIN_DIR / "feedback.json"
 CONTRACT_VIOLATION_STATE_FILE = BRAIN_DIR / "contract_violation_state.json"
 PRIORITIES_FILE = BRAIN_DIR / "priorities.md"
@@ -290,7 +296,92 @@ def select_tier(agent_type, override=None):
 
 # ─────────────────────────────────────────────
 # SIGNAL BUS
+#
+# signals.json holds the accumulated, irreplaceable STR-003 signal record
+# (str003_signals etc — see brain/decisions on Area 1.3 of the swarm audit).
+# Three protections, each separately load-bearing:
+#   1. signals_lock() — an exclusive flock serializing every reader-modifier-
+#      writer (orchestrator + any agent) so concurrent writes can't interleave.
+#   2. atomic_write_json() — write-temp-fsync-rename, so a kill/crash/power-cut
+#      mid-write leaves the ORIGINAL file intact, never a truncated one.
+#   3. load_signals_or_raise() — on a corrupt (unparseable) read, back the
+#      corrupt file up and RAISE. It never falls back to a fresh {"signals": []}
+#      skeleton — the old load_json()-returns-None-on-any-failure behavior
+#      could not distinguish "file missing" from "file corrupt" and
+#      write_signal() collapsed both to a silent wipe-and-restart.
 # ─────────────────────────────────────────────
+
+class CorruptSignalsFileError(Exception):
+    """signals.json exists but failed to parse. Never auto-recover from this —
+    it must surface as a loud error, not a silent data-destroying reinit."""
+
+
+@contextmanager
+def signals_lock():
+    """Exclusive lock serializing every read-modify-write of signals.json
+    across processes (orchestrator cycles, agents, any future caller)."""
+    SIGNALS_LOCK_FILE.touch(exist_ok=True)
+    with open(SIGNALS_LOCK_FILE, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def _backup_corrupt_file(filepath: Path) -> Path:
+    """Forensic copy of a corrupt file, timestamped so repeated corruption
+    events don't clobber each other's evidence."""
+    ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+    backup = filepath.with_name(f"{filepath.name}.corrupt-{ts}")
+    shutil.copy2(filepath, backup)
+    return backup
+
+
+def load_signals_or_raise() -> dict:
+    """Load signals.json under the lock. Returns a fresh skeleton ONLY when
+    the file is genuinely missing (first-run bootstrap). If it exists but
+    won't parse, back it up untouched and raise — the caller must not
+    proceed to write a reinitialized file over an unrecovered original."""
+    if not SIGNALS_FILE.exists():
+        return {"signals": [], "pending": [], "rescan_log": [],
+                "str003_signals": [], "active_signals": []}
+    try:
+        with open(SIGNALS_FILE) as f:
+            return json.load(f)
+    except json.JSONDecodeError as e:
+        backup = _backup_corrupt_file(SIGNALS_FILE)
+        log.error(
+            f"CORRUPT signals.json — refusing to reinitialize. "
+            f"Original left on disk untouched; forensic copy at {backup}. "
+            f"Last known good: {SIGNALS_BAK_FILE if SIGNALS_BAK_FILE.exists() else 'none'}. "
+            f"Parse error: {e}"
+        )
+        raise CorruptSignalsFileError(str(e)) from e
+
+
+def atomic_write_json(filepath: Path, data: dict) -> None:
+    """Write JSON crash-safely: temp file in the same directory (so
+    os.replace is atomic — same filesystem), fsync before replace. A reader,
+    or a crash mid-write, only ever observes the fully-old or fully-new
+    file, never a truncated one. Also rolls the previous good file forward
+    into filepath.bak before replacing it (cheap last-known-good insurance)."""
+    filepath = Path(filepath)
+    fd, tmp_path = tempfile.mkstemp(
+        dir=filepath.parent, prefix=f".{filepath.name}.", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(data, f, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        if filepath == SIGNALS_FILE and filepath.exists():
+            shutil.copy2(filepath, SIGNALS_BAK_FILE)
+        os.replace(tmp_path, filepath)
+    except Exception:
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
+        raise
+
 
 def read_signals():
     """Read all pending signals from the signal bus.
@@ -298,40 +389,49 @@ def read_signals():
     Unions signals[] and pending[] so no signal is orphaned if an agent
     writes to the wrong top-level array.  The canonical write path is
     signals[], but this acts as a safety net.
+
+    Read-only: a corrupt file here does not destroy anything — logs loudly
+    and returns [] (no pending signals this cycle) rather than raising and
+    taking down the whole 10-minute orchestrator cycle.
     """
-    data = load_json(SIGNALS_FILE)
-    if data is None:
-        return []
+    with signals_lock():
+        try:
+            data = load_signals_or_raise()
+        except CorruptSignalsFileError:
+            return []
     signals_list = data.get("signals", []) + data.get("pending", [])
     return [s for s in signals_list if s.get("status") == "pending"]
 
 
 def mark_signal_processed(signal_timestamp):
     """Mark a signal as processed so it isn't acted on twice."""
-    data = load_json(SIGNALS_FILE)
-    if data is None:
-        return
-    for signal in data.get("signals", []):
-        if signal.get("timestamp") == signal_timestamp:
-            signal["status"] = "processed"
-            signal["processed_at"] = datetime.utcnow().isoformat()
-    save_json(SIGNALS_FILE, data)
+    with signals_lock():
+        try:
+            data = load_signals_or_raise()
+        except CorruptSignalsFileError:
+            # Do not write — a corrupt file must be fixed by a human, not
+            # silently patched over or reinitialized.
+            return
+        for signal in data.get("signals", []):
+            if signal.get("timestamp") == signal_timestamp:
+                signal["status"] = "processed"
+                signal["processed_at"] = datetime.utcnow().isoformat()
+        atomic_write_json(SIGNALS_FILE, data)
 
 
 def write_signal(from_agent, to_agent, signal_type, payload):
-    """Write a new signal to the signal bus."""
-    data = load_json(SIGNALS_FILE)
-    if data is None:
-        data = {"signals": []}
-    data["signals"].append({
-        "from": from_agent,
-        "to": to_agent,
-        "type": signal_type,
-        "payload": payload,
-        "timestamp": datetime.utcnow().isoformat(),
-        "status": "pending"
-    })
-    save_json(SIGNALS_FILE, data)
+    """Write a new signal to the signal bus. Locked + atomic + corruption-safe."""
+    with signals_lock():
+        data = load_signals_or_raise()  # raises CorruptSignalsFileError, not swallowed
+        data.setdefault("signals", []).append({
+            "from": from_agent,
+            "to": to_agent,
+            "type": signal_type,
+            "payload": payload,
+            "timestamp": datetime.utcnow().isoformat(),
+            "status": "pending"
+        })
+        atomic_write_json(SIGNALS_FILE, data)
 
 # ─────────────────────────────────────────────
 # OUTPUT VERIFICATION (IMMUNE SYSTEM)
