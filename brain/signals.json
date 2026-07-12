@@ -848,29 +848,19 @@
       "market_price_capture_note": "Late capture 2026-06-13 \u2014 not true registration price. Market already near-resolved at capture time.",
       "rescan_2026-06-15": "ACTIVE_NON_SCORABLE \u2014 15 days to June 30 resolution. Market near-fully resolved (NO dominant, Iran regime intact). DB confirms 0 LEGENDARY traders (geo_elo_active\u22652175) in top-20 positions for this market; largest holders are geo_elo_active 1455-1725 range. Registered retrospectively 2026-06-09 \u2014 non_scorable_for_validation confirmed. Original '7 LEGENDARY' claim based on prior ELO thresholds or registration criteria that differ from current geo_elo_active standard. Monitor for June 30 resolution. Do not use for STR-003 accuracy scoring.",
       "counter_signal_v2": {
-        "counter_signal_detected": true,
+        "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-10T07:46:11Z",
+        "evaluated_at": "2026-07-11T09:14:35Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 8,
-        "exited_count": 11,
+        "exited_count": 12,
         "reversed_count": 1,
-        "new_post_reg_exits": 1,
+        "new_post_reg_exits": 0,
         "new_post_reg_reversals": 0,
-        "credibility_adjustment": -5.0,
+        "credibility_adjustment": 0.0,
         "scs_floor_applied": 25.0,
         "reversals": [],
-        "exits": [
-          {
-            "address": "0x51aa6b8fbd20ae",
-            "geo_elo": 1801.0,
-            "net_signal_side": 0.0,
-            "net_opposing": 0.0,
-            "last_trade": "2026-06-15 05:47:58",
-            "post_reg_activity": true,
-            "is_legendary": false
-          }
-        ],
+        "exits": [],
         "note": "DOWNWEIGHT only \u2014 counter-signals inform, never auto-invalidate. Peru proved counter-signals can be wrong. Human reviews flagged signals."
       },
       "edge_at_entry": 0.007,
@@ -910,7 +900,7 @@
       "counter_signal_v2": {
         "counter_signal_detected": false,
         "mode": "market_level",
-        "evaluated_at": "2026-07-10T07:46:11Z",
+        "evaluated_at": "2026-07-11T09:14:35Z",
         "signal_date_cutoff": "2026-06-09",
         "confirming_count": 2,
         "exited_count": 0,

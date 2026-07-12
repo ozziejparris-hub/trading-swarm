@@ -1,0 +1,228 @@
+{
+  "date": "2026-07-12",
+  "markets_checked": 77,
+  "signals_found": 20,
+  "signals": [
+    {
+      "market": "Will Paraguay reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0301,
+      "gap_pt": 97.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will USA reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9259,
+      "market_price_pct": 0.07,
+      "gap_pt": 85.6,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Switzerland reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5947,
+      "market_price_pct": 0.037,
+      "gap_pt": 55.8,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Colombia reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9529,
+      "market_price_pct": 0.171,
+      "gap_pt": 78.2,
+      "elite_traders": 8,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Japan reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.6898,
+      "market_price_pct": 0.1,
+      "gap_pt": 59.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "GPT-5.6 released by July 13, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0264,
+      "market_price_pct": 0.93,
+      "gap_pt": 90.4,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Will Egypt reach the Semifinals at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9064,
+      "market_price_pct": 0.037,
+      "gap_pt": 86.9,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-13"
+    },
+    {
+      "market": "Israel closes its airspace by July 15?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9387,
+      "market_price_pct": 0.0356,
+      "gap_pt": 90.3,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Iran full airspace closure by July 15?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9975,
+      "market_price_pct": 0.13,
+      "gap_pt": 86.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-15"
+    },
+    {
+      "market": "Will the Bank of Korea increase the base rate after the July Meeting?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.6506,
+      "gap_pt": 34.9,
+      "elite_traders": 14,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-16"
+    },
+    {
+      "market": "Will Iran close its airspace by July 15?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6236,
+      "market_price_pct": 0.903,
+      "gap_pt": 27.9,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-16"
+    },
+    {
+      "market": "Will Neymar play in the 2026 FIFA World Cup?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.6547,
+      "market_price_pct": 0.999,
+      "gap_pt": 34.4,
+      "elite_traders": 55,
+      "legendary_traders": 1,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will South Korea be eliminated in the Round of 16 of the World Cup?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0012,
+      "market_price_pct": 0.3,
+      "gap_pt": 29.9,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will Japan be eliminated in the Round of 16 of the World Cup?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.3469,
+      "market_price_pct": 0.14,
+      "gap_pt": 20.7,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will France be eliminated in the Round of 16 of the World Cup?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0693,
+      "market_price_pct": 0.2649,
+      "gap_pt": 19.6,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will France be eliminated in the Quarterfinals of the World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.98,
+      "market_price_pct": 0.2092,
+      "gap_pt": 77.1,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will Argentina be eliminated in the Semifinals of the World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9712,
+      "market_price_pct": 0.23,
+      "gap_pt": 74.1,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will Mexico be eliminated in the Round of 32 of the World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7591,
+      "market_price_pct": 0.39,
+      "gap_pt": 36.9,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will Colombia be eliminated in the Semifinals of the World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.1633,
+      "gap_pt": 83.7,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    },
+    {
+      "market": "Will Drake perform at the 2026 FIFA World Cup Final halftime show?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.3927,
+      "market_price_pct": 0.063,
+      "gap_pt": 33.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-19"
+    }
+  ],
+  "scan_timestamp": "2026-07-12T19:03:58.413031+00:00"
+}

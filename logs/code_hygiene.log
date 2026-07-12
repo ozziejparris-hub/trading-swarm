@@ -214,3 +214,27 @@ Kill it:    tmux kill-session -t code-hygiene-agent-hygiene-20260703
 
 Routing decisions: /brain/model-routing.md
 [2026-07-03T20:00:01Z] Finished code-hygiene-agent (exit: 0)
+[2026-07-10T20:00:01Z] Starting code-hygiene-agent
+──────────────────────────────────────
+Spawning agent: code-hygiene-agent-hygiene-20260710
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly code hygiene audit. Check both repos: /home/parison/projects/first-repo and /home/parison/trading-swarm. Full audit per template.
+──────────────────────────────────────
+Creating git worktree: feat/hygiene-20260710
+HEAD is now at f0ae36d chore: brain state + agent-output backlog through 2026-07-10
+Spawning tmux session: code-hygiene-agent-hygiene-20260710
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  code-hygiene-agent-hygiene-20260710
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/hygiene-20260710
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/hygiene-20260710.log
+
+Watch it:   tmux attach -t code-hygiene-agent-hygiene-20260710
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t code-hygiene-agent-hygiene-20260710
+
+Routing decisions: /brain/model-routing.md
+[2026-07-10T20:00:01Z] Finished code-hygiene-agent (exit: 0)
