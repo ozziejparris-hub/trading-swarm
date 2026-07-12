@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import ast
-import fcntl
 import json
 import logging
 import os
@@ -32,6 +31,34 @@ import urllib.request
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+
+# This file lives in orchestrator/, the same directory as orchestrator.py —
+# when spawn_agent.sh runs it directly (python3 .../orchestrator/ollama_agent_loop.py),
+# sys.path[0] becomes .../orchestrator/, and a bare "orchestrator.json_safety"
+# import there collides with the sibling file literally named orchestrator.py
+# (Python resolves "orchestrator" to that file as a plain module, not the
+# package). Tests import this module as orchestrator.ollama_agent_loop instead
+# (repo root already on the path), where the package-qualified form is what's
+# needed. Try both. See orchestrator/orchestrator.py's import block for the
+# same fix with the full explanation, and
+# brain/decisions/2026-05-01-deferred-shared-utils-refactor.md for the failure
+# mode this guards against.
+try:
+    from orchestrator.json_safety import (
+        CorruptJSONError,
+        atomic_write_json,
+        atomic_write_text,
+        json_lock,
+        load_json_or_raise,
+    )
+except ImportError:
+    from json_safety import (
+        CorruptJSONError,
+        atomic_write_json,
+        atomic_write_text,
+        json_lock,
+        load_json_or_raise,
+    )
 
 # ─────────────────────────────────────────────
 # CONSTANTS
@@ -230,12 +257,16 @@ def _confined_write_path(path: str) -> Path | dict:
 # ─────────────────────────────────────────────
 
 def tool_write_file(path: str, content: str) -> dict:
+    """Locked + atomic (temp-fsync-replace): the same protections as every
+    other brain/*.json writer, including in the other repo — json_lock()
+    derives the identical <path>.lock sidecar regardless of caller. A
+    crash mid-write leaves the ORIGINAL file intact, never truncated."""
     p = _confined_write_path(path)
     if isinstance(p, dict):
         return p
     try:
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(content)
+        with json_lock(p):
+            atomic_write_text(p, content)
         return {"ok": True}
     except Exception as e:
         return {"error": str(e)}
@@ -246,6 +277,13 @@ def tool_write_file(path: str, content: str) -> dict:
 # ─────────────────────────────────────────────
 
 def tool_append_to_json_array(path: str, array_key: str, entry: dict) -> dict:
+    """Locked (blocking — no more silent give-up after 3 attempts) +
+    atomic + never-silently-wipe-on-corrupt, same as every other
+    brain/*.json writer. This tool touches many different brain/ files
+    (signals.json, feedback.json, findings.json, handoffs...), so a
+    corrupt target is never treated as disposable here — it's backed up
+    and reported as an error, not reinitialized, regardless of which file
+    it is."""
     if not isinstance(entry, dict):
         return {"error": "entry must be a dict"}
     p = _confined_write_path(path)
@@ -253,31 +291,11 @@ def tool_append_to_json_array(path: str, array_key: str, entry: dict) -> dict:
         return p
 
     try:
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.touch(exist_ok=True)
-    except Exception as e:
-        return {"error": f"cannot prepare file: {e}"}
-
-    for attempt in range(3):
-        fh = None
-        try:
-            fh = open(p, "r+b")
-            fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            if fh:
-                fh.close()
-            if attempt < 2:
-                time.sleep(1)
-                continue
-            return {"error": "could not acquire file lock after 3 attempts"}
-        except Exception as e:
-            if fh:
-                fh.close()
-            return {"error": str(e)}
-
-        try:
-            raw = fh.read()
-            data = json.loads(raw) if raw.strip() else {}
+        with json_lock(p):
+            try:
+                data = load_json_or_raise(p, default=dict)
+            except CorruptJSONError as e:
+                return {"error": f"refusing to touch corrupt JSON (backed up, not modified): {e}"}
             if not isinstance(data, dict):
                 return {"error": "JSON root is not an object"}
             arr = data.get(array_key, [])
@@ -285,17 +303,10 @@ def tool_append_to_json_array(path: str, array_key: str, entry: dict) -> dict:
                 return {"error": f"'{array_key}' is not an array in the JSON"}
             arr.append(entry)
             data[array_key] = arr
-            fh.seek(0)
-            fh.truncate()
-            fh.write(json.dumps(data, indent=2).encode())
+            atomic_write_json(p, data)
             return {"ok": True, "array_length": len(arr)}
-        except Exception as e:
-            return {"error": str(e)}
-        finally:
-            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
-            fh.close()
-
-    return {"error": "failed after 3 lock attempts"}
+    except Exception as e:
+        return {"error": str(e)}
 
 
 # ─────────────────────────────────────────────

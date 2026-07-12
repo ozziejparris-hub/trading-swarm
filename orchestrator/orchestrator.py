@@ -5,17 +5,42 @@ Runs every 10 minutes. Reads signals, checks agents,
 verifies outputs, spawns new work, reports to Telegram.
 """
 
-import fcntl
 import json
 import os
-import shutil
 import subprocess
-import tempfile
 import time
 import logging
-from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
+
+# systemd runs this file directly (python3 .../orchestrator/orchestrator.py),
+# which puts .../orchestrator/ — not the repo root — at sys.path[0]. Because
+# that directory ALSO contains a file literally named orchestrator.py (this
+# file), Python resolves "orchestrator" to that file as a plain module, not
+# the package, and "orchestrator.json_safety" fails with "'orchestrator' is
+# not a package" — even after inserting the repo root, since the auto-added
+# script directory still wins. Tests import this module the other way
+# (import orchestrator.orchestrator, repo root already on the path), where
+# the package-qualified form is what's needed. Try both; each invocation
+# style satisfies exactly one. See
+# brain/decisions/2026-05-01-deferred-shared-utils-refactor.md for the exact
+# failure mode a shared module across this codebase has to guard against.
+try:
+    from orchestrator.json_safety import (
+        CorruptJSONError,
+        atomic_write_json,
+        json_lock,
+        load_json_or_raise,
+        load_json_tolerant,
+    )
+except ImportError:
+    from json_safety import (
+        CorruptJSONError,
+        atomic_write_json,
+        json_lock,
+        load_json_or_raise,
+        load_json_tolerant,
+    )
 
 # ─────────────────────────────────────────────
 # CONFIGURATION
@@ -25,6 +50,9 @@ BASE_DIR = Path("/home/parison/trading-swarm")
 BRAIN_DIR = BASE_DIR / "brain"
 REGISTRY_FILE = BASE_DIR / "orchestrator" / "agent_registry.json"
 SIGNALS_FILE = BRAIN_DIR / "signals.json"
+# SIGNALS_LOCK_FILE / SIGNALS_BAK_FILE are no longer read by this module —
+# json_safety.py derives both automatically from SIGNALS_FILE — but they're
+# kept (and land on the same paths) so existing test monkeypatches still work.
 SIGNALS_LOCK_FILE = BRAIN_DIR / "signals.json.lock"
 SIGNALS_BAK_FILE = BRAIN_DIR / "signals.json.bak"
 FEEDBACK_FILE = BRAIN_DIR / "feedback.json"
@@ -60,31 +88,13 @@ log = logging.getLogger(__name__)
 
 # ─────────────────────────────────────────────
 # FILE HELPERS
+#
+# There is no unsafe load_json/save_json here anymore — every JSON read or
+# write in this module goes through json_safety.py's locked, atomic,
+# never-silently-wipe-on-corrupt primitives (json_lock / load_json_or_raise
+# / atomic_write_json), so no future caller can accidentally reach for an
+# unprotected path. See orchestrator/json_safety.py for the guarantees.
 # ─────────────────────────────────────────────
-
-def load_json(filepath):
-    """Safely load a JSON file. Returns None if missing or corrupt."""
-    try:
-        with open(filepath) as f:
-            return json.load(f)
-    except FileNotFoundError:
-        log.warning(f"File not found: {filepath}")
-        return None
-    except json.JSONDecodeError as e:
-        log.error(f"Corrupt JSON at {filepath}: {e}")
-        return None
-
-
-def save_json(filepath, data):
-    """Safely write JSON to a file."""
-    try:
-        with open(filepath, "w") as f:
-            json.dump(data, f, indent=2)
-        return True
-    except Exception as e:
-        log.error(f"Failed to write {filepath}: {e}")
-        return False
-
 
 def read_priorities():
     """Read current priorities from brain."""
@@ -150,22 +160,33 @@ def send_telegram(message, bot="orchestrator"):
 # REGISTRY MANAGEMENT
 # ─────────────────────────────────────────────
 
+def _registry_skeleton():
+    return {"active_tasks": []}
+
+
 def load_registry():
-    """Load the agent registry."""
-    data = load_json(REGISTRY_FILE)
-    if data is None:
-        return {"active_tasks": []}
-    return data
+    """Load the agent registry (locked, single consistent snapshot).
+    Raises CorruptJSONError on a corrupt file. Write-path callers
+    (add_task/update_task) let that propagate and refuse to write — same
+    as signals.json. Hot-read-path callers (get_running_tasks/get_task,
+    called every 10-minute immune-system cycle) catch it below so one
+    corruption event doesn't take down the whole loop."""
+    with json_lock(REGISTRY_FILE):
+        return load_json_or_raise(REGISTRY_FILE, default=_registry_skeleton)
 
 
 def save_registry(registry):
-    """Save the agent registry."""
-    save_json(REGISTRY_FILE, registry)
+    """Overwrite the agent registry. Prefer add_task/update_task for a
+    read-modify-write — they hold the lock across the whole operation,
+    which a separate load_registry() + save_registry() pair cannot."""
+    with json_lock(REGISTRY_FILE):
+        atomic_write_json(REGISTRY_FILE, registry)
 
 
 def add_task(task_id, agent_type, description, branch=""):
-    """Register a new task as running."""
-    registry = load_registry()
+    """Register a new task as running. Holds the registry lock across the
+    entire read-modify-write so a concurrent add_task/update_task cannot
+    interleave and lose an update."""
     task = {
         "id": task_id,
         "agent": agent_type,
@@ -178,30 +199,50 @@ def add_task(task_id, agent_type, description, branch=""):
         "pr": None,
         "verified": False
     }
-    registry["active_tasks"].append(task)
-    save_registry(registry)
+    with json_lock(REGISTRY_FILE):
+        registry = load_json_or_raise(REGISTRY_FILE, default=_registry_skeleton)
+        registry["active_tasks"].append(task)
+        atomic_write_json(REGISTRY_FILE, registry)
     log.info(f"Task registered: {task_id} ({agent_type})")
     return task
 
 
 def update_task(task_id, updates):
-    """Update fields on an existing task."""
-    registry = load_registry()
-    for task in registry["active_tasks"]:
-        if task["id"] == task_id:
-            task.update(updates)
-    save_registry(registry)
+    """Update fields on an existing task. Locked read-modify-write."""
+    with json_lock(REGISTRY_FILE):
+        registry = load_json_or_raise(REGISTRY_FILE, default=_registry_skeleton)
+        for task in registry["active_tasks"]:
+            if task["id"] == task_id:
+                task.update(updates)
+        atomic_write_json(REGISTRY_FILE, registry)
 
 
 def get_running_tasks():
-    """Return all tasks with status 'running'."""
-    registry = load_registry()
+    """Return all tasks with status 'running'. Read-only, called every
+    immune-system cycle — a corrupt registry must not crash the whole
+    10-minute loop, so this logs CRITICAL and reports zero running tasks
+    for the cycle rather than raising. The registry itself is untouched;
+    a human must fix it and reconcile actually-running tmux sessions."""
+    try:
+        registry = load_registry()
+    except CorruptJSONError:
+        log.critical(
+            f"CORRUPT {REGISTRY_FILE} on read — immune system sees zero "
+            f"running tasks this cycle. Fix the file; reconcile any "
+            f"actually-running tmux sessions by hand."
+        )
+        return []
     return [t for t in registry["active_tasks"] if t["status"] == "running"]
 
 
 def get_task(task_id):
-    """Find a specific task by ID."""
-    registry = load_registry()
+    """Find a specific task by ID. Read-only; degrades like
+    get_running_tasks() on a corrupt registry rather than raising."""
+    try:
+        registry = load_registry()
+    except CorruptJSONError:
+        log.critical(f"CORRUPT {REGISTRY_FILE} on read — cannot look up task {task_id}.")
+        return None
     for task in registry["active_tasks"]:
         if task["id"] == task_id:
             return task
@@ -298,10 +339,20 @@ def select_tier(agent_type, override=None):
 # SIGNAL BUS
 #
 # signals.json holds the accumulated, irreplaceable STR-003 signal record
-# (str003_signals etc — see brain/decisions on Area 1.3 of the swarm audit).
-# Three protections, each separately load-bearing:
-#   1. signals_lock() — an exclusive flock serializing every reader-modifier-
-#      writer (orchestrator + any agent) so concurrent writes can't interleave.
+# (str003_signals etc — see brain/decisions on Area 1.3 of the swarm audit,
+# and the first-repo atomicity siblings that followed it). All three
+# protections now live in json_safety.py, shared by every writer of every
+# brain/*.json file (registry, feedback, contract-violation state) and by
+# run_feedback_loop_agent.py / ollama_agent_loop.py / first-repo's
+# register_signal.py, detect_counter_signals.py, score_str003_signals.py —
+# ALL of them lock the same <file>.lock sidecar, so a write from any of
+# them genuinely serializes against a write from any other, cross-repo
+# included. signals_lock()/load_signals_or_raise() below are thin,
+# signals.json-specific wrappers kept for backward compatibility (existing
+# tests import these exact names) — atomic_write_json is re-exported
+# directly, unchanged.
+#   1. signals_lock() — json_lock(SIGNALS_FILE): exclusive flock on
+#      signals.json.lock, serializing every reader-modifier-writer.
 #   2. atomic_write_json() — write-temp-fsync-rename, so a kill/crash/power-cut
 #      mid-write leaves the ORIGINAL file intact, never a truncated one.
 #   3. load_signals_or_raise() — on a corrupt (unparseable) read, back the
@@ -316,26 +367,16 @@ class CorruptSignalsFileError(Exception):
     it must surface as a loud error, not a silent data-destroying reinit."""
 
 
-@contextmanager
+def _signals_skeleton():
+    return {"signals": [], "pending": [], "rescan_log": [],
+            "str003_signals": [], "active_signals": []}
+
+
 def signals_lock():
     """Exclusive lock serializing every read-modify-write of signals.json
-    across processes (orchestrator cycles, agents, any future caller)."""
-    SIGNALS_LOCK_FILE.touch(exist_ok=True)
-    with open(SIGNALS_LOCK_FILE, "w") as lf:
-        fcntl.flock(lf, fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(lf, fcntl.LOCK_UN)
-
-
-def _backup_corrupt_file(filepath: Path) -> Path:
-    """Forensic copy of a corrupt file, timestamped so repeated corruption
-    events don't clobber each other's evidence."""
-    ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
-    backup = filepath.with_name(f"{filepath.name}.corrupt-{ts}")
-    shutil.copy2(filepath, backup)
-    return backup
+    across processes AND repos (orchestrator cycles, agents, any future
+    caller, first-repo's writers) — see json_safety.py's _lock_path()."""
+    return json_lock(SIGNALS_FILE)
 
 
 def load_signals_or_raise() -> dict:
@@ -343,44 +384,10 @@ def load_signals_or_raise() -> dict:
     the file is genuinely missing (first-run bootstrap). If it exists but
     won't parse, back it up untouched and raise — the caller must not
     proceed to write a reinitialized file over an unrecovered original."""
-    if not SIGNALS_FILE.exists():
-        return {"signals": [], "pending": [], "rescan_log": [],
-                "str003_signals": [], "active_signals": []}
     try:
-        with open(SIGNALS_FILE) as f:
-            return json.load(f)
-    except json.JSONDecodeError as e:
-        backup = _backup_corrupt_file(SIGNALS_FILE)
-        log.error(
-            f"CORRUPT signals.json — refusing to reinitialize. "
-            f"Original left on disk untouched; forensic copy at {backup}. "
-            f"Last known good: {SIGNALS_BAK_FILE if SIGNALS_BAK_FILE.exists() else 'none'}. "
-            f"Parse error: {e}"
-        )
+        return load_json_or_raise(SIGNALS_FILE, default=_signals_skeleton)
+    except CorruptJSONError as e:
         raise CorruptSignalsFileError(str(e)) from e
-
-
-def atomic_write_json(filepath: Path, data: dict) -> None:
-    """Write JSON crash-safely: temp file in the same directory (so
-    os.replace is atomic — same filesystem), fsync before replace. A reader,
-    or a crash mid-write, only ever observes the fully-old or fully-new
-    file, never a truncated one. Also rolls the previous good file forward
-    into filepath.bak before replacing it (cheap last-known-good insurance)."""
-    filepath = Path(filepath)
-    fd, tmp_path = tempfile.mkstemp(
-        dir=filepath.parent, prefix=f".{filepath.name}.", suffix=".tmp")
-    try:
-        with os.fdopen(fd, "w") as f:
-            json.dump(data, f, indent=2)
-            f.flush()
-            os.fsync(f.fileno())
-        if filepath == SIGNALS_FILE and filepath.exists():
-            shutil.copy2(filepath, SIGNALS_BAK_FILE)
-        os.replace(tmp_path, filepath)
-    except Exception:
-        if os.path.exists(tmp_path):
-            os.unlink(tmp_path)
-        raise
 
 
 def read_signals():
@@ -470,15 +477,18 @@ def check_agent_timeout(task):
 # FEEDBACK MEMORY
 # ─────────────────────────────────────────────
 
+def _feedback_skeleton():
+    return {"rejected": [], "approved": []}
+
+
 def log_feedback(task_id, agent, description, verdict, reason):
     """
-    Write a task result to feedback.json.
-    This is how agents learn from past failures and successes.
+    Write a task result to feedback.json — the accumulated record of what
+    agents learn from past failures and successes. Locked read-modify-write
+    (same protections as signals.json); a corrupt file is backed up and
+    raises rather than being silently reinitialized, since this is
+    accumulated history, not a disposable cache.
     """
-    data = load_json(FEEDBACK_FILE)
-    if data is None:
-        data = {"rejected": [], "approved": []}
-
     entry = {
         "task_id": task_id,
         "agent": agent,
@@ -487,12 +497,15 @@ def log_feedback(task_id, agent, description, verdict, reason):
         "date": datetime.utcnow().isoformat()
     }
 
-    if verdict == "pass":
-        data["approved"].append(entry)
-    else:
-        data["rejected"].append(entry)
+    with json_lock(FEEDBACK_FILE):
+        data = load_json_or_raise(FEEDBACK_FILE, default=_feedback_skeleton)
 
-    save_json(FEEDBACK_FILE, data)
+        if verdict == "pass":
+            data.setdefault("approved", []).append(entry)
+        else:
+            data.setdefault("rejected", []).append(entry)
+
+        atomic_write_json(FEEDBACK_FILE, data)
     log.info(f"Feedback logged: {task_id} → {verdict}")
 
 # ─────────────────────────────────────────────
@@ -580,23 +593,36 @@ def _get_violation_key(from_agent, payload):
     return f"{from_agent}:{rule}:{resource}"
 
 
-def _violation_rate_limited(violation_key):
-    """Return True if this violation was already alerted within the last 24 hours."""
-    data = load_json(CONTRACT_VIOLATION_STATE_FILE) or {"alerted": {}}
-    last_str = data.get("alerted", {}).get(violation_key)
-    if not last_str:
-        return False
-    try:
-        return (datetime.utcnow() - datetime.fromisoformat(last_str)) < timedelta(hours=24)
-    except ValueError:
-        return False
+def _violation_state_skeleton():
+    return {"alerted": {}}
 
 
-def _record_violation_alert(violation_key):
-    """Stamp the current UTC time for this violation key (used by rate limiter)."""
-    data = load_json(CONTRACT_VIOLATION_STATE_FILE) or {"alerted": {}}
-    data.setdefault("alerted", {})[violation_key] = datetime.utcnow().isoformat()
-    save_json(CONTRACT_VIOLATION_STATE_FILE, data)
+def _check_and_record_violation(violation_key):
+    """Atomically check-and-set the 24h dedup window for a violation key.
+    Returns True if this violation was already alerted within 24h (caller
+    should suppress); False if it's new (already recorded before
+    returning, so the caller can alert without a separate write call).
+
+    Locked so two concurrent violations for the same key can't both pass
+    the check before either records (the old check-then-later-record
+    split had exactly that race). contract_violation_state.json is a pure
+    dedup cache — losing it to corruption means at worst one duplicate
+    alert, never data loss — so a corrupt read is tolerated (logged,
+    reinitialized) rather than raised, unlike feedback.json/signals.json."""
+    with json_lock(CONTRACT_VIOLATION_STATE_FILE):
+        data = load_json_tolerant(CONTRACT_VIOLATION_STATE_FILE, default=_violation_state_skeleton)
+        alerted = data.setdefault("alerted", {})
+        last_str = alerted.get(violation_key)
+        rate_limited = False
+        if last_str:
+            try:
+                rate_limited = (datetime.utcnow() - datetime.fromisoformat(last_str)) < timedelta(hours=24)
+            except ValueError:
+                rate_limited = False
+        if not rate_limited:
+            alerted[violation_key] = datetime.utcnow().isoformat()
+            atomic_write_json(CONTRACT_VIOLATION_STATE_FILE, data)
+        return rate_limited
 
 
 # ─────────────────────────────────────────────
@@ -796,7 +822,7 @@ def process_signals():
                 f"resource='{resource}', severity={severity}, details='{details}'"
             )
 
-            if _violation_rate_limited(violation_key):
+            if _check_and_record_violation(violation_key):
                 log.info(
                     f"Contract violation alert suppressed (already alerted within 24h): "
                     f"key='{violation_key}'"
@@ -811,7 +837,6 @@ def process_signals():
                     f"Details: {details[:300]}"
                 )
                 send_telegram(message, bot="orchestrator")
-                _record_violation_alert(violation_key)
 
         # RQ1.1 had insufficient qualifying markets — log and move on, rerun 2026-07-01
         elif signal_type == "rq1_1_insufficient_n":

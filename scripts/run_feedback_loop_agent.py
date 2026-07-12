@@ -27,6 +27,12 @@ REPO_ROOT      = Path("/home/parison/trading-swarm")
 
 sys.path.insert(0, str(REPO_ROOT))
 from scripts.market_filter import should_include_market
+from orchestrator.json_safety import (
+    CorruptJSONError,
+    atomic_write_json,
+    json_lock,
+    load_json_or_raise,
+)
 DB_PATH        = Path("/home/parison/projects/first-repo/data/polymarket_tracker.db")
 SIGNALS_JSON   = REPO_ROOT / "brain/signals.json"
 FINDINGS_JSON  = REPO_ROOT / "brain/findings.json"
@@ -99,16 +105,6 @@ def is_sports_market(title: str, category: str = "") -> bool:
     return any(kw in t for kw in SPORTS_KEYWORDS)
 
 
-def load_json(path: Path) -> dict:
-    with open(path) as f:
-        return json.load(f)
-
-
-def save_json(path: Path, data: dict):
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
-
-
 def get_db_conn():
     """Open polymarket_tracker.db read-only via URI."""
     uri = f"file:{DB_PATH}?mode=ro"
@@ -155,7 +151,7 @@ def send_telegram(message: str):
 
 def step1_signal_accuracy(conn) -> dict:
     log("Step 1 — Signal accuracy audit")
-    signals_data = load_json(SIGNALS_JSON)
+    signals_data = load_json_or_raise(SIGNALS_JSON, default=lambda: {"signals": []})
     all_signals  = signals_data.get("signals", [])
 
     auditable = [s for s in all_signals if s.get("confidence") in ("HIGH", "MEDIUM")]
@@ -277,7 +273,7 @@ def step2_pre_resolution(conn) -> dict:
     log(f"  Found {len(md_files)} pre-resolution file(s)")
 
     # Pull the 4-signal baseline batch already recorded in findings.json
-    findings_data = load_json(FINDINGS_JSON)
+    findings_data = load_json_or_raise(FINDINGS_JSON, default=lambda: {"findings": []})
     batch = None
     for f in findings_data.get("findings", []):
         if f.get("id") == "2026-03-28-PRE-RES-BASELINE-001" and "signals_in_batch" in f:
@@ -521,153 +517,160 @@ def step4_strategy_review() -> dict:
 
 def step5_write_findings(s1, s2, s3, s4, run_count: int = 1) -> list:
     log("Step 5 — Writing findings to findings.json")
-    data        = load_json(FINDINGS_JSON)
-    existing    = data.get("findings", [])
-    existing_ids = {f["id"] for f in existing}
-    new_findings = []
+    # Locked for the whole read-modify-write: score_str003_signals.py (first-repo,
+    # daily cron) also writes findings.json, and everything in this function
+    # between the read and the write is pure in-memory dict construction (s1-s4
+    # were already computed before this was called), so holding the lock the
+    # whole time costs nothing and closes the TOCTOU window a separate
+    # read-then-later-write pair would leave open.
+    with json_lock(FINDINGS_JSON):
+        data        = load_json_or_raise(FINDINGS_JSON, default=lambda: {"findings": []})
+        existing    = data.get("findings", [])
+        existing_ids = {f["id"] for f in existing}
+        new_findings = []
 
-    def add(finding):
-        if finding["id"] not in existing_ids:
-            new_findings.append(finding)
+        def add(finding):
+            if finding["id"] not in existing_ids:
+                new_findings.append(finding)
 
-    # Signal accuracy finding
-    resolved = s1["resolved_markets"]
-    if s1["sufficient_data"]:
-        acc = s1["accuracy"]
-        add({
-            "id":           f"{TODAY_STR}-SIGNAL-ACCURACY-001",
-            "generated_by": "feedback-loop-agent",
-            "generated_at": NOW_ISO,
-            "finding_type": "signal_accuracy",
-            "confidence":   "HIGH" if resolved >= 20 else "MEDIUM",
-            "sample_size":  resolved,
-            "summary":      f"Signal accuracy over {resolved} resolved markets: {acc:.0%}",
-            "detail": {
-                "metric":         "signal_direction_accuracy",
-                "value":          round(acc, 4),
-                "baseline":       0.50,
-                "direction":      "above_baseline" if acc > 0.50 else "below_baseline",
-                "weeks_observed": run_count,
-            },
-            "actionable": acc < 0.55,
-            "action_recommendation": (
-                "Signal accuracy above baseline — maintain current methodology"
-                if acc >= 0.55
-                else "Signal accuracy at or below baseline — review signal logic before expanding scope"
-            ),
-            "expires_at": EXPIRES_ISO,
-        })
-    else:
-        add({
-            "id":           f"{TODAY_STR}-SIGNAL-ACCURACY-INSUFFICIENT-001",
-            "generated_by": "feedback-loop-agent",
-            "generated_at": NOW_ISO,
-            "finding_type": "signal_accuracy",
-            "confidence":   "LOW",
-            "sample_size":  resolved,
-            "summary":      (f"Insufficient resolved signals to compute accuracy — "
-                             f"{resolved} resolved, {MIN_SAMPLE} required"),
-            "detail": {
-                "metric":         "signal_direction_accuracy",
-                "value":          None,
-                "baseline":       0.50,
-                "direction":      "pending",
-                "weeks_observed": run_count,
-            },
-            "actionable": False,
-            "action_recommendation": (
-                f"Await {MIN_SAMPLE - resolved} more signal resolutions before drawing conclusions"
-            ),
-            "expires_at": EXPIRES_ISO,
-        })
+        # Signal accuracy finding
+        resolved = s1["resolved_markets"]
+        if s1["sufficient_data"]:
+            acc = s1["accuracy"]
+            add({
+                "id":           f"{TODAY_STR}-SIGNAL-ACCURACY-001",
+                "generated_by": "feedback-loop-agent",
+                "generated_at": NOW_ISO,
+                "finding_type": "signal_accuracy",
+                "confidence":   "HIGH" if resolved >= 20 else "MEDIUM",
+                "sample_size":  resolved,
+                "summary":      f"Signal accuracy over {resolved} resolved markets: {acc:.0%}",
+                "detail": {
+                    "metric":         "signal_direction_accuracy",
+                    "value":          round(acc, 4),
+                    "baseline":       0.50,
+                    "direction":      "above_baseline" if acc > 0.50 else "below_baseline",
+                    "weeks_observed": run_count,
+                },
+                "actionable": acc < 0.55,
+                "action_recommendation": (
+                    "Signal accuracy above baseline — maintain current methodology"
+                    if acc >= 0.55
+                    else "Signal accuracy at or below baseline — review signal logic before expanding scope"
+                ),
+                "expires_at": EXPIRES_ISO,
+            })
+        else:
+            add({
+                "id":           f"{TODAY_STR}-SIGNAL-ACCURACY-INSUFFICIENT-001",
+                "generated_by": "feedback-loop-agent",
+                "generated_at": NOW_ISO,
+                "finding_type": "signal_accuracy",
+                "confidence":   "LOW",
+                "sample_size":  resolved,
+                "summary":      (f"Insufficient resolved signals to compute accuracy — "
+                                 f"{resolved} resolved, {MIN_SAMPLE} required"),
+                "detail": {
+                    "metric":         "signal_direction_accuracy",
+                    "value":          None,
+                    "baseline":       0.50,
+                    "direction":      "pending",
+                    "weeks_observed": run_count,
+                },
+                "actionable": False,
+                "action_recommendation": (
+                    f"Await {MIN_SAMPLE - resolved} more signal resolutions before drawing conclusions"
+                ),
+                "expires_at": EXPIRES_ISO,
+            })
 
-    # ELO validity findings
-    mwp = s3["non_sports_with_positions"]
-    if s3["sufficient_data"]:
-        for tier, data_t in s3["tier_results"].items():
-            n = data_t["total"]
-            if n >= MIN_SAMPLE:
-                acc = data_t["correct"] / n
-                add({
-                    "id":           f"{TODAY_STR}-ELO-{tier}-001",
-                    "generated_by": "feedback-loop-agent",
-                    "generated_at": NOW_ISO,
-                    "finding_type": "elo_validity",
-                    "confidence":   "HIGH" if n >= 20 else "MEDIUM",
-                    "sample_size":  n,
-                    "summary":      (f"{tier} tier consensus accuracy: {acc:.0%} "
-                                     f"over {n} non-sports markets"),
-                    "detail": {
-                        "metric":         f"elo_{tier.lower()}_consensus_accuracy",
-                        "value":          round(acc, 4),
-                        "baseline":       0.50,
-                        "direction":      "above_baseline" if acc > 0.50 else "below_baseline",
-                        "weeks_observed": run_count,
-                    },
-                    "actionable": acc > 0.60,
-                    "action_recommendation": (
-                        f"Increase {tier} tier weighting — exceeds 60% accuracy"
-                        if acc > 0.60
-                        else f"{tier} tier at baseline — maintain current weighting"
-                    ),
-                    "expires_at": EXPIRES_ISO,
-                })
-    else:
-        add({
-            "id":           f"{TODAY_STR}-ELO-VALIDITY-INSUFFICIENT-001",
-            "generated_by": "feedback-loop-agent",
-            "generated_at": NOW_ISO,
-            "finding_type": "elo_validity",
-            "confidence":   "LOW",
-            "sample_size":  mwp,
-            "summary":      (f"Insufficient non-sports resolved markets with elite positions — "
-                             f"{mwp} found, {MIN_SAMPLE} required"),
-            "detail": {
-                "metric":         "elo_consensus_accuracy",
-                "value":          None,
-                "baseline":       0.50,
-                "direction":      "pending",
-                "weeks_observed": run_count,
-            },
-            "actionable": False,
-            "action_recommendation": (
-                "Continue collecting non-sports market resolutions with elite trader positions"
-            ),
-            "expires_at": EXPIRES_ISO,
-        })
+        # ELO validity findings
+        mwp = s3["non_sports_with_positions"]
+        if s3["sufficient_data"]:
+            for tier, data_t in s3["tier_results"].items():
+                n = data_t["total"]
+                if n >= MIN_SAMPLE:
+                    acc = data_t["correct"] / n
+                    add({
+                        "id":           f"{TODAY_STR}-ELO-{tier}-001",
+                        "generated_by": "feedback-loop-agent",
+                        "generated_at": NOW_ISO,
+                        "finding_type": "elo_validity",
+                        "confidence":   "HIGH" if n >= 20 else "MEDIUM",
+                        "sample_size":  n,
+                        "summary":      (f"{tier} tier consensus accuracy: {acc:.0%} "
+                                         f"over {n} non-sports markets"),
+                        "detail": {
+                            "metric":         f"elo_{tier.lower()}_consensus_accuracy",
+                            "value":          round(acc, 4),
+                            "baseline":       0.50,
+                            "direction":      "above_baseline" if acc > 0.50 else "below_baseline",
+                            "weeks_observed": run_count,
+                        },
+                        "actionable": acc > 0.60,
+                        "action_recommendation": (
+                            f"Increase {tier} tier weighting — exceeds 60% accuracy"
+                            if acc > 0.60
+                            else f"{tier} tier at baseline — maintain current weighting"
+                        ),
+                        "expires_at": EXPIRES_ISO,
+                    })
+        else:
+            add({
+                "id":           f"{TODAY_STR}-ELO-VALIDITY-INSUFFICIENT-001",
+                "generated_by": "feedback-loop-agent",
+                "generated_at": NOW_ISO,
+                "finding_type": "elo_validity",
+                "confidence":   "LOW",
+                "sample_size":  mwp,
+                "summary":      (f"Insufficient non-sports resolved markets with elite positions — "
+                                 f"{mwp} found, {MIN_SAMPLE} required"),
+                "detail": {
+                    "metric":         "elo_consensus_accuracy",
+                    "value":          None,
+                    "baseline":       0.50,
+                    "direction":      "pending",
+                    "weeks_observed": run_count,
+                },
+                "actionable": False,
+                "action_recommendation": (
+                    "Continue collecting non-sports market resolutions with elite trader positions"
+                ),
+                "expires_at": EXPIRES_ISO,
+            })
 
-    # Overdue strategy finding
-    overdue_strats = s4["overdue"]
-    if overdue_strats:
-        names = ", ".join(s["name"] for s in overdue_strats)
-        add({
-            "id":           f"{TODAY_STR}-STRATEGY-OVERDUE-001",
-            "generated_by": "feedback-loop-agent",
-            "generated_at": NOW_ISO,
-            "finding_type": "strategy_performance",
-            "confidence":   "HIGH",
-            "sample_size":  len(overdue_strats),
-            "summary":      f"{len(overdue_strats)} strategy/strategies overdue for revalidation: {names}",
-            "detail": {
-                "metric":         "strategies_overdue_revalidation",
-                "value":          float(len(overdue_strats)),
-                "baseline":       0.0,
-                "direction":      "above_baseline",
-                "weeks_observed": run_count,
-            },
-            "actionable": True,
-            "action_recommendation": (
-                "Revalidation signals written to signals.json — backtest-agent to action"
-            ),
-            "expires_at": EXPIRES_ISO,
-        })
+        # Overdue strategy finding
+        overdue_strats = s4["overdue"]
+        if overdue_strats:
+            names = ", ".join(s["name"] for s in overdue_strats)
+            add({
+                "id":           f"{TODAY_STR}-STRATEGY-OVERDUE-001",
+                "generated_by": "feedback-loop-agent",
+                "generated_at": NOW_ISO,
+                "finding_type": "strategy_performance",
+                "confidence":   "HIGH",
+                "sample_size":  len(overdue_strats),
+                "summary":      f"{len(overdue_strats)} strategy/strategies overdue for revalidation: {names}",
+                "detail": {
+                    "metric":         "strategies_overdue_revalidation",
+                    "value":          float(len(overdue_strats)),
+                    "baseline":       0.0,
+                    "direction":      "above_baseline",
+                    "weeks_observed": run_count,
+                },
+                "actionable": True,
+                "action_recommendation": (
+                    "Revalidation signals written to signals.json — backtest-agent to action"
+                ),
+                "expires_at": EXPIRES_ISO,
+            })
 
-    if new_findings:
-        data["findings"] = existing + new_findings
-        save_json(FINDINGS_JSON, data)
-        log(f"  {len(new_findings)} new finding(s) written")
-    else:
-        log("  No new findings (all IDs already present)")
+        if new_findings:
+            data["findings"] = existing + new_findings
+            atomic_write_json(FINDINGS_JSON, data)
+            log(f"  {len(new_findings)} new finding(s) written")
+        else:
+            log("  No new findings (all IDs already present)")
 
     return new_findings
 
@@ -678,42 +681,48 @@ def write_revalidation_signals(overdue: list) -> list:
     if not overdue:
         return []
 
-    signals_data = load_json(SIGNALS_JSON)
-    current      = signals_data.get("signals", [])
-    existing_keys = {
-        (s.get("payload", {}).get("strategy_name", ""), s.get("type", ""))
-        for s in current
-    }
     written = []
+    # Locked for the whole read-modify-write — this is the SAME signals.json
+    # the swarm orchestrator, ollama_agent_loop.py, and first-repo's
+    # register_signal.py / detect_counter_signals.py / score_str003_signals.py
+    # all write. json_lock() resolves to the identical signals.json.lock
+    # sidecar every one of them uses, so this genuinely serializes against
+    # all of them, not just other calls within this process.
+    with json_lock(SIGNALS_JSON):
+        signals_data = load_json_or_raise(SIGNALS_JSON, default=lambda: {"signals": []})
+        current      = signals_data.setdefault("signals", [])
+        existing_keys = {
+            (s.get("payload", {}).get("strategy_name", ""), s.get("type", ""))
+            for s in current
+        }
 
-    for strat in overdue:
-        key = (strat["name"], "revalidation_requested")
-        if key in existing_keys:
-            log(f"  Revalidation signal already exists for {strat['name']} — skipping")
-            continue
+        for strat in overdue:
+            key = (strat["name"], "revalidation_requested")
+            if key in existing_keys:
+                log(f"  Revalidation signal already exists for {strat['name']} — skipping")
+                continue
 
-        current.append({
-            "from":      "feedback-loop-agent",
-            "to":        "backtest-agent",
-            "type":      "revalidation_requested",
-            "payload": {
-                "strategy_name":       strat["name"],
-                "strategy_path":       str(STRATEGY_REG),
-                "last_validated":      strat["last_revalidation"],
-                "days_since_validation": strat["days_overdue"],
-                "original_dsr":        None,
-                "original_sharpe":     None,
-                "reason":              strat.get("overdue_reason", "Routine 30-day revalidation"),
-            },
-            "timestamp": NOW_ISO,
-            "status":    "pending",
-        })
-        written.append(strat["name"])
-        log(f"  Revalidation signal written for {strat['name']}")
+            current.append({
+                "from":      "feedback-loop-agent",
+                "to":        "backtest-agent",
+                "type":      "revalidation_requested",
+                "payload": {
+                    "strategy_name":       strat["name"],
+                    "strategy_path":       str(STRATEGY_REG),
+                    "last_validated":      strat["last_revalidation"],
+                    "days_since_validation": strat["days_overdue"],
+                    "original_dsr":        None,
+                    "original_sharpe":     None,
+                    "reason":              strat.get("overdue_reason", "Routine 30-day revalidation"),
+                },
+                "timestamp": NOW_ISO,
+                "status":    "pending",
+            })
+            written.append(strat["name"])
+            log(f"  Revalidation signal written for {strat['name']}")
 
-    if written:
-        signals_data["signals"] = current
-        save_json(SIGNALS_JSON, signals_data)
+        if written:
+            atomic_write_json(SIGNALS_JSON, signals_data)
 
     return written
 
@@ -978,7 +987,7 @@ def main():
     log(f"Repo: {REPO_ROOT}")
 
     # Rule 6: read feedback.json before starting
-    feedback = load_json(FEEDBACK_JSON)
+    feedback = load_json_or_raise(FEEDBACK_JSON, default=lambda: {"rejected": [], "approved": []})
     log(f"Feedback memory: {len(feedback.get('rejected', []))} rejected, "
         f"{len(feedback.get('approved', []))} approved")
 
@@ -1014,4 +1023,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except CorruptJSONError as e:
+        log(f"ABORTING — {e}")
+        send_telegram(
+            f"🚨 feedback-loop-agent weekly run ABORTED — corrupt brain file, "
+            f"refusing to reinitialize: {e}\nA human must inspect and repair it."
+        )
+        sys.exit(1)
