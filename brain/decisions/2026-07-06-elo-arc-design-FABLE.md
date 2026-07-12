@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-06
 **Author:** Claude Fable (design session, deep reasoning)
-**Status:** DESIGN FOR HUMAN REVIEW — no code changed, ELO subsystem remains FROZEN
+**Status:** DESIGN FOR HUMAN REVIEW — no code changed, ELO subsystem remains FROZEN. **Stage 0 update (2026-07-12): 0a redefined+passing, 0b resolved (`W_beh=0`), 0c done — see §3.3 and §5. 0d (harness OBSERVE mode) still open, runs alongside Stage 1. Stage 1 (shadow computation) is next.**
 **Inputs:** `2026-06-29-comprehensive-elo-writer-map.md` (O-6, verified against live code today), `2026-06-29-overhang-ledger.md` (O-5/O-6/O-7), `2026-06-30-str002-thesis-cell-analysis.md` (downstream cost), `system_observer.py:2956` (freeze rationale), live DB verification queries run 2026-07-06 (Appendix A), **independent re-verification of Claims 1–2 run 2026-07-06 same day (see Correction section below)**
 **Resolves:** RQ-CONTESTED-001 (deferred 2026-06-05 → July 2026 — this is that deliverable)
 
@@ -182,6 +182,10 @@ This design deliberately decouples two decisions that have been conflated:
 
 This converts "the crux" from an argument into a measurement. **The migration does not depend on the answer.**
 
+**RESOLVED 2026-07-12 — `W_beh = 0`.** Stage 0b ran exactly the study scoped above (market-relative edge instead of raw win rate — win rate turned out to correlate with entry price at r=0.98, i.e. it's mostly favorite-buying, not skill — see the study for why that substitution mattered). Result: `behavioral_modifier`'s incremental R² over `base_category_elo + pnl_modifier` is 0.00018 (n=21,218, well-powered enough to detect R² down to that same floor — a clear null, not an underpowered non-finding); the one marginally-significant coefficient has the wrong sign and doesn't replicate in a higher-reliability subsample. Decomposition into `kelly_alignment_score`/`patience_score` found both tiny-to-null individually, and — separately — both *negatively* correlated with the `behavioral_modifier` composite itself (r≈−0.59), i.e. the current behavioral columns aren't internally coherent as a construct, independent of the predictiveness question. Full study, methodology, and all numbers: `2026-07-12-behavioral-validation-study-STAGE-0B.md` (commit `37d2171`).
+
+**This lands the "zero/negative signal" branch exactly as anticipated in this section**: architecture ships unchanged, behavioral off, one-constant flip preserved. **Consequence for Stage 2 specifically**: at `W_beh=0` the canonical formula (§2.1) is byte-identical to today's live Writer B by construction (see the Correction section above) — so Stage 2 is now known, not just designed, to be a pure plumbing unification with zero value changes, not a live behavioral-weight decision bundled into the migration. This lowers Stage 2's risk profile relative to how this design doc originally scoped it.
+
 ### 3.4 The timing term: EXCLUDE from the bonus while timing is disabled
 
 CLAUDE.md warning #3: timing quality is intentionally disabled; all traders receive a neutral score. A neutral score (0.5) lands in the bonus step function's `0.4 ≤ t < 0.6` band → **+10 flat for every trader** — a constant offset with zero discrimination, i.e., pure inflation. Fix: pass `has_timing=False` into the bonus computation (its adaptive-weight system then rebalances kelly/patience to 50/50, already-coded behavior). Re-enable only when the timing column actually exists. *This also removes a +10×damp population mean shift that would otherwise pollute the Stage 4 drift measurement.*
@@ -237,11 +241,12 @@ The `apply_behavioral/apply_advanced/...` flag interface in `unified_elo_system.
 Design constraints: live system, frozen area, every step individually reversible, every step verified before the next. The controlling idea: **separate plumbing changes (output-neutral, Stages 2–3) from the formula change (Stage 4, one constant)** — never both in one step.
 
 ### Stage 0 — Precursors (no frozen-area contact)
-- **0a.** Wait for O-15 position-backlog drain to stabilize (fixed 2026-07-06, ~482K orphaned BUY-trades self-healing — this is *live input data movement* for pnl_modifier; baselining during the drain would bake a moving target into every diff). Gate: `BUY trades with no position record` harness count plateaus. **Estimate: ~1–2 weeks from today; verify, don't assume.**
-- **0b.** Behavioral validation study (§3.3), read-only. Output: recommended `W_beh` ∈ {0, 0.25, 0.5} with evidence. **Human reviews and picks.**
-- **0c.** Narrow O-5 precursors (§7): delete Writer C (also fixes rogue `resolved_trades_count` writer). *(Writer C deletion is technically frozen-area-adjacent but it's dead code — removing it changes no output. Verify with before/after DB snapshot on a full maintenance cycle.)*
-- **0d.** Add the harness invariants (§6) in **OBSERVE mode** — record today's failing baselines (e.g., behavioral-materialization fails by design pre-migration), gate nothing yet.
+- **0a. RESOLVED 2026-07-12 (redefined).** The original "wait for the absolute count to plateau" gate turned out to be measuring the wrong population (99.97% non-flagged discovery-pool traders, structurally incapable of going flat — see O-20). Replaced with `stale_elo_orphans` (BUY, no position, `is_flagged=1 AND research_excluded=0`, >24h stale) — currently 4, threshold ≤20. **Passing.**
+- **0b. RESOLVED 2026-07-12.** Behavioral validation study (§3.3) complete: `W_beh = 0`. Full evidence in `2026-07-12-behavioral-validation-study-STAGE-0B.md` (commit `37d2171`) and §3.3 above.
+- **0c. RESOLVED 2026-07-12 (first-repo commit `61adaf5`).** Dead Writer C (`integrate_behavioral_elo.py`) deleted, dormancy independently re-verified. `resolved_trades_count`'s scheduled writer set is now single.
+- **0d.** Add the harness invariants (§6) in **OBSERVE mode** — record today's failing baselines (e.g., behavioral-materialization fails by design pre-migration), gate nothing yet. **Not yet done — next up, alongside Stage 1.**
 - **Rollback:** trivial (0c is a dead-code delete; everything else is read-only).
+- **Stage 0 as a whole: COMPLETE** except 0d, which has no dependency on 0a/0b/0c and can run alongside Stage 1's build.
 
 ### Stage 1 — Shadow computation (zero production writes)
 - Build `comprehensive_elo_formula.py` + unit tests: golden-file tests pinning the worked examples (§2.4), property tests (monotonic in pnl_raw; bounded delta; cap/floor compliance; thin-sample gates), and an exact-equivalence test: `compute(..., w_beh=0, apply_soft_cap=False, apply_floor=False) == WriterB_formula(...)` across the input grid — **this is the test that would have caught the original bonus-leak/soft-cap/floor bugs before Stage 2 shipped** (see Correction section above); it must assert zero diffs, not near-zero.
@@ -317,8 +322,8 @@ The remaining O-3 timestamp debt is entirely `traders.elo_last_updated`, generat
 
 ## 8. Uncertainties and explicitly-flagged judgment calls
 
-1. **`W_beh = 0.5` is a judgment, not a measurement** — the single most consequential free parameter. Mitigated by Stage 0b (validation study picks it) and Stage 4's one-constant rollback. *If you review only one number in this design, review this one.*
-2. **Behavioral predictiveness is unproven** (§3.2). The design is structured so this uncertainty cannot block the architecture value.
+1. ~~**`W_beh = 0.5` is a judgment, not a measurement**~~ — **RESOLVED 2026-07-12**: Stage 0b measured it. `W_beh = 0` (see §3.3). No longer a free parameter at launch; Stage 4's one-constant rollback/flip mechanism remains the path if better evidence arrives later.
+2. ~~**Behavioral predictiveness is unproven**~~ (§3.2) — **RESOLVED 2026-07-12**: tested directly, no economically meaningful signal found (§3.3, full study `2026-07-12-behavioral-validation-study-STAGE-0B.md`). The design's structuring so this uncertainty couldn't block architecture value turned out to matter — it didn't.
 3. **The 41/2,476 Sunday-formula residuals** (§1b) are unexplained in detail (suspected adaptive-weight NULL-score edge cases). They don't affect any decision here, but Stage 1's golden tests should include a few of these traders to pin exact current behavior before replacement.
 4. **Bonus step-function shape retained as-is** (kelly/patience thresholds) — inherited, not re-derived. Re-deriving it is out of scope; the compression via `W_beh` (which now scales the bonus too — see Correction section) and the thin-sample gate bound its damage either way.
 5. **Cluster D / non-flagged scope gap** (~100K non-flagged traders parked at 1,500) — **deliberately out of scope.** This design unifies how comprehensive_elo is computed, not who gets one. Widening scope mid-migration would confound every population diff. Revisit post-Stage-5 as its own item.
