@@ -113,37 +113,116 @@ System target:                  < 0.20 minimum
 
 ## Current Week
 
-Last updated: 2026-07-06
-Updated by: performance-analyst-agent (run 9)
+Last updated: 2026-07-13
+Updated by: performance-analyst-agent (run 10)
 
-### Week of 2026-07-06
+### Week of 2026-07-13
 
 #### Prediction Accuracy
 ```
-PRIMARY: geo_elo Pool C (Pool C, geo_accuracy_pool=1, geo_elo_active weighted,
-         resolved_trades_count>=20):
-  GEOPOLITICS (30d):
-    Brier score (30d):                0.1798  ✅✅ BEST ON RECORD (beats naive, n=89)
-    Directional accuracy (30d):       82.0%
-  ELECTIONS (30d):
-    Brier score (30d):                0.1912  ✅✅ BEST ON RECORD (beats naive, n=68)
-    Directional accuracy (30d):       80.9%
-  COMBINED geo+elections (30d):
-    Brier score (30d):                ~0.185  ✅✅ FIRST TIME BELOW 0.20 TARGET (n=157)
-    Directional accuracy (30d):       ~81.5%
-  COMBINED (7d):
-    Brier Geo:                        0.0519  ⚠ CAUTION — n=77 but 88 June-30 stub markets
-    Brier Elections:                  0.1053  n=19
-    Note: 7d numbers inflated by bulk resolution of near-certainty "by June 30" markets
-           (88 Geo markets all resolved NO: Russia/Sumy, NATO clash, Greenland, etc.)
+⚠ METHODOLOGY CORRECTION THIS WEEK:
+  Prior analyses used uppercase 'YES'/'NO' case comparison vs actual 'Yes'/'No' in DB.
+  Current numbers use correct case matching and contested-market filter (price 0.05-0.95).
+  Previous weekly Brier figures are NOT comparable. Recomputation recommended.
 
-  VALIDATED BASELINE (HIGH confidence, n=444):
+PRIMARY: geo_elo Pool C (geo_accuracy_pool=1, geo_elo_active>=1800, contested mkts only):
+  GEOPOLITICS (30d, contested price 0.05-0.95):
+    Brier score (30d):                0.2552  (beats naive 0.3723, edge=+0.117, n=48)
+    Directional accuracy (30d):       70.8%
+  ELECTIONS (30d, contested price 0.05-0.95):
+    Brier score (30d):                0.3855  (beats naive 0.5216, edge=+0.136, n=22)
+    Directional accuracy (30d):       59.1%
+  ELECTIONS (30d, ALL markets — WARNING):
+    Brier score (30d):                0.4838  ❌ WORSE THAN NAIVE 0.4492 (n=32)
+    Directional accuracy (30d):       50.0%  — random baseline
+  GEO (7d, contested):
+    Brier score (7d):                 0.0936  ⚠ n=3 only, insufficient for trend
+    Directional accuracy (7d):        100%
+
+  VALIDATED BASELINE (HIGH confidence, unchanged):
     Pool C full 2026 accuracy:        70.7%  (2026-06-05-POOL-C-GEO-FULL-2026-001)
     LEGENDARY geo_elo tier:           79.6%  (n=49 markets)
 
-  MILESTONE: 30d Brier crossed below 0.20 system target for first time (both categories).
-  4 consecutive weeks of improvement: Geo 0.2400→0.2213→0.2168→0.1798
-                                      Elections 0.2982→0.2714→0.2234→0.1912
+  KEY FINDING: Geo edge is solid (70.8% dir_acc, contested). Elections is near-random
+  on full population — post-April-28 sharp money may have priced away the edge.
+  Investigation required before Phase 6 elections allocation.
+```
+
+#### ELO System Health
+```
+Total traders (DB):                ~155,000+
+True research pool (resolved≥20):  16,262   (vs 13,855 Jul 6 — +17%)
+Research pool (research_excluded=0): 26,646  (vs 26,399 Jul 6 — +1%)
+Pool C (geo_accuracy_pool=1):       3,212   ↑ RECOVERING (vs 2,607 Jul 6, +23%)
+geo_elo LEGENDARY (geo_elo ≥ 2175):   80    (vs 61 Jul 6 — +31%)
+geo_elo LEGENDARY (geo_elo_active ≥ 2175): 26  (vs 19 Jul 6 — recovering)
+legendary_clean (geo_elo_active≥2175, pool_c, research_excl=0): 14 (FLAT — 4th week)
+near_legendary_clean (geo_elo_active 1800-2174): 38 (vs 35 Jul 6 — slight recovery)
+Max geo_elo_active:                3,798.8  (0xd44e974a — decaying from 4,118.7)
+Active traders (7d, all):          2,486  (vs 562 Jul 6 — recovery)
+Pool C active (7d, BUY):           226 traders, 1,245 buys, $189K volume
+Legendary active this week:        5 unique traders, 10 trades
+Top 2 ELO holders dormant since:   June 22 (3+ weeks)
+Clean markets (DB):                223,651  (vs 92,144 Jul 6 — +142% O-16/O-17 pipeline)
+Contract violations (Section 9):   NONE — all thresholds met ✅
+```
+
+#### Signal Quality
+```
+STR-003 (geo_elo_active criteria, gate-valid signals):
+  Qualifying traders (legendary_clean): 14
+  Gate-valid scored accuracy:          2/5 = 40%  (005✅, 008✅ vs 003✗, 006✗, 009✗)
+  Total accuracy (incl non-scorable):  3/6 = 50%  (adds 007✅)
+  LEGENDARY vs non-LEGENDARY:          2/3 = 67%  vs 1/3 = 33% (tier distinction validated)
+  Signal-agent status:                 DARK 159+ hours (8th consecutive Sunday failure)
+  New signals this week:               NONE (signal-agent dark)
+  Gate 3 risk:                         HIGH — frozen at 40%, n=5
+```
+
+#### Strategy Pipeline
+```
+STR-003:   EXPERIMENTAL — 14 clean LEGENDARY, Gate 3 FROZEN at 40%
+STR-004:   HYPOTHESIS — 0/1. 9 more signals needed.
+LH-001:    CONDITIONAL_PASS — 4/7 insider signals correct (57.1%)
+RQ-GEO-ELO-001: NOT STARTED ⚠⚠⚠ — 7 WEEKS, Jul 1 deadline MISSED
+RQ1.1:     BLOCKED — depends on RQ-GEO-ELO-001
+RQ3.2:     INCONCLUSIVE — reframe needed
+ELO Arc:   Stage 0 COMPLETE (W_beh=0 — Jul 12); Stage 1 queued
+```
+
+#### System Resources
+```
+Estimated API spend (7d Jul 6-13): ~$1-2  (training-librarian + performance-analyst)
+trading-swarm orchestrator:        ACTIVE (06:00 cycle clean this morning)
+polymarket-monitoring:             ACTIVE
+Git commits (trading-swarm, 7d): ~20 (ELO arc docs, signals.json safe-write, O-14)
+Git commits (first-repo, 7d):    ~12 (safe-write 8 writers, health_checker, Stage 0c)
+Brain directory size:              6.1MB (vs 5.2MB Jul 6 — +17%)
+First-repo DB size:                14GB (vs 12GB Jul 6 — +17%)
+Clean markets (DB):                223,651 (vs 92,144 Jul 6 — +142%; O-16/O-17 pipeline)
+CI pipeline:                       FAILING — 10th consecutive Sunday (NEW: __init__.py)
+Signal-agent:                      DARK — 159+ hours (8th Sunday failure)
+Quant-research:                    DARK — 34 days
+Backtest-agent:                    DARK — 42 days
+ELO Arc Stage 0:                   ✅ COMPLETE (W_beh=0 accepted)
+signals.json safe-write:           ✅ COMPLETE (all 8 writers → json_safety.py)
+```
+
+#### Week-on-Week Trends
+```
+Brier (geopolitics, 30d contested):  ~[prior¹] → ~[prior¹] → ~[prior¹] → 0.2552 (Jul 13)
+Brier (elections, 30d contested):    ~[prior¹] → ~[prior¹] → ~[prior¹] → 0.3855 (Jul 13)
+¹ Not comparable — prior numbers used different methodology
+Legendary ACTIVE (geo_elo_active≥2175): 13→24→29→19→26 ↑ (recovering)
+Legendary CLEAN:                         9→17→16→14→14 → (flat)
+NEAR_LEGENDARY clean:                   18→22→41→35→38 ↑ (recovering)
+True research pool (resolved≥20):  1,738→3,902→8,221→13,855→16,262 ↑↑↑
+Pool C (geo_accuracy_pool):          504→2,875→2,157→2,607→3,212 ↑ RECOVERING
+Active traders (7d):              ~2,395→2,573→679→562→2,486 ↑ RECOVERY
+Phase 5 Gate 1:                    ✅ COMPLETE (12+/4 runs)
+Phase 5 Gate 2:                    ✅ COMPLETE (confirmed Jun 5)
+Phase 5 Gate 3:                    2/5 = 40% gate-valid (FROZEN)
+Phase 5 Gate 4:                    BLOCKED — RQ-GEO-ELO-001 Jul 1 deadline MISSED (7 wks)
 ```
 
 #### ELO System Health
@@ -232,34 +311,35 @@ Phase 5 Gate 3:                    2/5 = 40% gate-valid (up from 1/4 = 25%)
 Phase 5 Gate 4:                    BLOCKED — RQ-GEO-ELO-001 deadline Jul 1 MISSED
 ```
 
-### Previous Week (2026-06-15 — for reference)
+### Previous Week (2026-07-06 — for reference)
 
 #### Prediction Accuracy
 ```
-Geopolitics Brier (30d):             0.2213  (beats naive ✅, n=79)
-Elections Brier (30d):               0.2714  (worse than naive ⚠, n=186)
-Combined Brier (30d):                ~0.256  (n=265)
-Combined accuracy (30d):             69.1%
+⚠ NOTE: Previous Brier methodology used different case comparison and included
+   near-certainty stub markets. Numbers are not comparable to Jul 13 figures.
+Geopolitics Brier (30d, prior method):  0.1798  (n=89, inflated by Jun-30 stubs)
+Elections Brier (30d, prior method):    0.1912  (n=68, inflated by Jun-30 stubs)
+Combined accuracy (30d, prior method):  ~81.5%
 ```
 
 #### ELO System Health
 ```
-Total traders (DB):                141,877
-True research pool (resolved≥20):    3,902  (research_excluded=0, resolved≥20, bot IS NULL)
-geo_elo LEGENDARY (geo_elo ≥ 2175):     48
-geo_elo_active LEGENDARY:               24
-Pool C (geo_accuracy_pool=1):        2,875
-legendary_clean:                        17
-near_legendary_clean:                   22
-Active traders (7d):                ~2,573
-Trades executed (7d):              ~80,541
+Total traders (DB):                155,663
+True research pool (resolved≥20):   13,855
+geo_elo LEGENDARY (geo_elo ≥ 2175):    61
+geo_elo_active LEGENDARY:               19
+Pool C (geo_accuracy_pool=1):        2,607
+legendary_clean:                        14
+near_legendary_clean:                   35
+Active traders (7d, BUY):              562
+Clean markets (DB):                 92,144
 ```
 
 ---
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-07-06 (performance-analyst-agent run 9)
+Last updated: 2026-07-13 (performance-analyst-agent run 10)
 
 ```
 Gate 1 — Feedback-loop runs: 12+/4 ✅ GATE MET
@@ -275,7 +355,8 @@ Gate 1 — Feedback-loop runs: 12+/4 ✅ GATE MET
   Run 10: 2026-06-15 (cron, Monday)
   Run 11: 2026-06-22 (cron, Monday)
   Run 12: 2026-06-29 (cron, Monday — complete)
-  Run 13: 2026-07-06 (cron, Monday — due today)
+  Run 13: 2026-07-06 (cron, Monday — completed)
+  Run 14: 2026-07-13 (cron, Monday — due today)
 
 Gate 2 — HIGH confidence findings: 3+/3 ✅ GATE MET (confirmed 2026-06-05)
   ❌ 2026-05-05-ELO-QUALIFIED-001: INVALIDATED (contaminated pool, 82% artefact)
@@ -298,18 +379,19 @@ Gate 3 — Pre-resolution accuracy: 2/5 gate-valid — IN PROGRESS (AT RISK)
   Gate-valid accuracy: 2/5 = 40% (up from 1/4 = 25%)
   Total (incl non-scorable 007): 3/6 = 50%
   Need: 6+ correct from 5+ remaining opportunities to reach 60% on n=10
-  Risk: LEGENDARY_clean declining (14, down from 17 peak Jun 15) constrains signal generation
+  Risk: LEGENDARY_clean flat at 14 (4th consecutive week), signal-agent dark
 
 Gate 4 — RQ1.1 + RQ3.2:
-  RQ1.1: BLOCKED — RQ-GEO-ELO-001 NOT STARTED (6+ weeks, deadline Jul 1 MISSED)
-    ⚠⚠⚠ CRITICAL: Spawn quant-research-agent. Richest dataset in system history (13,855 pool)
+  RQ1.1: BLOCKED — RQ-GEO-ELO-001 NOT STARTED (7+ weeks, deadline Jul 1 MISSED)
+    ⚠⚠⚠ CRITICAL: Spawn quant-research-agent. Richest dataset ever (16,262 pool, 223K markets)
   RQ3.2: INCONCLUSIVE (methodology reframe needed — extend RQ2.2 to outcome)
 
-Signal accuracy (July 6):
-  STR-003 (gate-valid): 2/5 = 40% — 5 more signals minimum needed for Gate 3
-  STR-003 legendary clean: 14 (declining — 3rd consecutive week)
-  NEAR_LEGENDARY clean: 35 (down from 41 peak Jun 29)
+Signal accuracy (July 13):
+  STR-003 (gate-valid): 2/5 = 40% — FROZEN (signal-agent dark; no new signals)
+  STR-003 legendary clean: 14 (flat — 4th consecutive week)
+  NEAR_LEGENDARY clean: 38 (recovering from 35)
   STR-004: 0/1 founding case ambiguous. 9 more signals needed.
+  LEGENDARY tier accuracy: 2/3 = 67% vs non-LEGENDARY 1/3 = 33% — tier signal validated
 ```
 
 ---
@@ -344,12 +426,22 @@ Supporting    RQ0.1           PASSED          2026-03-29  2026-03-29
 ──────────────────────────────────────────────────────────────────
 ```
 
-Last updated by performance-analyst-agent: 2026-07-06
+Last updated by performance-analyst-agent: 2026-07-13
 
 Stopping rules (halt all research if either fails):
 - RQ1.1: ELO has no predictive validity → redesign ELO system
 - RQ3.2: Markets efficient vs elite consensus → pivot edge source
 
 ⚠⚠ CRITICAL DEPENDENCY NOTE: RQ-GEO-ELO-001 Phase 1 is the prerequisite for RQ1.1 rerun.
-  RQ-GEO-ELO-001 was Oscar-approved May 25 and has NOT been executed (5 weeks elapsed).
-  July 1 RQ1.1 deadline is TOMORROW. Spawn quant-research-agent immediately.
+  RQ-GEO-ELO-001 was Oscar-approved May 25 and has NOT been executed (7 weeks elapsed).
+  Dataset is now the richest in system history (16,262 true_research_pool, 223,651 clean markets).
+  Spawn quant-research-agent immediately. Each additional week delays Gate 4 by 1 week.
+
+NEW FINDING (Jul 13): Elections calibration breaking. Pool C elite geo traders perform at
+  random on full elections population (50% dir_acc, Brier 0.4838 vs naive 0.4492).
+  Only contested elections (price 0.05-0.95): 59.1% dir_acc (weak but above random).
+  Hypothesis: post-April-28 sharp-money influx pricing away elections edge.
+  Action: pre/post April 28 split analysis required before Phase 6 portfolio allocation.
+
+ELO ARC STAGE 0 COMPLETE (Jul 12): W_beh=0 — behavioral ELO weighting adds no accuracy
+  improvement. Stage 1 (temporal stability, window sensitivity) queued.
