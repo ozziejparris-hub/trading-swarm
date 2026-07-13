@@ -501,6 +501,15 @@ Same class as O-17/O-3: a derived column not mechanically maintained by every wr
 
 ---
 
+### O-34 · Doc-correction passes must grep for every place the corrected claim appears, not just the sections remembered — RESOLVED 2026-07-13 (ledger + design-doc fix)
+**ITEM:** The 2026-07-06 Correction section in `2026-07-06-elo-arc-design-FABLE.md` fixed the bonus-scaling bug (bonus now shares `w_beh` with the multiplier instead of an independent, always-1.0 `W_bonus`) and explicitly listed which sections it had updated to match: §2.1, §2.4, §2.5, §4.1, §5. **§2.2 was not on that list, and it still stated the pre-correction numbers for 8 days** — all three of its sub-points (a/b/c) used the old un-scaled bonus term (`+400`/`+464` instead of the corrected `+350`/`+424`; `+224` instead of `+208`; "mean(bonus×damp)" instead of "mean(bonus×w_beh×damp)"). Found 2026-07-13 while writing a Stage 1 property test — the test's author derived the behavioral-gain bound directly from the formula instead of trusting §2.2's stated bound, specifically because the stated bound looked suspicious (didn't match §2.4's own worked example X at the same weight). Fixed in place same day.
+**WHY THIS HAPPENED:** a correction pass fixes the sections the author has open/in mind at the time, not necessarily every place the corrected claim's *numbers* got restated. §2.2 is prose commentary elsewhere in the same document, not code — easy to forget it also embeds specific numeric consequences of the formula it's describing.
+**THE RULE:** when correcting a claim anywhere in a document (or codebase), grep for the claim's *specific numbers/values*, not just its primary implementation site, before considering the correction complete. A correction pass is itself a claim ("this is now fixed everywhere") that can go stale exactly like the thing it corrected — treat "did I get every instance" as its own checklist item, not an assumption.
+**STATUS:** RESOLVED — §2.2 corrected in place (see the design doc's own inline note), Correction section's revision list updated with an addendum naming this gap.
+**FROZEN-AREA?** No — process/methodology record, not a code path.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
