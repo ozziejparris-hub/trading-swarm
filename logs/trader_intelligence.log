@@ -94,3 +94,27 @@ Kill it:    tmux kill-session -t trader-intelligence-agent-trader-intel-20260706
 
 Routing decisions: /brain/model-routing.md
 [2026-07-06T07:15:01Z] Finished trader-intelligence-agent (exit: 0)
+[2026-07-13T07:15:01Z] Starting trader-intelligence-agent
+──────────────────────────────────────
+Spawning agent: trader-intelligence-agent-trader-intel-20260713
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly trader intelligence cycle. Delta-detect stale profiles, analyse archetype drift, discover new Pool C qualifiers, build open position intelligence for eligible LEGENDARY traders, write intelligence report to brain/agent-outputs/trader-intelligence/. Update profiles in brain/trader-profiles/ in-place.
+──────────────────────────────────────
+Creating git worktree: feat/trader-intel-20260713
+HEAD is now at 3ed08e7 chore: performance-analyst run #10 — Jul 13 weekly (Brier methodology correction)
+Spawning tmux session: trader-intelligence-agent-trader-intel-20260713
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  trader-intelligence-agent-trader-intel-20260713
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/trader-intel-20260713
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/trader-intel-20260713.log
+
+Watch it:   tmux attach -t trader-intelligence-agent-trader-intel-20260713
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t trader-intelligence-agent-trader-intel-20260713
+
+Routing decisions: /brain/model-routing.md
+[2026-07-13T07:15:01Z] Finished trader-intelligence-agent (exit: 0)

@@ -574,3 +574,53 @@
 [LEGEND] Computing Signal Credibility Scores for 5 market(s)...
 [LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-06-positions-scan.json
 [LEGEND] Done — 16 scanned, 5 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-06-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 1 overdue open market(s) — checking Gamma API...
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+[LEGEND] 14 market(s) with >= 2 LEGENDARY traders
+[LEGEND] Skipped 1 market(s) overdue by >7 days (likely resolved, DB not yet updated)
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-07-13 07:30 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 11  (skipped no-price: 0, stale-price: 0, overdue: 1)
+======================================================================
+    1. [ 3 LEG] NO  ▼  99% vs mkt 50.5%  gap=+49.2pt  cap=$760  res=?
+       US x Iran ceasefire by April 30?
+
+    2. [ 3 LEG] NO  ▼  67% vs mkt 50.5%  gap=+17.7pt  cap=$274  res=? [MIXED_SIGNAL]
+       US x Iran ceasefire by March 31?
+
+    3. [ 2 LEG] YES ▲  100% vs mkt 3.4%  gap=+96.6pt  cap=$589  res=291d
+       Will Jordan Bardella win the 2027 French presidential election?
+
+    4. [ 2 LEG] NO  ▼  100% vs mkt 50.5%  gap=+50.5pt  cap=$1.8K  res=171d
+       US obtains Iranian enriched uranium by December 31?
+
+    5. [ 2 LEG] YES ▲  100% vs mkt 50.5%  gap=+49.5pt  cap=$239  res=18d
+       US x Iran permanent peace deal by July 31, 2026?
+
+    6. [ 2 LEG] YES ▲  100% vs mkt 53.0%  gap=+47.0pt  cap=$56  res=171d
+       Will Kash Patel leave the Trump administration before 2027?
+
+    7. [ 2 LEG] NO  ▼  100% vs mkt 41.5%  gap=+41.5pt  cap=$45  res=848d
+       Will J.D. Vance win the 2028 Republican presidential nomination?
+
+    8. [ 2 LEG] NO  ▼  80% vs mkt 50.5%  gap=+30.1pt  cap=$104  res=?
+       Israel x Hezbollah Ceasefire extended by April 26, 2026?
+
+    9. [ 2 LEG] NO  ▼  100% vs mkt 28.3%  gap=+28.3pt  cap=$103  res=291d
+       Will Marine Le Pen win the 2027 French presidential election?
+
+   10. [ 2 LEG] NO  ▼  100% vs mkt 19.5%  gap=+19.5pt  cap=$3.7K  res=171d
+       Ukraine signs peace deal with Russia before 2027?
+
+   11. [ 2 LEG] YES ▲  100% vs mkt 83.5%  gap=+16.5pt  cap=$98  res=113d
+       Will the Democratic Party control the House after the 2026 Midterm e
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 11 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-13-positions-scan.json
+[LEGEND] Done — 14 scanned, 11 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-13-positions-scan.json

@@ -238,3 +238,27 @@ Kill it:    tmux kill-session -t integration-test-agent-integration-20260705
 
 Routing decisions: /brain/model-routing.md
 [2026-07-05T23:00:01Z] Finished integration-test-agent (exit: 0)
+[2026-07-12T23:00:01Z] Starting integration-test-agent
+──────────────────────────────────────
+Spawning agent: integration-test-agent-integration-20260712
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run full integration test suite. Check all 6 suites: signal bus, agent cadence, feedback loop, registry consistency, CI pipeline, brain completeness.
+──────────────────────────────────────
+Creating git worktree: feat/integration-20260712
+HEAD is now at cf7500a docs: session summary — outage survival, signals.json fix, O-14 re-resolution, ELO arc Stage 0 complete
+Spawning tmux session: integration-test-agent-integration-20260712
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  integration-test-agent-integration-20260712
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/integration-20260712
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/integration-20260712.log
+
+Watch it:   tmux attach -t integration-test-agent-integration-20260712
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t integration-test-agent-integration-20260712
+
+Routing decisions: /brain/model-routing.md
+[2026-07-12T23:00:02Z] Finished integration-test-agent (exit: 0)

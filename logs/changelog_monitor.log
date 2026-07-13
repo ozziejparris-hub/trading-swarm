@@ -79,3 +79,11 @@ New entry detected: Jul 2, 2026
 Telegram message sent.
 State saved → /home/parison/trading-swarm/brain/polymarket_changelog_state.json
 [2026-07-06T07:30:06Z] Finished polymarket-changelog-monitor (exit: 0)
+[2026-07-13T07:30:01Z] Starting polymarket-changelog-monitor
+Fetching https://docs.polymarket.com/changelog ...
+Latest entry: 'Jul 10, 2026'  title: None
+Gamma API filter BROKEN — requested 0xb8c1bd30… but got 0x1fad72fa…
+New entry detected: Jul 10, 2026
+Telegram message sent.
+State saved → /home/parison/trading-swarm/brain/polymarket_changelog_state.json
+[2026-07-13T07:30:07Z] Finished polymarket-changelog-monitor (exit: 0)
