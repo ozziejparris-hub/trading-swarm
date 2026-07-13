@@ -1,0 +1,80 @@
+{
+  "address": "0x51b5b8b1574994d5472351b368f6e6e4a1af9975",
+  "profile_date": "2026-07-13",
+  "geo_elo_active": 2286.8,
+  "tier": "LEGENDARY",
+  "archetype": "VOLUME_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "New LEGENDARY qualifier discovered 2026-07-13. geo_elo_active=2286.8 (above 2175 LEGENDARY threshold), geo_accuracy_pool=1, research_excluded=0, bot_type=NULL. Full trade history: 1,907 total all-category resolved trades, 1,469 with clear data. Geopolitics: 736 trades, 396 wins (54%), 369 contested (50% contested rate). Unknown category: 710 trades (mix of Russia/UKR battlefield and other markets). Elections: 23 trades (13 wins). Dominant pattern: massive repetition per market in Russia/UKR city capture markets — 48 trades on Rodynske, 44 on Siversk, 42 on Udachne, 41 on Kupiansk, 39 on Kostyantynivka Aug. Average prices 0.75-0.88 (upper edge of contested range, trending near-certainty). Net directionality=0.968 (nearly always on one side per market). Overall Russia/UKR accuracy: ~50% on 500+ trades — near-chance, not significant edge. Near-certainty (>=0.90) geo/elections accuracy: 45% (81/182 wins) — BELOW 50%, unusual and suggests these are NOT simple yield harvesting wins. Contested (0.10-0.80) accuracy: 54% (206/382) — z-score ~1.5, not statistically significant at 95% confidence. Also trades 'Trump says X' Elections markets with contradictory YES/NO positions. PNL=-$711 (small negative). Archetype VOLUME_SPECIALIST: high volume per market in Russia/UKR battlefield, but accuracy near-random, no demonstrated systematic edge. NOT GENUINE_FORECASTER (no diversity, near-random accuracy). NOT DOMAIN_SPECIALIST (accuracy not above chance threshold). NOT YIELD_HARVESTER (many trades at genuinely contested prices). Confidence LOW given thin meaningful evidence of edge and data integrity caveat (stored geo_trades=119 vs actual Geopolitics-category trades=736).",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR (tentative): 736+ geopolitics trades, largely battlefield capture questions. Best individual markets: Rodynske 77% on 48 trades, Siversk 70% on 44 trades. However, overall Russia/UKR accuracy near-random (~50%)."
+  ],
+  "domain_blindspots": [
+    "Russia_UKR (battlefield): Overall accuracy ~50% on 500+ trades — near-chance, not statistically significant edge",
+    "Elections (Trump says X): contradictory YES/NO positions on same outcomes — near-certainty NO harvesting alongside contested YES bets, both losing and winning inconsistently",
+    "Accuracy on near-certainty bets (>=0.90): 45% — below 50%, unusual loss pattern on near-certain entries"
+  ],
+  "domain_summary": "Almost entirely focused on Russia/UKR military advance markets ('Will Russia capture [city] by [date]?') with high repetition per market (40-48 orders on single markets) and near-random overall accuracy (~50%). Some individual markets show strong accuracy (Rodynske 77%), but others are very weak (Kupiansk by Oct 31: 20% on 41 trades). No demonstrated statistical edge across the domain. Directionality 0.968 indicates consistent thesis (Russia doesn't capture = NO) but the results are mixed. Data integrity caveat: geo_resolved_trades_count in traders table shows 119, but Geopolitics-category actual resolved trades = 736. Discrepancy consistent with pipeline bug seen in other traders.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "New qualifier. Archetype confidence LOW. Accuracy near-random on largest domain (Russia/UKR). PNL slightly negative. geo_elo_active=2286.8 is 112 points above LEGENDARY floor — some buffer. Setting MINIMAL (most conservative above EXCLUDE) pending human review. NOT STR-003 eligible this cycle per Rule: 'Never include a newly qualified trader in STR-003 signal suggestions in the same report that introduces them.'",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Russia_UKR",
+    "Elections_TrumpSaysX"
+  ],
+  "behavioural_flags": [
+    "Extreme single-market repetition: 40-48 trades on individual battlefield capture markets — position scaling, not diverse forecasting",
+    "Near-certainty accuracy 45% (81/182) — below 50%, unusual for a trader who presumably buys the near-certain side",
+    "Contradictory Elections positions: NO at 0.97+ on 'Trump says Uranium' AND YES at 0.43-0.73 on same market — bifurcated strategy",
+    "geo_resolved_trades_count discrepancy: 119 stored vs 736+ actual Geopolitics-category trades. Same pipeline bug as seen in other traders.",
+    "PNL=-$711 despite high geo_elo_active=2286.8 — ELO may be inflated by volume rather than accuracy",
+    "High directionality (0.968): consistently bets against Russian city captures (NO side), but loses ~50% of the time on individual markets"
+  ],
+  "risk_patterns": [
+    "Near-random accuracy (~50%) across 500+ Russia/UKR trades means ELO is likely built on volume, not skill",
+    "Several individual markets show very low accuracy (Kupiansk Oct 31: 20% on 41 trades, Kostyantynivka Jun 30: 28% on 29 trades) — heavy losses possible on concentrated positions",
+    "PNL negative: sustained exposure to Russia city capture NOs at 0.75+ with mixed results",
+    "geo_elo_active 2286.8 — only 112 points above LEGENDARY floor; continued poor accuracy could push below 2175 within weeks"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Russia capture Rodynske by October 31?",
+      "side": "No",
+      "entry_price": 0.812,
+      "result": "WON",
+      "significance": "Best individual market performance: 48 trades, 77% accuracy at avg 0.812. Russia did not capture Rodynske. Strongest evidence of Russia_UKR edge but single-market result."
+    },
+    {
+      "market": "Will Russia capture Kupiansk by October 31?",
+      "side": "No",
+      "entry_price": 0.615,
+      "result": "LOST",
+      "significance": "Worst individual market: 41 trades, 20% accuracy at avg 0.615 — lost 80% of bets. Russia captured Kupiansk. Heavy losses. Illustrates the volatility of city-capture markets."
+    },
+    {
+      "market": "Will Russia capture Kostyantynivka by June 30?",
+      "side": "No",
+      "entry_price": 0.748,
+      "result": "LOST",
+      "significance": "29 trades, 28% accuracy — another major loss market. Consistent with near-random overall accuracy."
+    }
+  ],
+  "open_positions_summary": "Not queried in detail (new qualifier, not yet eligible for LEGENDARY open position intelligence per protocol). Based on trade data, likely has open battlefield capture positions at 0.75-0.88 price range in Russia/UKR markets. Assess at next weekly cycle after human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any STR-003 inclusion. Items to review: (1) statistical significance of Russia/UKR accuracy (near-random overall), (2) geo_resolved_trades_count discrepancy (119 stored vs 736+ actual), (3) whether Kupiansk-type concentrated losses represent model failure or regime change",
+    "Monitor whether accuracy improves above 55%+ on Russia/UKR contested markets — threshold for considering DOMAIN_SPECIALIST upgrade",
+    "Watch for geo_elo_active decay toward 2175 LEGENDARY floor — close at 112 points buffer",
+    "Assess whether 'Trump says X' market participation is yield harvesting, market making, or confused bidirectional speculation — relevant for broader archetype assessment"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "New LEGENDARY qualifier (geo_elo_active=2286.8) discovered this cycle. Russia/UKR battlefield VOLUME_SPECIALIST: 736+ Geopolitics trades heavily concentrated in 'Will Russia capture [city]?' markets with 40-48 orders per market. Overall accuracy ~50% (not statistically significant edge). Best individual markets show 70-77% accuracy (Rodynske, Siversk), but worst show 20-28% (Kupiansk, Kostyantynivka Jun). Near-certainty accuracy below 50% (unusual). PNL=-$711. Archetype confidence LOW. Set MINIMAL signal weight pending mandatory human review. Not STR-003 eligible this cycle.",
+  "data_snapshot": {
+    "geo_elo": 2537.4,
+    "geo_elo_active": 2286.8,
+    "resolved_trades": 1907,
+    "distinct_markets": 0,
+    "directionality": 0.968,
+    "pnl": -711.4
+  }
+}

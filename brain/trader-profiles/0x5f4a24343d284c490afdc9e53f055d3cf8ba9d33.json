@@ -1,22 +1,23 @@
 {
   "address": "0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 2011.912,
+  "profile_date": "2026-07-13",
+  "geo_elo_active": 1785.5,
   "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
-  "archetype_reasoning": "Virtually every visible trade involves buying NO at 0.93-0.999 or YES at 0.978+, i.e. near-certainty positions collecting tiny premiums on highly improbable outcomes. Directionality of 1.0 confirms no genuine two-sided forecasting. Despite 42 resolved trades across 20 markets, the pattern is systematic yield extraction \u2014 selling risk on extreme long-shots \u2014 rather than forecasting contested outcomes.",
+  "archetype_reasoning": "Originally profiled 2026-06-10. The one new resolved trade (Jun 10, 2026-07-13 delta) is 'Will Roberto Sánchez Palomino win the 2026 Peruvian presidential election?' NO @ 0.938 — WON. This is a textbook near-certainty yield-harvesting entry (price 0.938), resolving as expected. The watch item from the June 10 profile ('Monitor Roberto Sánchez Palomino, least extreme open position at 0.938') is now resolved — the outcome confirms the yield harvesting strategy worked as expected. Archetype remains YIELD_HARVESTER with HIGH confidence. Reclassification threshold not met (1 new trade, 1 market vs required 30 trades, 5 markets).",
   "primary_domain": "Trump_US",
   "domain_strengths": [
     "Trump_US",
     "Other"
   ],
   "domain_blindspots": [
-    "Trump_US: 53% accuracy on 30 trades suggests near-random outcomes, likely because near-certainty trades occasionally misfire when mispriced; Russia_UKR and Europe too thin to assess"
+    "Trump_US: 53% accuracy on 30 trades suggests near-random outcomes from near-certainty trades occasionally misfiring",
+    "Russia_UKR, Europe: too thin to assess"
   ],
-  "domain_summary": "This trader has no identifiable genuine forecasting edge \u2014 the near-certainty entry strategy inflates win rates mechanically but delivers negligible PnL ($0.65 total). Domain labels are largely irrelevant because the signal comes from price extremity, not domain insight.",
+  "domain_summary": "No identifiable forecasting edge in any domain. The near-certainty entry strategy inflates win rates mechanically but delivers negligible PnL. The one new resolved trade (Peruvian election NO @ 0.938 WON) is consistent with yield harvesting, not domain forecasting. geo_elo_active has decayed to 1785.5, below the 1800 NEAR_LEGENDARY threshold.",
   "signal_weight": "EXCLUDE",
-  "signal_weight_reasoning": "All positions are entered at prices where the outcome is already near-certain (0.93\u20130.999). There is zero informational content about contested probabilities; this trader is harvesting basis points, not forecasting. Copying these signals would expose STR-003 to catastrophic tail risk on the rare misfires, for almost no expected return.",
+  "signal_weight_reasoning": "All positions entered at near-certainty prices (0.93-0.999). No informational content about contested probabilities. New Peruvian trade at 0.938 confirms strategy persistence. geo_elo_active below 1800 — NEAR_LEGENDARY demotion review flagged.",
   "trusted_domains": [],
   "discounted_domains": [
     "Trump_US",
@@ -26,16 +27,17 @@
   ],
   "behavioural_flags": [
     "Exclusively trades at near-certainty prices (NO at 0.93-0.999 or YES at 0.978+)",
-    "Directionality of exactly 1.0 \u2014 never takes the opposite side of a market",
-    "Multiple simultaneous positions on the same market at marginally different prices suggest systematic sweep or DCA into near-zero-risk positions",
+    "Directionality of exactly 1.0 — never takes the opposite side of a market",
+    "Multiple simultaneous positions on same market at marginally different prices suggest systematic sweep or DCA into near-zero-risk positions",
     "Small position sizes (25-150 shares) consistent with yield harvesting rather than conviction sizing",
-    "Many open positions in distant-future markets (2028 elections) where liquidity is thin and mispricing risk is elevated",
-    "Realized PnL of $0.65 on 42 trades is negligibly small \u2014 confirms near-zero-edge strategy",
-    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=1981.16, ELO recalculated post June 10 profiling). No archetype change."
+    "Many open positions in distant-future markets (2028 elections) where liquidity is thin and mispricing risk elevated",
+    "Realized PnL of $14.5 on 43 resolved trades — negligible, confirms near-zero-edge strategy",
+    "TIER_UPDATED_2026-06-15: ELITE → NEAR_LEGENDARY (geo_elo_active=1981.16). No archetype change.",
+    "DEMOTION_FLAG_2026-07-13: geo_elo_active decayed from 1981.16 → 1785.5, now BELOW 1800 threshold. Flagged for NEAR_LEGENDARY demotion review."
   ],
   "risk_patterns": [
-    "Occasional losses on near-certainty positions (e.g. 'Democrats and Republicans both lose' NO at 0.997 lost) reveal tail-event exposure",
-    "Holding multiple 2028 election NO positions at 0.91-0.995 \u2014 resolution is years away and odds could shift materially",
+    "Occasional losses on near-certainty positions (e.g. 'Democrats and Republicans both lose' NO at 0.997 LOST) reveal tail-event exposure",
+    "Holding multiple 2028 election NO positions at 0.91-0.995 — resolution is years away and odds could shift materially",
     "Concentration in US political markets with no demonstrated edge in Russia_UKR or Europe",
     "Thin sample in non-US domains means any apparent accuracy there is noise"
   ],
@@ -45,14 +47,14 @@
       "side": "YES",
       "entry_price": 0.978,
       "result": "LOST",
-      "significance": "Bought YES at 0.978 and lost \u2014 illustrates the tail risk of near-certainty trading; even 'obvious' outcomes misfire"
+      "significance": "Bought YES at 0.978 and lost — illustrates the tail risk of near-certainty trading; even 'obvious' outcomes misfire"
     },
     {
       "market": "Democrats and Republicans both lose the 2024 Presidential Election",
       "side": "NO",
       "entry_price": 0.997,
       "result": "LOST",
-      "significance": "Lost on a 99.7% priced position \u2014 demonstrates that even extreme near-certainty is not risk-free"
+      "significance": "Lost on a 99.7% priced position — demonstrates that even extreme near-certainty is not risk-free"
     },
     {
       "market": "Will Michelle Obama win the popular vote in the 2024 Presidential Election?",
@@ -60,23 +62,28 @@
       "entry_price": 0.996,
       "result": "LOST",
       "significance": "Another near-certainty loss; highlights systematic tail exposure across this strategy"
+    },
+    {
+      "market": "Will Roberto Sánchez Palomino win the 2026 Peruvian presidential election?",
+      "side": "NO",
+      "entry_price": 0.938,
+      "result": "WON",
+      "significance": "New Jul 2026 — watch item from Jun 10 profile resolved WON. Near-certainty yield harvest as expected. Palomino did not win the Peruvian election."
     }
   ],
-  "open_positions_summary": "Trader holds 15 open NO positions on low-probability political candidates (2028 US presidential candidates including Youngkin, Cooper, Gallego, Oprah, Tucker Carlson, Harris; French 2027 election; Peruvian 2026 election) all priced at 0.91-0.998. The implied thesis is simply 'these individuals will not win' \u2014 a structurally sound but informationally vacuous set of bets. The Kamala Harris NO at 0.935 and Marco Rubio NO at 0.91 are the only positions with slightly less extreme certainty, introducing modest tail risk.",
+  "open_positions_summary": "Previous profile noted 15 open NO positions on low-probability political candidates (2028 US presidential candidates, French 2027, Peruvian 2026). The Peruvian position is now resolved. Remaining positions are US 2028 election NOs at 0.91-0.998 — pure yield harvesting. Not queried individually this cycle (geo_elo_active below 1800, outside LEGENDARY open position scope).",
   "watch_items": [
-    "Monitor whether any open 2028 positions reprice significantly \u2014 a candidate gaining traction (e.g. Kamala Harris) could turn profitable NO at 0.935 into a loss",
-    "Track if the trader ever enters positions below 0.90 \u2014 would signal a change toward genuine forecasting",
-    "Watch for any large sizing changes that would shift this from yield harvesting to conviction sizing",
-    "Monitor Roberto S\u00e1nchez Palomino (Peruvian election, resolves 2026-06-07) \u2014 the least extreme open position at 0.938"
+    "DEMOTION REVIEW: geo_elo_active=1785.5, below 1800 floor. Oscar to review whether to retain NEAR_LEGENDARY profile or formally retire this address.",
+    "Monitor US 2028 election NO positions — these open at 0.91-0.995 represent the remaining open yield harvest book; track for tail-risk resolution surprises"
   ],
   "overall_signal_value": "NOISE",
-  "summary": "This trader is a pure yield harvester with no detectable forecasting signal: every trade is placed at near-certainty prices (0.93-0.999), generating a total realized PnL of $0.65 across 42 trades. The 1.0 directionality score confirms this is a one-strategy operation \u2014 collecting small premiums on politically improbable outcomes \u2014 not genuine geopolitical prediction. Occasional losses on sub-1% outcomes confirm meaningful tail exposure embedded in the strategy. This trader's positioning carries zero informational value for STR-003 signal generation and should be fully excluded from the intelligence feed.",
+  "summary": "YIELD_HARVESTER whose geo_elo_active has decayed below the 1800 NEAR_LEGENDARY floor (1785.5). One new trade this cycle: Peruvian election NO @ 0.938 WON — textbook yield harvesting, resolves the watch item from the June 10 profile. Archetype YIELD_HARVESTER confirmed at HIGH confidence. EXCLUDE weight unchanged. Flagged for NEAR_LEGENDARY demotion review.",
   "data_snapshot": {
-    "geo_elo": 2011.912000000001,
-    "geo_elo_active": 1981.16,
-    "resolved_trades": 42,
-    "distinct_markets": 20,
+    "geo_elo": 2011.9,
+    "geo_elo_active": 1785.5,
+    "resolved_trades": 43,
+    "distinct_markets": 21,
     "directionality": 1.0,
-    "pnl": 0.648000000000095
+    "pnl": 14.5
   }
 }

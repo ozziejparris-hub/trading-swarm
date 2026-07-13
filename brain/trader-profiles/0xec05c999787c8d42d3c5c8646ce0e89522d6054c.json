@@ -1,8 +1,8 @@
 {
   "address": "0xec05c999787c8d42d3c5c8646ce0e89522d6054c",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 2542.1559,
-  "tier": "LEGENDARY",
+  "profile_date": "2026-07-13",
+  "geo_elo_active": 544.5,
+  "tier": "SEVERELY_DECAYED",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
   "archetype_reasoning": "The vast majority of resolved trades are concentrated in a single market (Trump/Judy Shelton Fed chair) with NO entries at 0.955-0.965 \u2014 classic near-certainty yield harvesting. The 98.1% win rate across 107 Trump_US trades is almost entirely explained by repeatedly selling near-zero probability outcomes rather than genuine forecasting. The one loss came from buying YES at 0.023 in the same market, suggesting occasional LP-style or error trades alongside the harvesting strategy.",
@@ -23,6 +23,7 @@
     "Iran_ME"
   ],
   "behavioural_flags": [
+    "SEVERE_DECAY_2026-07-13: geo_elo_active collapsed from 2542.16 → 544.5. This is not a gradual recency decay — the score has fallen below Pool C functional levels. Oscar must review whether this is a data artifact or reflects a genuine abandonment of this wallet. Profile retained per Rule 7 but this address is effectively retired unless the geo_elo pipeline confirms an anomaly.",
     "Extreme market concentration: 105 of 108 resolved trades in a single market/question cluster",
     "Near-certainty entry pattern: consistently buying NO at 0.955-0.965 in the Judy Shelton market",
     "Contradictory open positions on Iranian regime fall (YES at 0.43 and NO at 0.67 simultaneously) \u2014 possible hedging or LP behavior",

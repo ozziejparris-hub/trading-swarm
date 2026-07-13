@@ -1,23 +1,24 @@
 {
   "address": "0xdde1a0257ddcc19522df5128049ce5619944f1d7",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 2128.4276,
+  "profile_date": "2026-07-13",
+  "geo_elo_active": 1749.2,
   "tier": "NEAR_LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
-  "archetype_reasoning": "The dominant pattern in recent resolved trades is mass near-certainty buying of YES on 'Will Trump visit China by March 31?' at prices of 0.012-0.014 \u2014 classic yield harvesting on near-certain NO outcomes (which correctly resolved NO, meaning these YES bets lost or were near-zero recoveries). Wait \u2014 the YES trades at 0.012-0.014 WON, meaning the market resolved YES despite low probability implied at entry. However, the open positions show consistent NO-side bets at prices like 0.94 and 0.87 (equivalent to buying NO cheaply), plus 'Iran Strike on Israel' YES at 0.965 \u2014 these are near-certainty premium collection plays. The trader systematically enters positions at near-certain prices (sub-0.05 for YES or above 0.90 for NO) to harvest small premiums, with the one genuine directional call at 0.37 being a loss.",
+  "archetype_reasoning": "Originally profiled 2026-06-10. The three new resolved trades (Jun 16-17) are all entries on 'Strait of Hormuz traffic returns to normal by end of June?' at YES @ 0.180 — all LOST. While 0.180 is technically a contested price, the evidence is three orders on the same market in a 24-hour window, consistent with position scaling (splitting one bet into three orders) rather than three independent forecasting acts. This does NOT represent a genuine YIELD_HARVESTER waking up to make directional forecasts across diverse markets. The full resolved history still shows the core pattern: near-certainty yield collection with occasional directional speculation that loses. Archetype remains YIELD_HARVESTER — reclassification requires 30+ new resolved trades across 5+ distinct markets contradicting the archetype (not met: 3 new trades, 1 market).",
   "primary_domain": "Trump_US",
   "domain_strengths": [
     "Trump_US",
     "China_Asia"
   ],
   "domain_blindspots": [
-    "Trump_US: accuracy inflated by near-certainty near-zero YES buys that happened to win; one directional bet at 0.37 was lost",
-    "Iran_ME: small sample, open positions concentrated in near-certainty NO side"
+    "Trump_US: accuracy inflated by near-certainty near-zero YES buys that happened to win; contested-price calls lose",
+    "Iran_ME: new Strait of Hormuz contested bet (0.180 x3) all lost — adds to contested-price loss record",
+    "Hormuz/Iran_ME: three contested losses at 0.180 on same market; not a trusted domain"
   ],
-  "domain_summary": "Apparent strength in Trump_US and China_Asia is substantially driven by near-certainty position harvesting rather than genuine forecasting edge. The single contested-price call (Trump China visit at 0.37) was a loss, undermining claims of real directional insight.",
+  "domain_summary": "Apparent strength in Trump_US and China_Asia is substantially driven by near-certainty position harvesting, not genuine forecasting. New Hormuz trades (Jun 2026) are all contested entries that lost, consistent with the established pattern of contested-price calls failing. geo_elo_active has decayed to 1749.2, below the 1800 NEAR_LEGENDARY threshold — flagged for tier demotion review.",
   "signal_weight": "MINIMAL",
-  "signal_weight_reasoning": "The overwhelming majority of wins come from near-certainty price entries (0.012-0.014 YES buys, 0.94+ NO buys) that reflect yield harvesting, not forecasting skill. The geo_elo_active of 2128 is below the LEGENDARY threshold and the raw ELO is inflated by volume of near-certain wins. The one genuine contested-price call lost. Signal value for STR-003 is minimal as trades don't reflect informational edge.",
+  "signal_weight_reasoning": "The overwhelming majority of wins come from near-certainty price entries (0.012-0.014 YES buys, 0.94+ NO buys). The three new contested entries at 0.180 all lost, reinforcing the pattern of no genuine forecasting edge at contested prices. geo_elo_active has decayed below 1800 — tier demotion review pending. Signal value for STR-003 remains minimal.",
   "trusted_domains": [],
   "discounted_domains": [
     "Trump_US",
@@ -25,18 +26,19 @@
     "Iran_ME"
   ],
   "behavioural_flags": [
-    "Mass repeated entries on same market at near-zero prices (0.012-0.014) \u2014 strongly suggests yield harvesting or arbitrage sweeping",
-    "High directionality (0.969) consistent with one-sided near-certainty position taking",
-    "Only 3 distinct geo markets across 34 resolved trades \u2014 extreme concentration",
-    "Open positions in Iran_ME skew heavily toward NO at high prices (0.94, 0.87) \u2014 classic near-certainty premium collection",
-    "One anomalous YES at 0.965 on 'Iran Strike on Israel' alongside NO at 0.033 on same market \u2014 possible LP artifact or hedging",
-    "TIER_UPDATED_2026-06-15: ELITE \u2192 NEAR_LEGENDARY (geo_elo_active=2095.89, ELO recalculated post June 10 profiling). No archetype change."
+    "Mass repeated entries on same market at near-zero prices (0.012-0.014) — strongly suggests yield harvesting or arbitrage sweeping",
+    "High directionality (1.0 at current DB reading) consistent with one-sided near-certainty position taking",
+    "Only 3 distinct geo markets across original 34 resolved trades — extreme concentration",
+    "Open positions in Iran_ME skew heavily toward NO at high prices (0.94, 0.87) — classic near-certainty premium collection",
+    "NEW 2026-07-13: Three YES @ 0.180 entries on Strait of Hormuz market (Jun 16-17), all LOST. One market, 24-hour window — position scaling, not diverse forecasting",
+    "TIER_UPDATED_2026-06-15: ELITE → NEAR_LEGENDARY (geo_elo_active=2095.89). No archetype change.",
+    "DEMOTION_FLAG_2026-07-13: geo_elo_active decayed from 2095.89 → 1749.2, now BELOW 1800 threshold. Flagged for NEAR_LEGENDARY demotion review."
   ],
   "risk_patterns": [
-    "Single directional bet at contested price (0.37) resulted in a loss \u2014 suggests limited genuine forecasting capability at contested prices",
-    "Extreme market concentration (3 markets) makes overall record fragile and non-generalizable",
+    "Contested directional bets at 0.180-0.37 have all lost — no evidence of forecasting capability at non-trivial prices",
+    "Extreme market concentration (original 3 markets, now 4) makes overall record non-generalizable",
     "Near-certainty harvesting exposes trader to low-probability tail events wiping accumulated gains",
-    "Both YES and NO positions open in Iran Strike on Israel market suggests possible liquidity provision masking true conviction"
+    "geo_elo_active at 1749.2 — 51 points below NEAR_LEGENDARY floor. Further decay without wins drops below pool consideration"
   ],
   "notable_calls": [
     {
@@ -44,38 +46,37 @@
       "side": "YES",
       "entry_price": 0.013,
       "result": "WON",
-      "significance": "Repeated near-zero entry across 14 positions \u2014 likely tail-risk harvesting that paid off when market resolved YES unexpectedly; not a genuine forecasting signal"
+      "significance": "Repeated near-zero entry across 14 positions — likely tail-risk harvesting that paid off when market resolved YES unexpectedly; not a genuine forecasting signal"
     },
     {
       "market": "Will Trump visit China by March 31?",
       "side": "YES",
       "entry_price": 0.372,
       "result": "LOST",
-      "significance": "Only contested-price directional call in recent history \u2014 lost, suggesting real forecasting at non-trivial prices is weak"
+      "significance": "Only contested-price directional call in original profile history — lost, suggesting real forecasting at non-trivial prices is weak"
     },
     {
-      "market": "Will Reza Pahlavi enter Iran by March 31?",
-      "side": "NO",
-      "entry_price": 0.945,
-      "result": "OPEN",
-      "significance": "Near-certainty NO purchase; illustrates yield harvesting strategy in Iran_ME domain"
+      "market": "Strait of Hormuz traffic returns to normal by end of June?",
+      "side": "YES",
+      "entry_price": 0.180,
+      "result": "LOST",
+      "significance": "Three orders on this market Jun 16-17, all at 0.180, all LOST. Looks like position scaling not forecasting — extends the contested-price loss record"
     }
   ],
-  "open_positions_summary": "Current open book is concentrated in Iran_ME with a near-certainty NO on Reza Pahlavi entering Iran (0.945 price), a near-certainty NO on US forces entering Iran by March 7 (0.868), and a near-certainty YES on Iran Strike on Israel (0.965) alongside a NO on the same market at 0.033 \u2014 the latter pair suggest LP behavior or a hedge. A smaller contested position exists (NO on Witkoff meeting Iranian officials at 0.20). The overall thesis is: Iran escalation/unlikely events won't materialize, collect premium.",
+  "open_positions_summary": "Current open positions not individually queried this cycle (geo_elo_active below 1800, not in eligible LEGENDARY pool for open position intelligence). Previous summary (Jun 10) noted near-certainty NO positions in Iran_ME. Watch_items below reflect current priorities.",
   "watch_items": [
-    "Monitor whether the Iran Strike YES at 0.965 and NO at 0.033 on same market resolve as a paired LP artifact or genuine contradiction",
-    "Track if trader enters any contested-price positions (0.10-0.80) to reassess genuine forecasting ability",
-    "Watch for expansion beyond 3 markets as a signal of genuine forecasting vs pure yield strategy",
-    "Monitor Iran_ME positions for tail-risk realization given heavy NO concentration on low-probability events"
+    "DEMOTION REVIEW: geo_elo_active=1749.2, below 1800 floor. If no wins before next cycle, may drop further. Oscar to review whether to retain NEAR_LEGENDARY profile or formally retire.",
+    "Monitor whether any future contested-price entries (0.10-0.80) diversify across markets and win — threshold for YIELD_HARVESTER reclassification is 30+ trades across 5+ markets",
+    "Three Hormuz losses (0.180 x3) added to contested-price loss record: all contested directional bets have now lost. Reinforces archetype."
   ],
   "overall_signal_value": "LOW",
-  "summary": "This trader's impressive win rate and ELO are almost entirely products of near-certainty position harvesting at prices below 0.02 or above 0.93, not genuine forecasting. The record across 34 trades spans only 3 markets, and the sole contested-price directional call (Trump China visit at 0.37) was a loss. Open positions continue the same pattern: collecting small premiums on near-certain outcomes in Iran_ME. Until this trader demonstrates consistent edge at contested prices across diverse markets, their signals should be discounted heavily for STR-003 purposes.",
+  "summary": "YIELD_HARVESTER whose geo_elo_active has decayed below the 1800 NEAR_LEGENDARY floor (1749.2). Three new contested entries (Strait of Hormuz YES @ 0.180, Jun 16-17, all LOST) extend the established pattern of losing on contested-price calls. The entries are three orders on one market in 24 hours — position scaling, not diverse forecasting. Archetype unchanged at YIELD_HARVESTER with HIGH confidence. Last 10 accuracy = 50%. Flagged for NEAR_LEGENDARY demotion review.",
   "data_snapshot": {
-    "geo_elo": 2379.8969714261016,
-    "geo_elo_active": 2095.89,
-    "resolved_trades": 34,
-    "distinct_markets": 3,
-    "directionality": 0.9686773325090398,
-    "pnl": 1298.3750446092142
+    "geo_elo": 2203.9,
+    "geo_elo_active": 1749.2,
+    "resolved_trades": 37,
+    "distinct_markets": 4,
+    "directionality": 1.0,
+    "pnl": 75.8
   }
 }
