@@ -786,3 +786,67 @@ total size is 5,030,912  speedup is 8.00
 [2026-07-13T02:03:29Z] Pruning old backups (keeping 14 days)...
 [2026-07-13T02:03:29Z] Backup complete. Drive usage: 44G used
 [2026-07-13T02:03:29Z] Backup complete. Drive usage: 44G used
+[2026-07-14T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-14
+[2026-07-14T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-14
+[2026-07-14T02:00:01Z] Checkpointing WAL...
+[2026-07-14T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-14T02:00:01Z] Backing up database...
+[2026-07-14T02:00:01Z] Backing up database...
+[2026-07-14T02:03:33Z] DB backup complete: 3.6G
+[2026-07-14T02:03:33Z] DB backup complete: 3.6G
+[2026-07-14T02:03:33Z] Backing up brain/...
+[2026-07-14T02:03:33Z] Backing up brain/...
+sending incremental file list
+./
+feedback_loop_state.json
+findings.json
+findings.json.bak
+findings.json.lock
+integration-health.json
+kpis.md
+polymarket_changelog_state.json
+signals.json
+signals.json.bak
+signals.json.lock
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-13-audit.json
+agent-outputs/feedback-loop/
+agent-outputs/feedback-loop/2026-07-13-weekly-audit.md
+agent-outputs/performance-analyst/
+agent-outputs/performance-analyst/2026-07-13-weekly.md
+agent-outputs/positions-scan/
+agent-outputs/positions-scan/2026-07-13-positions-scan.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-13-pre-res-scan.json
+agent-outputs/signal-agent/
+agent-outputs/signal-agent/2026-07-13-08-signal-report.md
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-13-str002-scoring.json
+agent-outputs/trader-intelligence/
+agent-outputs/trader-intelligence/2026-07-13-intelligence-report.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-06-elo-arc-design-FABLE.md
+decisions/2026-07-13-elections-calibration-break.md
+decisions/2026-07-13-session-summary.md
+research-scout/pending-review/
+research-scout/pending-review/2026-07-13-20-deepseek-v4-pro-1-6t-and-v4-flash-284b-released-ap.md
+research-scout/pending-review/2026-07-13-20-per-market-information-leakage-and-order-flow-skil.md
+research-scout/pending-review/2026-07-13-20-polymarket-us-api-weekly-maintenance-window-moved-.md
+trader-profiles/
+trader-profiles/0x51b5b8b1574994d5472351b368f6e6e4a1af9975.json
+trader-profiles/0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33.json
+trader-profiles/0x9aa516edbff6688595987727b4edc530cff14010.json
+trader-profiles/0xc624cccd414dc90ea329f06cf535fafa40d2ee24.json
+trader-profiles/0xdde1a0257ddcc19522df5128049ce5619944f1d7.json
+trader-profiles/0xec05c999787c8d42d3c5c8646ce0e89522d6054c.json
+
+sent 827,077 bytes  received 723 bytes  551,866.67 bytes/sec
+total size is 5,233,638  speedup is 6.32
+[2026-07-14T02:03:34Z] Brain backup complete
+[2026-07-14T02:03:34Z] Brain backup complete
+[2026-07-14T02:03:34Z] Pruning old backups (keeping 14 days)...
+[2026-07-14T02:03:34Z] Pruning old backups (keeping 14 days)...
+[2026-07-14T02:03:34Z] Backup complete. Drive usage: 45G used
+[2026-07-14T02:03:34Z] Backup complete. Drive usage: 45G used

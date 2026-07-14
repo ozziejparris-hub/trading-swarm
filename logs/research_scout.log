@@ -1101,3 +1101,9 @@ Research scout complete: 0 findings written (0 HIGH, 0 MEDIUM, 1 LOW relevance)
 [2026-07-13T20:00:01Z] Starting research-scout
 Research scout complete: 3 findings written (1 HIGH, 2 MEDIUM, 1 LOW relevance)
 [2026-07-13T20:01:36Z] Finished research-scout (exit: 0)
+[2026-07-14T08:00:01Z] Starting research-scout
+ERROR: claude CLI timed out after 120s
+[2026-07-14T08:02:01Z] Finished research-scout (exit: 1)
+[2026-07-14T20:00:01Z] Starting research-scout
+Research scout complete: 0 findings written (0 HIGH, 0 MEDIUM, 0 LOW relevance)
+[2026-07-14T20:01:31Z] Finished research-scout (exit: 0)
