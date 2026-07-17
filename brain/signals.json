@@ -520,7 +520,7 @@
     {
       "type": "contract_stale",
       "from": "code-hygiene-agent",
-      "status": "pending",
+      "status": "processed",
       "timestamp": "2026-07-17T20:02:40.064959Z",
       "payload": {
         "message": "Integration contract Section 8 is outdated. 5 first-repo commits touch schema-critical files with no matching change-log entry (2026-07-09 through 2026-07-13).",
@@ -557,7 +557,8 @@
           }
         ],
         "action": "Oscar: review brain/integration-contract.md Section 8 and update with changes from 2026-07-09 to 2026-07-13"
-      }
+      },
+      "processed_at": "2026-07-17T20:10:59.746454"
     }
   ],
   "pending": [

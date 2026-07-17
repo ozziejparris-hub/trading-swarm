@@ -925,3 +925,41 @@ total size is 5,392,626  speedup is 10.75
 [2026-07-16T02:03:32Z] Pruning old backups (keeping 14 days)...
 [2026-07-16T02:03:32Z] Backup complete. Drive usage: 46G used
 [2026-07-16T02:03:32Z] Backup complete. Drive usage: 46G used
+[2026-07-17T02:00:04Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-17
+[2026-07-17T02:00:04Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-17
+[2026-07-17T02:00:04Z] Checkpointing WAL...
+[2026-07-17T02:00:04Z] Checkpointing WAL...
+0|0|0
+[2026-07-17T02:00:04Z] Backing up database...
+[2026-07-17T02:00:04Z] Backing up database...
+[2026-07-17T02:03:31Z] DB backup complete: 3.6G
+[2026-07-17T02:03:31Z] DB backup complete: 3.6G
+[2026-07-17T02:03:31Z] Backing up brain/...
+[2026-07-17T02:03:31Z] Backing up brain/...
+sending incremental file list
+./
+findings.json
+findings.json.bak
+findings.json.lock
+integration-health.json
+signals.json
+signals.json.bak
+signals.json.lock
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-16-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-16-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-16-str002-scoring.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-16-session-summary.md
+
+sent 648,169 bytes  received 325 bytes  1,296,988.00 bytes/sec
+total size is 5,468,825  speedup is 8.43
+[2026-07-17T02:03:31Z] Brain backup complete
+[2026-07-17T02:03:31Z] Brain backup complete
+[2026-07-17T02:03:31Z] Pruning old backups (keeping 14 days)...
+[2026-07-17T02:03:31Z] Pruning old backups (keeping 14 days)...
+[2026-07-17T02:03:31Z] Backup complete. Drive usage: 47G used
+[2026-07-17T02:03:31Z] Backup complete. Drive usage: 47G used
