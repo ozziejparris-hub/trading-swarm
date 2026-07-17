@@ -516,6 +516,48 @@
       "timestamp": "2026-07-13T08:05:00Z",
       "status": "processed",
       "processed_at": "2026-07-13T08:20:56.583750"
+    },
+    {
+      "type": "contract_stale",
+      "from": "code-hygiene-agent",
+      "status": "pending",
+      "timestamp": "2026-07-17T20:02:40.064959Z",
+      "payload": {
+        "message": "Integration contract Section 8 is outdated. 5 first-repo commits touch schema-critical files with no matching change-log entry (2026-07-09 through 2026-07-13).",
+        "uncovered_commits": [
+          {
+            "hash": "3371a1af",
+            "date": "2026-07-13",
+            "file": "monitoring/database.py",
+            "subject": "feat: ELO arc Stage 2 \u2014 Writer B onto canonical formula, atomic write helper"
+          },
+          {
+            "hash": "c4ac9fad",
+            "date": "2026-07-10",
+            "file": "scripts/daily_maintenance.py",
+            "subject": "fix: O-26 honest maintenance-completion banner"
+          },
+          {
+            "hash": "6210bfcc",
+            "date": "2026-07-10",
+            "file": "scripts/update_research_exclusions.py",
+            "subject": "fix: O-23 durable manual research-exclusion override"
+          },
+          {
+            "hash": "269d8d17",
+            "date": "2026-07-10",
+            "file": "scripts/daily_maintenance.py",
+            "subject": "feat: O-2 weekly --full-sync backstop in daily_maintenance.py"
+          },
+          {
+            "hash": "764839bc",
+            "date": "2026-07-09",
+            "file": "scripts/daily_maintenance.py",
+            "subject": "fix: O-27 run_step() subprocess timeout"
+          }
+        ],
+        "action": "Oscar: review brain/integration-contract.md Section 8 and update with changes from 2026-07-09 to 2026-07-13"
+      }
     }
   ],
   "pending": [
