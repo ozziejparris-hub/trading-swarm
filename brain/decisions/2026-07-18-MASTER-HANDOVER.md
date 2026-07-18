@@ -26,10 +26,15 @@ newer before trusting it blindly.
 - **Server:** Minisforum UM890 Pro, Ubuntu 24.04. SSH alias `trading-swarm`
   (`ssh trading-swarm` — resolves to `192.168.1.54`, user `parison`, key
   `~/.ssh/id_ed25519`). Both repos live on this one box, under the same user.
-- **Live services:** `polymarket-monitoring` and `polymarket-observer` (systemd, running
-  continuously, collecting trades/market data). The `trading-swarm` orchestrator service
-  is **NOT started** — still gated on a 48h parallel observation run per CLAUDE.md; don't
-  start it without Oscar's explicit instruction.
+- **Live services:** `polymarket-monitoring`, `polymarket-observer`, and
+  **`trading-swarm.service` (the orchestrator) — all three ARE running**, confirmed via
+  `systemctl status` at time of writing: `trading-swarm.service` active since
+  2026-07-18 03:00, cycling every 10 minutes as designed (immune system, signal processing).
+  **CLAUDE.md is stale on this point** — it still says the orchestrator "has NOT been started
+  yet," gated on a 48h observation run. That gate was evidently cleared at some point and
+  CLAUDE.md was never updated to reflect it. Flagged as a separate cleanup item: someone
+  should update CLAUDE.md's "Current Phase" section and remove the stale warning, so a fresh
+  reader isn't misled the way this handover's first draft was.
 - **DB scale (approx., first-repo `data/polymarket_tracker.db`):** ~14.5GB, ~157K traders,
   9.87M trades, 6.3M positions, ~223K resolved markets, 10,091 resolved geo/elections markets
   specifically (the pool relevant to the current experiment).
@@ -158,9 +163,13 @@ this in full before doing anything on the experiment. Summary below is not a sub
   Note the asymmetry: `resolution_date` itself is still safe to use for the *knowledge-lag
   margin* (the bug is one-directional / conservative there) — it's specifically PIT
   train/test splits and decay features that need the trade-tape-end anchor instead.
-- **O-37 (synthetic/duplicated trades)** — 2,858 rows DB-wide with implausible stats (one
-  example: 619K trades at a 222K-share average; distinct `market_id`s sharing identical trade
-  counts). Scope, root cause, and ELO impact are **still unscoped** — this is open, not
+- **O-37 (synthetic/duplicated trades)** — markets containing synthetic/duplicated trade rows
+  with implausible stats (one example: 619K trades at a 222K-share average; distinct
+  `market_id`s sharing identical trade counts). **202 geo/elec markets** affected within the
+  experiment's relevant pool; **2,858 markets DB-wide** (unscoped to geo/elec — the wider
+  count across the whole database). Note the unit: these are **market counts**, not raw
+  row counts — the number of underlying duplicated/synthetic trade rows is larger and not
+  yet tallied. Scope, root cause, and ELO impact are **still unscoped** — this is open, not
   resolved. Doesn't block current build sequence but could matter for P&L-based ELO
   inputs if it turns out to be structural rather than a handful of bad rows.
 
@@ -183,8 +192,14 @@ this in full before doing anything on the experiment. Summary below is not a sub
 
 **Data-integrity, open:**
 - O-36 real fix (real timestamps + historical backfill) — deferred, workaround in place (§4).
-- O-37 (synthetic/duplicated trades, 2,858 rows DB-wide) — unscoped. Needs a session to
-  determine cause and whether it touches ELO/P&L.
+- O-37 (synthetic/duplicated trades, 202 geo/elec markets / 2,858 markets DB-wide) —
+  unscoped. Needs a session to determine cause and whether it touches ELO/P&L.
+
+**Docs cleanup, open:**
+- `CLAUDE.md`'s "Current Phase" section still claims the trading-swarm orchestrator service
+  has not been started — it has been, and is running (§1). Someone should update CLAUDE.md
+  to reflect current state; until then, trust this handover's §1 over CLAUDE.md on service
+  status.
 
 **Decisions waiting on Oscar:**
 - **`is_taker` / `transaction_hash`** — there's maintenance code (~3h of build time) building
