@@ -963,3 +963,45 @@ total size is 5,468,825  speedup is 8.43
 [2026-07-17T02:03:31Z] Pruning old backups (keeping 14 days)...
 [2026-07-17T02:03:31Z] Backup complete. Drive usage: 47G used
 [2026-07-17T02:03:31Z] Backup complete. Drive usage: 47G used
+[2026-07-18T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-18
+[2026-07-18T02:00:01Z] Starting backup to /mnt/backup/polymarket-backups/2026-07-18
+[2026-07-18T02:00:01Z] Checkpointing WAL...
+[2026-07-18T02:00:01Z] Checkpointing WAL...
+0|0|0
+[2026-07-18T02:00:01Z] Backing up database...
+[2026-07-18T02:00:01Z] Backing up database...
+[2026-07-18T02:03:35Z] DB backup complete: 3.6G
+[2026-07-18T02:03:35Z] DB backup complete: 3.6G
+[2026-07-18T02:03:35Z] Backing up brain/...
+[2026-07-18T02:03:35Z] Backing up brain/...
+sending incremental file list
+./
+findings.json
+findings.json.bak
+findings.json.lock
+integration-health.json
+signals.json
+signals.json.bak
+signals.json.lock
+agent-outputs/code-hygiene/
+agent-outputs/code-hygiene/2026-07-17-weekly.md
+agent-outputs/data-audit/
+agent-outputs/data-audit/2026-07-17-audit.json
+agent-outputs/pre-resolution/
+agent-outputs/pre-resolution/2026-07-17-pre-res-scan.json
+agent-outputs/str002-scoring/
+agent-outputs/str002-scoring/2026-07-17-str002-scoring.json
+decisions/
+decisions/2026-06-29-overhang-ledger.md
+decisions/2026-07-17-b2-price-history-probe-result.md
+decisions/2026-07-17-edge-proof-experiment-design-FABLE.md
+decisions/2026-07-17-session-summary.md
+
+sent 714,986 bytes  received 385 bytes  1,430,742.00 bytes/sec
+total size is 5,605,441  speedup is 7.84
+[2026-07-18T02:03:35Z] Brain backup complete
+[2026-07-18T02:03:35Z] Brain backup complete
+[2026-07-18T02:03:35Z] Pruning old backups (keeping 14 days)...
+[2026-07-18T02:03:35Z] Pruning old backups (keeping 14 days)...
+[2026-07-18T02:03:36Z] Backup complete. Drive usage: 48G used
+[2026-07-18T02:03:36Z] Backup complete. Drive usage: 48G used

@@ -570,6 +570,26 @@ Same class as O-17/O-3: a derived column not mechanically maintained by every wr
 
 ---
 
+### O-38 · `order_book_snapshots` — 62 pre-existing signal-linked rows carry a bid/ask sort-order bug, deferred cleanup
+
+**ITEM:** All 62 rows in `order_book_snapshots` written before 2026-07-18 (across `signal_id` STR003-001/004/007/008, `snapshot_type='daily'`, timestamps 2026-06-12 through 2026-07-18T08:56:58Z) have `mid_price≈0.5` and `spread≈0.98`/`0.998` regardless of the real market price (`clob_market_price_yes` on the same rows ranges normally). These summary columns — and the raw `bids_json`/`asks_json` archived alongside them — are wrong for all 62 rows.
+
+**ROOT CAUSE (found + fixed this session, first-repo `scripts/snapshot_order_books.py`, commit `33abc7d`):** `fetch_book()` truncated CLOB's `/book` response to `top_n` levels *before* establishing which end was actually best-of-book. CLOB returns bids sorted price-ascending and asks price-descending (worst-price-first on both sides), so `bids[0]`/`asks[0]` were the worst level on each side, not the best. `mid_price = (worst_bid + worst_ask)/2` lands near 0.5 essentially regardless of the real price; `spread`, `bid_depth_10`, `ask_depth_10`, and the archived raw levels are all wrong the same way. Fixed by sorting bids descending / asks ascending by price before truncating. Verified via live network calls against the real CLOB API (not just a unit test — see the second finding below for why that distinction mattered) that fixed `mid_price` now tracks `clob_market_price_yes` closely (e.g. 0.0015↔0.0015, 0.19↔0.19, 0.1075↔0.1075) with realistic small spreads.
+
+**SECOND, RELATED BUG FOUND DURING THE SAME FIX CYCLE:** a new additive market-scan selector (added the same session, to widen capture beyond signal-linked markets) set `direction='neutral'` for scan-sourced rows. `snapshot_market()`'s existing token-selection logic only special-cases the literal string `'YES'` — anything else falls through to the NO token. This silently captured the *wrong side's* book entirely (mid_price landing near `1 − true_YES_price`) for every scan-sourced row in one full production run. It passed an isolated unit test of the sort-order fix (which called `fetch_book()` directly, bypassing `snapshot_market()`'s token selection) and only surfaced when re-verified through the actual `snapshot_market()` production path. Fixed by setting the scan selector's direction to `'YES'` instead. **Methodological note worth keeping: a fix unit-tested at the wrong layer (bypassing the real call path) can look verified while a real integration bug hides one layer up — re-verify through the actual production entry point, not just the function you changed.**
+
+**BLAST RADIUS THIS SESSION:** two full production capture runs (214 market_scan rows + 2 additional signal-linked `daily` rows) were affected by one or both bugs before the fixes landed. The 214 market_scan rows plus 3 ad-hoc verification rows (217 total) were deleted same-session after both fixes were verified (scoped DELETE, transaction-guarded, backup taken first — see session log). The 1 additional pre-existing-adjacent `daily` row from the first (pre-fix) run was left in place, deliberately bundled into this item's scope rather than the 62, since it shares the identical sort-order defect.
+
+**STATUS:** OPEN — the 62 pre-existing rows (+ the 1 additional pre-fix `daily` row from this session, 63 total) are known-corrupt and left in place. **Deliberately not deleted tonight** — they're tied to real STR-003 signal history and deserve their own scoped cleanup decision (delete vs. leave-as-historical-record-with-a-caveat-flag), not a same-night sweep alongside the two clearly-garbage scan batches that had zero historical value.
+
+**DEPENDENCIES:** Independent of the ELO-arc migration. Relevant to the Phase 6 paper-trading fill simulator (the stated consumer of `order_book_snapshots`) — any code reading historical `mid_price`/`spread` from before this fix must filter these 63 rows out or treat them as unusable.
+
+**RISK/EFFORT:** Small. Options are (a) delete the 63 rows outright (no real capture history is lost since the data was wrong anyway), or (b) leave them with a documented caveat and rely on `snapshot_ts`/a version marker to exclude them downstream. No frozen-area contact either way.
+
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  

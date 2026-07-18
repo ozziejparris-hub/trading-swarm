@@ -238,3 +238,27 @@ Kill it:    tmux kill-session -t training-librarian-agent-librarian-20260711
 
 Routing decisions: /brain/model-routing.md
 [2026-07-11T09:00:02Z] Finished training-librarian-agent (exit: 0)
+[2026-07-18T09:00:01Z] Starting training-librarian-agent
+──────────────────────────────────────
+Spawning agent: training-librarian-agent-librarian-20260718
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly brain maintenance. Audit reference library, update failure taxonomy, check agent templates, identify knowledge gaps, update lessons learned.
+──────────────────────────────────────
+Creating git worktree: feat/librarian-20260718
+HEAD is now at 772a9cb docs: 2026-07-17 session summary — phase shift to edge-proof, B2 probe in progress, O-36/O-37 findings
+Spawning tmux session: training-librarian-agent-librarian-20260718
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  training-librarian-agent-librarian-20260718
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/librarian-20260718
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/librarian-20260718.log
+
+Watch it:   tmux attach -t training-librarian-agent-librarian-20260718
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t training-librarian-agent-librarian-20260718
+
+Routing decisions: /brain/model-routing.md
+[2026-07-18T09:00:01Z] Finished training-librarian-agent (exit: 0)

@@ -3017,6 +3017,36 @@
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
       "expires_at": "2027-07-17T06:02:26Z"
+    },
+    {
+      "id": "2026-07-18-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-07-18T06:02:07Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-07-18T06:02:07Z"
     }
   ]
 }
