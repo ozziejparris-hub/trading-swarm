@@ -1,0 +1,380 @@
+{
+  "summary": {
+    "audit_date": "2026-07-19",
+    "run_at": "2026-07-19T17:56:23",
+    "total": 25,
+    "pass": 17,
+    "regression": 3,
+    "critical": 0,
+    "observe": 5,
+    "headline": "3 invariants violated, 0 critical."
+  },
+  "checks": [
+    {
+      "name": "successful_trades > total_trades",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "win_rate > 1.0 (fraction-scale violation)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "win_rate > 100 (percentage-scale corruption)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "specialisation_ratio > 1.0",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_elo out of range [0,5000] for pool members",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_accuracy_pool=1 with geo_elo_active < 500",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "duplicate markets.market_id",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "trades only join via condition_id (JOIN-fix regression)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_resolved_trades_count mismatch vs recomputed",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "pending on resolved non-gap markets (flagged traders)",
+      "tier": 2,
+      "floor": 0,
+      "count": 21,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "pending on resolved non-gap geo/elections markets",
+      "tier": 2,
+      "floor": 0,
+      "count": 18429,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "trades.market_category='Unknown' where market.category is known",
+      "tier": 2,
+      "floor": 122417,
+      "count": 5,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "timestamp mixed formats (per-column breakdown)",
+      "tier": 2,
+      "floor": 24996,
+      "count": 23163,
+      "status": "PASS",
+      "examples": [
+        {
+          "column": "trades.timestamp",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "markets.end_date",
+          "canonical": "space-sep",
+          "non_canonical": 306,
+          "floor": 946,
+          "status": "PASS"
+        },
+        {
+          "column": "markets.resolution_date",
+          "canonical": "space-sep",
+          "non_canonical": 299,
+          "floor": 881,
+          "status": "PASS"
+        },
+        {
+          "column": "traders.elo_last_updated",
+          "canonical": "space-sep",
+          "non_canonical": 22558,
+          "floor": 22560,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.entry_timestamp",
+          "canonical": "T-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.exit_timestamp",
+          "canonical": "T-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.created_at",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.last_updated",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "data_source IS NULL (write-path omission)",
+      "tier": 2,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": [
+        {
+          "table": "traders",
+          "null_count": 0,
+          "status": "PASS"
+        },
+        {
+          "table": "markets",
+          "null_count": 0,
+          "status": "PASS"
+        },
+        {
+          "table": "trades",
+          "null_count": 0,
+          "status": "PASS"
+        },
+        {
+          "table": "positions",
+          "null_count": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "data_source not in canonical set (write-path regression)",
+      "tier": 2,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": [
+        {
+          "table": "traders",
+          "invalid_count": 0,
+          "allowed": [
+            "backfill",
+            "blockchain_scan",
+            "external_seed",
+            "leaderboard",
+            "live_feed",
+            "manual_watchlist",
+            "market_scan",
+            "orphan_repair",
+            "resolution_sweep",
+            "simulation"
+          ],
+          "status": "PASS"
+        },
+        {
+          "table": "markets",
+          "invalid_count": 0,
+          "allowed": [
+            "api_refresh",
+            "background_backfill",
+            "gamma_backfill_2026-07-02",
+            "gamma_backfill_tier2_2026-07-06",
+            "historical_backfill",
+            "live_monitoring",
+            "manual_entry",
+            "simulation",
+            "stub_placeholder"
+          ],
+          "status": "PASS"
+        },
+        {
+          "table": "trades",
+          "invalid_count": 0,
+          "allowed": [
+            "backfill_import",
+            "background_backfill",
+            "blockchain_scan",
+            "computed",
+            "polymarket_api",
+            "simulation"
+          ],
+          "status": "PASS"
+        },
+        {
+          "table": "positions",
+          "invalid_count": 0,
+          "allowed": [
+            "backfill_historical",
+            "position_tracker",
+            "simulation",
+            "synthetic_resolution"
+          ],
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "traders with API total_trades but 0 local records",
+      "tier": 3,
+      "floor": 114047,
+      "count": 17600,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "BUY trades with no position record",
+      "tier": 3,
+      "floor": 275254,
+      "count": 11178,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "total_volume > $1B outliers",
+      "tier": 3,
+      "floor": 75,
+      "count": 25,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "total_invested vs SUM(entry_total_cost) mismatch >5%",
+      "tier": 3,
+      "floor": 0,
+      "count": 9482,
+      "status": "REGRESSION",
+      "examples": []
+    },
+    {
+      "name": "successful_trades > actual won trades + 5 (Tier-3 population)",
+      "tier": 3,
+      "floor": 608,
+      "count": 5,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo out of [400,3500]",
+      "tier": 0,
+      "floor": 0,
+      "count": 0,
+      "status": "OBSERVE",
+      "examples": [
+        {
+          "n": 29528,
+          "min_elo": 478.1802,
+          "max_elo": 3324.6481,
+          "mean_elo": 1361.551504429694
+        }
+      ]
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo exceeds soft cap (1500+resolved*150)",
+      "tier": 0,
+      "floor": 0,
+      "count": 0,
+      "status": "OBSERVE",
+      "examples": []
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo non-NULL with a NULL component column",
+      "tier": 0,
+      "floor": 0,
+      "count": 3116,
+      "status": "OBSERVE",
+      "examples": []
+    },
+    {
+      "name": "[0d/OBSERVE] behavioral materialization (comp == pnl-only despite eligible behavioral)",
+      "tier": 0,
+      "floor": 0,
+      "count": 7692,
+      "status": "OBSERVE",
+      "examples": []
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo population drift (weekly mean/tier stability)",
+      "tier": 0,
+      "floor": 0,
+      "count": 1,
+      "status": "OBSERVE",
+      "examples": [
+        {
+          "today": {
+            "n": 29528,
+            "mean_elo": 1361.551504429694,
+            "tier_1500": 7555,
+            "tier_1800": 1236,
+            "tier_2175": 525
+          },
+          "trailing_baseline": {
+            "n": 26671,
+            "mean_elo": 1353.2736191493555,
+            "tier_1500": 5527,
+            "tier_1800": 1284,
+            "tier_2175": 523
+          },
+          "mean_delta": 8.277885280338523,
+          "tier_delta_pct": {
+            "tier_1500": 0.36692599963814004,
+            "tier_1800": 0.037383177570093455,
+            "tier_2175": 0.0038240917782026767
+          }
+        }
+      ]
+    }
+  ]
+}

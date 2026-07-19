@@ -1,0 +1,1032 @@
+{
+  "strategy": "STR-002",
+  "generated_at": "2026-07-19T07:48:37Z",
+  "summary": {
+    "total_scored": 102,
+    "accuracy": 0.3922,
+    "correct": 40,
+    "avg_edge": -0.0221
+  },
+  "scored_signals": [
+    {
+      "signal_id": "STR002-0001",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Jorge Nieto win the 2026 Peruvian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0002",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.2221,
+      "market_title": "Will Roberto S\u00e1nchez Palomino win the 2026 Peruvian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0003",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.001,
+      "market_title": "Will Ricardo Belmont win the 2026 Peruvian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0004",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.012,
+      "market_title": "Will Rafael L\u00f3pez Aliaga win the 2026 Peruvian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0005",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.05,
+      "market_title": "US x Iran permanent peace deal by June 7, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0006",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Israel announces Lebanon ceasefire extension by June 7?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0007",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0099,
+      "market_title": "Will Shenna Bellows win the 2026 Maine Governor Democratic primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0008",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.28,
+      "market_title": "Will Troy Jackson win the 2026 Maine Governor Democratic primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0009",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.52,
+      "market_title": "Will Robert Charles win the 2026 Maine Governor Republican primary election?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-19T10:04:13+00:00"
+    },
+    {
+      "signal_id": "STR002-0010",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.13,
+      "market_title": "Will Ben Midgley win the 2026 Maine Governor Republican primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0011",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.28,
+      "market_title": "Will Pamela Evette win the 2026 South Carolina Governor Republican primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0012",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.11,
+      "market_title": "Will Nancy Mace win the 2026 South Carolina Governor Republican primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-24T03:11:11+00:00"
+    },
+    {
+      "signal_id": "STR002-0013",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.33,
+      "market_title": "Will Keiko Fujimori win the 2026 Peruvian presidential election?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-07 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0014",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.48,
+      "market_title": "Will Nirav Shah win the 2026 Maine Governor Democratic primary election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-09T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0015",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.93,
+      "market_title": "US x Iran permanent peace deal by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0016",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.18,
+      "market_title": "Israel closes its airspace by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0017",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Iran closes its airspace by June 15?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0018",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.014,
+      "market_title": "Strait of Hormuz traffic returns to normal by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0019",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0295,
+      "market_title": "Israel closes its airspace by June 8?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0020",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.83,
+      "market_title": "Will Donald Trump announce that the United States blockade of the Strait of Hormuz has been lifted by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0021",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.024,
+      "market_title": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-17 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0022",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.005,
+      "market_title": "Will the Fed decrease interest rates by 25 bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0023",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.009,
+      "market_title": "Will there be no change in Fed interest rates after the June 2026 meeting?",
+      "winning_outcome": "YES",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0024",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.002,
+      "market_title": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0025",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.002,
+      "market_title": "Will the Fed increase interest rates by 50+ bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0026",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.749,
+      "market_title": "US x Iran permanent peace deal by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-15 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0027",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.024,
+      "market_title": "Will the Fed Pause\u2013Pause\u2013Pause in the next three decisions (Mar\u2013Apr\u2013Jun)?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-17 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0028",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.01,
+      "market_title": "Will Iran close its airspace by June 15?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-16 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0029",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.11,
+      "market_title": "Will Ivan Cepeda Castro win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0030",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Daniel Quintero win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0031",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.009,
+      "market_title": "Will the Bank of Brazil increase the Selic rate after June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-16T00:00:00Z"
+    },
+    {
+      "signal_id": "STR002-0032",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Vicky D\u00e1vila win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0033",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Gustavo Bol\u00edvar win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0034",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0526,
+      "market_title": "Will Jack Schlossberg be the democratic nominee for NY-12?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0035",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.043,
+      "market_title": "Will Effie Phillips-Staley be the Democratic nominee for NY-17?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0036",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.11,
+      "market_title": "Will Nate Blouin be the Democratic nominee for UT-01?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0037",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.002,
+      "market_title": "Will the Fed increase interest rates by 25 bps after the June 2026 meeting?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0038",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Juan Carlos Pinz\u00f3n win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0039",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.0011,
+      "market_title": "Will Sergio Fajardo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0040",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Luis Gilberto Murillo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0041",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will David Luna S\u00e1nchez win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0042",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Juan Daniel Oviedo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0043",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Roy Barreras win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0044",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.002,
+      "market_title": "Will Claudia L\u00f3pez win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-21T00:00:00+00:00"
+    },
+    {
+      "signal_id": "STR002-0045",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.001,
+      "market_title": "Will Juan Daniel Oviedo win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0046",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Juan Manuel Gal\u00e1n win the 2026 Colombian presidential election?",
+      "winning_outcome": "NO",
+      "resolved_at": null
+    },
+    {
+      "signal_id": "STR002-0047",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0103,
+      "market_title": "Will China blockade Taiwan by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:29:54.745717"
+    },
+    {
+      "signal_id": "STR002-0048",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Alibaba have the best AI model at the end of June 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:31:11.687676"
+    },
+    {
+      "signal_id": "STR002-0049",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will DeepSeek have the best AI model at the end of June 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0050",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Moonshot have the best AI model at the end of June 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0051",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.001,
+      "market_title": "Will Mistral have the best AI model at the end of June 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:31:35.695781"
+    },
+    {
+      "signal_id": "STR002-0052",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.001,
+      "market_title": "Will Tesla be the largest company in the world by market cap on June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:32:07.098933"
+    },
+    {
+      "signal_id": "STR002-0053",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.002,
+      "market_title": "Will Saudi Aramco be the largest company in the world by market cap on June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0054",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.019,
+      "market_title": "Israel and Indonesia normalize relations by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:32:32.125187"
+    },
+    {
+      "signal_id": "STR002-0055",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.004,
+      "market_title": "Will Base launch a token by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:32:55.171471"
+    },
+    {
+      "signal_id": "STR002-0056",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.005,
+      "market_title": "Will the Iranian regime fall by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0057",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.007,
+      "market_title": "Will Reza Pahlavi enter Iran by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0058",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.021,
+      "market_title": "Iran coup attempt by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0059",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.027,
+      "market_title": "Will France, UK, or Germany strike Iran by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0060",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.031,
+      "market_title": " Iran agrees to end enrichment of uranium by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0061",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.0184,
+      "market_title": "NATO x Russia military clash by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0062",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.007,
+      "market_title": "Will China invade Taiwan by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0063",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.004,
+      "market_title": "Trump out as President by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0064",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.017,
+      "market_title": "Will Crude Oil (CL) hit (HIGH) $140 by end of June?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0065",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.2,
+      "market_title": "Will Crude Oil (CL) hit (HIGH) $115 by end of June?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0066",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.011,
+      "market_title": "Kharg Island no longer under Iranian control by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0067",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.017,
+      "market_title": "Iran leadership change by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0068",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.028,
+      "market_title": "Israel strike on Yemen by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0069",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.014,
+      "market_title": "Iran agrees to surrender enriched uranium stockpile by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0070",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.07,
+      "market_title": "Strait of Hormuz traffic returns to normal by end of June?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0071",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.034,
+      "market_title": "Israel x Iran permanent peace deal by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0072",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.1774,
+      "market_title": "Will J.D. Vance attend the next US x Iran diplomatic meeting?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0073",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.01,
+      "market_title": "Putin out as President of Russia by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0074",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.021,
+      "market_title": "Will Russia capture all of Donetsk Oblast by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0075",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.0082,
+      "market_title": "Will Russia test a nuclear weapon by June 30 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0076",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.046,
+      "market_title": "Israel closes its airspace by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0077",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.071,
+      "market_title": "Will Anthropic have the best AI model at the end of June 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-07-02 09:30:53.984142"
+    },
+    {
+      "signal_id": "STR002-0078",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.019,
+      "market_title": "Israel and Indonesia normalize relations by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:32:32.125187"
+    },
+    {
+      "signal_id": "STR002-0079",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.004,
+      "market_title": "Trump out as President by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0080",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.017,
+      "market_title": "Iran leadership change by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0081",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.014,
+      "market_title": "Iran agrees to surrender enriched uranium stockpile by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0082",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.005,
+      "market_title": "US obtains Iranian enriched uranium by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0083",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.021,
+      "market_title": "Will Russia capture all of Donetsk Oblast by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0084",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.0284,
+      "market_title": "Iran agrees to unrestricted shipping through Hormuz by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0085",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.016,
+      "market_title": "Starmer out by June 30, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-07-02 09:29:54.150237"
+    },
+    {
+      "signal_id": "STR002-0086",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.008,
+      "market_title": "Will the next diplomatic US-Iran meeting be in Pakistan?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0087",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.11,
+      "market_title": "Israeli parliament dissolved by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0088",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.003,
+      "market_title": "Will Bitcoin hit $150k by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-02 09:29:53.550303"
+    },
+    {
+      "signal_id": "STR002-0089",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.1018,
+      "market_title": "Israel x Hezbollah permanent peace deal by June 30, 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0090",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.1,
+      "market_title": "Tamas Sulyok out as President of Hungary by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0091",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.93,
+      "market_title": "Will South Korea advance to the knockout stages at the 2026 FIFA World Cup?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-28T00:00:00Z"
+    },
+    {
+      "signal_id": "STR002-0092",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.096,
+      "market_title": "US and Iran sign an agreement by June 15, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-16 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0093",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.32,
+      "market_title": "Will France win Group I in the 2026 FIFA World Cup?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-27 08:40:22"
+    },
+    {
+      "signal_id": "STR002-0094",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.031,
+      "market_title": "Will OpenAI have the best AI model at the end of June 2026?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-07-03 08:43:52"
+    },
+    {
+      "signal_id": "STR002-0095",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.008,
+      "market_title": "Will Gold (GC) hit (HIGH) $5,500 by end of June?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0096",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.72,
+      "market_title": "Will Donald Trump publicly insult Benjamin Netanyahu by June 30, 2026?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0097",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.05,
+      "market_title": "Will Trump agree to Iranian enrichment of uranium by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0098",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.01,
+      "market_title": "Will Gold (GC) hit (HIGH) $5,500 by end of June?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0099",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 0,
+      "edge_at_entry": -0.309,
+      "market_title": "Will Russia capture Kostyantynivka by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0100",
+      "tier": "ELITE",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.001,
+      "market_title": "Will Trump agree to withdraw troops from the Iranian region by June 30?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-06-30 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0102",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.001,
+      "market_title": "Will Neymar play in the 2026 FIFA World Cup?",
+      "winning_outcome": "YES",
+      "resolved_at": "2026-07-19 00:00:00"
+    },
+    {
+      "signal_id": "STR002-0152",
+      "tier": "ELITE",
+      "direction": "NO",
+      "outcome_correct": 1,
+      "edge_at_entry": 0.032,
+      "market_title": "Trump renames ICE to NICE by June 30?",
+      "winning_outcome": "NO",
+      "resolved_at": "2026-06-30 00:00:00"
+    }
+  ]
+}

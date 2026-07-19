@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-18T08:57:01.416890+00:00",
-  "clean_pool": 26662,
-  "clean_markets": 223796,
+  "generated_at": "2026-07-19T07:57:57.890899+00:00",
+  "clean_pool": 26663,
+  "clean_markets": 223839,
   "wal_mode": "wal",
-  "last_maintenance": "2026-07-18T08:56:56.277978+00:00",
+  "last_maintenance": "2026-07-19T07:57:51.890417+00:00",
   "schema_version": "2026-04-30",
   "threshold": 440,
   "contract_valid": true,
