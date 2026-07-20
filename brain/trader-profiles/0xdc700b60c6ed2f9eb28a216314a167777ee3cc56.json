@@ -1,0 +1,62 @@
+{
+  "address": "0xdc700b60c6ed2f9eb28a216314a167777ee3cc56",
+  "profile_date": "2026-07-20",
+  "geo_elo_active": 2012.1,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "361 resolved geo/elections trades across 40 distinct markets. Overall accuracy: 62.3%. Avg price: 0.605. Contested entries (0.10-0.80): 68.7%. Near-cert (>=0.90): 14.7%. Domain: Iran_ME dominant (285/361 = 79%), Russia_UKR secondary (76/361 = 21%). Iran_ME: 285 trades, 60% accuracy, 76% contested — highly significant above-random performance (z-score ~3.3 on 217 contested trades alone). Russia_UKR: 76 trades, 70% accuracy, 42% contested. Trump_US match: 40 trades extracted from broader history at 70% acc, 62% contested. The combination of 361 geo trades, 68.7% contested entry rate, and 62.3% accuracy strongly indicates genuine directional forecasting rather than yield harvesting. The 14.7% near-certainty rate is present but not dominant. PNL=$919 is low relative to trade count — data pipeline issue likely (same pattern as 3d03c46d, 6b025355, fbe2f1f7). The Iran_ME edge at 60% on 76%+ contested trades over 285 outcomes is the most statistically significant first-read finding for any NEAR_LEGENDARY qualifier this week. DOMAIN_SPECIALIST confidence is MEDIUM rather than HIGH because: (1) human review not yet performed, (2) PNL anomaly needs investigation, (3) initial profile only.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 285 resolved, 60% accuracy, 76% contested — statistically significant edge (z-score ~3.3). Primary signal domain.",
+    "Russia_UKR: 76 resolved, 70% accuracy, 42% contested — strong secondary edge"
+  ],
+  "domain_blindspots": [
+    "Data so far does not reveal clear blind spots — sample in non-core domains too thin for conclusions"
+  ],
+  "domain_summary": "Strong dual-domain DOMAIN_SPECIALIST: Iran_ME primary (285 trades, 60% acc, 76% contested) and Russia_UKR secondary (76 trades, 70% acc, 42% contested). The Iran_ME contested-price accuracy is the highest quality signal observed in any new qualifier this cycle. The 68.7% overall contested rate confirms this is a genuine directional trader, not a yield harvester. PNL anomaly requires investigation but does not diminish the accuracy track record.",
+  "trusted_domains": [
+    "Iran_ME",
+    "Russia_UKR"
+  ],
+  "discounted_domains": [
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Strong domain accuracy data supports immediate DOMAIN_ONLY promotion in Iran_ME and Russia_UKR. However: (1) PNL=$919 on 361 trades is anomalously low — same pipeline issue seen in other DOMAIN_SPECIALIST profiles; (2) mandatory new-qualifier human review required before STR-003 inclusion; (3) geo_elo_active=2012.1 in NEAR_LEGENDARY range, not LEGENDARY. Setting MINIMAL pending Oscar review. PRIORITY PROMOTION CANDIDATE: if PNL investigation resolves as pipeline issue and human review clears, upgrade to DOMAIN_ONLY in both trusted domains.",
+  "behavioural_flags": [
+    "PNL=$919 anomalously low on 361 geo trades — same discrepancy as 3d03c46d, 6b025355, fbe2f1f7. Investigate before STR-003 inclusion.",
+    "geo_elo_active=2012.1: NEAR_LEGENDARY tier — not LEGENDARY qualified for STR-003 signal generation (requires >= 2175)",
+    "Multiple orders on same market at similar prices observed in Russia_UKR (4 entries at 0.87-0.88 on 'Russia x Ukraine diplomatic meeting') — position scaling, not unusual",
+    "geo_resolved_trades_count likely understated in traders table (same pattern as other profiled traders)"
+  ],
+  "risk_patterns": [
+    "Needs to reach geo_elo_active >= 2175 (LEGENDARY) before STR-003 eligible — 163 points gap from current 2012.1",
+    "If PNL anomaly is genuine negative PNL (not pipeline), it would represent the same problem seen in 6b025355 — real losses despite good accuracy (position sizing issue)"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Russia capture Lyman by June 30, 2026?",
+      "side": "No",
+      "entry_price": 0.859,
+      "result": "won",
+      "significance": "Representative Russia_UKR contested-range entry (0.859 is at the top of the contested band); held 4 positions at similar prices on this market, all won"
+    }
+  ],
+  "open_positions_summary": "Not yet assessed — initial profile. Pending human review and LEGENDARY tier qualification before open position intelligence is actionable.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Best new qualifier this cycle. Priority items: (1) investigate PNL=$919 anomaly, (2) confirm geo_elo_active trajectory (needs +163 for LEGENDARY). After review: DOMAIN_ONLY promotion in Iran_ME + Russia_UKR if PNL clears.",
+    "Monitor geo_elo_active for progression toward 2175 LEGENDARY threshold — currently 2012.1",
+    "Iran_ME contested-price accuracy (60% at 76% contested rate): verify this holds in ongoing trades before any signal inclusion"
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "Strongest new qualifier this cycle. 361 resolved geo/elections trades, 62.3% accuracy, 68.7% contested rate. Iran_ME primary (285 trades, 60% acc, 76% contested — z-score ~3.3 on contested subset alone). Russia_UKR secondary (76 trades, 70% acc). DOMAIN_SPECIALIST with MEDIUM confidence. Blocked from STR-003 inclusion by: (1) NEAR_LEGENDARY tier (not LEGENDARY), (2) PNL anomaly, (3) mandatory human review. Priority candidate for DOMAIN_ONLY promotion after review. This is a genuine signal source if the blocking items resolve.",
+  "data_snapshot": {
+    "geo_elo": 2241.1,
+    "geo_elo_active": 2012.1,
+    "resolved_trades": 361,
+    "distinct_markets": 40,
+    "directionality": 0.907,
+    "pnl": 919.0
+  }
+}

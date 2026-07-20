@@ -1,11 +1,11 @@
 {
   "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
-  "profile_date": "2026-06-29",
-  "geo_elo_active": 3169.4,
+  "profile_date": "2026-07-20",
+  "geo_elo_active": 2923.2,
   "tier": "LEGENDARY",
   "archetype": "DOMAIN_SPECIALIST",
   "archetype_confidence": "MEDIUM",
-  "archetype_reasoning": "737 resolved geo trades across 75 distinct markets with 59% accuracy and 67% contested entries (avg price 0.441). Dual-domain edge: Iran_ME (429 trades, 60% acc, 71% contested) and Russia_UKR (241 trades, 59% acc, 70% contested). Trump_US is weak (36 trades, 47% acc) and below chance. The pattern of consistent above-chance accuracy across two major contested-price domains with modest portfolio diversity qualifies as DOMAIN_SPECIALIST rather than GENUINE_FORECASTER — the genuine forecaster archetype requires broader multi-domain accuracy (4+ domains). Confidence is MEDIUM not HIGH because pnl=$103 on 737 resolved trades is anomalously low (pipeline issue suspected — either non-redemption or realized_pnl column not yet populated).",
+  "archetype_reasoning": "737 resolved geo trades across 75 distinct markets with 59% accuracy and 67% contested entries (avg price 0.441). Dual-domain edge: Iran_ME (429 trades, 60% acc, 71% contested) and Russia_UKR (241 trades, 59% acc, 70% contested). Trump_US is weak (36 trades, 47% acc) and below chance. Archetype unchanged Jul 20 2026: 1 new resolved trade (Max Holloway KO/TKO MMA bet, SPORTS, Jul 12 LOST @ 0.450) — outside both trusted domains. DOMAIN_SPECIALIST confirmed. Previous archetype: DOMAIN_SPECIALIST (set 2026-06-29, confirmed unchanged 2026-07-20).",
   "primary_domain": "Iran_ME",
   "domain_strengths": [
     "Iran_ME: 429 resolved, 60% accuracy at 0.453 avg price, 71% contested — primary edge",
@@ -13,42 +13,48 @@
   ],
   "domain_blindspots": [
     "Trump_US: 36 trades, 47% accuracy — below chance, no meaningful edge",
+    "Sports: 1 contested MMA bet lost — outside agent scope and outside trusted domains",
     "China_Asia: 5 trades, 100% accuracy but negligible sample (no conclusion possible)"
   ],
-  "domain_summary": "Genuine forecasting edge in both Iran_ME and Russia_UKR, demonstrated across hundreds of contested-price trades. Both domains show ~59-60% accuracy at deeply contested average prices (0.37-0.45), which is meaningful above random at scale. The Iran_ME concentration (58% of portfolio) suggests this is the primary hunting ground. Trump_US is clearly outside core competence.",
+  "domain_summary": "Genuine forecasting edge in both Iran_ME and Russia_UKR, demonstrated across hundreds of contested-price trades. Both domains show ~59-60% accuracy at deeply contested average prices (0.37-0.45), meaningful above random at scale. The Iran_ME concentration (58% of portfolio) is the primary hunting ground. Trump_US is clearly outside core competence. New this week: one Sports bet outside trusted domains (losing) — does not affect domain thesis.",
   "trusted_domains": [
     "Iran_ME",
     "Russia_UKR"
   ],
   "discounted_domains": [
     "Trump_US",
+    "Sports",
     "Other"
   ],
   "signal_weight": "MINIMAL",
-  "signal_weight_reasoning": "Strong domain data supports DOMAIN_ONLY weight, but realised_pnl=$103 on 737 resolved trades is anomalously low and triggers the STR-003 pnl filter investigation requirement. Setting MINIMAL pending Oscar review of PNL anomaly. If PNL issue resolves to a legitimate positive P&L, upgrade to DOMAIN_ONLY immediately. NEVER include in STR-003 signals at current weight.",
+  "signal_weight_reasoning": "Strong domain data supports DOMAIN_ONLY weight, but realized_pnl=$137 on 737+ resolved trades is anomalously low and triggers the STR-003 pnl filter investigation requirement. Setting MINIMAL pending Oscar review of PNL anomaly. If PNL issue resolves to a legitimate positive P&L, upgrade to DOMAIN_ONLY immediately. NEVER include in STR-003 signals at current weight.",
   "behavioural_flags": [
-    "realized_pnl=$103 anomaly on 737 resolved trades — investigate whether non-redemption account or data pipeline issue before any signal use",
-    "geo_resolved_trades_count stored as 44 in traders table but actual resolved geo trades = 737 — same discrepancy pattern observed in established pool traders (data integrity issue)"
+    "realized_pnl=$137 anomaly on 737+ resolved trades — investigate whether non-redemption account or data pipeline issue before any signal use",
+    "geo_resolved_trades_count stored as 44 in traders table but actual resolved geo trades = 737 — data integrity issue",
+    "NEW Jul 20 2026: 1 Sports market bet (Max Holloway KO/TKO MMA, Jul 12, LOST @ 0.450 CONTESTED) — outside both trusted domains. Thin data (1 trade), observation only.",
+    "Open positions include US Elections markets (House control, CA Governor, Maine Senate, Alaska Governor) outside core Iran_ME/Russia_UKR trusted domains — breadth of domain stepping predates profiling"
   ],
   "risk_patterns": [
     "No yield-harvesting pattern observed — 67% contested entries at ~0.44 avg is genuine directional trading",
-    "PNL anomaly is the primary risk before signal inclusion"
+    "PNL anomaly is the primary risk before signal inclusion",
+    "Domain expansion risk: betting on Sports and US Elections outside trusted domains without demonstrated edge in those areas"
   ],
   "notable_calls": [],
-  "open_positions_summary": "Open positions not assessed in initial profile — pending human review of PNL anomaly.",
+  "open_positions_summary": "Multiple US Elections open positions (established Apr-May 2026, pre-profiling): 70 shares YES @ 0.836 House Democratic control (Nov 2026), 59 shares NO @ 0.970 Chad Bianco CA Governor (Nov 2026), 26 shares YES @ 0.750 Democrats Maine Senate 2026, 20 shares NO @ 0.670 Claman Alaska Governor primary (Aug 18 2026), 10 shares YES @ 0.620 Kash Patel leave Trump admin. Also 5 shares YES @ 0.353 on Ukraine peace deal before 2027 (Russia_UKR domain, contested). Small Iran_ME positions: 24 shares YES @ 0.408 on overdue Israel-Hezbollah ceasefire market (no end_date, April 26 deadline passed). All US Elections positions are outside Iran_ME/Russia_UKR trusted domains. None qualify for STR-003 at current MINIMAL weight.",
   "watch_items": [
-    "BLOCKING: Oscar must investigate realized_pnl=$103 anomaly. If legitimate, upgrade to DOMAIN_ONLY immediately.",
-    "geo_resolved_trades_count discrepancy (stored=44, actual=737) — part of broader data integrity issue flagged in 2026-06-29 report",
-    "Monitor for new Iran_ME contested-price entries as potential STR-003 signal seeds (post-PNL clearance only)"
+    "BLOCKING: Oscar must investigate realized_pnl=$137 anomaly. If legitimate, upgrade to DOMAIN_ONLY immediately.",
+    "Domain expansion monitor: 1 new Sports bet (Jul 12) and multiple US Elections open positions — track whether this represents systematic broadening outside trusted domains",
+    "Overdue position: 24 shares YES @ 0.408 on Israel-Hezbollah ceasefire by April 26 (no end_date, market overdue) — should have resolved; DB pipeline failure",
+    "Alaska Governor primary (Aug 18): 20 shares NO @ 0.670 on Matt Claman — approaching in 29 days, outside trusted domain"
   ],
   "overall_signal_value": "HIGH",
-  "summary": "Strong DOMAIN_SPECIALIST candidate with 737 resolved geo trades, 59% accuracy at contested prices across both Iran_ME and Russia_UKR. This is a potentially high-value signal source blocked by a PNL data anomaly. The underlying trading record is one of the best in new qualifiers this week. Set MINIMAL weight pending PNL investigation; promote to DOMAIN_ONLY on PNL clearance. Human review required before any signal use.",
+  "summary": "Strong DOMAIN_SPECIALIST with 737 resolved geo trades, 59-60% accuracy at contested prices across Iran_ME and Russia_UKR. Archetype unchanged. One new Sports bet outside trusted domains this week (thin data, no reclassification). MINIMAL signal weight pending PNL anomaly resolution. If PNL clears: DOMAIN_ONLY promotion in both trusted domains is warranted. geo_elo_active=2923.2 — strongly LEGENDARY with wide safety margin.",
   "data_snapshot": {
     "geo_elo": 3711.5,
-    "geo_elo_active": 3169.4,
+    "geo_elo_active": 2923.2,
     "resolved_trades": 737,
     "distinct_markets": 75,
     "directionality": 0.84,
-    "pnl": 103.0
+    "pnl": 137.4
   }
 }

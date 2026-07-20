@@ -1,0 +1,54 @@
+{
+  "address": "0xcc2620f9e3cb4498e8aea556764ec341357932ca",
+  "profile_date": "2026-07-20",
+  "geo_elo_active": 2065.0,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "VOLUME_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "449 resolved geo/elections trades. Iran_ME dominant (392/449 = 87%). Overall accuracy: 50.6% — near-random despite high trade count. Avg price: 0.236 — consistently buying the low-probability/cheap side. Contested entries: 65.5% (294/449). Near-cert entries: 3.6%. PNL = -$25,145 (significant losses). Iran_ME accuracy: 51% on 392 trades — near-random despite the domain concentration. Trump_US: 45% on 76 trades — below chance. The combination of 449 geo trades, 65.5% contested entry rate, 50.6% overall accuracy, and -$25K PNL represents no demonstrated forecasting edge. The trader appears to follow a systematic strategy of buying low-probability positions at cheap prices (avg 0.236), but the near-random outcome distribution and significant losses confirm this approach carries no predictive signal value. High volume in Iran_ME without accuracy above chance qualifies as VOLUME_SPECIALIST. The negative PNL despite reasonable (50.6%) accuracy suggests unfavorable position sizing or systematically overpaying even at 'cheap' prices. PNL=-$25,145 technically passes STR-003 PNL filter (> -$100K) but represents a significant loss. Confidence LOW: further monitoring needed to verify near-random accuracy is stable, not recent deterioration.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [],
+  "domain_blindspots": [
+    "Iran_ME: 51% accuracy on 392 trades — near-random, no demonstrated edge despite high volume",
+    "Trump_US: 45% accuracy on 76 trades — below chance, anti-edge",
+    "Russia_UKR: 40% on 10 trades, 0% contested — all near-certainty and mostly losing"
+  ],
+  "domain_summary": "High-volume Iran_ME participant with no demonstrated accuracy edge. Consistently buys cheap-side positions (avg 0.236) at contested prices (65.5%) but achieves only 51% accuracy in that domain — near-random. Negative PNL confirms lack of edge. The ELO score reflects high trade volume and the math of near-cert wins in other domains, not forecasting skill.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Iran_ME",
+    "Trump_US",
+    "Russia_UKR",
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Near-random accuracy (50.6%) and negative PNL (-$25K) provide no basis for DOMAIN_ONLY or FULL weight. MINIMAL is the conservative starting floor. Given near-random accuracy and losses, the honest assessment is that this trader's positions carry no systematic signal value at this time. Human review required to determine if recent periods show improvement.",
+  "behavioural_flags": [
+    "Near-random accuracy (50.6% on 449 geo trades) — no demonstrated forecasting edge",
+    "Negative PNL: -$25,145 on 449 resolved trades confirms consistent losses despite reasonable accuracy",
+    "Consistently buys cheap-side / low-probability positions (avg price 0.236) — systematic but non-profitable strategy",
+    "Iran_ME 51% accuracy on 392 trades: at this sample size, 51% is statistically indistinguishable from 50% (sd = 2.4pp, z-score = 0.4). No edge.",
+    "Trump_US anti-edge: 45% on 76 trades — below random performance in secondary domain"
+  ],
+  "risk_patterns": [
+    "Buying cheap YES positions at 0.236 avg — strategy depends on a few big hits to offset many small losses. Without edge, this bleeds capital.",
+    "No yield-harvesting component (3.6% near-cert) means there is no floor of easy wins to sustain the account"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed — MINIMAL weight, human review required.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Near-random accuracy and -$25K PNL suggest no signal value. Human review should determine if a specific sub-period shows edge (e.g., pre-April-28 vs post-April-28 structural break).",
+    "Monitor Iran_ME contested-price accuracy in isolation — if accuracy in 0.10-0.40 price range specifically is above 55%, reconsider assessment",
+    "geo_elo_active at 2065.0 — 110 below LEGENDARY threshold, in NEAR_LEGENDARY range"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "High-volume Iran_ME participant (449 geo trades) with near-random accuracy (50.6%) and significant losses (-$25,145). The high contested-entry rate (65.5%) and low avg price (0.236) describe a systematic strategy of buying cheap positions that produces no measurable edge. VOLUME_SPECIALIST classification with MINIMAL weight. NOT STR-003 eligible — new qualifier, human review required, and near-random accuracy disqualifies from signal consideration at current state.",
+  "data_snapshot": {
+    "geo_elo": 2484.3,
+    "geo_elo_active": 2065.0,
+    "resolved_trades": 449,
+    "distinct_markets": 45,
+    "directionality": 0.983,
+    "pnl": -25145.0
+  }
+}

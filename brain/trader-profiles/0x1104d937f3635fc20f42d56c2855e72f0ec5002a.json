@@ -1,0 +1,54 @@
+{
+  "address": "0x1104d937f3635fc20f42d56c2855e72f0ec5002a",
+  "profile_date": "2026-07-20",
+  "geo_elo_active": 2069.9,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "244 resolved geo/elections trades, 68.4% accuracy, avg price 0.763. Domain: Iran_ME dominant (160/244 = 66%), Elections_nonUS secondary (81/244 = 33%). Iran_ME: 160 trades, 67% accuracy, 38% contested entries. Elections_nonUS: 81 trades not yet broken out by domain (insufficient keyword matching). Near-cert entries at 41.4% (vs 34.4% contested) and avg price 0.763 suggest a meaningful yield-harvesting component. However, 34% contested entries with 67% accuracy overall is consistent with a DOMAIN_SPECIALIST who mixes genuine forecasts with some near-certainty collection. PNL = $9,141 (positive, not anomalous). Confidence is LOW rather than MEDIUM because: (1) the near-certainty component (41%) is too high to rule out YIELD_HARVESTER borderline, (2) human review has not been performed, (3) geo_elo_active = 2069.9 — well below LEGENDARY threshold (2175), in NEAR_LEGENDARY range. Initial profile only.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 160 resolved, 67% accuracy — primary signal domain pending review",
+    "Elections_nonUS: 81 resolved — secondary domain, domain accuracy not yet broken out"
+  ],
+  "domain_blindspots": [
+    "Trump_US: 8 trades, 62% — too thin for conclusions",
+    "China_Asia: 3 trades — negligible sample"
+  ],
+  "domain_summary": "Iran_ME heavy trader with 66% of geo/elections portfolio in that domain at 67% accuracy overall. Elections_nonUS adds breadth (33%). The 41% near-certainty entry rate is higher than desirable for a clean DOMAIN_SPECIALIST classification. PNL positive ($9,141) and directionality high (0.96). Best read: DOMAIN_SPECIALIST with hybrid strategy (genuine directional + some near-cert collection). Archetype_confidence LOW until human review.",
+  "trusted_domains": [
+    "Iran_ME"
+  ],
+  "discounted_domains": [
+    "Trump_US",
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "New NEAR_LEGENDARY qualifier. Iran_ME accuracy (67% on 160 trades) is above-chance but the 41% near-certainty entry rate prevents DOMAIN_ONLY assignment without deeper analysis. Mandatory human review required before any STR-003 inclusion. MINIMAL weight is the conservative defensible starting point.",
+  "behavioural_flags": [
+    "High near-certainty entry rate (41%) combined with 34% contested: hybrid strategy, not pure forecaster",
+    "geo_elo_active = 2069.9 — 105 points below LEGENDARY threshold; NEAR_LEGENDARY classification",
+    "Recent trades heavily concentrated on 'Mojtaba Khamenei seen in public by July 15?' at 0.90-0.93 — multiple orders same market, near-certainty collection pattern"
+  ],
+  "risk_patterns": [
+    "Khamenei visibility bets at 0.90+ on same market: position scaling / yield collecting in Iran_ME",
+    "41% near-cert rate: if this proportion holds in live markets, signal weight should remain MINIMAL or be reduced to EXCLUDE"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed — initial profile. Pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Determine whether 41% near-certainty rate disqualifies from DOMAIN_ONLY promotion. Iran_ME 67% accuracy is promising but near-cert mixing needs human assessment.",
+    "Monitor contested-price entry rate in Iran_ME over next 4 weeks — if contested share rises above 50%, reconsider DOMAIN_ONLY promotion",
+    "geo_elo_active at 2069.9 — check in next cycle whether decaying toward 1800 floor (NEAR_LEGENDARY) or improving"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "New NEAR_LEGENDARY qualifier with Iran_ME focus (160 trades, 67% accuracy). Initial read: likely DOMAIN_SPECIALIST but the 41% near-certainty entry rate creates doubt. Positive PNL ($9,141). Conservative first assessment: MINIMAL weight pending human review of near-cert vs contested breakdown and whether the Iran_ME 67% accuracy holds in contested-only subset. NOT STR-003 eligible this cycle — new qualifier, human review required.",
+  "data_snapshot": {
+    "geo_elo": 2261.6,
+    "geo_elo_active": 2069.9,
+    "resolved_trades": 244,
+    "distinct_markets": 31,
+    "directionality": 0.960,
+    "pnl": 9141.0
+  }
+}
