@@ -559,6 +559,19 @@
         "action": "Oscar: review brain/integration-contract.md Section 8 and update with changes from 2026-07-09 to 2026-07-13"
       },
       "processed_at": "2026-07-17T20:10:59.746454"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
+        "message": "\ud83d\udcca *Weekly Performance Report \u2014 Jul 20*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\u26a0 Brier Geo (30d): 0.3643 \u2193 \u2014 Iran-cluster artefact (Jun30 markets, NOT calibration decay)\nElections (30d contested): 0.3670 | Dir Acc: 36.8% geo / 32.0% elec\nNOTE: Expect recovery to ~0.25 once Jun30 cluster ages out (~Jul 30)\n\n\ud83d\udea8 Flags: [2 HIGH] [3 MEDIUM]\n1. STR003-004 Putin: DB UNRESOLVED 21 days \u26a0 \u2014 Oscar action needed\n2. RQ-GEO-ELO-001: 8 WEEKS unexecuted \u2014 Gate 4 PERMANENTLY BLOCKED\n3. CI: 10th+ consecutive fail | Signal-agent dark 7d\n\n\u2705 O-37 CLOSED: 84 synthetic markets / 965,542 trades quarantined\n   17 fake LEGENDARY traders removed \u2014 pool CLEANER not weaker\n\u2705 ELO Arc Stage 3 COMPLETE \u2014 canonical run confirmed clean Jul 20\n\nGate 3: 2/5 = 40% (FROZEN) | LEGENDARY clean: 13 (post O-37)\nPool C: 3,223 | True research: 16,289 | Clean markets: 223,791\n\nFull report: brain/agent-outputs/performance-analyst/2026-07-20-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260720",
+        "chat": "metrics"
+      },
+      "timestamp": "2026-07-20T06:11:40Z",
+      "status": "pending"
     }
   ],
   "pending": [
