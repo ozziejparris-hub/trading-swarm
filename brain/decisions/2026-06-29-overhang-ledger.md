@@ -621,6 +621,27 @@ Same class as O-17/O-3: a derived column not mechanically maintained by every wr
 
 ---
 
+### O-40 · 2026-07-13 worse-than-naive elections calibration — confound-checked, confirmed NOT an O-37 synthetic-data artifact (closes the O-37 remediation "re-check elections calibration" flag)
+
+**ITEM:** Closes the "re-check elections calibration post-O-37" flag left open during O-37 remediation. Read-only session, no code/DB changes.
+
+**FINDING:** The 2026-07-13 worse-than-naive elections calibration result is NOT explained by the O-37 synthetic-market quarantine — it is real/structural.
+
+**EVIDENCE:**
+- Confound check: of the 84 quarantined synthetic markets, 49 (58%) are Elections, but overlap with the original 07-13 elections calibration sample is minimal-to-zero — 0/13 exact-window reconstruction, 8/742 (1.1%) on the no-window reconstruction. The synthetics existed and were election-skewed, but were not in the calibration sample that produced the finding, so they cannot explain it.
+- Same-sample before/after: running the identical reconstructed 07-13 sample with the O-37 flag exclusion on vs. off produced byte-identical Brier (0.0608 both ways) — quarantine changes nothing on that sample because it was already synthetic-free.
+
+**LIMITATION (honest):** This is a confound REJECTION (the mechanism where synthetic rows explain the bad calibration doesn't exist), NOT a validated current-calibration Brier reconcile. The recompute used a documented-but-mismatched methodology (absolute Brier 0.05–0.08 vs. the original finding's 0.26–0.48) that couldn't be reconciled read-only this session. So: "elections calibration is real, not a data artifact" = supported. "Elections calibration is fine, or still broken, right now" = still open.
+
+**DOWNSTREAM:** B3/B5 should stratify geo/elections separately and treat elections as a known-weak category by default — the finding survives the obvious confound, so the experiment design must respect it.
+
+**NEXT:** Re-run elections calibration with the original performance-analyst methodology (exact SQL) OR a fresh instrumented performance-analyst run with methodology logged, to get a current, comparable-to-07-13 elections calibration number. This item does not answer the current-state question.
+
+**STATUS:** REPORT ONLY. No code or DB changes.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
