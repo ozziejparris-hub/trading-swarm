@@ -2,7 +2,7 @@
 
 ## Theme
 
-Read-only morning snapshot (services/maintenance/O-37/harness/B4/git all clean, one anomaly flagged), then a bounded root-cause dig on that anomaly, then B1b-positions: scoped, designed, built, single-trader-proved, full-population-validated, and shipped — the first of B1b's two halves (positions done; prices scoped separately, not started).
+Opened on a snapshot that surfaced an alarming-looking T2 spike; diagnosed it to root (benign, already-drained) rather than either ignoring or panicking, then built B1b-positions end to end. Four real pre-existing production defects surfaced as a byproduct of validation — all found because divergences were chased to root instead of the comparison being adjusted until it passed. Closed with a B4 capture mislabeling fix caught during the read-back of B1b's work.
 
 ---
 
@@ -20,6 +20,14 @@ Morning snapshot flagged a 746x overnight spike in `audit_invariants`' "pending 
 - **Stage 3 (full-population validation, 3,234 Pool-C traders) found a third: O-44** (any FIFO/simplified-matching boundary shift from new trades — not only the 50-trade dispatch threshold, any trade at all — strands the pre-shift rows as permanent orphans; store_positions() has no deletion path). After accounting for all three: **T=now reconstruction vs. the live table reconciles to ZERO unexplained divergence** across 1,246,606 compared items (1,231,158 reconstructed + 15,448 live-only orphans). `partially_closed`: 947/947 exact, no divergence of any kind. `open`: 356,522 exact / 5,274 O-43 / 10,311 O-44 / 0 unexplained — touched by the same defects as closed positions, just fully explained (corrected an over-generalization from the single-trader stage that opens were untouched).
 - **The flip count** (O-36 correction's measured value): at T=2026-05-22, **16,981/396,231 (4.29%)** of still-open-after-real-trades positions in resolved markets would get a DIFFERENT open/closed verdict under a naive resolution_date-gated reconstruction vs. tape-end-gated. Concrete, population-scale sizing of what the O-36 correction buys the backtest.
 
+### B4 capture — mislabeling fix (first-repo `29ba9eb`)
+
+- Found during the read-back of B1b's work, not sought out: `snapshot_order_books.py` committed the DB write successfully at line 163, then the unguarded `mid={mid_price:.3f}` f-string in the log line at 165 threw `TypeError` on `None` (one-sided order book — no bids or no asks). A broad `except` at line 168 caught it, mislabeled it as a DB write error, and returned `False` — so a successful capture was counted as `failed_no_book`.
+- Sibling defect caught during the same read: `bid_depth`/`ask_depth` in the identical log line carried the identical `None`-formatting exposure. Fixed all three (`mid`, `bid_depth`, `ask_depth`) consistently rather than patching only the one that had actually thrown.
+- Fix: narrowed the `try`/`except` to cover only the `INSERT` + `commit`; moved the log line outside it so a post-commit formatting failure can no longer flip the return value. Added `None`-safe `'N/A'` formatting on top as defense in depth.
+- Verified non-tautologically: git-stashed the fix, confirmed the new test **fails** against pre-fix code (row committed to the DB, `snapshot_market()` still returned `False`, the exact `TypeError` reproduced), restored the fix, confirmed it passes. `tests/test_snapshot_order_books_none_mid.py`. Full suite 12/12 green, 339,650 total assertions green.
+- Live effect: `failed_no_book` count 6 → 4, zero DB-write-error occurrences post-fix. The 4 remaining are genuine thin/longshot-market book failures (2 of the known persistent core identified this session, 2 new) — day-to-day variance expected, deliberately not investigated further, out of scope.
+
 ---
 
 ## Ledgered This Session
@@ -35,7 +43,7 @@ None of O-41–O-44 are fixed this session. All four are independent of each oth
 
 ## Also
 
-- Morning snapshot (services, daily_maintenance 33/33 ALL OK, O-37 quarantine holding at 84 markets / 0 cohort exposure, harness 3 pre-existing REGRESSIONs / 0 CRITICAL, B4 capture, git) — full detail not duplicated here, see session transcript. One B4 finding: of the (small, since-drained) `failed_no_book` set, 3 markets fail persistently across multiple days (thin/longshot geo-election markets) alongside transient new ones each run.
+- Morning snapshot (services, daily_maintenance 33/33 ALL OK, O-37 quarantine holding at 84 markets / 0 cohort exposure, harness 3 pre-existing REGRESSIONs / 0 CRITICAL, git) — full detail not duplicated here, see session transcript. B4 findings folded into their own section above rather than left here, since the mislabeling fix changed the counts mid-session.
 
 ---
 
@@ -45,8 +53,10 @@ None of O-41–O-44 are fixed this session. All four are independent of each oth
   1. **`trade_result`-availability-as-of-T is unrecoverable** — no `evaluated_at`/`updated_at` column exists on `trades`. B1b reconstructs trade *existence* as of T (via `timestamp <= T`), not evaluation *state* as of T. A trade whose result was written after some historical T but whose event-timestamp precedes T is indistinguishable, from current data, from one evaluated promptly. Same event-time/write-time class as O-33.
   2. **Deleted-duplicate-row windows are unreconstructable** — the weekly full-sync dedup (Sundays, gated, itself unreliable — only fired 3 of 8 Sundays in the log's ~7-week coverage) removes ~7,400 rows/week when it runs, with no record of which rows or which time window. No T-bound over the *current* trades table can recover what's been physically deleted. Bounds how far back exact reconstruction can go.
   3. **Synthetic-close `exit_timestamp` is a BOUND, not a precise close instant** — tape-end only certifies "this market had stopped trading by here." Sufficient for open/closed determination at any T (B1b's job); must not be used for holding-period/timing math that assumes an exact instant.
-- **B1b-prices is next** — scope it fresh, not a roll-in from this session. B2's probe work (`scripts/b2_price_history_probe.py`, 98% token resolution / 100% CLOB retention / 30min granularity on resolved geo/elec) is the starting point, not yet wired into a `reconstruct_prices_at`-equivalent.
-- Open/parallel, unchanged from 07-21: elections-calibration current-state re-run (O-40), O-36 (`resolution_date` generator investigation), O-18 (import investigation), O-38, O-39, B4 `failed_no_book` persistent-3 (now characterized, not yet acted on).
+- **B1b-prices is next** — scope it FRESH at the head of a session, not on momentum. It's the piece with no internal oracle: validation rests on cross-source agreement between CLOB `prices-history` and our own executed trade prices. The judgment calls (agreement tolerance, the ~2% no-token markets, nearest-point-before-T semantics at the granularity boundary, thin-market tape sparsity) need deliberate decisions, not time-pressured ones. Reuse `b2_price_history_probe.py`'s token-resolution + chunked-fetch rather than rewriting (98% token resolution / 100% CLOB retention / 30min granularity on resolved geo/elec, from B2).
+- Then B5 (event clustering — honest n for the backtest), then B3 (the harness).
+- Open/parallel, unchanged from 07-21 except as noted: elections-calibration current-state re-run (O-40's opened item — needs the original performance-analyst methodology or a fresh instrumented run), O-36 (`resolution_date` generator investigation), O-18 (import investigation), O-38, O-39, O-41–O-44.
+- B4 `failed_no_book` persistent core: post-fix count is 4 (2 known persistent thin/longshot-market failures + 2 new this run) — if the same 2 recur across another week, worth their own look; not urgent now.
 - Deferred unchanged: `is_taker` retire-or-wire, ELO unfreeze/Layer-2, O-41/O-42/O-43/O-44 (all report-only, none fixed), swarm items behind the experiment.
 
 ---
@@ -58,3 +68,4 @@ Continues 07-21's through-line: validate against something proven-clean, not mer
 - T=now didn't match the live table on the first pass. Debugged to root rather than tuning the comparison to pass or assuming B1b was wrong — found three independent, real, pre-existing defects (O-42, O-43, O-44), none of them B1b's.
 - The open/partial "sanity check" was itself wrong on the first pass (didn't account for collisions), understating how much divergence actually existed — caught before reporting a false "clean" result, generalized O-44's detection from a narrow threshold-crossing signature to the actual root mechanism once a second, differently-shaped example surfaced.
 - Declined to generalize from one trader's clean open-position match to "opens are untouched by these bugs" — population-scale validation showed they aren't (just fully explained).
+- The same thread ran through the T2 spike (an initial "still growing" reading was apples-to-oranges — unfiltered live count vs. the audit's filtered metric — corrected by re-running the actual audit query) and through B4 (the fix wasn't stopped at the one field that had actually thrown; `bid_depth`/`ask_depth` carried the identical `None`-formatting defect as `mid` and were fixed alongside it rather than left for a future report to rediscover).
