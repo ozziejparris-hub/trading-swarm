@@ -642,6 +642,72 @@ Same class as O-17/O-3: a derived column not mechanically maintained by every wr
 
 ---
 
+### O-41 · `PositionTracker.apply_synthetic_closes` skips `partially_closed` positions — stale `remaining_shares` in resolved markets, never synthetically closed
+
+**ITEM:** `PositionTracker.apply_synthetic_closes` (`monitoring/position_tracker.py:401-403`) explicitly skips `status == 'partially_closed'` (`if pos.status != 'open': continue`) — only fully-open positions ever get synthetically closed when their market resolves. Those positions retain stale `remaining_shares` in resolved markets, never synthetically closed to $1.00/$0.00.
+
+**FOUND DURING:** B1b-positions scoping/design (PIT reconstruction of open positions as-of-T, first-repo `analysis/pit_positions.py`).
+
+**SCOPE:** Real, but out of B1b's scope. Fixing it inside the PIT reconstruction engine would make B1b diverge from the live `positions` table even at T=now (production carries the same gap), breaking B1b's validation anchor (T=now reconstruction must equal live table). B1b deliberately preserves this behavior as a faithful T-parametrized twin of production — decided explicitly during Stage 1 design, not an oversight.
+
+**STATUS:** REPORT ONLY. No fix, no code change as part of this entry.
+**CROSS-REF:** B1b-positions (`analysis/pit_positions.py`), Stage 1 design decision.
+**FROZEN-AREA?** No — `position_tracker.py` is not part of the ELO freeze; fixable independently whenever prioritized.
+
+---
+
+### O-42 · `is_synthetic_close` flag silently freezes at its first-insert value — `positions.store_positions()`'s upsert never updates it — majority of true synthetic closes stored as `is_synthetic_close=0`
+
+**ITEM:** `PositionTracker.store_positions()`'s `INSERT ... ON CONFLICT(position_id) DO UPDATE SET ...` (`monitoring/position_tracker.py:526-542`) updates every position field on re-upsert (`status`, `exit_timestamp`, `exit_shares`, `exit_avg_price`, `realized_pnl`, etc.) **except `is_synthetic_close`**, which is absent from the `SET` list. A position first inserted while still open (`is_synthetic_close=0`, the `Position.__init__` default) and later synthetically closed in a *subsequent* `background_pnl_worker` cycle gets every exit field correctly updated — but the flag itself stays frozen at 0 forever, even though the position was, in fact, synthetically closed.
+
+**FOUND DURING:** B1b-positions Stage 2 single-trader proof (first-repo `analysis/pit_positions.py`), root-causing why a T=now reconstruction didn't match the live `positions` table.
+
+**EVIDENCE:** Confirmed directly on one stored row (`position_id=0xbc54e6_0xab66a7_No_1728278016`): `exit_trade_ids='[]'` (no real trade — the unambiguous synthetic-close signature) and `exit_timestamp` exactly equal to `markets.resolution_date` (the value `apply_synthetic_closes` writes) — yet `is_synthetic_close=0` in storage. Sized across the full table: of 3,747,457 `status='closed'` positions, 1,488,305 are correctly flagged `is_synthetic_close=1`; a further **893,394** carry the exact synthetic signature (`exit_trade_ids='[]'` AND `exit_timestamp` == that market's `resolution_date`) while stored as `is_synthetic_close=0`. **True synthetic-close population is at least 2,381,699 (63.6% of closed positions), not the 1,488,305 (39.7%) the stored flag alone would suggest** — the flag undercounts synthetic closes by ~37 percentage points.
+
+**IMPACT:** Any consumer that filters or weights on `positions.is_synthetic_close` (P&L integrity checks, "real trading skill vs. held-to-resolution" analyses, B1b's own validation anchor) is working from a flag that's wrong for the majority of the true synthetic-close population. Not a new-data problem — it's a pre-existing storage-layer bug, unrelated to O-36/O-37/O-41.
+
+**STATUS:** REPORT ONLY. No fix, no code change as part of this entry. B1b's reconstruction sidesteps this (it derives synthetic-ness fresh each time via tape_end + empty exit_trade_ids, never reads the stored flag), so it isn't blocked, but the live table's flag should not be trusted downstream until fixed — either add `is_synthetic_close = excluded.is_synthetic_close` to the `ON CONFLICT` `SET` list (small fix) or backfill affected rows.
+**CROSS-REF:** B1b-positions (`analysis/pit_positions.py`). Related to but distinct from O-41 (partial-close skip) and O-36 (resolution_date unreliability) — this bug exists independent of both.
+**FROZEN-AREA?** No.
+
+---
+
+### O-43 · `position_id` collisions silently collapse distinct positions in `store_positions()`'s upsert — real closed positions can be overwritten by unrelated dust remainders
+
+**ITEM:** `Position.position_id` is derived only from `(trader_address, market_id, outcome, entry_timestamp)` (`position_tracker.py:45`, second-precision). When a single BUY trade is consumed across more than one downstream match event — most commonly a real SELL plus a leftover sub-share floating-point remainder from `_match_group`'s `0.001`-share matching tolerance — `_match_group`/`apply_synthetic_closes` correctly produce two (or more) distinct `Position` objects sharing that key. `store_positions()`'s `INSERT ... ON CONFLICT(position_id) DO UPDATE` then collapses them to one stored row: whichever position is processed last in the list silently overwrites the other, with no warning.
+
+**FOUND DURING:** B1b-positions Stage 2 single-trader proof, same investigation as O-42.
+
+**EVIDENCE:** One trader (`0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f`, cohort member, 2,000 trades), reconstructed fresh: 1,141 true distinct positions, but only 1,013 distinct `position_id`s — **107 colliding groups, absorbing 235 positions down to 107 stored rows (128 silently lost)**. Concretely confirmed on one example (`0xbc54e6_0x342da2_Yes_1727273038`, "Will Zelensky say 'slava Ukraini'..."): the real, economically meaningful closed position (269.79 shares, real SELL trade, +$10.52 realized P&L) is **not present** in the live `positions` table at all — it was overwritten by a same-position_id 0.00165-share floating-point dust remainder (+$0.0000659 realized P&L) that happened to be processed after it in the same `store_positions()` call. This is not confined to dust: most of the 107 colliding groups (105/107 on this trader) are not the dust pattern at all — some genuine distinct multi-tranche closes collide too.
+
+**IMPACT:** `positions`/`realized_pnl` cannot be assumed complete — an unknown but apparently non-trivial fraction (11% of this one trader's true position count) of real trading history is silently absent from the stored table, overwritten by whichever colliding row happened to sort last. Not yet sized beyond this one trader — full-population sizing is a natural extension of B1b Stage 3's validation pass, not done here.
+
+**STATUS:** REPORT ONLY. No fix, no code change as part of this entry. B1b's reconstruction is unaffected (it never persists to the `positions` table and keeps every distinct match event in memory), but this is a genuine gap in the live table's completeness, independent of anything B1b introduces.
+**CROSS-REF:** B1b-positions (`analysis/pit_positions.py`). Adjacent to O-42 (same investigation, same `store_positions()` function, different bug).
+**FROZEN-AREA?** No.
+
+---
+
+### O-44 · Any FIFO/simplified-matching boundary shift leaves stale orphaned position rows behind — `store_positions()` never deletes rows a fresh re-match no longer produces
+
+**ITEM:** `PositionTracker._match_group` re-derives a (trader, market, outcome) group's position boundaries fresh on every call, from that group's *current* full trade list. Any new trade — not only enough volume to cross the `_match_group_simplified` dispatch threshold (`total_shares > 100_000 or len(trades) > 50`, `position_tracker.py:294-296`), but literally any BUY or SELL added since the group was last processed — can shift where FIFO matching starts and ends a position, changing which `entry_timestamp`s (and therefore which `position_id`s) the fresh computation produces. `store_positions()`'s upsert only touches `position_id`s the fresh computation actually emits; rows from an earlier computation whose boundaries have since shifted are never revisited or deleted, and sit in the live table indefinitely as stale orphans describing exposure the current, correct computation no longer represents that way.
+
+**FOUND DURING:** B1b-positions Stage 3 full-population validation (first-repo `analysis/pit_positions.py`, `scripts/validate_pit_positions.py`), while reconciling why a residual of live `positions` rows had no counterpart at all in a fresh T=now reconstruction (distinct from — and not explained by — O-42 or O-43).
+
+**EVIDENCE:** Across the 3,234-trader Pool-C population, **392 traders (12%) have at least one live position with no reconstructed counterpart at all; 15,448 such orphaned rows total (1.5% of the 1,060,341 live population)**. Two confirmed trigger patterns, both the same root cause:
+- **Threshold crossing** (`0xe8dd7741...`, market `0xefd831...`, outcome `No`): 176 orphaned fine-grained rows; that group now has 89 trades — past the 50-trade threshold, so a fresh run uses `_match_group_simplified` (one aggregated position) while the 176 rows are leftovers from when it was still under threshold.
+- **General boundary shift, no threshold involved** (`0x1d8c256b...`, market `0x61b66d...`, outcome `No`): 5 BUYs (325.79 shares total) followed by one oversized SELL (536.57 shares) fully consumes all 5 buys into one aggregated closed position (`entry_timestamp` = the *first* buy). Live still separately holds 4 stale rows (`is_synthetic_close=1`, `exit_shares=NULL` despite `status='closed'` — an internally inconsistent combination in its own right) from before the SELL existed, when each buy was independently open/synthetically-closed under its *own* `entry_timestamp`-keyed `position_id`. The new aggregated position's `position_id` doesn't overlap any of the four old ones, so none get overwritten — all four survive as permanent orphans.
+
+After accounting for this generalized mechanism, **B1b's T=now reconstruction vs. the live table across the full Pool-C population reconciles to 0 unexplained positions** (1,231,158 reconstructed + 15,448 live-only orphans, fully classified as exact match / O-42 / O-43 / O-44, zero residual).
+
+**IMPACT:** Modest in aggregate (1.5% of live positions) but real, and it means the live `positions` table can hold **both** stale, superseded rows **and** their replacement for the same underlying trades simultaneously — a double-counting risk for any consumer summing `entry_total_cost`/`remaining_shares` directly from the table without deduplicating against the current trade tape. Some orphaned rows are also internally self-contradictory on their own terms (`status='closed'` with non-null `remaining_shares` and null `exit_shares`), independent of any cross-check against a fresh reconstruction. B1b's reconstruction is unaffected (and more correct — it re-derives boundaries from the full current tape every time, with no stale carryover), but this bounds how much the live table can be trusted as a raw source for aggregate exposure figures.
+
+**STATUS:** REPORT ONLY. No fix, no code change as part of this entry.
+**CROSS-REF:** B1b-positions (`analysis/pit_positions.py`, `scripts/validate_pit_positions.py`), Stage 3. Third distinct `store_positions()`-adjacent defect found in this investigation, after O-42 and O-43 — none of the three share a root cause.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
