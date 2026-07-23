@@ -42,7 +42,7 @@ All 84 markets trace to a **single bulk-import event**: `last_checked` clusters 
 
 **Bounded recompute**, scoped to the 953 affected traders via the real production functions (`update_geo_elo.py`, unmodified):
 - **27 traders** still clear the 5-qualifying-trade floor on real trades alone — freshly recomputed.
-- **926 traders** only cleared the floor because of now-flagged trades — brought to the system's existing "hasn't qualified" representation: `geo_elo`/`geo_elo_active`/`geo_directionality_score = NULL`, `geo_resolved_trades_count` = the real remaining count. This matches the convention already in use for ~9,900 other never-qualified traders in the DB (empirically confirmed before writing — no new sentinel invented). **17 of the 926 had a fully 100%-synthetic scoring history** (`resolved_count=0` post-correction, several with pre-correction `geo_elo_active` above 2,175 LEGENDARY).
+- **926 traders** only cleared the floor because of now-flagged trades — brought to the system's existing "hasn't qualified" representation: `geo_elo`/`geo_elo_active`/`geo_directionality_score = NULL`, `geo_resolved_trades_count` = the real remaining count. This matches the convention already in use for ~9,900 other never-qualified traders in the DB (empirically confirmed before writing — no new sentinel invented). **[CORRECTED 2026-07-23, see §8] All 926 show `geo_resolved_trades_count = 0` under the canonical flag-excluded definition** — their entire non-synthetic geo/elec resolved-trade history was concentrated in the 84 quarantined markets, so excluding those markets correctly zeroes their count. The originally-cited "17 fully-synthetic (0) / 909 partial (1-4)" split was the **pre-exclusion** count (i.e. counting the now-quarantined markets too), not the post-correction value as worded.
 
 **Verification:** independent fresh flag-aware recompute against all 953 post-write — **0 mismatches**. `audit_invariants.py`: 0 CRITICAL, no Stage-0d regression (3 pre-existing REGRESSION items unchanged or improved). `run_tests.py`: 339,663 tests, all green.
 
@@ -54,3 +54,7 @@ All 84 markets trace to a **single bulk-import event**: `last_checked` clusters 
 ## 7. Files
 - First-repo: `scripts/quarantine_o37_synthetic_markets.py` (commit `5777e45`) — the checked-in, idempotent, reviewable record of exactly what was executed against production. Includes the explicit 84 `market_id` list (not a re-derived heuristic).
 - This document.
+
+## 8. Correction — §5 wording (2026-07-23)
+
+Verified 2026-07-23 via four-way measure comparison on the 926: stored value vs. canonical flag-excluded live recompute vs. pre-exclusion (raw) count vs. price-filtered qualifying-trade count. Stored ≡ canonical-recomputed (both 0 for all 926) — no writer divergence, nothing over-zeroed. The pre-exclusion count reproduces the "1-4 mostly, some at 0" pattern originally cited, confirming that figure was pre-correction, not post-correction as §5 stated. O-37 success invariant (0 traders with a qualifying `geo_elo` dependent on a flagged market) and 0 cohort/Pool-C exposure were reconfirmed at the same time. No code or data changes.
