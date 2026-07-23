@@ -746,6 +746,35 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 
 ---
 
+### O-45 · Backtest-window population selection on `resolution_date` — two bulk-backfill contamination events, independently reinvented 3 times before being made canonical
+
+**ITEM:** Found during B5 (event-clustering) population scoping, first-repo. The backtest-window market population had been selected via `markets.resolution_date >= 2025-11-01` — the same write-time column O-36 already proved unreliable, now with two additional, distinct contamination events layered on top.
+
+**EVIDENCE — two bulk-backfill contamination events, exact timestamps:**
+- **`2026-04-01 16:19:13`** — stamps the entire 2024 US Presidential Election family (Harris, Michelle Obama, Nikki Haley, "any other Democrat/Republican," popular-vote variants) plus the Singapore 2023 presidential election (Tharman/Ng Kok Song/Tan Kin Lian), NY-3 Suozzi/Pilip special election, Taiwan Hou Yu-ih/Ko Wen-je, and Greek Syriza/PASOK — all real events from 2023-2024, all carrying this identical resolution_date.
+- **`2026-06-04 21:36:39`** — a second, distinct event: Mark Carney (Canadian PM), Rafał Trzaskowski (Polish President), Nicușor Dan (Romanian President), Israel-Hamas ceasefire, US government shutdown, Zohran Mamdani Dem primary — all genuinely mid-2025-or-earlier conclusions.
+
+**MEASURED IMPACT on the backtest-window population** (resolved geo/elec, non-gap, non-O-37, `resolution_date >= 2025-11-01` vs the corrected `tape_end >= 2025-11-01`, `tape_end = MAX(trades.timestamp)` per market):
+- **5,774 (resolution_date) → 4,690 (tape_end).**
+- **573 false positives (9.9%)** — real tape_end predates the window, genuinely old events pulled in by a wrong resolution_date. Includes the entire 2024 US Presidential family (Harris alone: 69,475 trades, 511-day gap between resolution_date and real tape_end).
+- **54 false negatives, wrongly EXCLUDED** — real Nov-2025+ activity missed because resolution_date is early-stamped (52) or NULL (2): US-Venezuela military engagement, Zelenskyy-Putin meeting markets, Andrej Babiš (next Czech PM), Argentina 2025 legislative seat-share markets.
+- **565 zero-trade markets** — dropped by both methods, for a *different, legitimate* reason (no `tape_end` at all to anchor on, structurally excluded by an inner JOIN — not a resolution_date error). Stated distinctly here so this figure is never conflated with the 573 false positives in a future summary.
+- **Net: 18.8% population swing** (573 removed + 54 added, against a 5,774 base).
+
+**THE CLASS — why this is now canonical, not fixed in place:** this exact selector pattern (`resolution_date >=` a window boundary, used to define an analysis/backtest population) was independently reinvented **3 times**: B2's/B1b-prices' population figure (5,774, carried through Stage 2's stratification), `brain/agent-outputs/quant-research/RQ1.1/rq1_1_elo_persistence.py`'s Period-1/Period-2 split, and B5's own event-clustering scoping. Three independent reinventions of the same wrong pattern is the signal that this needed to be a canonical, imported definition rather than left to each consumer to get right — same discipline `column_definitions.py` already enforces for column/gate definitions.
+
+**FIX:** `monitoring/column_definitions.py` Section 6 (`backtest_window_sql()`, `BACKTEST_WINDOW_BASE_WHERE`, `BACKTEST_WINDOW_RATIONALE`) — the canonical, parameterised (window_start, optional window_end, half-open) population definition, anchored on tape_end via inner JOIN. First-repo commit `8470e8b`. `scripts/b5_population.py` repointed to it; B5's population is now 4,690, not 5,774.
+
+**THE EVENT-TIME / WRITE-TIME NUANCE — full reasoning in `BACKTEST_WINDOW_RATIONALE`, not restated here:** this is the deliberate inverse of O-33 (gate staleness on write-time; gate population windowing on event-time), and both rules are correct for the question each answers. Read `BACKTEST_WINDOW_RATIONALE` before "fixing" this back to resolution_date.
+
+**OPEN, NOT FIXED — RQ1.1's live contamination:** `rq1_1_elo_persistence.py` splits trader positions into Period 1 (`resolution_date < '2026-04-01'`) / Period 2 (`'2026-04-01' <= resolution_date < '2026-06-01'`) across 4 call sites (lines 142, 157-158, 301, 309 — duplicated as literals rather than referencing the file's own `PERIOD_1_END`/`PERIOD_2_START`/`PERIOD_2_END` constants). **`2026-04-01` is exactly the first contamination timestamp above.** Quantified: of 15,239 markets whose resolution_date falls in this script's Period-2 window, **1,083 have tape_end < 2025-11-01** — genuinely old markets (very likely mostly the same 2023/2024 family) misclassified into Period 2 alongside real April-May 2026 trader positions. This is a live, already-shipped research artifact — report-only here, deliberately not repointed in this pass. Its before/after and re-run decision is sequenced separately.
+
+**CROSS-REF:** `[[project_o36_resolution_date_reliability]]` (the underlying resolution_date-unreliability this compounds), O-33 (the inverse rule — see rationale above), O-29 (prior event-time/write-time-adjacent finding). `[[project_b1b_prices]]` (B1b-prices' Stage-2 cross-check sample was independently checked against tape_end and found clean; the smaller 6-market scoping spot-check had one contaminant, the votes-cast market mislabeled "recent" when its real tape_end is 2024-12-17 — noted at the time, no published number invalidated).
+**STATUS:** FIXED for B5 (canonical definition built, B5 repointed). OPEN for RQ1.1 (report-only, sequencing pending). Nothing else found selecting an analysis window on resolution_date (resolution_sweep.py/fast_resolution_check.py use resolution_date vs. datetime('now',...) for operational sweep/discovery, a different and legitimate write-time-adjacent use, not flagged).
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
