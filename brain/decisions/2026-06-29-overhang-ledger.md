@@ -708,6 +708,44 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 
 ---
 
+### B1b-prices · CLOB `prices-history` point-lookup built — cross-source validation downgrades it from "strong primary" to "primary-with-fallback, age/liquidity-dependent"
+
+**ITEM:** Last piece of PIT state before B5/B3 (after B1a geo_elo and B1b-positions). `monitoring/price_history.py` extracts `resolve_token_id()`/`fetch_price_history_window()` (unmodified) from `scripts/b2_price_history_probe.py` and adds `price_at(token_id, T, lookback_hours)` — last-point-at-or-before-T, never interpolated. Committed first-repo `5a8c680` (+ `tests/test_price_history_price_at.py`, 10 assertions).
+
+**KEY DIFFERENCE FROM B1a/B1b-positions:** those two had a strong internal oracle (reconstruct-at-now must equal production's live table, and both did, zero unexplained). Prices have no such oracle — no stored "price at T" table, and the source is an external API, not our own tape. Validation rests entirely on cross-source agreement against our own trade tape, with the numeric criterion pre-registered before measuring (not tuned after).
+
+**SETTLED SEMANTICS:**
+- No point at or before T → `None` (legitimate "not yet trading," not an error) — caller falls through to the FABLE §4.3 trade-tape fallback.
+- A stale last point is returned WITH `staleness_hours` surfaced, never silently dropped or silently used — the drop/keep decision belongs to the caller (centralizes dropped-bet accounting in experiment logic, symmetric with the no-point case).
+- Token-resolution failure → `None`, same as no-point, never raises.
+
+**TWO SCOPING CORRECTIONS TO THE B2 PROBE RECORD** (`2026-07-17-b2-price-history-probe-result.md`), both found while building the reusable core:
+1. **B2's "30min median gap" was an artifact of the probe's own fidelity ladder, not a CLOB limit.** `probe_fidelity()` tries `(30, 60, 1440)` and stops at first success — since 30 always succeeded, it never learned finer granularity exists. Confirmed live 2026-07-23: **fidelity=1 (per-minute) works for the 2025-11 backtest window**, same as recent markets.
+2. **The probe's `chunk_days_for_fidelity()` points-budget model is wrong.** CLOB's real interval cap is a **flat ~15 calendar days, independent of fidelity** (confirmed by binary search: 15 days OK, 16 days `"invalid filters: 'startTs' and 'endTs' interval is too long"`, at fidelity=1 through 30 alike). The probe's fidelity-scaled chunking + `MAX_CHUNKS_PER_MARKET=8` under-covered 13/49 (27%) of its own sample's long-lived markets for this fixable reason — **B2's 73% "coverage full to resolution" figure was pessimistic, not a real retention ceiling.**
+
+**CROSS-SOURCE VALIDATION — pre-registered before measuring** (from B4's captured order-book spreads on thin geo/elec markets: ≥90% of trades within absolute deviation ≤0.02 of the curve, no systematic signed bias/inversion signature):
+- **6-market spot-check (scoping pass): 95.3% (509/534).**
+- **16-market stratified sample, old/recent × thin/liquid, 302 lookups (build validation): 73.1% (209/286) — below the pre-registered threshold.** Concentrated in the old (Nov–Dec 2025) stratum (55.6%) vs. recent (88.7%). The 6-market spot-check was optimistic because it wasn't stratified toward the older/thinner markets where the failure mode concentrates.
+- **Root cause traced directly, not assumed:** on the single worst-offending market, 9 of 21 sampled trades executed within one ~20-second burst while price swept 0.03→0.53; CLOB had exactly one tick for that whole minute. Confirmed this is a **source-side sampling-cadence limit, not a request-parameter or wrong-token bug** — `fidelity=0` and `fidelity=1` return *identical* points for that window (CLOB's real tick cadence is ~40-90s, not something finer fidelity can retrieve). No inversion signature in any sampled market (signed diffs small, not systematically offset). Excluding the single worst market only raises the aggregate to 77.7% — the shortfall is a broader old/thin pattern, not one outlier.
+- **Net: CLOB `prices-history` is downgraded from "strong primary" to PRIMARY-WITH-FALLBACK, age/liquidity-dependent**, per B2's own three-tier framework (73.1% sits in the 40-80% band, one tier down from what the smaller spot-check suggested). **The trade-tape fallback matters more in the old/thin stratum than previously assumed** — B3 should expect to lean on it there specifically, not just as a rare ~2%-of-markets no-token case.
+- **Important context for future readers, so 73.1% isn't misapplied:** B3 prices at `T_act = T_detect + 30min` — far coarser than CLOB's ~1-minute cadence. This cross-check is a *stricter* test than B3's actual use requires (it bounds curve-vs-individual-fill agreement at trade-level timing, not 30-minute-bucket agreement). **73.1% should NOT be read as bounding B3's entry-price accuracy directly** — B3's real accuracy at its own (coarser) granularity is untested and likely materially better than this number implies, but that's a claim for B3 to measure at its own resolution, not to assume from this number.
+- **The good news, same 302-lookup sample:** coverage 290/302 (96.0%) priced, 0 no-token, and staleness **0/290 (0.0%) exceed the 6h FABLE cap** in either age or liquidity stratum (median staleness 0.008h) — CLOB-side drop rate for B3 is effectively zero. The reliability problem is entry-price *precision* on thin/old markets, not *availability*.
+
+**(e) T-AFTER-RESOLUTION / O-36 BOUNDARY NOTE FOR B3:** `price_at()` behaves correctly when queried past a market's true trading end (returns `None` once no point exists within the lookback window) — but on a market the DB calls `resolved=1` with a given `resolution_date`, querying days past that date can still return **fresh, non-stale prices**, because `resolution_date` is unreliable (`[[project_o36_resolution_date_reliability]]` — 29% of resolved geo/elec markets off by >14 days, LATE-biased). This is not a `price_at()` defect — it only ever reports what CLOB actually has. **It means "query past resolution" is out-of-contract for B3 only if B3 uses the raw DB `resolution_date` as its holding-period boundary** — that must route through O-36's already-established trade-tape-end workaround, not the raw column. The boundary decision belongs at the B3 level, not inside the pricing utility.
+
+**C8 — WHAT CANNOT BE VALIDATED** (carried verbatim from scoping, unresolved by the build):
+1. Whether the curve is literally "mid" vs "last trade" vs another CLOB-internal definition — no independent contemporaneous order-book source exists for the 2025-11+ backtest window to test this directly; inferred only indirectly from tight agreement with the trade tape.
+2. Whether the trade-tape fallback's true hit rate is closer to the count-based 90.6% or the time-weighted 5.7% figure (both measured, same data, opposite conclusions) — depends on where real signal-firing timestamps land relative to trade clusters; **deferred to B3 measurement**, not resolvable in advance.
+3. Generalization beyond the ~56-market (B2) + 16-market (this build) combined sample, out of 5,774 backtest-window markets — rests on stratified sampling + spot-check, not exhaustive verification.
+4. Whether CLOB's served history was ever backfilled/rewritten after the fact — trusting the external vendor's data as a faithful real-time record is an assumption, not independently verifiable.
+5. The 15-day interval cap was characterized on one token; assumed global (API-level, not token-specific) but not cross-validated on a second token.
+
+**STATUS:** BUILT + VALIDATED, with an honestly-recorded downgrade. `price_at()` itself is correct at all tested edges (5 edge cases + the interval cap, first-repo `5a8c680`). The source it queries is less reliable than the scoping spot-check suggested, specifically on older/thinner markets — recorded here rather than smoothed over, so B3 designs around primary-with-fallback rather than near-universal CLOB coverage.
+**CROSS-REF:** `[[project_b1b_positions]]` (same B1 arc), `[[project_o36_resolution_date_reliability]]` (the (e) boundary note above).
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
