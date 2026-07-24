@@ -1,0 +1,63 @@
+{
+  "date": "2026-07-20",
+  "markets_checked": 34,
+  "signals_found": 5,
+  "signals": [
+    {
+      "market": "Will England reach the 2026 FIFA World Cup final?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8956,
+      "market_price_pct": 0.54,
+      "gap_pt": 35.6,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-20"
+    },
+    {
+      "market": "World Cup: Messi to Score 2+ Penalties?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.6503,
+      "market_price_pct": 0.16,
+      "gap_pt": 49.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-20"
+    },
+    {
+      "market": "Will the 2026 FIFA World Cup champion be a nation from Group J?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.19,
+      "gap_pt": 81.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-20"
+    },
+    {
+      "market": "Will the Bank of Russia decrease the key rate after the July Meeting?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.29,
+      "gap_pt": 71.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    },
+    {
+      "market": "Will the Bank of Russia make no change to the key rate after the July Meeting?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0941,
+      "market_price_pct": 0.67,
+      "gap_pt": 57.6,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    }
+  ],
+  "scan_timestamp": "2026-07-20T08:09:30.832469+00:00"
+}

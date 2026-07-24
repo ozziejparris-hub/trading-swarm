@@ -3077,6 +3077,251 @@
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
       "expires_at": "2027-07-19T06:02:06Z"
+    },
+    {
+      "id": "2026-07-20-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-07-20T06:02:01Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-07-20T06:02:01Z"
+    },
+    {
+      "id": "2026-07-20-SIGNAL-ACCURACY-INSUFFICIENT-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-07-20T07:00:01Z",
+      "finding_type": "signal_accuracy",
+      "confidence": "LOW",
+      "sample_size": 2,
+      "summary": "Insufficient resolved signals to compute accuracy \u2014 2 resolved, 10 required",
+      "detail": {
+        "metric": "signal_direction_accuracy",
+        "value": null,
+        "baseline": 0.5,
+        "direction": "pending",
+        "weeks_observed": 16
+      },
+      "actionable": false,
+      "action_recommendation": "Await 8 more signal resolutions before drawing conclusions",
+      "expires_at": "2026-10-18T07:00:01Z"
+    },
+    {
+      "id": "2026-07-20-ELO-LEGENDARY-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-07-20T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 20,
+      "summary": "LEGENDARY tier consensus accuracy: 30% over 20 non-sports markets",
+      "detail": {
+        "metric": "elo_legendary_consensus_accuracy",
+        "value": 0.3,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "weeks_observed": 16
+      },
+      "actionable": false,
+      "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
+      "expires_at": "2026-10-18T07:00:01Z"
+    },
+    {
+      "id": "2026-07-20-ELO-ELITE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-07-20T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 27,
+      "summary": "ELITE tier consensus accuracy: 63% over 27 non-sports markets",
+      "detail": {
+        "metric": "elo_elite_consensus_accuracy",
+        "value": 0.6296,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 16
+      },
+      "actionable": true,
+      "action_recommendation": "Increase ELITE tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-10-18T07:00:01Z"
+    },
+    {
+      "id": "2026-07-20-ELO-QUALIFIED-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-07-20T07:00:01Z",
+      "finding_type": "elo_validity",
+      "confidence": "HIGH",
+      "sample_size": 46,
+      "summary": "QUALIFIED tier consensus accuracy: 61% over 46 non-sports markets",
+      "detail": {
+        "metric": "elo_qualified_consensus_accuracy",
+        "value": 0.6087,
+        "baseline": 0.5,
+        "direction": "above_baseline",
+        "weeks_observed": 16
+      },
+      "actionable": true,
+      "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
+      "expires_at": "2026-10-18T07:00:01Z"
+    },
+    {
+      "id": "2026-07-20-STRATEGY-OVERDUE-001",
+      "generated_by": "feedback-loop-agent",
+      "generated_at": "2026-07-20T07:00:01Z",
+      "finding_type": "strategy_performance",
+      "confidence": "HIGH",
+      "sample_size": 1,
+      "summary": "1 strategy/strategies overdue for revalidation: STR-002 \u2014 Pre-Resolution Intelligence",
+      "detail": {
+        "metric": "strategies_overdue_revalidation",
+        "value": 1.0,
+        "baseline": 0.0,
+        "direction": "above_baseline",
+        "weeks_observed": 16
+      },
+      "actionable": true,
+      "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
+      "expires_at": "2026-10-18T07:00:01Z"
+    },
+    {
+      "id": "2026-07-21-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-07-21T06:02:05Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-07-21T06:02:05Z"
+    },
+    {
+      "id": "2026-07-22-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-07-22T06:02:12Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-07-22T06:02:12Z"
+    },
+    {
+      "id": "2026-07-23-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-07-23T06:02:14Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-07-23T06:02:14Z"
+    },
+    {
+      "id": "2026-07-24-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-07-24T06:02:13Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-07-24T06:02:13Z"
     }
   ]
 }

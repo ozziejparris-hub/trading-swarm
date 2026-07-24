@@ -1,0 +1,85 @@
+{
+  "date": "2026-07-22",
+  "markets_checked": 20,
+  "signals_found": 7,
+  "signals": [
+    {
+      "market": "Will the next Claude Opus model be released by July 22, 2026?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.7489,
+      "market_price_pct": 0.3159,
+      "gap_pt": 43.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-22"
+    },
+    {
+      "market": "Iran military action against a Gulf State on July 22?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9582,
+      "market_price_pct": 0.73,
+      "gap_pt": 22.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-22"
+    },
+    {
+      "market": "Israel x Iran ceasefire continues through July 22?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0068,
+      "market_price_pct": 0.85,
+      "gap_pt": 84.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-22"
+    },
+    {
+      "market": "Will the Bank of Russia decrease the key rate after the July Meeting?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9038,
+      "market_price_pct": 0.29,
+      "gap_pt": 61.4,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    },
+    {
+      "market": "Will Iran announce withdrawal from MOU negotiations by July 24?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0466,
+      "gap_pt": 95.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    },
+    {
+      "market": "US announces end of Iranian blockade by July 24, 2026?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.645,
+      "market_price_pct": 0.0442,
+      "gap_pt": 60.1,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    },
+    {
+      "market": "Israel x Iran ceasefire continues through July 25?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0571,
+      "market_price_pct": 0.83,
+      "gap_pt": 77.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-25"
+    }
+  ],
+  "scan_timestamp": "2026-07-22T08:17:17.557010+00:00"
+}

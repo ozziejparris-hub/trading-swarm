@@ -1,0 +1,30 @@
+{
+  "date": "2026-07-23",
+  "markets_checked": 19,
+  "signals_found": 2,
+  "signals": [
+    {
+      "market": "Will the Bank of Russia decrease the key rate after the July Meeting?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9038,
+      "market_price_pct": 0.53,
+      "gap_pt": 37.4,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    },
+    {
+      "market": "Will the Bank of Russia make no change to the key rate after the July Meeting?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.1312,
+      "market_price_pct": 0.6836,
+      "gap_pt": 55.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-07-24"
+    }
+  ],
+  "scan_timestamp": "2026-07-23T08:18:01.105841+00:00"
+}
