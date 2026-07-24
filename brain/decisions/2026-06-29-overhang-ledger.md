@@ -775,6 +775,23 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 
 ---
 
+### O-46 · B5 event clustering shipped, NOT externally audited on 4-5 uncertain hand-standalone labels
+
+**ITEM:** B5 event-clustering complete against frozen snapshot `bt_pop_2025-11-01_v1` (first-repo `event_cluster_labels` table, `scripts/build_event_cluster_labels.py`, commit `387e772`). All 143 ambiguous-zone (candidate-shaped) markets came back STANDALONE — 0 hand_sibling clusters built. 3 mechanical structural checks run: Check 1 (merge errors, >=2 members resolved YES) clean, 0 found across 3,343 clusters. Check 2 (tape_end coherence) and Check 3 (summed YES-price) each flagged a handful, all inspected and explained as benign (losing-candidate markets going quiet early; thin-market pricing overround) — full results in `brain/agent-outputs/b5-event-clustering/2026-07-24-structural-checks.md`.
+
+**THE GAP:** Check 1 catches merge errors (wrongly grouped) but is structurally blind to **false splits** (a genuine sibling-set wrongly labeled standalone) — the direction that inflates B3's bet count n. Since every ambiguous market landed on STANDALONE, an undetected false split would have no mechanical signature. 4-5 specific labels carry acknowledged reasoning uncertainty and need the same external fact-verification the 2026-07-24 calibration used for Singapore/California:
+
+1. `ca_ltgov_advance` (2 members, both resolved NO — zero resolution-data confirmation, call rests entirely on "CA top-two primary applies to Lt. Governor too")
+2. `bg_seat` (4 members, all resolved NO — zero confirmation, call rests on "Bulgaria's PR system typically seats multiple small parties," not this election's actual result)
+3. `tx_senate_flip` (2 members, both NO — murkiest reasoning in the batch, unclear whether "flip" resolves on a polling-lead crossover or a final-outcome check)
+4. The 15 raw singletons (candidate-shaped markets with no matched family — each either genuinely standalone or has a real sibling elsewhere in the population the family-pattern regexes didn't match)
+
+**STATUS:** SHIPPED, NOT FINAL. B5's output is usable for continued build work but must not be treated as the frozen input to B3 until this audit closes.
+**FROZEN-AREA?** No.
+**NEXT ACTION (first task on return from the 2026-07-24 shutdown):** external verification of the 4-5 cases above. See `brain/decisions/2026-07-24-shutdown-state-of-play.md`.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
