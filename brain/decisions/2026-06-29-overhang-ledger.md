@@ -807,6 +807,19 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 
 ---
 
+### O-48 · `polymarket-observer` hangs on an interactive stdin prompt under systemd — blocks graceful shutdown
+
+**ITEM:** Found 2026-07-24 during shutdown verification. `sudo systemctl stop polymarket-observer` sent SIGTERM but the process didn't exit — journal shows it was sitting on a `Continue anyway? (y/n):` prompt from `run_system_observer.py` (logged right after "[OBSERVER] Health checks will be limited"), which reads from stdin. Under systemd there is no tty, so nothing ever answers the prompt. Stop timed out after the default `TimeoutStopSec`, systemd escalated to SIGKILL, and the unit ended in `failed (Result: timeout)` rather than a clean stop.
+
+**IMPACT TONIGHT:** None to data — the process held no DB writes at kill time, and the live DB's own `PRAGMA integrity_check` came back `ok` after the kill. Confirmed the unit is not stuck restarting (`Restart=on-failure` does not re-trigger after an explicit `systemctl stop`; state held at `failed`, not `activating`, across repeated checks).
+
+**FIX (first task after the B5 audit on return, or whenever this file is next touched):** find the interactive prompt in `run_system_observer.py` (likely a startup health-check fallback path — "Health checks will be limited" suggests a degraded-mode confirmation) and either remove it or guard it behind `sys.stdin.isatty()` so it defaults non-interactively when there's no tty. Without this fix, the next `systemctl stop polymarket-observer` will hang the same way for the full stop timeout before SIGKILL cleans it up.
+
+**STATUS:** OPEN.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
