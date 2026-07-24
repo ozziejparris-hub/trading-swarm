@@ -7,6 +7,28 @@ Fail criterion:  r > -0.10
 Inconclusive:    -0.25 <= r <= -0.10
 
 Database: ~/projects/first-repo/data/polymarket_tracker.db (READ ONLY)
+
+================================================================================
+SUPERSEDED (2026-07-24) — this is the ORIGINAL April 2026 RQ1.1 run (results
+already produced: rq1_1_results.json, generated 2026-04-26). It has been
+superseded by the June 2026 rerun, which lives at
+first-repo/brain/agent-outputs/quant-research/RQ1.1/rq1_1_elo_persistence.py
+(a different, later script that happens to share this filename/path -- not
+the same file having diverged). The rerun is the current/active RQ1.1 and
+carries its own O-45 contamination warning specific to its fixed
+'2026-04-01' period boundary.
+
+This script's get_period_split() ALSO derives its train/test split from
+markets.resolution_date (a data-derived NTILE(2) median, not a fixed
+constant) -- the same write-time-column class of risk documented under O-36/
+O-45 in first-repo. Whether that specific bulk-backfill contamination shifted
+THIS script's median split point, or by how much, has NOT been re-derived
+here -- the O-45 measurement was made against the rerun's fixed boundaries,
+not this script's dynamic one. Treat this run's already-produced results
+(rq1_1_results.json) with the same caution as any other resolution_date-
+anchored population/period selection made before O-45 was found. No logic
+change, no re-run performed as part of this note.
+================================================================================
 """
 
 # ── Required filters — 2026-04-26 data integrity audit ────────────────────────
