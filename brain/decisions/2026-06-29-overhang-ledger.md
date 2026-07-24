@@ -792,6 +792,21 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 
 ---
 
+### O-47 · `backup_offsite.sh` still uses raw `cp` on a live DB — torn-copy index corruption, the O-7.1 fix never ported
+
+**ITEM:** Found 2026-07-24 during pre-shutdown backup verification. `backup_offsite.sh` copies `polymarket_tracker.db` with a plain `cp` after a `PRAGMA wal_checkpoint(TRUNCATE)` — but nothing pauses new writes from `polymarket-monitoring` during the multi-minute `cp` of a 15GB live file. Caught a real instance: the 2026-07-24T21:00Z offsite backup's `PRAGMA integrity_check` came back with index corruption (`row 5173424 missing from index idx_positions_trader_status`, `row 5173876 missing`, `wrong # of entries` in two `positions` indexes). Confirmed via the **live production DB's own** `integrity_check` (clean, `ok`) that this was a copy artifact, not real data corruption — the monitoring service wrote to `positions` mid-`cp`.
+
+**THE MISSED-SIBLING PATTERN:** `backup_database.py` had this exact bug and was already fixed under O-7.1 — `shutil.copy2` replaced with the WAL-safe online-backup API, plus a `PRAGMA integrity_check` gate before reporting `[OK]` (so a bad backup can't silently report success). That fix was never ported to `backup_offsite.sh`, which still does the unsafe raw `cp`. Same class of gap as O-42/O-43/O-44 (a fix applied to one call site, a structurally-identical sibling site left on the old, broken pattern).
+
+**RECOVERY (2026-07-24, tonight):** did not re-run `backup_offsite.sh`'s DB step (same race risk against a still-live DB). Instead copied the already-verified-clean local backup (`backups/markets_20260724_205305.db`, made via the safe online-backup API, `integrity_check: ok`, contains the new `event_cluster_labels`/`backtest_population_snapshots` tables) onto the offsite drive, gzip'd in place of the corrupt file. Re-verified on the offsite copy: `integrity_check: ok`, both new tables present at 4,712 rows each. The corrupt original is kept as `polymarket_tracker.db.gz.CORRUPT-20260724` in the same directory for reference, not deleted.
+
+**FIX (not done tonight, first task after the B5 audit on return):** port the WAL-safe online-backup-API method from `backup_database.py` into `backup_offsite.sh`'s DB-copy step, with the same integrity-check-before-success gate. Also worth a quick check whether any *other* backup-adjacent script still does a raw file copy of the live DB.
+
+**STATUS:** OPEN. Tonight's offsite artifact for the 2026-07-24 shutdown is good (recovered copy, verified). The underlying script bug is not fixed.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
