@@ -790,6 +790,18 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 **FROZEN-AREA?** No.
 **NEXT ACTION (first task on return from the 2026-07-24 shutdown):** external verification of the 4-5 cases above. See `brain/decisions/2026-07-24-shutdown-state-of-play.md`.
 
+**EXTERNAL AUDIT RESULT 2026-08-07 — CLEARED, B5 FINAL.** All 4 named hand-label families verified against real-world facts (verified online this session, cited as externally verified 2026-08-07):
+1. `tx_senate_flip` — STANDALONE CORRECT. TX GOP Senate primary was 2026-03-03 (Cornyn 42.0% / Paxton 40.5%, neither >50% → runoff 2026-05-26, won by Paxton). Resolves the internal tension noted at ship time: Cornyn did win the first round (matching the native_negrisk cluster's Yes) and both "flip by date" markets correctly resolved No — they are polling/odds-crossover snapshots ("has Cornyn overtaken Paxton by X date"), and Cornyn trailed in public polls up to the vote; the "by March 2" market expired one day before the March 3 vote he won. Nested date-deadline snapshots, not a final-outcome sibling pair — the ship-time working hypothesis is confirmed by the calendar.
+2. `bg_seat` — STANDALONE CORRECT. Bulgaria 2026-04-19, 240 seats, PR closed lists / 31 multi-member constituencies / Hare-Niemeyer / 4% nationwide threshold applied uniformly to parties and alliances. Multiple parties clear it simultaneously (5+ won seats in 2026; eight passed the threshold in Oct 2024; ~20% of the 2026 vote went to sub-threshold parties, which is why all 4 tracked minor parties resolved No — genuine longshots, not an exclusive set). Per-party threshold, definitively not mutually exclusive; same logic validates the parallel Hungarian family found alongside it.
+3. `ca_ltgov_advance` — STANDALONE CORRECT. California's Top Two Primary applies to voter-nominated offices, which explicitly include Lt. Governor; top two advance regardless of party. The extrapolation-by-analogy flagged as unverified at ship time is now independently verified.
+4. `ca_gov_advance` — already verified in the 2026-07-24 calibration (top-two, two advance). The open question (why the 21 weren't auto-merged into a native family) is internal, not a correctness risk — top-two is definitionally multi-advance so the standalone label holds regardless. Low-priority curiosity, not chased further.
+
+**Also recorded:** singleton #4 ("Dems or GOP larger turnout in Texas Senate Primary?") has `resolution_date = 2026-06-04 21:36:39` — exactly O-45's second bulk-backfill contamination timestamp. Independent confirmation that O-45 generalises; `tape_end` (2026-03-18) is the trustworthy field for this row.
+
+**Zero false splits found.** B5's clustering now has coverage in both error directions: Check 1 mechanically proved 0 merge errors across 3,343 clusters (wrongly-grouped direction); this audit found 0 false splits in the hand-labelled residue (wrongly-standalone direction, the one Check 1 is structurally blind to). Residual risk is bounded to the 15 lower-priority raw singletons — all confirmed to have no sibling candidates in the population, structurally low-risk.
+**STATUS:** FINAL. Supersedes "SHIPPED, NOT FINAL" above. B5 is now the frozen input to B3.
+**FROZEN-AREA?** No.
+
 ---
 
 ### O-47 · `backup_offsite.sh` still uses raw `cp` on a live DB — torn-copy index corruption, the O-7.1 fix never ported

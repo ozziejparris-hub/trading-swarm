@@ -1,5 +1,7 @@
 # State of play — 2026-07-24 shutdown, ~2 weeks offline
 
+**SUPERSEDED 2026-08-07 — B5 is now FINAL, not "SHIPPED, NOT FINAL" as stated throughout this doc.** O-46 (the external audit gap this doc calls out below) was cleared 2026-08-07 — see `brain/decisions/2026-06-29-overhang-ledger.md` O-46 entry ("EXTERNAL AUDIT RESULT 2026-08-07") and `brain/decisions/2026-08-07-session-summary.md` Part 3 for the full result. Zero false splits found; B5 is the frozen input to B3. Everything else in this doc (harness state, ledger snapshot, PIT components) reflects 2026-07-24 and should be read as historical context, not current status.
+
 **Read this first on return.** Server goes offline tonight (2026-07-24) for ~2 weeks. This captures exactly where the project stands so you don't have to reconstruct it from commit archaeology.
 
 ---
