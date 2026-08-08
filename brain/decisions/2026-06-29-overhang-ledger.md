@@ -832,6 +832,34 @@ After accounting for this generalized mechanism, **B1b's T=now reconstruction vs
 
 ---
 
+### O-49 · 2026-07-24 → 2026-08-06 outage gap is substantially SELF-HEALING — last night's "zero trades exist, therefore impossible" claim was a detection-lag trap, not evidence of permanent loss
+
+**ITEM:** The 2026-07-24 → 2026-08-06 outage gap (13.5 days, box down 2026-07-24 21:46 → 2026-08-07 09:37) is largely **not** a permanent hole. Polymarket's API serves historical trades, so the system has been retroactively backfilling the missing window since coming back online.
+
+**EVIDENCE, measured 2026-08-08 morning:** 9,654 trade rows now carry timestamps in 2026-07-25 → 2026-08-06, spread across every day of the gap (39/day on 07-24/07-25 rising to ~1,900/day by 08-05/08-06). Their rowids sit at the very top of the `trades` table — 10,824,745–10,851,634 against a table max of 10,851,784 — i.e. inserted this morning, absent from the DB the previous night.
+
+**THE CORRECTION (recorded explicitly, not softened):** last night's structural claim — "zero trades exist anywhere in the window, therefore `tape_end` inside the window is structurally impossible" — was **WRONG**. It treated a *current* absence of data as evidence of a *permanent* absence of the underlying event. This is the same detection-lag trap we correctly identified and deliberately avoided for the 177/185 `resolution_date`-only markets (see O-45/[[project_o36_resolution_date_reliability]]), fallen into here in the opposite direction: there we knew not to trust an early write-time date as proof an event happened early; here we trusted an early read-time absence as proof an event never got recorded at all. **General lesson: after an outage, absence-of-data is not evidence of absence-of-event until backfill has demonstrably completed.**
+
+**THE MOVING NUMBERS (last night → this morning):**
+- `tape_end` inside outage window: 0 → **3,066**
+- opened-during outage: 0 → **2,821**
+- open-through (first_trade < 07-24 AND tape_end ≥ 08-07): 4 → **147** (all currently unresolved; avg gap 22.7% of trading life, worst case 80.5%; 50 of 147 already exceed the 25%-of-life severity line)
+- `resolution_date`-in-window: 177 → 185
+
+Backfill is visibly still running, not settled: category sync was only ~28% through (913/3271) before the 06:43 interrupt this morning, and `pnl_worker` was still processing in small batches as of the 08:44 restart. These counts should not be treated as a new baseline — they are mid-catch-up.
+
+**WHAT IS GENUINELY UNRECOVERABLE (the narrower, real loss):** `order_book_snapshots` remain stuck at `2026-07-24T08:18:09Z`. Unlike trades, order-book depth only exists live and cannot be backfilled from any API. ~14 days of forward order-book calibration data (B4's purpose) **is** permanently lost — that conclusion from last night stands, it is just far narrower than last night's framing implied.
+
+**CONSEQUENCE / DECISION:** gap-flagging is **DEFERRED, not cancelled**. Writing `flag_reason` or `trade_gap_flag` now would encode a baseline that is moving by an order of magnitude. The record-broadly/exclude-narrowly approach and the pre-stated severity rule (exclude if gap >25% of trading life OR gap within 14 days of `tape_end`) remain the plan — to be applied once backfill demonstrably completes. Re-check the four structural counts above then; flag only once they've converged.
+
+**STILL TRUE:** the frozen population `bt_pop_2025-11-01_v1` remains structurally immune (4,712 rows, `MAX(tape_end) = 2026-07-20 19:48:51`, before the outage start). The 177/185 `resolution_date`-only markets should still **not** be flagged — they remain a detection-lag artifact in the other direction (real `tape_end` values Apr 14 – Jul 21), and flagging them would reintroduce the pre-O-45 write-time bug.
+
+**CROSS-REF:** O-45 (bulk-backfill contamination / `tape_end` methodology — the general principle this both echoes and inverts), O-46 (B5, unaffected — frozen population predates the outage), O-14 (the `offsite_backup >26h` observer alert seen overnight is pre-existing and unrelated to this finding).
+**STATUS:** OPEN — deferred pending backfill completion, not a blocker to other work.
+**FROZEN-AREA?** No.
+
+---
+
 ## RESOLVED ITEMS (struck — evidence cited)
 
 ~~**Behavioral integration tests 2, 5, 6 (test_behavioral_integration.py)**~~  
