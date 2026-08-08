@@ -632,3 +632,38 @@ This document grows more valuable every week.
 - URGENT: RQ-GEO-ELO-001 Phase 1 — 43+ days past July 1 deadline. Phase 5 Gate 4 BLOCKED. Highest-impact research action in system.
 - URGENT: RQ0 monthly gate — 5+ weeks overdue, 39 traders above ELO 3,500 unclassified.
 - NEW: LEGENDARY pool at 14 clean — 3 consecutive week decline. Monitor for impact on Gate 3 signal generation pipeline.
+
+---
+
+## Lessons added 2026-08-08
+
+### System Architecture Lessons
+- 2026-08-08: Server outage 2026-07-24 – 2026-08-07 (13.5 days cold). All services recovered cleanly. DB integrity verified via full `PRAGMA integrity_check` (2h31m, 15GB file) — clean. WAL mode protects against corruption even on abrupt shutdown; full integrity_check worth running after any extended cold outage. The outage left a 13-day trade gap (Jul 25 – Aug 6); ~4+ markets were open-through the gap. Decision: record broadly via `flag_reason`, exclude narrowly via `trade_gap_flag=1` only for severely affected markets. Critical: use `tape_end` as anchor, not `resolution_date` (O-45 lesson). (Source: 2026-08-07-session-summary.md)
+
+- 2026-08-08: B5 event clustering is FINAL (O-46 cleared 2026-08-07). 4,712 rows in `event_cluster_labels` against `bt_pop_2025-11-01_v1`. Zero false splits found. Check 1 proved 0 merge errors across 3,343 clusters; external audit found 0 false splits in hand-labelled residue. B3 backtest harness is next. (Source: 2026-08-07-session-summary.md)
+
+- 2026-08-08: O-37 synthetic-market quarantine (84 markets, 17 LEGENDARY traders removed) is now 5+ cycles deep and stable. LEGENDARY pool settled at legendary_clean=14, legendary_active=19 post-quarantine. The pool has not recovered to pre-O-37 levels (peak was 23 clean in June). This appears to be the new equilibrium unless new geo markets generate high-quality geo_elo data for near-LEGENDARY traders. (Source: performance-analyst July 2026 reports)
+
+- 2026-08-08: true_research_pool growth continues compounding — 3,837 (Jun 13) → 7,836 (Jun 20) → 16,263 (Jul 11) → 20,264 (Aug 8). 5× growth in 8 weeks. Root cause formally unconfirmed but consistent with vgregoire external_seed traders accumulating resolved trades past the 20-trade threshold. The integration contract Section 9 thresholds (set when pool was ~3,800) are now significantly below actual values and no longer provide meaningful health monitoring. (Source: contract-checks.log)
+
+### Calibration Findings
+- 2026-08-08: Pool C geo specialists had a systematic YES bias on Iran-cluster geopolitical escalation outcomes, June 30 resolution batch. ~130 markets resolved No (Iran regime stable, no escalation). Pool C avg_price was 0.51–0.87 on escalation scenarios. Drove 30d Brier from 0.1798 (Jun/Jul peak) to 0.3643 (Jul 20) — calibration artefact from a single event cluster, not systemic model failure. Underlying LEGENDARY geo accuracy (79.6%, n=49, finding 2026-06-03-ELO-VS-MARKET-001) remains the most reliable validated number. The Iran cluster failure is the first documented case of Pool C having category-specific directional bias. (Source: performance-analyst 2026-07-20-weekly.md)
+
+- 2026-08-08: ELO weekly snapshot for week ending Jul 20: LEGENDARY 41% (n=157), ELITE 71%, QUALIFIED 67%. Previous weeks superseded. Confirmed: unfiltered LEGENDARY weekly percentages are not meaningful — contested-market filter required to see edge. ELITE (71%) outperforming LEGENDARY (41%) unfiltered is consistent with LEGENDARY traders concentrated in harder contested markets. (Source: findings 2026-07-20-ELO-LEGENDARY-001 et al.)
+
+### Strategy Insights
+- 2026-08-08: STR-003 accuracy frozen at 3/6 (50%). STR003-004 (Putin NO) unresolved in DB despite real-world resolution June 30. Gate 3 requires 60% over 10+ markets — need 4 more resolutions at ≥60% rate. At current rate of ~2/month, Gate 3 will not be met before October 2026 even in the best case. LEGENDARY pool (14 clean) too thin to generate ≥4-trader HIGH conviction signals for 6+ consecutive weeks. (Source: performance-analyst July 2026 reports)
+
+### Positions Scan (Jul 13 + Jul 20)
+- 2026-08-08: No HIGH conviction signals (≥4 LEGENDARY, ≥30pt gap) for 6+ consecutive weeks. "US x Iran permanent peace deal by July 31" was the strongest near-term market at scan time (2 LEGENDARY YES, gap=49.5pt, SCI=66.0, MEDIUM); resolved July 31 — no scoring result yet. "US obtains Iranian uranium by Dec 31" is the most committed-capital clean signal (2 LEGENDARY NO, $1,769, gap=50.5pt, MEDIUM SCI). "Democratic House control 2026 Midterms" is a consistent multi-week signal (2 LEGENDARY YES, MEDIUM SCI). The "US x Iran ceasefire March 31" MIXED_SIGNAL has persisted for 3+ scans — not to be treated as directional. No scans ran Jul 27 or Aug 3 (outage).
+
+### Open Questions (updated 2026-08-08)
+- CRITICAL: RQ-GEO-ELO-001 — 9+ weeks unexecuted since Oscar approval 2026-05-25. Use `tape_end`-anchored period boundaries (not `resolution_date`), reference `monitoring/column_definitions.py` Section 6. Highest-impact research action in system.
+- URGENT: STR003-004 (Putin NO, market `0x657195fda8c315771f...`) — still `resolved=0` in DB. Oscar to run `fast_resolution_check.py`.
+- URGENT: Outage gap flagging — 4+ open-through markets need `flag_reason` applied via tape_end-anchored rule (Aug 8 task).
+- OPEN: Elections calibration re-run (O-40) — unfiltered elections Brier remains worse-than-naive.
+- OPEN: SCL-004 feedback-loop-agent condition_id semantic conflict — 9th week pending Oscar review.
+- OPEN: trader-intelligence-agent.md `market_category` — 4th consecutive week flagged, awaiting Oscar decision.
+- OPEN: score_str003_signals deduplication — 14 daily identical writes superseded this run (5th consecutive week noting this).
+- MONITOR: Contract Section 9 thresholds — now significantly below actual values; update needed for meaningful health monitoring.
+- MONITOR: LEGENDARY pool at 14 clean — post-O-37 equilibrium, now 4+ consecutive weeks.

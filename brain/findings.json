@@ -105,7 +105,9 @@
       },
       "actionable": false,
       "action_recommendation": "Continue collecting. Minimum 10 resolved markets required before drawing conclusions. Signal 1 (Russia/Ukraine at 93% smart money) was a significant miss \u2014 watch for overconfidence in geopolitical consensus signals.",
-      "expires_at": "2026-07-20T00:00:00Z"
+      "expires_at": "2026-07-20T00:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-07-20T00:00:00Z."
     },
     {
       "id": "2026-04-21-SIGNAL-STRUCTURE-001",
@@ -123,7 +125,9 @@
       },
       "actionable": true,
       "action_recommendation": "signal-agent must exclude any trader holding both YES and NO capital in the same market from directional signal counts. Only traders with zero opposing capital qualify as genuine directional signals. This filter should be applied before ELO convergence counting. External sources confirm LPs are a significant fraction of high-volume traders on Polymarket (ChainCatcher 2025 analysis, Polymarket official documentation).",
-      "expires_at": "2026-07-20T00:00:00Z"
+      "expires_at": "2026-07-20T00:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-07-20T00:00:00Z."
     },
     {
       "id": "2026-04-25-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -236,7 +240,9 @@
       },
       "actionable": false,
       "action_recommendation": "Do not trigger stop condition. Reframe RQ3.2 as RQ2.2 (entry timing advantage for directional legendary traders). Rerun when more resolved filtered markets available \u2014 need minimum 10 markets with 2+ directional legendary traders and 5pp+ divergence. Current constraint: only 22 markets have 2+ legendary traders after filtering.",
-      "expires_at": "2026-07-26T00:00:00Z"
+      "expires_at": "2026-07-26T00:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-07-26T00:00:00Z."
     },
     {
       "id": "2026-04-26-RQ2.2-PRELIMINARY-001",
@@ -277,7 +283,9 @@
       },
       "actionable": true,
       "action_recommendation": "Signal-agent should use 95% directional threshold for YES positions only. NO positions need separate methodology \u2014 possibly measure over 14-30 day window rather than 7 days. Rerun RQ2.2 with extended windows before treating NO signals as actionable.",
-      "expires_at": "2026-07-26T00:00:00Z"
+      "expires_at": "2026-07-26T00:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-07-26T00:00:00Z."
     },
     {
       "id": "2026-04-26-RQ1.1-RERUN-001",
@@ -488,7 +496,9 @@
       },
       "actionable": true,
       "action_recommendation": "Signal-agent should apply skepticism flag to Elections category signals. QUALIFIED consensus in Elections performs below random chance (46.7% vs 50% baseline). Do not trade Elections signals without independent confirmation. Quant-research-agent should pre-register hypothesis to investigate Elections category dynamics before running analysis.",
-      "expires_at": "2026-08-05T12:00:00Z"
+      "expires_at": "2026-08-05T12:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-08-05T12:00:00Z."
     },
     {
       "id": "2026-05-07-CATEGORY-GEOPOLITICS-001",
@@ -512,7 +522,9 @@
       },
       "actionable": true,
       "action_recommendation": "Signal-agent should prioritise Geopolitics category signals \u2014 92.3% accuracy far exceeds the 60% gate threshold. Combined Geopolitics+Unknown accuracy is 91.3% (n=23). This is where QUALIFIED tier consensus has the most reliable edge. Upgrade Geopolitics signals to HIGH confidence tier when n grows to 20+.",
-      "expires_at": "2026-08-05T12:00:00Z"
+      "expires_at": "2026-08-05T12:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-08-05T12:00:00Z."
     },
     {
       "id": "2026-05-07-SIGNAL-ACCURACY-001",
@@ -691,7 +703,9 @@
       },
       "actionable": true,
       "action_recommendation": "Advance STR-003 to EXPERIMENTAL status at 95% directional threshold. Both YES and NO validated above 60% criterion using eventual resolution proxy. Update strategy-registry.md: PENDING_REVIEW -> EXPERIMENTAL. Add note on YES/NO asymmetry (NO more reliable at 95%). Signal-agent should treat both directions as valid STR-003 signals. Revalidation trigger: run again after 10 more markets resolve (target n=28 YES, n=19 NO at 95% threshold).",
-      "expires_at": "2026-08-07T00:00:00Z"
+      "expires_at": "2026-08-07T00:00:00Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Past expires_at date of 2026-08-07T00:00:00Z."
     },
     {
       "id": "2026-05-07-STRATEGY-OVERDUE-001",
@@ -2505,7 +2519,9 @@
       },
       "actionable": false,
       "action_recommendation": "Await 9 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-10-04T07:00:01Z"
+      "expires_at": "2026-10-04T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-SIGNAL-ACCURACY-INSUFFICIENT-001"
     },
     {
       "id": "2026-07-06-ELO-LEGENDARY-001",
@@ -2524,7 +2540,9 @@
       },
       "actionable": false,
       "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-10-04T07:00:01Z"
+      "expires_at": "2026-10-04T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-ELO-LEGENDARY-001"
     },
     {
       "id": "2026-07-06-ELO-ELITE-001",
@@ -2543,7 +2561,9 @@
       },
       "actionable": true,
       "action_recommendation": "Increase ELITE tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-10-04T07:00:01Z"
+      "expires_at": "2026-10-04T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-ELO-ELITE-001"
     },
     {
       "id": "2026-07-06-ELO-QUALIFIED-001",
@@ -2562,7 +2582,9 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-10-04T07:00:01Z"
+      "expires_at": "2026-10-04T07:00:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-07-06-STRATEGY-OVERDUE-001",
@@ -2741,7 +2763,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-11T09:25:06Z"
+      "expires_at": "2027-07-11T09:25:06Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-12-STR003-ACC-006",
@@ -2771,7 +2795,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-12T06:02:16Z"
+      "expires_at": "2027-07-12T06:02:16Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-13-STR003-ACC-006",
@@ -2801,7 +2827,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-13T06:02:00Z"
+      "expires_at": "2027-07-13T06:02:00Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-13-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -2820,7 +2848,9 @@
       },
       "actionable": false,
       "action_recommendation": "Await 8 more signal resolutions before drawing conclusions",
-      "expires_at": "2026-10-11T07:00:02Z"
+      "expires_at": "2026-10-11T07:00:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-SIGNAL-ACCURACY-INSUFFICIENT-001"
     },
     {
       "id": "2026-07-13-ELO-LEGENDARY-001",
@@ -2839,7 +2869,9 @@
       },
       "actionable": false,
       "action_recommendation": "LEGENDARY tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-10-11T07:00:02Z"
+      "expires_at": "2026-10-11T07:00:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-ELO-LEGENDARY-001"
     },
     {
       "id": "2026-07-13-ELO-ELITE-001",
@@ -2858,7 +2890,9 @@
       },
       "actionable": false,
       "action_recommendation": "ELITE tier at baseline \u2014 maintain current weighting",
-      "expires_at": "2026-10-11T07:00:02Z"
+      "expires_at": "2026-10-11T07:00:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-ELO-ELITE-001"
     },
     {
       "id": "2026-07-13-ELO-QUALIFIED-001",
@@ -2877,7 +2911,9 @@
       },
       "actionable": true,
       "action_recommendation": "Increase QUALIFIED tier weighting \u2014 exceeds 60% accuracy",
-      "expires_at": "2026-10-11T07:00:02Z"
+      "expires_at": "2026-10-11T07:00:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-ELO-QUALIFIED-001"
     },
     {
       "id": "2026-07-13-STRATEGY-OVERDUE-001",
@@ -2896,7 +2932,9 @@
       },
       "actionable": true,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
-      "expires_at": "2026-10-11T07:00:02Z"
+      "expires_at": "2026-10-11T07:00:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-07-20-STRATEGY-OVERDUE-001"
     },
     {
       "id": "2026-07-14-STR003-ACC-006",
@@ -2926,7 +2964,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-14T06:02:01Z"
+      "expires_at": "2027-07-14T06:02:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-15-STR003-ACC-006",
@@ -2956,7 +2996,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-15T06:02:01Z"
+      "expires_at": "2027-07-15T06:02:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-16-STR003-ACC-006",
@@ -2986,7 +3028,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-16T06:02:02Z"
+      "expires_at": "2027-07-16T06:02:02Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-17-STR003-ACC-006",
@@ -3016,7 +3060,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-17T06:02:26Z"
+      "expires_at": "2027-07-17T06:02:26Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-18-STR003-ACC-006",
@@ -3046,7 +3092,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-18T06:02:07Z"
+      "expires_at": "2027-07-18T06:02:07Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-19-STR003-ACC-006",
@@ -3076,7 +3124,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-19T06:02:06Z"
+      "expires_at": "2027-07-19T06:02:06Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-20-STR003-ACC-006",
@@ -3106,7 +3156,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-20T06:02:01Z"
+      "expires_at": "2027-07-20T06:02:01Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-20-SIGNAL-ACCURACY-INSUFFICIENT-001",
@@ -3201,7 +3253,9 @@
       },
       "actionable": true,
       "action_recommendation": "Revalidation signals written to signals.json \u2014 backtest-agent to action",
-      "expires_at": "2026-10-18T07:00:01Z"
+      "expires_at": "2026-10-18T07:00:01Z",
+      "status": "EXPIRED",
+      "expiry_reason": "Strategy status is EXPERIMENTAL \u2014 OVERDUE finding no longer applicable."
     },
     {
       "id": "2026-07-21-STR003-ACC-006",
@@ -3231,7 +3285,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-21T06:02:05Z"
+      "expires_at": "2027-07-21T06:02:05Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-22-STR003-ACC-006",
@@ -3261,7 +3317,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-22T06:02:12Z"
+      "expires_at": "2027-07-22T06:02:12Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-23-STR003-ACC-006",
@@ -3291,7 +3349,9 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-23T06:02:14Z"
+      "expires_at": "2027-07-23T06:02:14Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
     },
     {
       "id": "2026-07-24-STR003-ACC-006",
@@ -3321,7 +3381,39 @@
       },
       "actionable": false,
       "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
-      "expires_at": "2027-07-24T06:02:13Z"
+      "expires_at": "2027-07-24T06:02:13Z",
+      "status": "SUPERSEDED",
+      "superseded_by": "2026-08-08-STR003-ACC-006"
+    },
+    {
+      "id": "2026-08-08-STR003-ACC-006",
+      "generated_by": "score_str003_signals",
+      "generated_at": "2026-08-08T09:08:05Z",
+      "finding_type": "strategy_performance",
+      "confidence": "LOW",
+      "sample_size": 6,
+      "summary": "STR-003 out-of-sample accuracy: 50.0% (3/6 resolved signals correct)",
+      "detail": {
+        "metric": "str003_outcome_accuracy",
+        "value": 0.5,
+        "baseline": 0.5,
+        "direction": "below_baseline",
+        "pass_threshold": 0.6,
+        "passed": false,
+        "by_tier": {
+          "LEGENDARY": {
+            "n": 3,
+            "accuracy": 0.6667
+          },
+          "UNKNOWN": {
+            "n": 3,
+            "accuracy": 0.3333
+          }
+        }
+      },
+      "actionable": false,
+      "action_recommendation": "Accumulate more resolved signals before drawing conclusions (minimum 10 for MEDIUM confidence).",
+      "expires_at": "2027-08-08T09:08:05Z"
     }
   ]
 }
