@@ -2,8 +2,19 @@
 
 **Date:** 2026-07-17
 **Author:** Claude Fable (strategic design session, read-only survey of both repos + live DB)
-**Status:** DESIGN — nothing implemented, nothing changed. Awaiting Oscar's review.
+**Status:** DESIGN — nothing implemented, nothing changed. Awaiting Oscar's review. **[2026-08-09: assumptions 2 and 5 resolved — see AMENDMENT block below. Phase 2 is now the primary experiment; Phase 1/§3 is retained as a rung-A kill-test + dress rehearsal, no longer the sole GO/NO-GO gate.]**
 **Decision this enables:** whether 9 months of trader-tracking infrastructure has produced a tradeable asset, a diagnosable near-miss, or a disproven thesis. **Disproof is a valid, valuable outcome** — this design is built so a negative result is trustworthy and diagnostic, not just "no."
+
+---
+
+## AMENDMENT (2026-08-09 — Phase 2 promoted to primary experiment; §4.4 cost model corrected)
+
+Full record: `2026-08-09-phase2-primary-and-paper-trading-preparation.md`. Two of this document's own §8 assumptions resolved this session, one in each direction, both material enough to change the shape of the design rather than just a number in it. Original text below is preserved; this block and the inline dated notes in §3.4/§4.2/§8 are additive.
+
+1. **Assumption 5 (cohort width) — RESOLVED-NEGATIVE.** B3 scoping measured the actual holdout signal count: primary spec (LEGENDARY-only) = **9 signals / 8 clusters**; the pre-approved NEAR_LEGENDARY fallback = **25 / ~24**. §4.6's own power requirement is 60–120 independent clusters. Both specs fall short — the fallback by 4–6x — and this is a floor (price-band/liquidity filters not yet applied). Per the assumption's own pre-registered contingency, **not** its further fallback (Pool C top-N, rejected — see the decision record, it changes the hypothesis rather than fixing its power): **Phase 2 (§4, Phase 2 protocol) is promoted from conditional-on-GO to the PRIMARY experiment.** Phase 1/§3 is repurposed to a rung-A kill-test plus a plumbing dress rehearsal for Phase 2, not discarded. See §4.2 note below.
+2. **Assumption 2 (no trading fee) — RESOLVED-AND-FALSIFIED.** Polymarket shipped Fee Structure V2 (effective 2026-03-30): taker fees across most categories, geopolitics fee-free, elections classification unverified, maker rebates. §3.4/§4.4 below is corrected in place with the full schedule and the open item.
+
+Net effect on the design: the hypothesis (§0), the cohort definition, the consensus rule (§3.2/§4.2), and the GO/NO-GO logic for real capital (§4.2) are all unchanged. What changes is sequencing (Phase 2 no longer waits on a Phase-1 GO to begin accumulating n — see the decision record's "consequence for urgency") and the cost model's inputs (§3.4, corrected below). This is a scope/sequencing amendment, not a redesign.
 
 ---
 
@@ -119,8 +130,17 @@ Rationale for minimalism: with ~268–567 candidate markets and heavy clustering
 
 ### 3.4 (§4.4) Cost model
 
-- **Fee structure (to verify at build time — stated as of knowledge cutoff):** Polymarket charges no maker/taker trading fees on standard markets and gas is relayed; the real costs are **spread crossing, slippage, and (for early exit) round-trip spread**. Verify the current fee schedule before freezing the spec; if a fee exists, add it to the haircut.
-- **Primary cost spec:** entry at price + half-spread + slippage, modeled as a flat haircut **h = 2¢/share**, with the full curve **h ∈ {0, 1, 2, 3, 5}¢** reported for every result. No result is quoted without its cost curve.
+- **Fee structure (to verify at build time — stated as of knowledge cutoff):** ~~Polymarket charges no maker/taker trading fees on standard markets and gas is relayed; the real costs are **spread crossing, slippage, and (for early exit) round-trip spread**. Verify the current fee schedule before freezing the spec; if a fee exists, add it to the haircut.~~
+
+  **[AMENDED 2026-08-09 — FALSIFIED, corrected below.]** Externally researched 2026-08-09 (live sources, not this doc, not our DB — full findings in `2026-08-09-phase2-primary-and-paper-trading-preparation.md` Part B.1): Polymarket rolled out taker fees in stages through 2026, culminating in **Fee Structure V2, effective 2026-03-30**:
+  - Taker fees apply across crypto, sports, finance, politics, tech, economics, culture, weather.
+  - **Geopolitics and world-events markets remain fee-free.**
+  - Makers pay zero fees and receive a rebate, funded by 15–25% of collected taker fees redistributed daily.
+  - Formula: `fee = shares × feeRate × price × (1 − price)` — peaks at 50% probability (exactly our contested band, §4.2's [0.10, 0.90]), falls off toward the extremes. Politics `feeRate` ≈ 0.04.
+  - **Open item, must resolve before the cost spec is frozen:** whether Polymarket's fee taxonomy classes our `category='Elections'` markets as fee-bearing "Politics" — unverified against the live API, and our internal category label is not guaranteed to match theirs. Geopolitics is confirmed fee-free either way.
+  - Oscar's limit-order-only rule (§4/Phase 2 protocol) is therefore not merely cost-avoidance — as a maker under V2 it is zero fees **plus** a small positive rebate. Model this explicitly in the haircut rather than treating limit-only as conservative-and-costless.
+  - **Forward risk:** more categories may gain fees over time, potentially including geopolitics, over a 9–12 month Phase 2 run. The harness must record the fee schedule in force **per signal at fire time**, not apply one constant retroactively across the whole run.
+- **Primary cost spec:** entry at price + half-spread + slippage, modeled as a flat haircut **h = 2¢/share**, with the full curve **h ∈ {0, 1, 2, 3, 5}¢** reported for every result. No result is quoted without its cost curve. **[AMENDED 2026-08-09]** The flat haircut must now also carry the fee term above (zero for geopolitics and for any maker fill; the politics `feeRate` formula for elections if the open item above resolves fee-bearing) — the haircut is no longer spread/slippage-only.
 - **Calibration path:** the 61 existing order-book snapshots prove the capture works; build item B4 expands capture (hourly, all open geo/elec markets) so that within ~4 weeks we have an empirical spread/depth distribution for exactly the market class we'd trade. The GO/NO-GO (§4.7) is evaluated at the **calibrated** haircut, not the assumed one. Position-size realism: assume $100/bet notional; if calibrated depth-at-10 levels shows $100 moves the book in a material fraction of signal markets, the haircut rises accordingly.
 - **Hold-to-resolution avoids exit costs** (resolution pays $1/0 without a trade); the cost model is entry-side only in the primary spec.
 
@@ -175,6 +195,8 @@ The ladder is the reason a "no" is worth having: every NO-GO comes with *which r
 ---
 
 ## 4. Phase 2 — Forward test (paper trading), conditional on GO
+
+**[AMENDED 2026-08-09 — Phase 2 is now the PRIMARY experiment, not conditional on a Phase-1 GO.]** See `2026-08-09-phase2-primary-and-paper-trading-preparation.md` for the full decision. Summary: B3 scoping measured the holdout consensus-signal count at 9 (primary spec) / 25 (fallback), against a stated power requirement of 60-120 clusters (§4.6) — both specs are structurally underpowered to certify an effect size at Phase 1's timescale, and no cohort-widening fix is available without changing the hypothesis (Pool-C-top-N widening rejected — it stops testing H1 as stated in §0). Phase 2 obtains n by accumulating live time instead, with no PIT reconstruction at all, so it is not subject to §6 threats 1/2/4/7 (which are all reconstruction artifacts) and additionally answers the operational question §4.2's original text below already names as deferred: whether the live pipeline can harvest the edge at all. Phase 1/§3 below is retained as (a) a rung-A kill-test (§4.8) — a clean zero there is still meaningful at low n even though a positive is not certifiable — and (b) the dress rehearsal proving the signal spec, entry pricing, cost model, and stats layer before Phase 2's clock runs for 9-12 months. Sequencing consequence: B7 (`paper_trades` table + scorer, §5) and the live signal-recording loop move up the build-priority order; whether to start them in parallel with the rung-A kill-test rather than after Phase 1 fully completes is an open question, Oscar's call.
 
 No reconstruction, no hindsight risk: everything computed live on unresolved markets, recorded before resolution.
 
@@ -251,10 +273,10 @@ Every row is an action, not a shrug. That's the standard this experiment has to 
 ## 8. Assumptions register (each one falsifiable, checked at build time)
 
 1. CLOB `prices-history` retains data for resolved/delisted markets at usable granularity — **UNVERIFIED, B2 probes first.**
-2. Polymarket still charges no trading fee on standard markets — verify current schedule before freezing the cost spec.
+2. ~~Polymarket still charges no trading fee on standard markets — verify current schedule before freezing the cost spec.~~ **[RESOLVED-AND-FALSIFIED 2026-08-09]** Fee Structure V2 (effective 2026-03-30) charges taker fees across most categories; geopolitics is fee-free; elections classification unverified against the live API; makers get zero fee + rebate; formula peaks at 50% probability. Full detail and cost-model fix in §3.4 above and `2026-08-09-phase2-primary-and-paper-trading-preparation.md` Part B.1.
 3. `elo_snapshots` has run daily without gaps June 11 → today (30/30 dates present — verified; job ownership to confirm).
 4. The positions table's FIFO net-position reconstruction is accurate enough post-O-15/O-20 fixes for cohort exposure at T — the drain has plateaued per the corrected Stage-0a gate, but the backtest should re-check orphaned-trade counts for its specific cohort members (small query, part of B3).
-5. ~45 clean-pool traders at ≥1800 is enough cohort width for ≥2-voter consensus on a usable number of markets — supported by the 567-market ≥2-trader count (hindsight version); the PIT version will be smaller by an unknown factor — **B1's first output is this number**, and if it collapses (<100 train-split bets), the design's pre-approved fallback is widening to Pool C top-N by replayed ELO (documented as a variant, not a re-fit).
+5. ~~~45 clean-pool traders at ≥1800 is enough cohort width for ≥2-voter consensus on a usable number of markets — supported by the 567-market ≥2-trader count (hindsight version); the PIT version will be smaller by an unknown factor — **B1's first output is this number**, and if it collapses (<100 train-split bets), the design's pre-approved fallback is widening to Pool C top-N by replayed ELO (documented as a variant, not a re-fit).~~~ **[RESOLVED-NEGATIVE 2026-08-09]** B3 scoping measured the PIT holdout count directly: primary spec (LEGENDARY-only) = 9 signals / 8 clusters; NEAR_LEGENDARY fallback = 25 / ~24 clusters — both well under the §4.6 power requirement of 60-120 clusters, confirmed collapsed. Per this assumption's own pre-registered contingency the further Pool-C-top-N widening was considered and **rejected** (it changes H1 to a different, untestable-as-stated hypothesis — see the decision record). Resolution taken instead: **Phase 2 promoted to primary experiment** (§4 note above), Phase 1 repurposed to a rung-A kill-test + dress rehearsal. Full reasoning: `2026-08-09-phase2-primary-and-paper-trading-preparation.md` Part A.
 6. 30-minute action latency is achievable by the live system — Phase 2 measures it directly.
 
 ---
