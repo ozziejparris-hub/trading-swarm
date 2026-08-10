@@ -1,0 +1,59 @@
+{
+  "address": "0x63c6169ce52343b2de939559cfc7cc42d66a3e53",
+  "profile_date": "2026-08-10",
+  "geo_elo_active": 2539.1,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile. CRITICAL LIMITATION: this trader qualifies as LEGENDARY (geo_elo_active=2539.1) but has only 18 geo_resolved_trades_count in the DB. Total resolved trades across all categories is 363, but the vast majority are Unknown or non-geo markets. The 18 geo-specific trades are insufficient for reliable archetype classification — LOW confidence is mandatory per data-depth discipline. The 363-trade track record shows 81% overall accuracy with 49% contested entries. Geopolitics category shows 216 trades at 83% accuracy — but this likely includes Trump-says-X, social media prediction, and cultural Geopolitics markets rather than hard geopolitical outcomes. Recent trades confirm: Trump post 'UFC' on Truth Social (multiple entries at 0.920/0.980 NEAR_CERT), Trump insults Netanyahu (YES @ 0.522 CONTESTED — genuine call, won), Iran charges Hormuz fees by July 15 (NO @ 0.983 NEAR_CERT). The pattern is mixed — some genuine directional calls in geopolitics but substantial near-certainty harvesting. DOMAIN_SPECIALIST assigned provisionally because contested share at 49% is above YIELD_HARVESTER threshold, but with LOW confidence given thin geo sample.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [],
+  "domain_blindspots": [],
+  "domain_summary": "Cannot reliably assess domain strengths with only 18 geo_resolved_trades. The 363-total-trade history includes 216 Geopolitics (83% accuracy) and 61 Elections (90% accuracy) and 86 Unknown — but without confirming what the Geopolitics trades are specifically about, domain classification is unreliable. Based on recent trade titles: Trump social media predictions, Iran Hormuz fees, Netanyahu relations — suggests Trump_US and Iran_ME are primary domains. Provisional only — requires more geo-specific resolved trades for calibration.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "MINIMAL is the most conservative defensible weight. HIGH geo_elo_active (2539) with only 18 geo_resolved_trades is a thin data anomaly — the ELO may reflect performance in border-line Geopolitics markets (Trump social media, etc.) that are not hard geo forecasting. Cannot justify any higher weight until 30+ specific geo resolved trades with clear domain classification.",
+  "trusted_domains": [],
+  "discounted_domains": [],
+  "behavioural_flags": [
+    "THIN GEO SAMPLE: geo_resolved_trades_count=18 with geo_elo_active=2539.1 — ELO anomalously high relative to geo sample. Likely driven by Trump-social-media and ambiguous Geopolitics markets that count toward geo_elo but do not represent hard geopolitical forecasting.",
+    "Near-certainty entries in recent trades: Trump-UFC posts at 0.920/0.980, Iran-Hormuz at 0.983 — suggests yield-harvesting in ambiguous 'what will Trump post' markets.",
+    "directionality=1.000 — always takes a single side on every market. No hedging or multi-directional positioning."
+  ],
+  "risk_patterns": [
+    "ELO anomaly: 2539 geo_elo_active on 18 geo trades suggests the geo_elo computation is being inflated by markets that are geo-tagged but not genuinely geopolitical in nature (Trump tweet prediction, etc.)",
+    "Signal overconfidence: including this trader in STR-003 based on ELO alone would weight a thin-sample near-certainty harvester equally with a robust domain specialist"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Donald Trump publicly insult Benjamin Netanyahu?",
+      "side": "YES",
+      "entry_price": 0.522,
+      "result": "WON",
+      "significance": "Jul 1 2026 — contested YES at 0.522 on Trump-Netanyahu relationship. The one clearly genuine directional geo call visible in recent history."
+    },
+    {
+      "market": "Iran charges Hormuz fees by July 15?",
+      "side": "NO",
+      "entry_price": 0.983,
+      "result": "WON",
+      "significance": "Jul 14 2026 — near-certainty NO at 0.983, won. Consistent with Iran_ME yield-harvesting pattern on extreme probability markets."
+    }
+  ],
+  "open_positions_summary": "Open positions not assessed — insufficient data quality at this profile stage.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any STR-003 consideration.",
+    "DO NOT include in STR-003 signals — LOW confidence + thin geo sample. geo_elo_active=2539.1 is misleading given only 18 geo_resolved_trades.",
+    "Monitor for additional geo resolved trades — this profile requires 30+ specific geo trades with clear hard-outcome classification before archetype can be assessed with confidence.",
+    "Investigate which market categories are contributing to geo_elo: if Trump-social-media markets are classified as Geopolitics by the DB, the ELO may not represent genuine geopolitical edge."
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "LEGENDARY tier (geo_elo_active=2539.1) with only 18 geo_resolved_trades — a thin-data anomaly. Total 363 resolved trades at 81% accuracy and 49% contested rate are promising but cannot be reliably assessed without knowing domain composition. Provisional DOMAIN_SPECIALIST with LOW confidence. Signal value LOW pending more geo-specific resolved history. Not STR-003 eligible this cycle or next without human review and expanded geo trade data.",
+  "data_snapshot": {
+    "geo_elo": 2806.4,
+    "geo_elo_active": 2539.1,
+    "resolved_trades": 18,
+    "distinct_markets": 363,
+    "directionality": 1.0,
+    "pnl": 1574
+  }
+}

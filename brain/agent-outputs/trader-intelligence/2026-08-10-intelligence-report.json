@@ -1,0 +1,405 @@
+{
+  "report_date": "2026-08-10",
+  "profiles_updated": [
+    {
+      "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+      "new_resolved_trades": 2,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "tier_changed": false,
+      "what_changed": "Two new resolved trades since Jun 10 profiling: (1) Messi FIFA top goalscorer YES @ 0.370 CONTESTED WON (Jul 11, Sports/Unknown); (2) HI-01 Democratic nominee YES @ 0.020 NEAR_CERT WON (Aug 9, Elections/Unknown). Performance deterioration flag fires: last-10 accuracy 40% (<45% threshold). Open_positions_summary rewritten — dominant book is now entertainment/movies (Devil Wears Prada 2, Avatar, Super Mario Galaxy, Oscars awards) with minimal geo content. Critical intelligence: 22,248 shares YES @ 0.487 on Darline Graham Nordone SC Senate primary (resolves Aug 11 — tomorrow). archetype_confidence downgraded HIGH → MEDIUM due to portfolio behavioral shift and performance deterioration."
+    }
+  ],
+  "archetype_drift_flags": [
+    {
+      "pattern": "performance_deterioration",
+      "trader": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+      "severity": "MEDIUM",
+      "evidence": {
+        "last_10_accuracy": 0.40,
+        "threshold": 0.45,
+        "detail": "Last-10 resolved: HI-01 WON (0.020), Messi WON (0.370), Steve Hilton CA Gov WON (0.760), Chris Rabb PA-03 WON (0.622), Trump says Iran LOST (0.900), Trump says Iran LOST (0.875), Trump says Iran LOST (0.870), Trump says Nuclear LOST (0.870), Trump says Hormuz LOST (0.872), Trump says Nuclear LOST (0.869). Six losses are the May 15 Trump-says-X cluster at near-certainty prices (0.87-0.90) — these are not genuinely contested entries."
+      },
+      "data_depth": "thin (2 new resolved trades; 10-trade window includes prior-cycle data)",
+      "n_new_trades": 2,
+      "interpretation": "The 40% last-10 accuracy is primarily a legacy of the May 15 Trump-says-X cluster losses — 5-6 near-certainty bets (0.87-0.90) on ambiguous Trump-speech events that failed. The 2 new trades both won. The deterioration flag is valid but the causal driver is prior-cycle near-cert entries, not a new directional failure. The bigger behavioral concern is the open portfolio: entertainment/movies now dominate over geopolitics. This is an archetype-adjacent drift that needs more resolved evidence before action. FULL signal weight maintained — flag only.",
+      "reclassified": false
+    },
+    {
+      "pattern": "genuine_forecaster_open_portfolio_shift",
+      "trader": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+      "severity": "MEDIUM",
+      "evidence": {
+        "entertainment_positions": "Devil Wears Prada 2 (8132sh @ 0.880), Avatar Fire & Ash (7057sh @ 0.825), Super Mario Galaxy (6597sh @ 0.799 NO), KPop Golden (1143sh @ 0.860), Oscars awards (multiple)",
+        "geo_positions": "Darline Nordone SC Senate YES 22248sh @ 0.487 CONTESTED (resolves Aug 11), US x Iran meeting NO 6996sh @ 0.765 CONTESTED, Plaid Cymru Welsh 6247sh @ 0.800 CONTESTED",
+        "category_visibility": "ALL positions appear as Unknown in trades.market_category — geo positions invisible to pipeline"
+      },
+      "data_depth": "thin (2 new resolved trades — portfolio inference only, not resolved evidence)",
+      "n_new_trades": 2,
+      "interpretation": "Dominant open book has shifted to entertainment/movies since Jun profiling — no resolved trades in those markets yet so archetype impact is unquantified. The geo positions that remain are contested (Nordone YES @ 0.487 is a genuine directional call) alongside one near-cert (Khamenei @ 0.953). Cannot determine whether entertainment expansion is tactical or structural until positions resolve. Flag for monitoring — not reclassification territory.",
+      "reclassified": false
+    }
+  ],
+  "new_traders_qualified": [
+    {
+      "address": "0x9287bd3d7f9cc43198c98974cbbdfa1c48fe41f2",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2202.3,
+      "provisional_archetype": "GENUINE_FORECASTER",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "Strongest new LEGENDARY qualifier this cycle. 1488 total resolved trades, 97% contested entry rate — the highest observed in the research pool. Russia_UKR is the standout: 193 trades, 76% accuracy, 78% contested. Iran_ME secondary: 244 trades, 66% accuracy, 67% contested. Multi-domain contested accuracy is the GENUINE_FORECASTER signature. PNL=$373 on 1488 trades is anomalously low (probable pipeline sync issue, same pattern as other traders). geo_elo_active=2202.3 is above LEGENDARY threshold (2175) by only 27 points — thin margin. NOT STR-003 eligible this cycle.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "blocking_items": [
+        "Standard first-profile human review required",
+        "PNL=$373 on 1488 trades — investigate pipeline sync issue before any weight upgrade",
+        "geo_elo_active=2202.3 — only 27 points above LEGENDARY threshold, vulnerable to decay"
+      ],
+      "recommended_initial_weight": "MINIMAL",
+      "potential_upgrade_path": "DOMAIN_ONLY in Russia_UKR and Iran_ME after: (1) PNL anomaly investigated as pipeline issue, (2) human review cleared"
+    },
+    {
+      "address": "0x848df648f91091f0f90d941990764c895d1235e6",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2210.2,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "Russia_UKR focused DOMAIN_SPECIALIST at LEGENDARY threshold. 644 resolved trades, 59% accuracy on contested Russia_UKR entries (126/239 contested, 53% rate). Iran_ME secondary with 65% contested accuracy (77% rate in that domain). The near-certainty LOST pattern in Iran_ME (Hormuz at 0.998, Iran enrichment at 0.940-0.950) is a yield-harvesting tail risk — weaker than 9287bd3d and requires monitoring. PNL=$1,655 (positive, plausible). NOT STR-003 eligible this cycle.",
+      "human_review_required": true,
+      "review_priority": "MEDIUM",
+      "blocking_items": [
+        "Standard first-profile human review required",
+        "Near-cert LOST pattern in Iran_ME needs assessment — determine if yield-harvesting or one-off",
+        "Stale open positions on overdue markets require investigation"
+      ],
+      "recommended_initial_weight": "MINIMAL",
+      "potential_upgrade_path": "Russia_UKR DOMAIN_ONLY after human review; Iran_ME discount pending near-cert pattern investigation"
+    },
+    {
+      "address": "0x63c6169ce52343b2de939559cfc7cc42d66a3e53",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2539.1,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "first_read": "Thin-data LEGENDARY — geo_elo_active=2539.1 but only 18 geo_resolved_trades. Total 363 resolved trades at 81% accuracy (49% contested) across all categories. The high geo_elo on 18 geo trades suggests the geo_elo is being driven by ambiguous Geopolitics-tagged markets (Trump-UFC posts, social media predictions) rather than hard geopolitical outcomes. LOW confidence — cannot reliably classify archetype. Signal value LOW regardless of ELO. NOT STR-003 eligible.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "blocking_items": [
+        "18 geo_resolved_trades insufficient for archetype assessment",
+        "ELO anomaly investigation needed: which markets are driving geo_elo to 2539 on 18 trades?",
+        "Standard first-profile human review required"
+      ],
+      "recommended_initial_weight": "MINIMAL"
+    },
+    {
+      "address": "0x4fd3503c78bd1ececdbe034a4dfe156ce659ef31",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2278.2,
+      "provisional_archetype": "YIELD_HARVESTER",
+      "archetype_confidence": "MEDIUM",
+      "first_read": "YIELD_HARVESTER at LEGENDARY tier. 1432 resolved trades, 56% near-certainty entries (>=0.90), 28% contested. Mostly Unknown and Sports markets — the geo_resolved_trades_count=49 are a small fraction. Negative PNL (-$3,712) confirms yield-harvesting tail-risk losses. EXCLUDE weight assigned — no STR-003 signal value at any ELO. The LEGENDARY tier is a volume and near-certainty accuracy artifact, not forecasting skill.",
+      "human_review_required": false,
+      "review_priority": "NONE",
+      "recommended_initial_weight": "EXCLUDE"
+    }
+  ],
+  "emerging_consensus": [],
+  "direction_reversals": [],
+  "approaching_resolutions": [
+    {
+      "market": "Will Darline Graham Nordone be the new Republican nominee for Senate in South Carolina?",
+      "market_id": null,
+      "end_date": "2026-08-11",
+      "days_remaining": 1,
+      "positions": [
+        {
+          "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+          "archetype": "GENUINE_FORECASTER",
+          "signal_weight": "FULL",
+          "domain": "Trump_US (Elections)",
+          "in_trusted_domain": true,
+          "direction": "Yes",
+          "avg_price": 0.487,
+          "net_shares": 22248,
+          "contested": true
+        }
+      ],
+      "pre_res_scan_status": "CAPTURED — Aug 9 pre-res scan shows LEGENDARY tier, 1 LEGENDARY trader, smart_money 91.9% YES vs market 48.7%. 43.2pp gap. ecaa8806 is the LEGENDARY trader. This is a genuine contested-price call by the pool's highest-signal trader.",
+      "note": "Resolves TOMORROW. ecaa8806 (GENUINE_FORECASTER FULL) has 22,248 shares YES at 0.487 CONTESTED on this SC Senate primary. At current market price of ~0.487 the position is at breakeven — a contested bet. The pre-res scan's 91.9% smart_money YES (vs 48.7% market) reflects concentration of smart money capital on YES. This is the key archetype data point for ecaa8806 — a win here confirms GENUINE_FORECASTER archetype and counters the performance deterioration flag. This market was correctly captured in the pre-res scan."
+    },
+    {
+      "market": "Will Matt Claman advance from the 2026 Alaska Governor primary?",
+      "market_id": null,
+      "end_date": "2026-08-18",
+      "days_remaining": 8,
+      "positions": [
+        {
+          "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "domain": "Trump_US (Elections)",
+          "in_trusted_domain": false,
+          "direction": "No",
+          "avg_price": 0.670,
+          "net_shares": 20,
+          "contested": true
+        }
+      ],
+      "pre_res_scan_status": "NOT CAPTURED — Alaska Governor primary Aug 18 not in Aug 9 pre-res scan. Pre-res scan covers elections markets through Aug 11 and Iran markets through Aug 15 but missed the Aug 18 Alaska primary.",
+      "note": "3d03c46d (DOMAIN_SPECIALIST Iran_ME/Russia_UKR, MINIMAL weight) holds NO @ 0.670 CONTESTED (20 shares). Small position (20 shares) and outside trader's trusted domain (Iran_ME/Russia_UKR). Low signal weight — not actionable for STR-003. Flagged because this is an approaching resolution that the pre-res scan missed — add to pre-res watchlist for Aug 18."
+    },
+    {
+      "market": "US x Iran Effective Ceasefire by August 14?",
+      "market_id": null,
+      "end_date": "2026-08-14",
+      "days_remaining": 4,
+      "positions": [],
+      "pre_res_scan_status": "CAPTURED — Aug 9 pre-res scan: LEGENDARY tier, direction=NO, 2 ELITE traders, 1 LEGENDARY trader. No eligible canonical-pool LEGENDARY trader has a visible position in this specific market via our standard geo query. The LEGENDARY trader in the pre-res scan may be one of the 8 stored-LEGENDARY traders now dropped to NEAR_LEGENDARY (edc28341, 677aec88, fbe2f1f7, etc.) or may be 848df648/9287bd3d (new qualifiers, not yet eligible). Position not identified this cycle.",
+      "note": "Flagged from pre-res scan — LEGENDARY signal on this market, but cannot identify the trader from our eligible pool. Request: after human review of new qualifiers, check whether 848df648 has a position in this market (their Iran_ME open positions include US-Iran ceasefire markets, though with different dates)."
+    },
+    {
+      "market": "US announces end of Iranian blockade by August 15, 2026?",
+      "market_id": null,
+      "end_date": "2026-08-15",
+      "days_remaining": 5,
+      "positions": [],
+      "pre_res_scan_status": "CAPTURED — Aug 9 pre-res scan: LEGENDARY tier, direction=NO, 1 ELITE trader, 1 LEGENDARY trader. Same identification gap as Aug 14 ceasefire market. Cannot identify which LEGENDARY trader holds this position.",
+      "note": "Two Iran-related approaching resolutions (Aug 14, Aug 15) with LEGENDARY signals in pre-res scan but unidentified in our eligible pool. This is a data gap resulting from: (1) category visibility bug masking ecaa8806 positions, (2) 8 formerly-LEGENDARY traders now dropped to NEAR_LEGENDARY and excluded from our eligible query. Recommend investigating whether c722c1a1 (Iran_ME DOMAIN_SPECIALIST, geo_elo_active=2359.6, still LEGENDARY) has positions in these markets — their known US-Iran exposure makes them the most likely candidate."
+    }
+  ],
+  "open_position_intelligence": {
+    "eligible_traders_scanned": [
+      "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+      "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+      "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
+      "0x6b025355d035a679205ae23de33c7e9abe71e5fc",
+      "0xc722c1a1a0bfddf4e0edb3286f7ebce127221334"
+    ],
+    "excluded": ["0xd218e474776403a330142299f7796e8ba32eb5c9 (YIELD_HARVESTER/EXCLUDE)"],
+    "key_positions": {
+      "d44e974a_russia_ukr_no_book": {
+        "trader": "0xd44e974a3edb232aa4aedbdcc59792b76a5f67e2",
+        "archetype": "VOLUME_SPECIALIST",
+        "signal_weight": "DOMAIN_ONLY",
+        "interpretation": "Russia_UKR NO book unchanged for the fourth consecutive week. Comprehensive thesis (Russia will not prevail): Ukraine cede territory NO @0.731 (15,377sh), Ukraine signs peace deal NO @0.557 CONTESTED (6,328sh), Ukraine not join NATO NO @0.711 CONTESTED (12,415sh), Russia capture Kostyantynivka NO @0.529 CONTESTED (39,186sh), Ukraine election NO @0.707 CONTESTED (1,396sh), Ukraine limit forces NO @0.606 CONTESTED (4,939sh). Also: US obtains Iranian enriched uranium NO @0.720 CONTESTED (2,457sh). No new entries detected this cycle. All positions established Jan-May 2026. DOMAIN_ONLY weight — counts in Russia_UKR but this is VOLUME_SPECIALIST, not GENUINE_FORECASTER. No other eligible LEGENDARY trader holds positions in these markets."
+      },
+      "ecaa8806_entertainment_dominant": {
+        "trader": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
+        "archetype": "GENUINE_FORECASTER",
+        "signal_weight": "FULL",
+        "interpretation": "GENUINE_FORECASTER has shifted portfolio to entertainment/movies — open book dominated by box office predictions and Oscars awards (all Unknown category, all invisible to geo pipeline). The only geo-relevant actionable position is Darline Nordone SC Senate YES @0.487 CONTESTED (22,248sh — resolves TOMORROW). US x Iran meeting NO @0.765 CONTESTED (6,996sh) is the second geo call. All positions invisible via market_category filter. Highest-weight trader in the pool has effectively zero visibility in the standard pipeline."
+      },
+      "c722c1a1_iran_me_positions": {
+        "trader": "0xc722c1a1a0bfddf4e0edb3286f7ebce127221334",
+        "archetype": "DOMAIN_SPECIALIST",
+        "signal_weight": "MINIMAL",
+        "interpretation": "Two visible open positions: US withdraw from NATO YES @0.086 (598sh), and Iran ceasefire NO @0.040 (0 effective shares). Both appear to be stale/overdue markets with no end_date. No new contested Iran_ME entries detected. This trader is expected to have positions in the Aug 14-15 Iran ceasefire/blockade markets (aligned with their Iran_ME focus) but these are not visible via current open positions query — possible that those positions are not reflected in the trades table or have been reduced to zero."
+      }
+    },
+    "no_consensus_found": true,
+    "consensus_explanation": "No 2+ eligible LEGENDARY traders net-long the same direction in the same market. The Russia_UKR NO book (d44e974a) has no eligible counterpart. ecaa8806's geo positions (Nordone, Iran meeting) have no visible counterparts among remaining eligible traders."
+  },
+  "tier_demotion_reviews": {
+    "stored_legendary_now_near_legendary": [
+      {
+        "address": "0x8e9eedf20dfa70956d49f608a205e402d9df38e4",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2145.9,
+        "archetype": "YIELD_HARVESTER",
+        "signal_weight": "EXCLUDE",
+        "note": "LEGENDARY → NEAR_LEGENDARY. YIELD_HARVESTER EXCLUDE — no signal impact."
+      },
+      {
+        "address": "0xd684df320961d73d746a59e7b5343a0b7a733d4c",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2139.5,
+        "archetype": "YIELD_HARVESTER",
+        "signal_weight": "EXCLUDE",
+        "note": "LEGENDARY → NEAR_LEGENDARY. YIELD_HARVESTER EXCLUDE — no signal impact."
+      },
+      {
+        "address": "0xfbe2f1f7066a035dacaf1cf625135427ff776f8d",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2126.2,
+        "archetype": "DOMAIN_SPECIALIST",
+        "signal_weight": "MINIMAL",
+        "note": "LEGENDARY → NEAR_LEGENDARY. DOMAIN_SPECIALIST MINIMAL — signal-relevant demotion. Was in eligible pool for open position intelligence (now excluded from LEGENDARY canonical query)."
+      },
+      {
+        "address": "0x9cb98fc57fe8a3bdf75c3b48bd419e5d262f7b80",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2093.1,
+        "archetype": "YIELD_HARVESTER",
+        "signal_weight": "DOMAIN_ONLY",
+        "note": "LEGENDARY → NEAR_LEGENDARY. Note: persisting YIELD_HARVESTER/DOMAIN_ONLY weight inconsistency flagged in Jul 20 report — YIELD_HARVESTER should carry EXCLUDE, not DOMAIN_ONLY. Oscar to review and correct."
+      },
+      {
+        "address": "0x677aec88bba252680728e717538f44a3cc22bd2e",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2055.2,
+        "archetype": "DOMAIN_SPECIALIST",
+        "signal_weight": "MINIMAL",
+        "note": "LEGENDARY → NEAR_LEGENDARY. DOMAIN_SPECIALIST MINIMAL — signal-relevant demotion."
+      },
+      {
+        "address": "0x51b5b8b1574994d5472351b368f6e6e4a1af9975",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2045.2,
+        "archetype": "VOLUME_SPECIALIST",
+        "signal_weight": "MINIMAL",
+        "note": "LEGENDARY → NEAR_LEGENDARY. VOLUME_SPECIALIST MINIMAL — minimal signal impact."
+      },
+      {
+        "address": "0xedc2834124c0465fb2ccbf239896ef65f975ad9f",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 2003.9,
+        "archetype": "DOMAIN_SPECIALIST",
+        "signal_weight": "MINIMAL",
+        "note": "LEGENDARY → NEAR_LEGENDARY. DOMAIN_SPECIALIST MINIMAL — signal-relevant demotion."
+      },
+      {
+        "address": "0xc624cccd414dc90ea329f06cf535fafa40d2ee24",
+        "stored_tier": "LEGENDARY",
+        "current_geo_elo_active": 1973.8,
+        "archetype": "DOMAIN_SPECIALIST",
+        "signal_weight": "MINIMAL",
+        "note": "LEGENDARY → NEAR_LEGENDARY (previously flagged Jul 20 as dropped below 2175; now further decayed to 1973.8)."
+      }
+    ],
+    "near_legendary_below_1800_new_this_cycle": [
+      {
+        "address": "0x2884f98185d2005691d245f3e2e70b15d1e1d0c3",
+        "stored_tier": "NEAR_LEGENDARY",
+        "current_geo_elo_active": 1780.2,
+        "archetype": "DOMAIN_SPECIALIST",
+        "signal_weight": "DOMAIN_ONLY",
+        "note": "FIRST TIME BELOW 1800. Russia_UKR DOMAIN_SPECIALIST with DOMAIN_ONLY weight — signal-relevant demotion. This is the trader with the Russia_UKR YES position on New People Duma elections (persisting from prior reports). Oscar to decide on monitoring vs retirement."
+      },
+      {
+        "address": "0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f",
+        "stored_tier": "NEAR_LEGENDARY",
+        "current_geo_elo_active": 1721.9,
+        "archetype": "GENUINE_FORECASTER",
+        "signal_weight": "PARTIAL",
+        "note": "FIRST TIME BELOW 1800. GENUINE_FORECASTER PARTIAL weight — signal-relevant demotion. Two GENUINE_FORECASTERs dropping below threshold in the same cycle is significant pool contraction. Oscar to decide: monitoring or retirement."
+      },
+      {
+        "address": "0xbc1775a8bc4dda029c04bc4976c5612430f6289a",
+        "stored_tier": "NEAR_LEGENDARY",
+        "current_geo_elo_active": 1692.9,
+        "archetype": "GENUINE_FORECASTER",
+        "signal_weight": "PARTIAL",
+        "note": "FIRST TIME BELOW 1800. GENUINE_FORECASTER PARTIAL weight — signal-relevant demotion alongside bc54e69667c. Both GENUINE_FORECASTER/PARTIAL traders now below threshold. If these traders recover ELO, they would re-enter the signal pool at PARTIAL weight."
+      }
+    ],
+    "near_legendary_below_1800_persisting": [
+      {"address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a", "current": 1462.3, "archetype": "GENUINE_FORECASTER", "signal_weight": "MINIMAL", "note": "Continuing decay from prior cycles."},
+      {"address": "0x4ecefb5b148a5ac4f414b277c54cd328ae3a3893", "current": 1486.2, "archetype": "GENUINE_FORECASTER", "signal_weight": "DOMAIN_ONLY", "note": "Continuing decay from prior cycles."},
+      {"address": "0x9aa516edbff6688595987727b4edc530cff14010", "current": 1793.6, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0x7a3b6452a73cfdada92a9bcd6c13cd9dd7782138", "current": 1652.1, "archetype": "VOLUME_SPECIALIST", "signal_weight": "DOMAIN_ONLY"},
+      {"address": "0x197040709ae61627d3685a8d6ce1f9e82e6b398d", "current": 1426.1, "archetype": "YIELD_HARVESTER", "signal_weight": "MINIMAL"},
+      {"address": "0xc31516291191961a882c5b6e22fe9ba8035afe18", "current": 1710.8, "archetype": "YIELD_HARVESTER", "signal_weight": "MINIMAL"},
+      {"address": "0x6014e4a02567f009a02e94c57785f4f970c5f9a4", "current": 1544.6, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0xe78e4a3e1b794c710a853c29f096fcea31093c5b", "current": 1474.7, "archetype": "YIELD_HARVESTER", "signal_weight": "MINIMAL"},
+      {"address": "0xe0bc6311306558d71f68fc085c26f0337996ad7c", "current": 1733.2, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0xc9ad18bc5d11639af167cc879fbc1333e22e79d0", "current": 1393.4, "archetype": "YIELD_HARVESTER", "signal_weight": "MINIMAL"},
+      {"address": "0x686d5bfc5aee6aaed7bf6a11baef5b57e57d1a68", "current": 1611.9, "archetype": "VOLUME_SPECIALIST", "signal_weight": "DOMAIN_ONLY"},
+      {"address": "0x821ebe19a8979904476f3ab6d23879dbccf6e7a9", "current": 1494.0, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0xaf409e50577bd9cba48378656548a2d28d1a5662", "current": 1555.2, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0xdfdbce9d29eabf65c130d61f1425f1c4d786d762", "current": 1617.0, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0x5f4a24343d284c490afdc9e53f055d3cf8ba9d33", "current": 1596.9, "archetype": "YIELD_HARVESTER", "signal_weight": "EXCLUDE"},
+      {"address": "0xdde1a0257ddcc19522df5128049ce5619944f1d7", "current": 1564.4, "archetype": "YIELD_HARVESTER", "signal_weight": "MINIMAL"}
+    ]
+  },
+  "pipeline_collapse_status": {
+    "severity": "CRITICAL",
+    "consecutive_weeks": 7,
+    "description": "12 formerly LEGENDARY and NEAR_LEGENDARY traders continue to have geo_elo=NULL, geo_elo_active=NULL, geo_resolved_trades_count=0, geo_accuracy_pool=0. SEVENTH CONSECUTIVE WEEK. All 12 are confirmed to be in this state as of this run. The elo_snapshots table continues to have no data for these traders after June 18, 2026 — every week without a fix is another lost data point. The most recent diagnosis (Jul 20 report): update_geo_elo.py reads geo_resolved_trades_count from the trades table, but these traders have only 5-6 rows in the trades table while their actual history is in the positions table. The pipeline fix requires investigating whether geo trade counts should be sourced from positions table instead of trades table for these traders.",
+    "affected_addresses": [
+      "0x474ea661f6be8c9d49438353a42acedd229c938b",
+      "0xb0403bc0a8a1f7b8f7e40656388a139c037c1c4e",
+      "0x51d2063dc67f9de481223cb1cf329d0234f2eaa8",
+      "0x4f2365287b87b4437bee646b269656817151e0d3",
+      "0x4c34beb16ddedf02116413693b07a709e0a1dcce",
+      "0x40173a531f84e7fde7f806fd72c154886a02fb23",
+      "0xca0acc6f272eb35229c2ca4be66049e7058193a4",
+      "0xf76d655478548b7799adc310d024fdc593b008dc",
+      "0x9f162cab9822be4ce687a1a12d8114dc9d14884d",
+      "0x55055087699c7436fde338b7017c20378b9baa5a",
+      "0xbbd22b1ace7f8933e2862a0827ad6a63dbad3c10",
+      "0x40f3fcf1dc83bb5a1036f63684c4e061f85c4e7e"
+    ],
+    "profile_action": "Profiles for all 12 preserved unchanged. Do not update tier or archetype based on NULL DB values — these are pipeline artifacts. Will revalidate against restored elo_active values when pipeline is fixed."
+  },
+  "pool_health": {
+    "legendary_clean": 10,
+    "near_legendary_clean": 19,
+    "profiles_current": 56,
+    "profiles_stale": 0,
+    "profiles_updated_this_run": 1,
+    "new_profiles_created": 4,
+    "total_profiles": 56,
+    "pipeline_collapse_affected": 12,
+    "notes": "legendary_clean=10 (down from 13 last week — 8 stored-LEGENDARY dropped to NEAR_LEGENDARY, offset by 2 new LEGENDARY qualifiers added this cycle: 9287bd3d and 848df648). near_legendary_clean=19 (down from 28 — 3 new demotions from NL to below threshold: 2884f98, bc54e69667c, bc1775a). clean_pool 20,298 (down from 29,531 — significant change, methodology or data shift investigation warranted). profiles_stale=0 — all traders with new resolved trades were processed. The LEGENDARY pool of non-EXCLUDE, non-YIELD_HARVESTER traders capable of generating STR-003 signals has contracted to: d44e974a (VOLUME_SPECIALIST/DOMAIN_ONLY), ecaa8806 (GENUINE_FORECASTER/FULL), 3d03c46d (DOMAIN_SPECIALIST/MINIMAL), 6b025355 (DOMAIN_SPECIALIST/MINIMAL), c722c1a1 (DOMAIN_SPECIALIST/MINIMAL). New qualifiers 9287bd3d and 848df648 are MINIMAL and pending human review — not yet STR-003 eligible."
+  },
+  "data_quality_flags": [
+    {
+      "flag": "9cb98fc5 YIELD_HARVESTER/DOMAIN_ONLY weight inconsistency (persisting)",
+      "detail": "Flagged Jul 20. Still uncorrected. YIELD_HARVESTER archetype with DOMAIN_ONLY signal weight — per integration contract Section 11, YIELD_HARVESTERs must carry EXCLUDE weight. Oscar to review and correct to EXCLUDE if archetype stands."
+    },
+    {
+      "flag": "clean_pool population drop: 29,531 → 20,298",
+      "detail": "The research pool dropped by 9,233 traders between the Jul 20 run and this run (Aug 10). This is a significant change. Possible causes: (1) batch update to research_excluded flag, (2) bot_type assignment to previously-unclassified traders, (3) resolved_trades_count threshold enforcement. Recommend investigating daily_maintenance.py logs for the week of Aug 3-9. This does not affect the LEGENDARY tier (pool_c query is separate) but is a data health flag."
+    },
+    {
+      "flag": "ecaa8806 category visibility (persisting — fourth consecutive report)",
+      "detail": "ALL of ecaa8806's positions appear as Unknown in trades.market_category. The GENUINE_FORECASTER FULL trader is completely invisible to geo pipeline queries. This trader's Nordone SC Senate position (22,248sh, resolving Aug 11) and Iran meeting position (6,996sh) would generate STR-003 signals if visible — they are currently invisible. The category sync appears not to cover markets that were created or categorized after a certain date."
+    }
+  ],
+  "action_items": [
+    "CRITICAL — SEVENTH CONSECUTIVE WEEK: geo_elo_active pipeline collapse. 12 Russia_UKR DOMAIN_SPECIALISTs (geo_elo_active 2099-2722 as of Jun 18) still NULL in DB. Hypothesis: update_geo_elo.py sources geo_resolved_trades_count from trades table rows, but these traders have only 5-6 trades table entries (their position history is in positions table only). elo_snapshots stopped at Jun 18 — 53 days of lost historical ELO data and counting. STR-003 Russia_UKR coverage blind since that date. Oscar must investigate and fix update_geo_elo.py this week.",
+    "HUMAN REVIEW PRIORITY — 0x9287bd3d: strongest new LEGENDARY qualifier since initial profiling (Jun 2026). 1488 trades, 97% contested entry rate, 76% Russia_UKR accuracy on contested entries. Provisional GENUINE_FORECASTER MEDIUM confidence. Blocked by: (1) PNL=$373 anomaly investigation, (2) standard first-profile human review. If cleared: upgrade to DOMAIN_ONLY in Russia_UKR and Iran_ME. geo_elo_active=2202.3 — only 27 points above LEGENDARY threshold, monitor for decay.",
+    "RESOLVES TOMORROW (Aug 11) — Darline Graham Nordone SC Senate: ecaa8806 (GENUINE_FORECASTER FULL) holds 22,248 shares YES @ 0.487 CONTESTED. Pre-res scan confirmed LEGENDARY signal (91.9% smart money YES vs 48.7% market). Win = archetype confirmation and counter to performance deterioration flag. Loss = adds evidence for archetype review. Record resolution outcome and update notable_calls at next cycle.",
+    "SIGNAL-RELEVANT DEMOTION CASCADE: 3 new below-1800 demotions this cycle — 2884f98 (Russia_UKR DOMAIN_SPECIALIST/DOMAIN_ONLY, 1780.2), bc54e69667c (GENUINE_FORECASTER/PARTIAL, 1721.9), bc1775a (GENUINE_FORECASTER/PARTIAL, 1692.9). Two GENUINE_FORECASTER/PARTIAL traders below threshold simultaneously is a material pool event. Oscar to decide: formal demotion with monitoring hold vs profile retirement. 8 more stored-LEGENDARY traders dropped to NEAR_LEGENDARY this cycle — clean LEGENDARY pool at 10 (from 13 last week).",
+    "HUMAN REVIEW — 0x848df648: Russia_UKR DOMAIN_SPECIALIST LEGENDARY candidate. 644 trades, 59% contested accuracy in Russia_UKR, 65% contested accuracy in Iran_ME. Blocked by near-cert LOST pattern in Iran_ME (Hormuz 0.998, Iran enrichment 0.940-0.950). Simpler upgrade path than 9287bd3d. Review priority MEDIUM.",
+    "YIELD_HARVESTER WEIGHT INCONSISTENCY — 0x9cb98fc5: YIELD_HARVESTER with signal_weight=DOMAIN_ONLY in stored profile. Now NEAR_LEGENDARY (2093.1). Per Section 11, YIELD_HARVESTERs must carry EXCLUDE weight. Correct profile to EXCLUDE before any system-level signal weight queries could misclassify this trader.",
+    "ALASKA PRIMARY (Aug 18) NOT IN PRE-RES SCAN: 3d03c46d has Matt Claman NO @ 0.670 CONTESTED (20 shares, MINIMAL weight). Low signal value but the pre-res scan missed this market — add to monitoring for Aug 18 resolution. Also investigate which LEGENDARY trader is positioned on the Aug 14-15 Iran ceasefire/blockade markets in the pre-res scan (candidate: c722c1a1 Iran_ME DOMAIN_SPECIALIST)."
+  ],
+  "run_metadata": {
+    "agent": "trader-intelligence-agent",
+    "run_date": "2026-08-10",
+    "profiles_scanned": 52,
+    "profiles_with_new_resolved_trades": 1,
+    "new_qualifiers_profiled": 4,
+    "new_qualifiers_deferred": 8,
+    "tier_demotion_reviews": 30,
+    "pipeline_collapse_confirmed": 12,
+    "contract_version_read": "integration-contract.md Section 10 canonical definitions + Section 11 archetype weights read. JOIN key confirmed (market_id). trade_result string values confirmed.",
+    "schema_change_log_read": "SCL-001 through SCL-012 reviewed. SCL-004 (feedback-loop-agent.md condition_id conflict) still PENDING OSCAR REVIEW — no impact on this read-only agent. SCL-007 (system_observer.py thresholds) still unresolved in first-repo. No PROPAGATION_INCOMPLETE items affecting this read-only agent.",
+    "pool_sizes_at_run": {
+      "clean_pool": 20298,
+      "pool_c": 3518,
+      "legendary_active": 12,
+      "legendary_clean": 10,
+      "near_legendary_clean": 19
+    },
+    "alert_flags": [
+      "CRITICAL: geo_elo_active pipeline collapse — 12 Russia_UKR DOMAIN_SPECIALISTs still NULL. SEVENTH consecutive week.",
+      "MAJOR POOL CONTRACTION: 8 stored-LEGENDARY traders dropped to NEAR_LEGENDARY in single cycle. clean_pool fell from 29,531 to 20,298 — investigate.",
+      "3 NEW SIGNAL-RELEVANT DEMOTIONS: 2884f98 (DOMAIN_ONLY), bc54e69667c (PARTIAL), bc1775a (PARTIAL) all crossed below 1800 for first time.",
+      "ecaa8806 GENUINE_FORECASTER FULL: performance deterioration flag (40% last-10). Portfolio shifted to entertainment. Category visibility bug persisting (fourth week).",
+      "New qualifier 9287bd3d: strongest GENUINE_FORECASTER candidate in the unproven pool. 97% contested entry rate, 76% Russia_UKR accuracy. Blocked by PNL anomaly and standard human review.",
+      "Nordone SC Senate resolves TOMORROW — ecaa8806 has 22,248 shares YES @ 0.487. Key archetype data point."
+    ],
+    "deferred_qualifiers": [
+      "0x0b498c2501f1c3a541f76218f083d48c92e7f2df — NEAR_LEGENDARY 2011.4, dir=1.000, pnl=-7926 — likely YIELD_HARVESTER",
+      "0x0cb10c40b0776e9ee8cef970af85724654dda76c — NEAR_LEGENDARY 1929.8, 243 geo_trades, pnl=5899 — worth profiling",
+      "0x9ca119b8cd7bdb890aecf1ff3b0f6e3a45cc13b5 — NEAR_LEGENDARY 1909.3, 227 geo_trades, pnl=1283 — worth profiling",
+      "0x606606da4900baf01c761707fbe2d35d09a0ac8f — NEAR_LEGENDARY 1877.0, 49 geo_trades, dir=0.702 — lower directionality, interesting",
+      "0xcecaeade076dafc88fdb955864da9d9c15693f67 — NEAR_LEGENDARY 1834.0, dir=1.000, pnl=-1607 — likely YIELD_HARVESTER",
+      "0x9def9524630e31ff90f884eed32c3eecfbf8d1a5 — NEAR_LEGENDARY 1829.2, pnl=$42,771 (highest PNL of deferred qualifiers) — high priority for next cycle",
+      "0x73192b9597c4496f8c338b36239bdf4218ac0299 — NEAR_LEGENDARY 1827.6, 119 geo_trades, pnl=-4332",
+      "0xf8855dadc0e94d49e63ce1149850b60a74dc5274 — NEAR_LEGENDARY 1809.6, 46 geo_trades, dir=0.947, pnl=-1501"
+    ]
+  }
+}

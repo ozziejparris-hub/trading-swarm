@@ -1,11 +1,11 @@
 {
   "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
-  "profile_date": "2026-06-10",
-  "geo_elo_active": 3706.5888,
+  "profile_date": "2026-08-10",
+  "geo_elo_active": 3283.0,
   "tier": "LEGENDARY",
   "archetype": "GENUINE_FORECASTER",
-  "archetype_confidence": "HIGH",
-  "archetype_reasoning": "With 723 resolved trades across 184 distinct geopolitical markets, this trader demonstrates broad coverage and genuine directional conviction (directionality 0.954). Entries are predominantly at contested prices (0.10-0.80 range), not near-certainty harvesting. Strong positive PnL ($13,170) across diverse domains including Trump_US, China_Asia, Iran_ME, and Europe confirms real forecasting edge rather than liquidity provision or yield-harvesting.",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Original HIGH confidence (Jun 2026) downgraded to MEDIUM this cycle. At profiling this trader showed 723 geo-market resolved trades with 70%+ accuracy across Trump_US, Iran_ME, Russia_UKR, Europe — strong GENUINE_FORECASTER. Two new resolved trades since profiling (thin data: 2 trades) — no reclassification warranted. However, behavioral evidence has shifted: open positions are now overwhelmingly entertainment/movie markets (Devil Wears Prada 2, Avatar: Fire and Ash, Super Mario Galaxy, Oscars awards) with minimal geopolitical content. The geo content that remains shows mixed signals: Darline Nordone SC Senate YES at 0.487 CONTESTED (genuine call, 22,248 shares resolving Aug 11) alongside Khamenei out YES at 0.953 NEAR_CERT (yield-harvesting in geo). Performance flag: last-10 accuracy 40% below 45% threshold — driven by May 2026 Trump-says-X cluster of losses (5-6 near-cert bets at 0.87-0.90 that failed). GENUINE_FORECASTER archetype preserved but confidence reduced. The Nordone position is a genuine directional call; the entertainment book expansion is a significant behavioral shift. Archetype review warranted when more than 2 new geo resolved trades are available.",
   "primary_domain": "Trump_US",
   "domain_strengths": [
     "Trump_US",
@@ -14,11 +14,12 @@
     "Europe"
   ],
   "domain_blindspots": [
-    "LatAm: 33% accuracy on 3 trades, weak sample and poor calibration \u2014 recent Kast/Peru positions suggest overconfidence in LatAm political calls"
+    "Sports: Trump-says-X near-certainty cluster (0.87-0.90) in May 2026 resolved against — pattern of high-price entries on ambiguous outcome markets",
+    "Entertainment: massive positions in movie box office / Oscars markets with no demonstrated track record in this domain"
   ],
-  "domain_summary": "This trader has a clear and sustained edge in Trump_US (72.1% accuracy, 534 trades), with strong supplementary performance in Iran_ME (78.6%), Russia_UKR (76.2%), and Europe (72.7%). LatAm is an explicit blind spot with only 3 trades at 33% accuracy, though recent open positions suggest expanding into that domain incautiously.",
+  "domain_summary": "At original profiling, dominant Trump_US (72.1% accuracy, 534 trades), strong Iran_ME (78.6%), Russia_UKR (76.2%), Europe (72.7%). Since June 2026, observable positions have shifted dramatically toward entertainment/pop culture (box office, awards, celebrity markets). Geopolitical positions now small by share count relative to entertainment. The Nordone SC Senate position (22,248 shares YES @ 0.487) is the largest active geo call. Whether this domain shift reflects temporary tactical reallocation or permanent strategy change cannot be assessed on 2 new resolved trades.",
   "signal_weight": "FULL",
-  "signal_weight_reasoning": "ELO of 3707 active is far above the LEGENDARY threshold of 2175, with 723 resolved trades providing a statistically robust sample. Accuracy rates above 70% in four distinct domains, contested-price entries, and positive PnL across a large trade universe justify FULL weight. LatAm should be individually discounted given the track record.",
+  "signal_weight_reasoning": "Maintained FULL despite behavioral concerns — insufficient resolved evidence to downgrade (only 2 new geo resolved trades). FULL weight should apply ONLY to Geopolitics and Elections signals in trusted domains. Entertainment book positions carry no signal weight under STR-003 scope (non-geo markets). Note: the category visibility bug means this trader's geo positions appear as Unknown in most pipeline queries — STR-003 will not detect them through standard scans.",
   "trusted_domains": [
     "Trump_US",
     "Iran_ME",
@@ -27,20 +28,22 @@
     "China_Asia"
   ],
   "discounted_domains": [
-    "LatAm"
+    "Entertainment/Movies: no prior track record — large position sizes without demonstrated edge",
+    "Trump-says-X cluster: near-cert entries in ambiguous timing markets showed systematic failure in May 2026"
   ],
   "behavioural_flags": [
-    "High directionality (0.954): nearly always takes a single directional stance \u2014 not an LP artifact",
-    "Repeated re-entry into same market at similar prices (e.g., California redistricting referendum: 7 trades across overlapping outcome buckets) \u2014 suggests conviction doubling or averaging-in under uncertainty",
-    "Dutch government coalition market: 5 entries at nearly identical prices (~0.60) \u2014 pattern of accumulation rather than single decisive entry",
-    "Recent resolved trades show a cluster of losses on contested US domestic and European coalition markets \u2014 possible short-term calibration drift",
-    "Open positions include large LatAm exposure (L\u00f3pez Aliaga: 10,294 shares at 0.25) \u2014 unusual size relative to LatAm track record"
+    "Category visibility bug: ALL open positions appear as Unknown in trades.market_category — trader is invisible to any pipeline query filtering by market_category. This has persisted across multiple consecutive weekly reports.",
+    "ENTERTAINMENT PORTFOLIO SHIFT (Aug 2026): dominant book positions are now movie box office (8,132sh Devil Wears Prada 2, 7,057sh Avatar Fire and Ash, 6,597sh Super Mario Galaxy, 6,247sh Plaid Cymru Welsh election). This is a dramatic behavioral shift from the geopolitical focus at profiling.",
+    "Performance deterioration: last-10 accuracy 40% as of Aug 10 2026 — below 45% threshold. Driven primarily by Trump-says-X May 2026 cluster losses.",
+    "Near-certainty geo entry: Khamenei out YES at 0.953 — YIELD_HARVESTER pattern within geo domain.",
+    "Sunk-cost accumulation and domain overextension: documented at original profiling; LatAm large-position risk confirmed (Lopez Aliaga position has since resolved).",
+    "High directionality (0.9604): nearly always takes a single directional stance — not LP artifact.",
+    "geo_elo_active decaying from 3707 (Jun) to 3283 (Aug) — consistent with activity concentrated in non-geo markets."
   ],
   "risk_patterns": [
-    "Sunk-cost accumulation: multiple re-entries into losing positions (California redistricting, Dutch coalition) without apparent price improvement",
-    "Domain overextension: expanding into LatAm with large position sizes despite historically poor accuracy in that domain",
-    "Concentration risk in a single open position (L\u00f3pez Aliaga 10,294 shares) dwarfs all other open positions combined",
-    "Recent resolved batch shows all 15 trades resulted in losses \u2014 possible short streak of adverse outcomes or systematic miscalibration on a specific event cluster"
+    "Entertainment domain entry without track record: multiple 1000+ share positions in movie/Oscars markets that fall outside STR-003 scope and outside the trader's proven edge domain",
+    "Near-cert geo entries: Khamenei at 0.953 mirrors the yield-harvesting behavior that caused May 2026 losses",
+    "Category visibility: if entertainment positions fail at scale, the PNL impact is substantial (pnl=$165,426 has grown dramatically, likely from entertainment wins — fragile if pattern reverses)"
   ],
   "notable_calls": [
     {
@@ -48,46 +51,67 @@
       "side": "YES",
       "entry_price": 0.5,
       "result": "WON",
-      "significance": "385 wins from 534 trades at 72.1% accuracy is the core of this trader's edge \u2014 sustained and statistically significant alpha in the dominant market domain"
+      "significance": "385 wins from 534 trades at 72.1% accuracy is the core of this trader's edge — sustained and statistically significant alpha in the dominant market domain (as of Jun 2026 profiling)"
     },
     {
       "market": "Iran/ME domain aggregate",
       "side": "YES",
       "entry_price": 0.5,
       "result": "WON",
-      "significance": "78.6% accuracy across 14 trades \u2014 highest domain accuracy suggesting genuine geopolitical insight into Middle East outcomes"
+      "significance": "78.6% accuracy across 14 trades — highest domain accuracy suggesting genuine geopolitical insight into Middle East outcomes (as of Jun 2026 profiling)"
     },
     {
       "market": "Will the California redistricting referendum pass by >29%?",
       "side": "YES",
       "entry_price": 0.55,
       "result": "LOST",
-      "significance": "Multiple re-entries at contested prices (0.26\u20130.64) all lost \u2014 illustrates sunk-cost accumulation risk pattern"
+      "significance": "Multiple re-entries at contested prices (0.26-0.64) all lost — illustrates sunk-cost accumulation risk pattern"
     },
     {
-      "market": "Will Rafael L\u00f3pez Aliaga win the 2026 Peruvian presidential election?",
+      "market": "Will Steve Hilton advance from the 2026 California Governor primary?",
       "side": "YES",
-      "entry_price": 0.25,
+      "entry_price": 0.76,
+      "result": "WON",
+      "significance": "June 2026 contested-price Elections win — demonstrated continued geo/elections edge post-profiling"
+    },
+    {
+      "market": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+      "side": "YES",
+      "entry_price": 0.37,
+      "result": "WON",
+      "significance": "Jul 11 2026 Sports/Unknown CONTESTED win — outside trusted geo domains but shows contested-price directional calling in non-geo markets"
+    },
+    {
+      "market": "Will Jarrett Keohokalole be the HI-01 Democratic nominee?",
+      "side": "YES",
+      "entry_price": 0.02,
+      "result": "WON",
+      "significance": "Aug 9 2026 US Elections near-certainty (0.020) win — concerning YIELD_HARVESTER pattern in Elections domain. 1 trade only — insufficient to signal archetype drift."
+    },
+    {
+      "market": "Will Darline Graham Nordone be the new Republican nominee for Senate in South Carolina?",
+      "side": "YES",
+      "entry_price": 0.487,
       "result": "OPEN",
-      "significance": "Largest single open position by shares (10,294) in a domain with historically poor accuracy \u2014 outsized risk relative to demonstrated edge"
+      "significance": "Aug 2026 — 22,248 shares YES at 0.487 CONTESTED, resolving Aug 11. Largest visible geo position in current portfolio. Pre-res scan confirmed LEGENDARY tier signal: smart money at 91.9% YES vs market 48.7%. If this resolves correctly, it is the strongest recent GENUINE_FORECASTER data point."
     }
   ],
-  "open_positions_summary": "Current live positions are concentrated in LatAm (Peru presidential election \u2014 L\u00f3pez Aliaga YES at 0.25 and Fujimori YES at 0.51) and US domestic politics (Steve Hilton CA Governor YES at 0.76, Ramaswamy Ohio NO at 0.28). The Peru thesis appears to be a multi-candidate portfolio approach to the Peruvian election. The Hilton entry at 0.76 is toward the upper bound of contested pricing. Overall thesis implies contrarian/speculative bets on underdog or non-consensus candidates in both LatAm and US primaries.",
+  "open_positions_summary": "Current portfolio is dominated by entertainment/cultural prediction markets (box office revenue benchmarks, Oscars award predictions, sports championship markets — all appearing as Unknown category). Top positions by share count: Super Mario Galaxy box office (6,597sh NO @ 0.799), Avatar Fire and Ash (7,057sh YES @ 0.825, 2,407sh YES @ 0.798, 529sh NO @ 0.800), Devil Wears Prada 2 (8,132sh YES @ 0.880, 1,932sh NO @ 0.800), KPop Golden Demon Hunters (1,143sh YES @ 0.860). Geopolitical positions are minor by comparison: Darline Nordone SC Senate (22,248sh YES @ 0.487 CONTESTED — resolves Aug 11), US x Iran diplomatic meeting (6,996sh NO @ 0.765 CONTESTED), Plaid Cymru Welsh election (6,247sh YES @ 0.800 CONTESTED), Trump visit China (2,923sh YES @ 0.830), Khamenei out (213sh YES @ 0.953 NEAR_CERT). None of the geo positions are visible via market_category filter in the trades table — all appear as Unknown.",
   "watch_items": [
-    "Monitor L\u00f3pez Aliaga resolution (2026-06-07) \u2014 loss on 10,294 shares would be significant PnL drawdown and signal LatAm overextension",
-    "Track whether recent 15-trade losing streak represents a temporary cluster or broader miscalibration shift",
-    "Watch for continued accumulation patterns in Dutch or European coalition markets \u2014 repeated same-price entries may indicate information edge or sunk-cost bias",
-    "Steve Hilton CA Governor position at 0.76 is high-price entry \u2014 monitor for exit or further accumulation as primary approaches",
-    "Assess whether LatAm positions expand further \u2014 escalating domain exposure despite poor historical accuracy would be a meaningful risk flag"
+    "RESOLVES AUG 11 (TOMORROW): Darline Graham Nordone SC Senate YES @ 0.487 (22,248 shares). This is the most important near-term data point for archetype assessment. Win = confirms contested-price geo calling continues. Loss = adds to deterioration signal.",
+    "Performance deterioration flag active: last-10 accuracy 40%. Monitor next geo resolved trades — if below 45% continues, signal weight downgrade review required.",
+    "Entertainment book exit path: monitor whether entertainment positions resolve and whether the trader exits this domain or continues building. If entertainment trades resolve and geo positions re-accumulate, this may have been tactical reallocation.",
+    "Category visibility bug unresolved: ALL positions appear as Unknown in trades table. STR-003 pipeline cannot see this trader's geo positions through standard category queries. Manual position checking required for signal generation.",
+    "US x Iran diplomatic meeting NO @ 0.765 (6,996 shares) — contested, geo-relevant, no end_date visible. Cross-reference against resolution timeline."
   ],
   "overall_signal_value": "HIGH",
-  "summary": "This is a LEGENDARY-tier trader with one of the highest active ELO scores in the system, backed by 723 resolved trades and sustained accuracy above 70% in Trump_US, Iran_ME, Russia_UKR, and Europe. The trader demonstrates genuine forecasting behaviour: contested-price entries, broad market diversity, and strong directional conviction. The primary concern is a pattern of sunk-cost accumulation in losing positions (California redistricting, Dutch coalition) and a troubling expansion into LatAm with oversized positions despite a 33% historical accuracy in that domain. Signals from Trump_US, Iran_ME, and Russia_UKR should be treated as high-conviction; LatAm signals should be discounted until the track record improves.",
+  "summary": "LEGENDARY GENUINE_FORECASTER with geo_elo_active=3283 and multi-domain accuracy track record. Profile confidence downgraded from HIGH to MEDIUM this cycle due to: (1) portfolio dramatically shifted to entertainment/movie markets, (2) last-10 accuracy at 40% (below 45% threshold), (3) near-cert geo entry pattern (Khamenei @ 0.953). Archetype preserved — insufficient resolved evidence to reclassify (only 2 new geo-relevant resolved trades). The Nordone SC Senate position (resolving Aug 11) is a genuine contested-price directional call and will be the key data point for next cycle. FULL signal weight maintained but applies only to geo/elections domains — entertainment positions carry no STR-003 weight. Category visibility bug makes this trader invisible to standard pipeline queries — requires manual monitoring.",
   "data_snapshot": {
-    "geo_elo": 3807.8614008491636,
-    "geo_elo_active": 3706.5888,
-    "resolved_trades": 723,
-    "distinct_markets": 184,
-    "directionality": 0.9542456548325189,
-    "pnl": 13170.692420516478
+    "geo_elo": 4265.8,
+    "geo_elo_active": 3283.0,
+    "resolved_trades": 250,
+    "distinct_markets": 683,
+    "directionality": 0.9604,
+    "pnl": 165426
   }
 }

@@ -1,0 +1,53 @@
+{
+  "address": "0x4fd3503c78bd1ececdbe034a4dfe156ce659ef31",
+  "profile_date": "2026-08-10",
+  "geo_elo_active": 2278.2,
+  "tier": "LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Initial profile. 1432 resolved trades, 80% accuracy. The archetype is unambiguous despite the high ELO: 56% near-certainty entries (809/1432 at price >= 0.90) and only 28% contested entries (408/1432). The bulk of trades are Unknown category (1248/1432) with geo_resolved_trades_count=49. Recent trades confirm the pattern: Oyarzabal top goalscorer NO at 0.999 (near-cert won), France World Cup YES at 0.042 (anti-near-cert long lost), France World Cup YES at 0.377 CONTESTED (lost), Argentina World Cup YES at 0.193 CONTESTED (won). The dominant behavior is high-frequency near-certainty harvesting across mostly sports and Unknown markets. The 28% contested entry rate is lower than any established GENUINE_FORECASTER or DOMAIN_SPECIALIST in the pool. The geo_elo_active=2278.2 is real but reflects volume + near-certainty accuracy, not forecasting skill. PNL=-$3,712 is negative — a yield harvester who has been hit by tail events. MEDIUM confidence because the 28% contested rate leaves some ambiguity, but the pattern is clear enough for YIELD_HARVESTER assignment on first profile.",
+  "primary_domain": "Unknown",
+  "domain_strengths": [],
+  "domain_blindspots": [
+    "All domains: near-certainty tail events have produced negative PNL. The yield-harvesting strategy has not generated alpha."
+  ],
+  "domain_summary": "1248 of 1432 trades are Unknown category — cannot reliably classify domain. Of the classifiable trades: Geopolitics (154, 85% accuracy) and Elections (30, 77% accuracy) are limited samples. Recent geo-tagged trades appear to be FIFA World Cup markets (Oyarzabal, France, Argentina) tagged as sports. The geo_resolved_trades_count=49 is the geo-specific pool count — not inconsistent with the profile.",
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "YIELD_HARVESTER archetype requires EXCLUDE weight. This trader's LEGENDARY ELO is built on near-certainty premium collection, not forecasting. Any open geo position from this trader should be treated as premium collection, not directional signal. Per Section 11 of integration contract, YIELD_HARVESTERs must never contribute to STR-003 signals.",
+  "trusted_domains": [],
+  "discounted_domains": [],
+  "behavioural_flags": [
+    "56% near-certainty entries (>=0.90) across 1432 trades — YIELD_HARVESTER signature.",
+    "Negative PNL (-$3,712) on 80% accuracy — yield-harvesting with tail-risk losses offsetting premium income.",
+    "geo_resolved_trades_count=49 with geo_elo_active=2278.2 — high ELO relative to geo-specific sample, indicating the ELO is driven primarily by non-geo near-certainty trades.",
+    "directionality=0.936 — high directional but this reflects taking one side on near-certainty markets, not genuine forecasting conviction."
+  ],
+  "risk_patterns": [
+    "Yield-harvesting tail events: the France World Cup contested loss (0.377) and negative PNL demonstrate that the yield-harvesting strategy has not generated positive alpha. Tail events have erased premium gains.",
+    "Including this trader in signals would dilute any consensus signal — a YIELD_HARVESTER opening a geo position should be treated as liquidity provision not forecasting."
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Argentina win the 2026 FIFA World Cup?",
+      "side": "YES",
+      "entry_price": 0.193,
+      "result": "WON",
+      "significance": "Jul 14 2026 — contested YES at 0.193, won. One contested win in an otherwise near-certainty-dominated trade history."
+    }
+  ],
+  "open_positions_summary": "Not assessed — YIELD_HARVESTER EXCLUDE. Open positions carry no signal value.",
+  "watch_items": [
+    "No action items — YIELD_HARVESTER EXCLUDE. Monitor geo_elo_active for decay; no STR-003 relevance at any ELO level.",
+    "If geo_elo_active falls below 1800, profile can be archived per demotion review protocol."
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "LEGENDARY tier YIELD_HARVESTER. geo_elo_active=2278.2 built on 56% near-certainty entries and high trade volume, not forecasting skill. Negative PNL (-$3,712) confirms tail-risk exposure from the yield strategy. EXCLUDE weight — this trader contributes no information to STR-003 signals. Full archetype applies to all domains.",
+  "data_snapshot": {
+    "geo_elo": 2518.1,
+    "geo_elo_active": 2278.2,
+    "resolved_trades": 49,
+    "distinct_markets": 1432,
+    "directionality": 0.936,
+    "pnl": -3712
+  }
+}

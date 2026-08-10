@@ -1,0 +1,78 @@
+{
+  "address": "0x9287bd3d7f9cc43198c98974cbbdfa1c48fe41f2",
+  "profile_date": "2026-08-10",
+  "geo_elo_active": 2202.3,
+  "tier": "LEGENDARY",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Initial profile. 1488 resolved trades across 480 distinct markets. The single most compelling behavioral signal in this data: 97% contested entry rate (1443/1488 trades at 0.10-0.80) — the highest contested rate observed in this pool. This is not a data artifact; the trader systematically takes contested-price positions across multiple domains. Russia_UKR accuracy at 76% contested (146/188) and 78% contested rate is statistically significant — z-score implies genuine edge. Iran_ME at 66% contested, Trump_US at 62% contested both above calibration baseline. The 63% overall accuracy on contested entries is robust (1488 trades). The pattern eliminates yield-harvesting: a YIELD_HARVESTER does not accumulate 97% contested entries. GENUINE_FORECASTER assigned with MEDIUM confidence (not HIGH) because: (1) PNL=$373 on 1488 trades is anomalously low — same pipeline pattern seen in other traders where positions table doesn't fully sync with trades table; (2) the large 'Other' domain (708 trades, 61%) makes full domain calibration difficult; (3) the trader has no prior profiling history — one-cycle assessment. Signal weight is MINIMAL pending human review — this is the system's conservatism on first-profile traders, not a reflection of signal quality. If PNL anomaly resolves as pipeline issue, this trader is a DOMAIN_ONLY or PARTIAL upgrade candidate in Russia_UKR and Iran_ME.",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR",
+    "Iran_ME",
+    "Elections_nonUS"
+  ],
+  "domain_blindspots": [
+    "Sports: 33% accuracy on 76 trades — systematic underperformance, anti-edge",
+    "Europe: 44% accuracy on 9 trades — too thin to calibrate, discount pending more data"
+  ],
+  "domain_summary": "Russia_UKR is the standout domain: 193 trades, 76% accuracy, 78% contested entries — the combination of high accuracy and high contested rate is the signal the system was built to find. Iran_ME secondary: 244 trades, 66% accuracy, 67% contested. Trump_US tertiary: 212 trades, 62% accuracy, 62% contested. Elections_nonUS small but excellent: 24 trades, 83% accuracy, 87% contested (thin — flagged but not relied on). The Other domain (708 trades, 61%) cannot be precisely classified from market titles — likely a mix of US domestic, financial, tech, and cultural markets not captured by domain keywords. Sports is the only clear blind spot.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Conservative default for all first-profile LEGENDARY traders — human review required before any upgrade. The behavioral and accuracy profile strongly supports DOMAIN_ONLY in Russia_UKR and Iran_ME at minimum, pending: (1) PNL anomaly investigation (pipeline issue vs genuine negative PNL), (2) human review. Once cleared: upgrade path is DOMAIN_ONLY for Russia_UKR and Iran_ME, potentially PARTIAL if broad accuracy holds.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Sports"
+  ],
+  "behavioural_flags": [
+    "97% contested entry rate (1443/1488 trades at 0.10-0.80) — highest in the research pool. Definitional GENUINE_FORECASTER behavioral signature.",
+    "PNL=$373 on 1488 trades is anomalously low — same pattern as multiple other traders where positions table doesn't fully reconcile with trades table. NOT treated as evidence of negative edge without investigation.",
+    "Systematic re-entry: multiple positions on same outcome (Abdul El-Sayed Michigan Democrat primary: 3 entries at 0.660 on July 18). Suggests conviction accumulation pattern, not noise.",
+    "Sports anti-edge: 33% accuracy on 76 contested entries. Trader appears to systematically bet on wrong outcomes in sports — this is a hard limit.",
+    "Open positions entirely in Unknown category — invisible to geo market_category filter in pipeline."
+  ],
+  "risk_patterns": [
+    "Category invisibility: all open positions appear as Unknown in trades.market_category. Cannot be tracked through standard geo pipeline queries.",
+    "Low PNL anomaly: if PNL is genuinely $373 (not a pipeline artifact), the trader has high accuracy but low profit — possible that they are consistently right but take very small positions or that they operate in markets with thin spreads"
+  ],
+  "notable_calls": [
+    {
+      "market": "Russia_UKR domain aggregate",
+      "side": "VARIOUS",
+      "entry_price": 0.5,
+      "result": "WON",
+      "significance": "193 trades, 76% accuracy, 78% contested — highest domain accuracy at highest contested rate in this pool. Statistical foundation of GENUINE_FORECASTER assignment."
+    },
+    {
+      "market": "Will Abdul El-Sayed win the 2026 Michigan Democratic Governor primary?",
+      "side": "YES",
+      "entry_price": 0.66,
+      "result": "WON",
+      "significance": "Jul 18 2026 — 3 contested-price entries at 0.660 on same outcome, all won. Conviction accumulation pattern — trader had high confidence."
+    },
+    {
+      "market": "Will Lionel Messi be the top goalscorer at the 2026 FIFA World Cup?",
+      "side": "YES",
+      "entry_price": 0.57,
+      "result": "LOST",
+      "significance": "Jul 18 2026 — 2 contested entries at 0.566/0.573, lost. Sports blind spot confirmed — same outcome as anti-edge pattern."
+    }
+  ],
+  "open_positions_summary": "All open positions appear as Unknown category — invisible to geo pipeline queries. Visible positions include: Wimbledon winners (Sabalenka YES @0.220, Sinner YES @0.520), Bitcoin levels (YES @0.340, NO @0.680), US x Iran diplomatic meeting (YES @0.740 CONTESTED — most relevant geo position), Trump blocks something (NO @0.720 CONTESTED), SAVE Act (YES @0.300 CONTESTED), Claude 5 release timing (multiple entries). All positions are small (10 shares) except Elon Musk tweet count (28 shares). The micro-position sizing suggests either risk management discipline or a testing/exploration phase. The US x Iran diplomatic meeting YES at 0.740 is the only substantive geo call visible.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any STR-003 signal inclusion — first-profile trader, standard gate.",
+    "PNL=$373 anomaly investigation: determine whether pipeline issue (positions table sync gap) or genuine low-profit despite high accuracy. This is the primary blocker for weight upgrade.",
+    "geo_elo_active=2202.3 — just above LEGENDARY threshold of 2175. Monitor for decay: if ELO slips below 2175, tier review required.",
+    "US x Iran diplomatic meeting YES @ 0.740 CONTESTED open position — if human review clears, this is the seed of a potential STR-003 signal (single trader at MINIMAL weight, need FULL/DOMAIN_ONLY for signal generation).",
+    "Russia_UKR open positions: check positions table for contested Russia/UKR entries — these may exist but not appear in trades table open_positions query due to category mismatch."
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "Strongest new LEGENDARY qualifier this cycle. 1488 resolved trades, 97% contested entry rate, 76% Russia_UKR accuracy on contested entries — this behavioral profile is the closest to a canonical GENUINE_FORECASTER seen since the initial profiling run in June 2026. The low PNL ($373) is anomalous and requires investigation before weight upgrade. MINIMAL weight pending human review. If PNL clears as pipeline artifact: immediate upgrade candidate to DOMAIN_ONLY in Russia_UKR and Iran_ME. Do not include in STR-003 signal generation this cycle.",
+  "data_snapshot": {
+    "geo_elo": 2378.6,
+    "geo_elo_active": 2202.3,
+    "resolved_trades": 105,
+    "distinct_markets": 480,
+    "directionality": 0.925,
+    "pnl": 373
+  }
+}

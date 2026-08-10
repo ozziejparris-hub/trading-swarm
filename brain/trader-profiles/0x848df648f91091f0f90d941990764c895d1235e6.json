@@ -1,0 +1,73 @@
+{
+  "address": "0x848df648f91091f0f90d941990764c895d1235e6",
+  "profile_date": "2026-08-10",
+  "geo_elo_active": 2210.2,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Initial profile. 644 resolved trades across 168 distinct markets. Domain is overwhelmingly Russia_UKR (453 trades, 70% of all trades) with strong Iran_ME secondary (176 trades, 27%). The Russia_UKR accuracy at 59% contested (126/239 trades contested at 53%) is modestly above chance on contested entries but not exceptional. Iran_ME shows better accuracy at 65% contested (77% contested rate in that domain). The mix of near-certainty and contested entries in both primary domains places this trader in DOMAIN_SPECIALIST rather than GENUINE_FORECASTER — they take real directional calls (53% contested in Russia_UKR) but also regularly use near-certainty entries. Recent trades show Russia_UKR focus: multiple Syrskyi removal angles (contested and near-cert), Kostyantynivka capture contested entries. The Hormuz/Iran near-cert LOST entries in Jun-Jul 2026 (0.990, 0.940, 0.998) are the YIELD_HARVESTER risk pattern materializing in their secondary domain. MEDIUM confidence because the 59% Russia_UKR accuracy on contested entries is modest and the near-cert losses are concerning. Human review required before signal use.",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR",
+    "Iran_ME"
+  ],
+  "domain_blindspots": [
+    "Iran_ME near-certainty entries: multiple near-cert LOST trades (Hormuz at 0.998, Iran enrichment at 0.940-0.950) — yield-harvesting tail risk materializing in secondary domain"
+  ],
+  "domain_summary": "Russia_UKR dominant: 453 trades, 59% accuracy, 53% contested. Iran_ME secondary: 176 trades, 65% accuracy, 77% contested within Iran_ME domain. The Iran_ME contested accuracy (77%) is stronger than Russia_UKR, but the sample is smaller. Trump_US (9 trades) and Other (6 trades) are noise. The open positions are mostly overdue/stale templates from the Russia/Iran conflict resolution timelines — most open position markets appear to have no current end_date and likely represent unresolved earlier markets.",
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Conservative default for first-profile LEGENDARY traders. Russia_UKR DOMAIN_ONLY upgrade is the natural next step pending: (1) human review, (2) investigation of near-cert LOST pattern in Iran_ME. The 59% contested accuracy in Russia_UKR is above calibration but modest — DOMAIN_ONLY weight (not FULL) would be appropriate.",
+  "trusted_domains": [],
+  "discounted_domains": [],
+  "behavioural_flags": [
+    "Near-certainty failure pattern in Iran_ME: Strait of Hormuz at 0.998, Iran enrichment at 0.940/0.950 — tail-risk from yield-harvesting in secondary domain. These are YIELD_HARVESTER entries that lost.",
+    "Multi-angle positioning on same event: Syrskyi removal traded from multiple directions (YES and NO at same time in Jul 2026) — suggests LP-adjacent or market-making behavior on binary outcomes.",
+    "Kostyantynivka: contested YES at 0.450 WON (Jul 12), near-cert NO at 0.808 LOST (Jul 20) — same market, opposite directions, opposite outcomes. Contradictory positioning suggests either hedging or uncertainty averaging."
+  ],
+  "risk_patterns": [
+    "Near-certainty LOST entries in Iran_ME erode Russia_UKR-focused ELO claim — the geo_elo may be partially driven by Russia_UKR volume rather than Iran_ME edge",
+    "Stale open positions: many open positions appear to be on expired/overdue markets (US-Iran peace deal by May 13, Iran ceasefire by March 31, etc.) — signals the trader may hold positions past their natural resolution cycle",
+    "59% contested accuracy in Russia_UKR is above calibration but not strong enough for high signal weight on its own — needs more confirmed wins"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Russia capture Kostyantynivka by July 31?",
+      "side": "NO",
+      "entry_price": 0.45,
+      "result": "WON",
+      "significance": "Jul 12 2026 — contested NO at 0.450 on Kostyantynivka, resolved correctly. Clearest Russia_UKR directional call this cycle."
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by July 31?",
+      "side": "NO",
+      "entry_price": 0.998,
+      "result": "LOST",
+      "significance": "Jul 16 2026 — near-certainty NO at 0.998 lost. Yield-harvesting tail risk in Iran_ME."
+    },
+    {
+      "market": "Will Russia capture Kostyantynivka by February 28? (stale)",
+      "side": "YES",
+      "entry_price": 0.373,
+      "result": "OPEN",
+      "significance": "Open position — 363 shares YES at 0.373 CONTESTED in Russia_UKR. Consistent with domain focus but market appears to be an overdue template."
+    }
+  ],
+  "open_positions_summary": "Open positions are almost entirely Russia_UKR and Iran_ME, but most are on markets with no end_date (likely expired/template markets): Russia enters Novyi Donbas YES @ 0.340 CONTESTED (5sh), Russia capture Kostyantynivka YES @ 0.373 CONTESTED (363sh — most significant), Russia enters Sumy YES @ 0.099 (1814sh — massive share count, low-price directional), Russia enters Shevchenko YES @ 0.855 (1170sh — near-cert). Iran markets: US x Iran peace deal NO @ 0.840 (overdue), US x Iran diplomatic meeting NO @ 0.949 (overdue). Notable: 'Will Russia enter Sumy by Dec 31, 2026?' YES @ 0.099 with 1814 shares — at 9.9% price this is a low-probability long bet, not a near-certainty entry. This is the most interesting open position: suggests genuine Russia_UKR directional view (Sumy unlikely to fall but trader is betting on the upside tail).",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any STR-003 signal inclusion.",
+    "Investigate near-cert LOST pattern in Iran_ME — determine whether trader has changed strategy or this is a recurring tail-risk behavior.",
+    "Stale open positions: multiple positions on overdue markets (dates 2026-02-28, 2026-03-31, 2026-05-13, 2026-05-22) — these should be monitored for DB resolution status.",
+    "geo_elo_active=2210.2 — modestly above LEGENDARY threshold. Monitor for decay: any dormancy will push below 2175.",
+    "Russia Sumy YES @ 0.099 (1814 shares) — low-probability Russia advance bet. If Dec 31 2026 approaches without Sumy being entered, this is a near-zero loss. Watch for position exit."
+  ],
+  "overall_signal_value": "MEDIUM",
+  "summary": "Russia_UKR DOMAIN_SPECIALIST at LEGENDARY tier (geo_elo_active=2210.2). 644 trades, 59% accuracy on contested Russia_UKR entries, 65% on contested Iran_ME. The behavioral profile supports DOMAIN_SPECIALIST but not GENUINE_FORECASTER — the near-certainty entry pattern in Iran_ME (multiple Hormuz/enrichment near-certs that lost) indicates selective yield-harvesting outside primary domain. MINIMAL weight pending human review. If human review clears: Russia_UKR DOMAIN_ONLY upgrade is the natural next step. Not STR-003 eligible this cycle.",
+  "data_snapshot": {
+    "geo_elo": 2378.0,
+    "geo_elo_active": 2210.2,
+    "resolved_trades": 118,
+    "distinct_markets": 168,
+    "directionality": 0.958,
+    "pnl": 1655
+  }
+}
