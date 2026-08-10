@@ -113,10 +113,184 @@ System target:                  < 0.20 minimum
 
 ## Current Week
 
-Last updated: 2026-07-20
-Updated by: performance-analyst-agent (run 11)
+Last updated: 2026-08-10
+Updated by: performance-analyst-agent (run 12, post-outage)
 
-### Week of 2026-07-20
+### Week of 2026-08-10
+
+#### Prediction Accuracy
+```
+⚠ CONTEXT: 21-day gap since last report (Jul 20 → Aug 10). Includes 13.5-day cold outage
+  (Jul 24–Aug 7). 30d windows cover Jul 11–Aug 10.
+
+PRIMARY: geo_elo Pool C (geo_accuracy_pool=1, contested mkts only, price 0.05-0.95):
+  GEOPOLITICS (7d, contested):
+    n=0 markets — genuine market lull
+  GEOPOLITICS (30d, contested):
+    Brier score (30d):           0.3627  ⚠ LOW CONFIDENCE n=6
+    Naive baseline (30d):        0.2252  ← Pool C WORSE than naive at n=6
+    Directional accuracy (30d):  50.0%   (n=6 — noise level, do not trend)
+    NOTE: Iran cluster (Jun 30) has aged out. Result is noise at n=6.
+  ELECTIONS (7d, contested):
+    Brier score (7d):            0.2118  ✅ beats naive (0.3306)
+    Directional accuracy (7d):   66.7%   (n=9)
+  ELECTIONS (30d, contested):
+    Brier score (30d):           0.2571  ✅ beats naive (0.3202), edge=+0.063
+    Directional accuracy (30d):  58.8%   (n=17)
+
+  HIGH-CONFIDENCE ALL-2026 BASELINES (large n, authoritative):
+    GEO (all 2026, contested):
+      Brier:          0.2606  ✅ beats naive (0.2958), edge=+0.035
+      Dir accuracy:   60.2%   (n=1,110)
+    ELECTIONS (all 2026, contested):
+      Brier:          0.3181  ❌ WORSE than naive (0.2545), edge=-0.064
+      Dir accuracy:   54.0%   (n=1,111) — barely above random
+      → Pool C geo traders have NO demonstrated edge in Elections markets
+      → Phase 6 portfolio construction must EXCLUDE Elections pending investigation
+
+  VALIDATED BASELINE (HIGH confidence, unchanged):
+    Pool C full 2026 accuracy:   70.7%  (2026-06-05-POOL-C-GEO-FULL-2026-001, GEO only)
+    LEGENDARY geo_elo tier:      79.6%  (n=49 markets)
+```
+
+#### ELO System Health
+```
+Total traders (DB):                   ~160,000+ (estimated)
+True research pool (resolved≥20):     20,298   ↑↑ (vs 16,289 Jul 20, +24.6%, backfill-driven)
+Research pool (research_excluded=0):  31,028   ↑  (vs 29,303 Jul 20, +5.9%)
+Pool C (geo_accuracy_pool=1):         3,518    ↑  (vs 3,223 Jul 20, +9.2%)
+geo_elo LEGENDARY (geo_elo ≥ 2175):     73    ↑↑ (vs 62 Jul 20, +17.7%)
+geo_elo LEGENDARY (geo_elo_active ≥ 2175): 11  ↓  (vs 17 Jul 20, -35.3%)
+legendary_clean (geo_elo_active≥2175, pool_c, research_excl=0): 10  ↓↓ (vs 13 Jul 20)
+near_legendary_clean (geo_elo_active 1800-2174): 16  ↓↓ (vs 28 Jul 20, -42.9%)
+Closest to LEGENDARY threshold:       geo_elo_active=2146 (29 pts, 0x8e9eedf20d...)
+Active traders (7d, all):             335  ↓↓ (vs 614 Jul 20, -45.4%)
+Pool C geo activity (7d):             2 traders, 2 trades — near-ZERO
+Legendary activity (7d):              1 trader, 2 trades, ~$11k volume
+Pool C geo activity (30d):            69 traders, 249 trades
+ELO recalculation (Aug 9):            29,733 updated, 0 failed — clean
+Clean markets (DB):                   224,428
+Outage gap (Jul 24–Aug 7):            ELO snapshots missing 3 weeks; order book gap 15 days
+Contract violations (Section 9):      NONE — all thresholds met ✅
+```
+
+#### Signal Quality
+```
+STR-003 (geo_elo_active criteria, gate-valid signals):
+  Qualifying traders (legendary_clean): 10  (vs 13 Jul 20)
+  Gate-valid scored accuracy:           2/5 = 40%  (FROZEN — signal-agent dark 21d)
+  STR003-004 (Putin NO):               DB UNRESOLVED ⚠ (24+ days overdue)
+  New signals this week:               NONE
+  Signal-agent status:                 Dark since Jul 20 (21 days)
+  Gate 3 risk:                         CRITICAL — pool at 10 legendary, near-zero signal flow
+
+STR-002 (all scored signals):
+  Total scored:                        162/166 (4 pending)
+  Accuracy:                            48/162 = 29.6%
+  Average edge:                        -0.0152
+  Event clusters:                      10
+  Thesis cell (CONTESTED+proven):      20 signals
+  Recent (30d):                        10 new signals, mixed results
+```
+
+#### Strategy Pipeline
+```
+Phase 2 (paper trading):   NOW PRIMARY EXPERIMENT (as of 2026-08-09)
+  B7 paper_trades table:   NOT BUILT ⚠
+  Live signal recorder:    NOT AUTOMATED ⚠
+  Pre-flight items:        5 open (fee verification, signal rate, queue risk,
+                           spec freeze, automation)
+  Phase 2 urgency:         CRITICAL — every week without live recording = lost n
+
+Phase 1 / B3 (backtest):   REPURPOSED as rung-A kill-test (9 signals vs 60-120 needed)
+  B5 clustering:           FINAL ✅ (4,712 markets, 0 merge errors, 0 false splits)
+  Backfill convergence:    Gate B NOT MET — population still moving
+
+STR-003:   EXPERIMENTAL — 10 clean LEGENDARY (declining), Gate 3 FROZEN at 40%
+STR-002:   EXPERIMENTAL — 29.6% accuracy on 162 scored signals
+STR-004:   HYPOTHESIS — 0/1. 9 more signals needed.
+LH-001:    CONDITIONAL_PASS — 4/7 insider signals correct (57.1%)
+RQ-GEO-ELO-001: NOT STARTED ⚠⚠⚠ — 11 WEEKS, Gate 4 blocked
+RQ1.1:     BLOCKED — depends on RQ-GEO-ELO-001
+RQ3.2:     INCONCLUSIVE — reframe needed
+ELO Arc:   Stage 3 COMPLETE (Aug 9 Writer A run confirmed clean post-outage)
+```
+
+#### System Resources
+```
+Estimated API spend (7d Aug 3-10): ~$1  (performance-analyst only this week)
+trading-swarm orchestrator:        ACTIVE
+polymarket-monitoring:             ACTIVE
+Services:                          All 3 up (trading-swarm, monitoring, Sunday ELO)
+Cold outage:                       2026-07-24 21:46 → 2026-08-07 09:37 (13.5 days)
+Outage recovery:                   COMPLETE — DB integrity ok, maintenance clean
+Git commits (trading-swarm, 7d): 5 (O-49, phase 2 reframe, B5 FINAL, session summaries)
+Git commits (first-repo, 7d):    0
+Brain directory size:              6.2MB (↓ slightly from 6.9MB Jul 20 — possibly mismeasured)
+First-repo DB:                     14.9GB
+CI pipeline:                       FAILING — 5 red tests (test_backtest_window_population.py)
+                                   EXPECTED: population still converging from outage backfill
+Signal-agent:                      DARK — 21 days
+Quant-research:                    DARK — 11 weeks (RQ-GEO-ELO-001 never executed)
+Backtest-agent:                    DARK — being repurposed for Phase 2
+Order book capture:                RESUMED Aug 9 (15-day gap Jul 24–Aug 8, permanent loss)
+ELO snapshots:                     3-week gap (Jul 24–Aug 6) — permanent hole in record
+Feedback-loop:                     Run 15 completed Jul 20; Run 16 due (~Aug 3, overdue)
+```
+
+#### Week-on-Week Trends
+```
+Brier (geo, 30d contested):     0.2552 (Jul 13) → 0.3643 (Jul 20) → 0.3627 (Aug 10) → ~flat
+Brier (elections, 30d contested): 0.3855 (Jul 13) → 0.3670 (Jul 20) → 0.2571 (Aug 10) ↑ IMPROVE
+Elections dir_acc (all 2026, n=1,111): 54.0% — confirmed below-random edge ❌
+GEO dir_acc (all 2026, n=1,110):       60.2% — confirmed positive edge ✅
+Legendary ACTIVE (geo_elo_active≥2175): 19→26→17→11 ↓↓ (sustained decline)
+Legendary CLEAN:                         16→14→13→10 ↓↓ (4th consecutive drop)
+NEAR_LEGENDARY clean:                   35→38→28→16 ↓↓↓ (accelerating)
+True research pool (resolved≥20):       8,221→13,855→16,289→20,298 ↑↑↑ (backfill)
+Pool C:                                  2,607→3,212→3,223→3,518 ↑ healthy growth
+Active traders (7d):                     562→2,486→614→335 ↓ declining
+Pool C geo activity (7d):               226→8→2 ↓↓↓ CRITICAL
+Phase 5 Gate 1:                    ✅ COMPLETE (15 runs)
+Phase 5 Gate 2:                    ✅ COMPLETE (confirmed Jun 5)
+Phase 5 Gate 3:                    2/5 = 40% (FROZEN 3 weeks)
+Phase 5 Gate 4:                    BLOCKED — RQ-GEO-ELO-001 11 weeks unexecuted
+Strategic experiment:              Phase 2 (paper trading) is now PRIMARY
+Cold outage:                       ✅ RECOVERED (Jul 24–Aug 7, 13.5 days)
+O-37:                              ✅ CLOSED (84 synthetic markets quarantined, intact)
+B5:                                ✅ FINAL (4,712 markets, clustering complete)
+```
+
+### Previous Week (2026-07-20 — for reference)
+
+#### Prediction Accuracy
+```
+⚠ CONTEXT: Brier deterioration this week is primarily an artefact of the Jun 30
+  Iran cluster (130+ markets, Pool C bullish, resolved No) dominating the 30d window,
+  NOT underlying calibration decay. O-37 quarantine (84 synthetic markets removed
+  2026-07-19) also shifts some historical pool_c calibration baselines.
+
+PRIMARY: geo_elo Pool C (geo_accuracy_pool=1, contested mkts only):
+  GEOPOLITICS (30d, contested price 0.05-0.95):
+    Brier score (30d):                0.3643  ⚠ Iran-cluster artefact (n=94)
+    Directional accuracy (30d):       36.8%   ⚠ Iran-cluster artefact
+    NOTE: Jun30 cluster dominates (130/145 resolved markets). Pool C systematically
+          bullish on Iran-escalation outcomes that resolved No. Expect recovery
+          to ~0.25 range as Jun30 markets age out of 30d window (~Jul 30).
+  GEOPOLITICS (7d, contested):
+    n=0 markets — genuine market lull post-Jun30 cluster resolution
+  ELECTIONS (30d, contested price 0.05-0.95):
+    Brier score (30d):                0.3670  ⚠ includes 2028 nomination markets
+    Directional accuracy (30d):       32.0%   (n=46)
+    NOTE: Sessions notes (Jul 19) flag elections calibration for re-check post
+          O-37 quarantine — some synthetic elections markets now removed.
+  ELECTIONS (7d, contested):
+    n=7 markets only — insufficient for trend
+
+  VALIDATED BASELINE (HIGH confidence, unchanged):
+    Pool C full 2026 accuracy:        70.7%  (2026-06-05-POOL-C-GEO-FULL-2026-001)
+    LEGENDARY geo_elo tier:           79.6%  (n=49 markets)
+```
 
 #### Prediction Accuracy
 ```
@@ -480,7 +654,7 @@ Clean markets (DB):                 92,144
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-07-20 (performance-analyst-agent run 11)
+Last updated: 2026-08-10 (performance-analyst-agent run 12)
 
 ```
 Gate 1 — Feedback-loop runs: 14+/4 ✅ GATE MET
@@ -508,7 +682,7 @@ Gate 2 — HIGH confidence findings: 3+/3 ✅ GATE MET (confirmed 2026-06-05)
   ✅ 2026-06-05-CONTESTED-ACCURACY-2026-001: RQ-CONTESTED-001 PASS — QUALIFIED 66.3%, n=101
   ✅ 2026-06-05-POOL-C-GEO-FULL-2026-001: Pool C full 2026 70.7%, LEGENDARY 79.6%, n=444
 
-Gate 3 — Pre-resolution accuracy: 2/5 gate-valid — IN PROGRESS (AT RISK)
+Gate 3 — Pre-resolution accuracy: 2/5 gate-valid — IN PROGRESS (AT RISK — CRITICAL)
   Gate needs: 60% accuracy across 10+ resolved markets
   Gate-valid scored signals (geo_elo_active criteria):
     STR003-003 (Warsh NO):          RESOLVED_WRONG ✗
@@ -517,25 +691,28 @@ Gate 3 — Pre-resolution accuracy: 2/5 gate-valid — IN PROGRESS (AT RISK)
     STR003-008 (EU Security NO):    RESOLVED_CORRECT ✅ (Jul 4)
     STR003-009 (Graham SC NO):      RESOLVED_WRONG ✗
   Not gate-valid: STR003-007 (Iran — retrospective), STR003-004 (Putin — fails geo_elo)
-  STR003-004 outcome: DB shows resolved=0 ⚠ — 21 days overdue, needs manual fix
+  STR003-004 outcome: DB shows resolved=0 ⚠ — 24+ DAYS OVERDUE, needs manual fix
   Gate-valid accuracy: 2/5 = 40% (FROZEN since Jul 4)
   Total (incl non-scorable 007): 3/6 = 50%
   Need: 6+ correct from 5+ remaining to reach 60% on n=10
-  Risk: LEGENDARY_clean now 13 (post O-37 quarantine), signal-agent dark 7d
-  O-37 note: 17 fake LEGENDARY traders removed (scores were entirely synthetic)
-             Pool is CLEANER — remaining 13 are all real
+  Risk: LEGENDARY_clean now 10 (declining weekly), signal-agent dark 21d
+  Pool decay note: legendary_clean 17→16→16→14→14→13→10 (8 weeks of decline)
+  Context: Phase 2 reframe means Gate 3 is no longer the ONLY path — but cannot be
+           lowered or bypassed without Oscar's explicit approval
 
 Gate 4 — RQ1.1 + RQ3.2:
   RQ1.1: BLOCKED — RQ-GEO-ELO-001 NOT STARTED (8 weeks, deadline Jul 1 MISSED)
     ⚠⚠⚠ CRITICAL: Spawn quant-research-agent. Richest dataset ever (16,289 pool, 223K markets)
   RQ3.2: INCONCLUSIVE (methodology reframe needed — extend RQ2.2 to outcome)
 
-Signal accuracy (July 20):
-  STR-003 (gate-valid): 2/5 = 40% — FROZEN (signal-agent dark 7d; no new signals)
-  STR-003 legendary clean: 13 (post O-37 quarantine — 17 synthetic traders removed)
-  NEAR_LEGENDARY clean: 28 (vs 38 Jul 13 — affected by O-37 recomputation)
+Signal accuracy (August 10):
+  STR-003 (gate-valid): 2/5 = 40% — FROZEN (signal-agent dark 21d; no new signals)
+  STR-003 legendary clean: 10 (down from 13 Jul 20; 4th consecutive weekly drop)
+  NEAR_LEGENDARY clean: 16 (down from 28 Jul 20 — accelerating decline)
+  STR-002 (all scored, n=162): 29.6% accuracy, avg edge -0.0152
   STR-004: 0/1 founding case ambiguous. 9 more signals needed.
   LEGENDARY tier accuracy: 2/3 = 67% vs non-LEGENDARY 1/3 = 33% — tier signal validated
+  Pool C geo activity (7d): 2 traders, 2 trades — NEAR-ZERO, signal pipeline stalled
 ```
 
 ---
@@ -570,29 +747,37 @@ Supporting    RQ0.1           PASSED          2026-03-29  2026-03-29
 ──────────────────────────────────────────────────────────────────
 ```
 
-Last updated by performance-analyst-agent: 2026-07-20
+Last updated by performance-analyst-agent: 2026-08-10
 
 Stopping rules (halt all research if either fails):
 - RQ1.1: ELO has no predictive validity → redesign ELO system
 - RQ3.2: Markets efficient vs elite consensus → pivot edge source
 
 ⚠⚠ CRITICAL DEPENDENCY NOTE: RQ-GEO-ELO-001 Phase 1 is the prerequisite for RQ1.1 rerun.
-  RQ-GEO-ELO-001 was Oscar-approved May 25 and has NOT been executed (7 weeks elapsed).
-  Dataset is now the richest in system history (16,262 true_research_pool, 223,651 clean markets).
-  Spawn quant-research-agent immediately. Each additional week delays Gate 4 by 1 week.
+  RQ-GEO-ELO-001 was Oscar-approved May 25 and has NOT been executed (11 weeks elapsed).
+  Dataset is now the richest in system history (20,298 true_research_pool, 224,428 clean markets).
+  Phase 2 reframe (Aug 9) partially mitigates urgency — but RQ1.1 is still a Phase 5 gate.
 
-NEW FINDING (Jul 13): Elections calibration breaking. Pool C elite geo traders perform at
-  random on full elections population (50% dir_acc, Brier 0.4838 vs naive 0.4492).
-  Only contested elections (price 0.05-0.95): 59.1% dir_acc (weak but above random).
-  Hypothesis: post-April-28 sharp-money influx pricing away elections edge.
-  Action: pre/post April 28 split analysis required before Phase 6 portfolio allocation.
+ELECTIONS NEGATIVE EDGE CONFIRMED (Aug 10, n=1,111): Pool C geo traders perform WORSE
+  than naive on Elections markets all-2026: dir_acc=54%, Brier=0.3181 vs naive=0.2545.
+  This is definitive at n=1,111 — not a sample-size issue. Phase 6 must exclude Elections
+  until differentiated edge source is identified.
 
-ELO ARC STAGE 3 COMPLETE (Jul 20): Writers A+B both on canonical formula. Sunday
-  canonical run confirmed clean (26,942 updated, 0 failed). B1 edge experiment next.
+GEO POSITIVE EDGE CONFIRMED (Aug 10, n=1,110): Pool C geo traders beat naive on
+  Geopolitics markets all-2026: dir_acc=60.2%, Brier=0.2606 vs naive=0.2958. Consistent
+  with POOL-C-GEO-FULL-2026-001 finding (70.7% on pure geo, Jun 5). Edge is real.
 
-ELO ARC STAGE 0 COMPLETE (Jul 12): W_beh=0 — behavioral ELO weighting adds no accuracy
-  improvement.
+PHASE 2 REFRAME (Aug 9): Phase 2 (live paper trading) is now the primary experiment.
+  Phase 1/B3 repurposed as rung-A kill-test. B7 (paper_trades table) not yet built.
+  Every week without Phase 2 running is irreversibly lost n.
 
-O-37 CLOSED (Jul 19): 84 synthetic markets / 965,542 trades quarantined. 17 fake
-  LEGENDARY traders removed (entire geo_elo history was synthetic). 0 Pool-C exposure.
-  LEGENDARY pool is cleaner post-quarantine.
+ELO ARC STAGE 3 COMPLETE (Jul 20, confirmed post-outage Aug 9): Writers A+B on canonical
+  formula. Aug 9 Sunday run: 29,733 updated, 0 failed.
+
+ELO ARC STAGE 0 COMPLETE (Jul 12): W_beh=0 — behavioral ELO weighting adds no accuracy.
+
+O-37 CLOSED (Jul 19): 84 synthetic markets / 965,542 trades quarantined. Intact post-outage.
+
+LEGENDARY POOL DECAY (Aug 10): legendary_clean at 10 (down from peak 17), declining for
+  4 consecutive weeks. Pool C geo activity 2 traders / 2 trades in last 7 days — effectively
+  zero live signal flow. discover_leaderboard_traders.py should run manually this week.
