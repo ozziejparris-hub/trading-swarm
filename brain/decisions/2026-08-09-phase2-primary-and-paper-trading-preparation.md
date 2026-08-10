@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-09
 **Author:** Claude Sonnet 5 (documentation session). B3 scoping measurement and external research both conducted by Oscar this session — this record writes them up; no code changes, no DB writes.
-**Status:** DECISION — strategic reframe adopted; Phase 1/B3 repurposed; pre-flight checklist open, ranked, none started.
+**Status:** DECISION — strategic reframe adopted; Phase 1/B3 repurposed; pre-flight checklist open, ranked, none started. **[2026-08-10: pre-flight item (a) (Part C item 1, fee classification) resolved — see AMENDMENT block below. The Part B "Geopolitics fee-free / Elections fee-bearing" framing is corrected: fee treatment is per-market, not per-category.]**
 **Numbering:** not O-numbered. O-numbers (`2026-06-29-overhang-ledger.md`) track discrete data-integrity anomalies and bugs found in the live system; this record is a strategic pivot on experiment design plus externally-sourced research, categorically different from that ledger's contents — filed as a design-level decision record instead, extending the FABLE design directly.
 **Cross-ref:** `2026-07-17-edge-proof-experiment-design-FABLE.md` (the design this amends — see companion amendment in that file, same date), `2026-06-29-overhang-ledger.md` O-49 (outage self-healing finding — the immediate context for why every week of delay now has a measurable cost), `2026-08-07-session-summary.md` (B3 named as next up, all prerequisites believed done), today's B3 scoping measurement (Part A below).
 
@@ -110,3 +110,47 @@ Worth stating explicitly, because the generic literature above is written for eq
 ---
 
 *Method note: Part A's counts were produced by this session's B3 scoping query against the frozen `bt_pop_2025-11-01_v1` population and are read-only. Part B's figures are from external sources queried live this session (2026-08-09) — not from this repo's design doc, not from our own DB — and are dated accordingly; they should be re-verified against Polymarket's live fee-schedule API before being load-bearing in the cost model (Part C item 1), since this document reports what was found, not a guarantee it stays current. No code was written, no production data was modified.*
+
+---
+
+## AMENDMENT 2026-08-10 — pre-flight item (a) resolved, with two honest unresolveds
+
+Full detail: `first-repo` session 2026-08-10 (fee-classification live-API probe + unit-denomination cross-check). Original text above is preserved; this block corrects Part B item 1's category framing and closes Part C item 1 with two explicitly flagged open items rather than a false "done."
+
+**1. The "Geopolitics fee-free / Elections fee-bearing" framing in Part B is WRONG. Fee treatment is PER-MARKET, not per-category.**
+- Sampled 15 Geopolitics + 15 Elections from `bt_pop_2025-11-01_v1`, queried both CLOB `/markets/{condition_id}` and Gamma `/markets/{api_id}` live. Split: Geopolitics 2/15 fee-enabled (13.3%), Elections 5/15 (33.3%). Neither category homogeneous.
+- PROOF it's not category or tags: two markets carrying the IDENTICAL tag set (`Politics`+`Geopolitics`) sit on opposite sides — `feesEnabled` false vs true.
+- Temporal hypothesis RULED OUT: fee-enabled markets exist that were created BEFORE the 2026-03-30 rollout, and fee-free markets created after. No clean date cutover.
+- The actual fee-taxonomy signal is Gamma's `feesEnabled` (bool) + `feeType` (`"politics_fees"` \| `null`), corroborated by CLOB's `maker_base_fee`/`taker_base_fee`. NOT `category`.
+- CONSEQUENCE: no category-level constant can be correct. The Aug 09 recommendation to "record the schedule in force at each signal" was right, but for a STRONGER reason than known then — the population is already inhomogeneous at a single instant, not merely across time.
+- Caveat on precision: n=30 means the 13.3%/33.3% point estimates carry sampling noise. The qualitative finding (per-market) is unambiguous regardless — the same-tag opposite-status pair settles it. The ratio should NOT be load-bearing: with per-signal capture we never need a population-level fee rate.
+
+**2. The `taker_base_fee` unit conversion is WRONG — 1000 is a FLAG, not an encoding.**
+- Decisive arithmetic: documented formula `fee = shares × feeRate × price × (1−price)`; politics `feeRate` 0.04 gives `100 × 0.04 × 0.5 × 0.5 = $1.00`/100 shares at p=0.50, matching the published figure exactly. The straightforward "1000 bps = 10%" reading gives $2.50 — wrong by 2.5x.
+- Corroboration: `py-clob-client` issue #326 — Polymarket's own fee-rate endpoint returns `base_fee: 1000` for both NBA and MLB despite those carrying DIFFERENT documented feeRates (0.03 vs 0.05). Same raw value, two different real rates. Matches our own sample: every fee-enabled market showed `maker_base_fee = taker_base_fee = 1000` uniformly, across both categories.
+- CONCLUSION: `taker_base_fee=1000` is a binary/tiered flag meaning "standard fee schedule active," not a linear encoding of the percentage. The real rate comes from Polymarket's off-chain published category schedule (politics = 0.04) applied via the documented formula — NOT derivable from the raw field by arithmetic.
+- Had this been shipped as "confirmed," the cost model would have rested on a coincidence that happened to match one category and would silently break for any other.
+
+**3. UNRESOLVED #1 — the feeRate is documentation-sourced, NOT fill-verified.**
+We have never captured a fee column on `trades` or `positions`, so there is no historical fill to back the rate out from. Polymarket's own documented formula and its on-chain contract computation (`CalculatorHelper.sol`) are known to disagree in some cases — an acknowledged, still-open discrepancy on their side. Flag 0.04 in the cost model as sourced-from-documentation and not independently verified against a live fill. Do not let this caveat silently disappear into code.
+
+**4. UNRESOLVED #2 — "makers pay zero" is NOT confirmed from raw data.**
+Expected `maker_base_fee = 0` on fee-enabled markets. It isn't — every fee-enabled market in the sample shows `maker_base_fee = 1000`, identical to `taker_base_fee`. The raw fields do NOT structurally distinguish maker from taker. No rebate field exists either (the maker rebate is an off-book liquidity-mining program, paid daily, invisible per-market).
+- The maker-pays-zero claim rests on secondary sources (blog posts / commentary), not on our own data. Plausible — the contract likely just never charges the maker side while populating both fields — but unconfirmed.
+- WHY IT MATTERS: this is the hinge for Oscar's limit-order-only rule. If makers genuinely pay zero, fees are a Book-M-only concern and Book P is unaffected. If not, both books carry fees and part of the limit-only cost justification goes.
+- RESOLUTION PATH: the first real maker fill in Phase 2 answers it definitively. Do not resolve by assumption.
+
+**5. CAPTURE SPEC (item (a) deliverable).** At FIRE TIME (not scoring time), the signal record must capture RAW fields, never a derived haircut:
+- `feesEnabled` (BOOLEAN), `feeType` (TEXT), `maker_base_fee` (INTEGER, raw), `taker_base_fee` (INTEGER, raw), `fee_source_endpoint` (TEXT: `'clob'`\|`'gamma'`\|`'both'`), `fee_captured_at` (TIMESTAMP), plus entry price at fire time (needed to evaluate the formula later).
+- All nullable, so an API miss degrades gracefully rather than blocking signal recording.
+- WHY RAW NOT DERIVED: the conversion is unresolved and the doc/on-chain formulas disagree. A stored dollar-haircut cannot be un-baked; raw fields let us recompute once the formula is settled. Same principle as the outage-gap decision (O-49) — record the truth, derive policy separately.
+- WHY FIRE TIME: the fee schedule in force when we would have entered is the market's property at that moment; it varies market-to-market and could change before resolution. Scoring-time capture would substitute "what it is now" for "what it was" — the same look-ahead class the PIT work exists to prevent.
+
+**6. COST-MODEL IMPLICATION.** Keep the `h ∈ {0,1,2,3,5}¢` sweep (§4.4) for SPREAD/SLIPPAGE ONLY. Compute the fee component per-signal from captured raw fields once the formula is confirmed. Do not conflate a per-signal known quantity into a flat sweep.
+
+**7. SPEC-CHANGE GUARD (record explicitly).** Three items reviewed:
+- Contested band (0.10–0.90): NO change. Fees peaking mid-band is a COST fact; cost belongs in the cost model, not the selection filter. Signal rule is about signal quality.
+- Fixed $100/bet notional: NO change. Identical notional means fee-enabled markets get systematically worse net-of-fee outcomes — a known cost asymmetry, honest as long as it's recorded, not a bias in the test.
+- THE GUARD: if we ever find ourselves preferring fee-free markets, that is a SPEC CHANGE requiring pre-registration BEFORE the clock starts — never discovered mid-test as a preference. Naming it here is the protection.
+
+Pre-flight checklist (Part C) status: item 1 is now **CLOSED** in the sense that the capture spec is settled and the false category-level assumption is corrected — but it carries forward two explicit unresolved sub-items (fee-rate-not-fill-verified, maker-zero-not-confirmed) into Phase 2 itself, to be closed by the first real fills rather than by further desk research.
