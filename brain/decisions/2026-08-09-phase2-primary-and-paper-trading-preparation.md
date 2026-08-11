@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-09
 **Author:** Claude Sonnet 5 (documentation session). B3 scoping measurement and external research both conducted by Oscar this session — this record writes them up; no code changes, no DB writes.
-**Status:** DECISION — strategic reframe adopted; Phase 1/B3 repurposed; pre-flight checklist open, ranked, none started. **[2026-08-10: pre-flight item (a) (Part C item 1, fee classification) resolved — see AMENDMENT block below. The Part B "Geopolitics fee-free / Elections fee-bearing" framing is corrected: fee treatment is per-market, not per-category.]**
+**Status:** DECISION — strategic reframe adopted; Phase 1/B3 repurposed; pre-flight checklist open, ranked, none started. **[2026-08-10: pre-flight item (a) (Part C item 1, fee classification) resolved — see AMENDMENT block below. The Part B "Geopolitics fee-free / Elections fee-bearing" framing is corrected: fee treatment is per-market, not per-category.]** **[2026-08-10, AMENDMENT 2: external practitioner research on latency, effect size, sequential design, and cohort exits — signal-rate discrepancy (Part C item 1 of this amendment) now BLOCKING, resolved by companion same-day investigation. Pre-flight checklist renumbered, see AMENDMENT 2 item F.]**
 **Numbering:** not O-numbered. O-numbers (`2026-06-29-overhang-ledger.md`) track discrete data-integrity anomalies and bugs found in the live system; this record is a strategic pivot on experiment design plus externally-sourced research, categorically different from that ledger's contents — filed as a design-level decision record instead, extending the FABLE design directly.
 **Cross-ref:** `2026-07-17-edge-proof-experiment-design-FABLE.md` (the design this amends — see companion amendment in that file, same date), `2026-06-29-overhang-ledger.md` O-49 (outage self-healing finding — the immediate context for why every week of delay now has a measurable cost), `2026-08-07-session-summary.md` (B3 named as next up, all prerequisites believed done), today's B3 scoping measurement (Part A below).
 
@@ -154,3 +154,49 @@ Expected `maker_base_fee = 0` on fee-enabled markets. It isn't — every fee-ena
 - THE GUARD: if we ever find ourselves preferring fee-free markets, that is a SPEC CHANGE requiring pre-registration BEFORE the clock starts — never discovered mid-test as a preference. Naming it here is the protection.
 
 Pre-flight checklist (Part C) status: item 1 is now **CLOSED** in the sense that the capture spec is settled and the false category-level assumption is corrected — but it carries forward two explicit unresolved sub-items (fee-rate-not-fill-verified, maker-zero-not-confirmed) into Phase 2 itself, to be closed by the first real fills rather than by further desk research.
+
+---
+
+## AMENDMENT 2 (2026-08-10) — external practitioner research: latency, effect size, sequential design, exits
+
+Figures below are externally researched 2026-08-10 (live sources, not this repo's design doc or DB), same convention as Part B's 2026-08-09 findings. Original text above is preserved; this block does not alter Part A/B/C or the first amendment, it adds new findings and supersedes Part C's checklist where noted in item F.
+
+**A. THE LATENCY GAP — larger than the design assumed, and it may invalidate the signal by construction.**
+- Commercial Polymarket copy-trading infrastructure operates at 1-3 seconds (co-located nodes, private RPC routing) with some claiming 0-block (same-block) execution. Our design assumes T_act = T_detect + 30 minutes — roughly three orders of magnitude slower.
+- THE MECHANISM THAT MATTERS (not currently named in the design): our thesis is aggregate cohort CONSENSUS, which by construction takes time to form (>=2 members positioned, >=2/3 agreement). If copy-bots mirror our cohort members individually within seconds, then by the time consensus forms the price may ALREADY reflect that positioning. Our signal could be systematically post-impact. This raises the prior that rung C ("edge decays before we can act") is the likely failure point.
+- DECISION: do NOT build execution infrastructure. Two reasons: (i) scope — sub-second fill infra to service a paper-trading experiment that may conclude "no edge" inverts the project's own sequencing principle (prove it before automating it); (ii) more fundamentally, it would answer the WRONG QUESTION — engineering to 3s and then measuring an edge tells us an edge exists for someone with 3s infrastructure, i.e. the population already competing it away. The interesting question is whether a slow-forming consensus signal survives at a latency a normal operator can achieve.
+- DECISION: make latency a MEASURED VARIABLE, not an assumption. Record the full timing chain per signal (see Part C item 9 below, detailed investigation filed separately this session).
+
+**B. EFFECT SIZE — the plausible edge may sit BELOW our detection floor.**
+- External benchmark: a backtest of 687K+ resolved trades from top leaderboard wallets found filtered ("Copy Score 70+") trades win 67.7% with +5.76% average P&L, versus unfiltered copies near a coin flip. Base rate: ~23% of wallets with >=5 resolved trades show positive lifetime realized P&L.
+- Our design certifies edges >=8-10pt and explicitly cannot distinguish 3pt from zero. If the realistic filtered smart-money edge is ~5.76%, WE ARE DESIGNING A TEST WHOSE DETECTION FLOOR SITS ABOVE THE EFFECT SIZE THAT PLAUSIBLY EXISTS.
+- Not fatal — their metric is not identical to our market-relative edge, and our cohort filter is far more selective. But record explicitly: AN AMBIGUOUS RESULT IS THE EXPECTED OUTCOME, NOT A TAIL RISK. This must be understood before committing months.
+
+**C. ADOPT A GROUP SEQUENTIAL DESIGN — replaces descriptive-only interim looks.**
+- Repeatedly testing interim data inflates false-positive rates unless controlled; group sequential methods with alpha-spending functions (Lan-DeMets) are the established frequentist control, and critically neither the NUMBER nor the TIMING of interim analyses needs specifying in advance — only the spending function does.
+- Boundary shapes: O'Brien-Fleming (very stringent early, final threshold near the usual p<0.05); Pocock (constant ~p<0.016 across all looks). Recommend O'Brien-Fleming — it preserves near-full alpha at the final analysis, which suits a design where we expect to run to completion unless something is clearly dead.
+- THE SPEED-UP: beta-spending permits FUTILITY stopping, and sample-size re-estimation is legitimate within the framework. If the edge is genuinely zero, a futility boundary could stop us at n≈25 rather than 60 — potentially saving months. Our current design (interim looks at n=20/40 descriptive-only, no decisions) is MORE conservative than necessary; group sequential is strictly better, letting those looks act without invalidating inference.
+- GUARD (imported from clinical practice): interim analysis is conventionally separated from those running the study to prevent behaviour changing after a look. Our signal generation is automated, lowering this risk, but record the guard explicitly: NO changes to the system, spec, or cohort definition in response to an interim look, other than the pre-specified stop/continue decision.
+- The spending function and boundaries MUST be pre-registered before the clock starts.
+
+**D. ACCOUNT FOR COHORT EXITS.**
+- Documented practitioner failure mode: smart money exits while the follower holds on, having borrowed the other party's judgment but not their exit. Our hold-to-resolution rule means we do not track exits.
+- DECISION: do NOT change the hold-to-resolution rule (it keeps the test clean and avoids exit-cost modelling). But DO record cohort-member exits as a SECONDARY metric, using the existing `detect_counter_signals.py` machinery rather than building new. This makes "did the cohort abandon the thesis before resolution, and did that predict the outcome?" an answerable question post-hoc without contaminating the primary test.
+
+**E. INDEPENDENT CORROBORATION (encouraging, record it).**
+- A practitioner running essentially our experiment independently excludes "endgame scalpers" — wallets whose high win rate comes from buying at ~0.94 once a market is nearly settled — wanting wallets that predict outcomes before the market prices them in. That is STR-002's NEAR_RESOLVED contamination, found independently. Our contested-band filter is validated by outside convergence.
+- Practical pattern worth adopting: notional $100, shares = $100/entry_price, logged with the originating trade's tx_hash as a UNIQUE KEY so duplicate cron runs cannot double-insert. Use this idempotency primitive in `paper_trades` (B7).
+- Selection-bias warning to heed: picking on recent winners regresses to the mean, and qualifying-wallet lists rotate week to week. This maps onto our LEGENDARY cohort turnover (33 addresses cycled through in 30 days) and is exactly what placebo P1 tests.
+
+**F. UPDATED PRE-FLIGHT CHECKLIST** (supersedes the Aug 09 Part C list where they conflict — items renumbered):
+1. RESOLVE THE 4x SIGNAL-RATE DISCREPANCY (now blocking — see companion investigation, this session, 2026-08-10). Pick and pre-register the position-"voting" definition.
+2. Resolve the fee unit question on first real fill (carried, unresolved by design — see AMENDMENT 1 items 3-4).
+3. Pre-register the group sequential design: spending function, boundary type, futility rule, planned look points.
+4. Wire per-signal timing-chain capture (see companion investigation, this session, 2026-08-10).
+5. Check push-vs-poll ingestion (see companion investigation, this session, 2026-08-10).
+6. Wire exit recording via `detect_counter_signals.py` as a secondary metric.
+7. tx_hash idempotency key on `paper_trades`.
+8. Calibrate queue risk from accumulated B4 depth data (carried from Aug 09 Part C item 3).
+9. Freeze spec + config hash; automate recording; journal separate from position log (carried from Aug 09 Part C items 4-6).
+
+*Method note: this amendment's figures (Parts A-E) were queried live externally 2026-08-10, same sourcing convention as the original Part B — not from this repo's design doc or DB. No code was written, no production data was modified. Part 2 (signal-rate discrepancy) and Part 3 (timing chain / push-vs-poll) referenced above were investigated read-only this session against `first-repo`'s DB and codebase; findings reported separately, not restated here to avoid drift between the two documents.*
