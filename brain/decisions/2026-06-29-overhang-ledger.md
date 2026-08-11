@@ -858,6 +858,26 @@ Backfill is visibly still running, not settled: category sync was only ~28% thro
 **STATUS:** OPEN — deferred pending backfill completion, not a blocker to other work.
 **FROZEN-AREA?** No.
 
+**AMENDMENT 2026-08-11 — the "self-healing" MECHANISM was never identified, and the generalization built on it is FALSE.**
+
+The 07-25→08-06 OBSERVATION above is correct and stands unchanged: 9,654 in-window trade rows did appear post-recovery (39/day rising to ~1,900/day). But this entry never pinned down *what inserted them* — it inferred a general mechanism ("the system has been retroactively backfilling") from a symptom. That inference became load-bearing: it was cited (`2026-08-09-phase2-primary-and-paper-trading-preparation.md` Part A) as the reason a 4th outage on 2026-08-11 wasn't urgent, on the assumption trades — unlike order books — self-heal.
+
+**That assumption is FALSE as a general rule.** Traced every trade-writing code path in `first-repo` on 2026-08-11:
+- `monitor.py`'s live poll fetches only the **500 most-recent trades platform-wide** per cycle (~65min actual cadence, not the documented 15min) — recency-only, cannot reach back into an aged gap.
+- `background_backfill_worker.py` — the only other trade-INSERT path in the repo — targets **exclusively** `COUNT(trades)=0 AND backfill_attempted IS NULL`: brand-new traders, one shot each. It never touches an already-known trader again, no matter how large a gap opens in their history.
+- `pnl_worker` makes **no API calls at all** — confirmed both by reading its docstring ("ALL SQLite I/O") and empirically (its batches ran continuously for 20+ seconds while `SELECT COUNT(*) FROM trades` stayed exactly flat).
+- `backfill_transaction_hashes.py` matches and stamps `tx_hash` onto **existing** rows; it inserts nothing new.
+
+**CORRECTED CONCLUSION:** July's healing was almost certainly a **side effect of newly-discovered traders having their full lifetime histories fetched** (via the zero-trade backfill worker), which happened to span the outage window — not a mechanism that repairs a gap for a trader we already track. For the LEGENDARY/NEAR_LEGENDARY cohort specifically — the population every downstream measurement reads — **an outage gap is PERMANENT unless someone runs a targeted re-fetch.**
+
+**EVIDENCE (the 2026-08-11 05:00–18:27 outage, this session):** live-queried `data-api.polymarket.com/trades` for 5 cohort addresses; 3 had trades landing inside the gap window on Polymarket's own tape (330 / 3 / 15 respectively) that our DB had **zero** of. No exceptions, no DB-lock errors, no write failures anywhere in the journal for that window — simply no code path was ever going to fetch it. Recovered via a scoped one-off re-fetch (cohort-only, window-bounded, reusing `background_backfill_worker.py`'s existing fetch/insert path) — see that session's report for the before/after verification table.
+
+**STANDING RULE, going forward:** after ANY outage, run a targeted cohort re-fetch (the pattern used this session) — do not assume trades self-heal. Verify with the same method that found this gap: live API count vs. DB count for the affected window, per address, not just "did the number go up."
+
+**NOT THE SAME CATEGORY AS `order_book_snapshots`:** that table is genuinely, permanently unrecoverable — book depth only ever existed live, no API serves it after the fact. Trades *are* recoverable, but only via deliberate action, never automatically. O-49's original framing ("trades self-heal, order books don't") collapsed these into one lesson when they're actually two different failure classes: one needs nothing, one needs manual intervention every time, and neither is "automatic."
+
+**CROSS-REF:** O-14 (the outage class this and three prior incidents belong to).
+
 ---
 
 ## RESOLVED ITEMS (struck — evidence cited)
