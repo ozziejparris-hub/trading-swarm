@@ -1,0 +1,162 @@
+{
+  "date": "2026-08-11",
+  "markets_checked": 59,
+  "signals_found": 14,
+  "signals": [
+    {
+      "market": "Will Kendall Qualls win the 2026 Minnesota Governor Republican primary election?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.8773,
+      "market_price_pct": 0.0296,
+      "gap_pt": 84.8,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will John Larson be the Democratic nominee for CT-01?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.15,
+      "gap_pt": 15.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.7224,
+      "market_price_pct": 0.26,
+      "gap_pt": 46.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Russell Fry be the new Republican nominee for Senate in South Carolina?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9547,
+      "market_price_pct": 0.2748,
+      "gap_pt": 68.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.9152,
+      "market_price_pct": 0.426,
+      "gap_pt": 48.9,
+      "elite_traders": 1,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "US-Iran Final Nuclear Deal by August 13, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8117,
+      "market_price_pct": 0.031,
+      "gap_pt": 78.1,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-13"
+    },
+    {
+      "market": "US x Iran Effective Ceasefire by August 14?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.5977,
+      "market_price_pct": 0.91,
+      "gap_pt": 31.2,
+      "elite_traders": 2,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-14"
+    },
+    {
+      "market": "US announces end of Iranian blockade by August 15, 2026?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.729,
+      "market_price_pct": 0.12,
+      "gap_pt": 60.9,
+      "elite_traders": 1,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-15"
+    },
+    {
+      "market": "Israel closes its airspace by August 15?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7687,
+      "market_price_pct": 0.0302,
+      "gap_pt": 73.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-15"
+    },
+    {
+      "market": "US-Iran Hormuz Agreement by August 15?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0356,
+      "market_price_pct": 0.46,
+      "gap_pt": 42.4,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-15"
+    },
+    {
+      "market": "Will James Fishback be the Republican nominee for Florida Governor?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4821,
+      "market_price_pct": 0.014,
+      "gap_pt": 46.8,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Jared Moskowitz be the Democratic nominee for Senate in Florida?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.3181,
+      "market_price_pct": 0.015,
+      "gap_pt": 30.3,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Alexander Vindman be the Democratic nominee for Senate in Florida?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.7168,
+      "market_price_pct": 0.888,
+      "gap_pt": 17.1,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Click Bishop advance from the 2026 Alaska Governor primary election?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.38,
+      "gap_pt": 38.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    }
+  ],
+  "scan_timestamp": "2026-08-11T18:30:14.494384+00:00"
+}

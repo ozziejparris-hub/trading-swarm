@@ -1,0 +1,107 @@
+{
+  "date": "2026-08-09",
+  "markets_checked": 53,
+  "signals_found": 9,
+  "signals": [
+    {
+      "market": "Will Josh Elliott win the 2026 Connecticut Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4653,
+      "market_price_pct": 0.042,
+      "gap_pt": 42.3,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Sara Rodriguez win the 2026 Wisconsin Governor Democratic primary election?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0445,
+      "market_price_pct": 0.3,
+      "gap_pt": 25.6,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Ralph Norman be the new Republican nominee for Senate in South Carolina?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.26,
+      "gap_pt": 74.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Russell Fry be the new Republican nominee for Senate in South Carolina?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.2748,
+      "gap_pt": 72.5,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "Will Darline Graham Nordone be the new republican nominee for Senate in South Carolina?",
+      "tier": "LEGENDARY",
+      "direction": "YES",
+      "smart_money_pct": 0.9189,
+      "market_price_pct": 0.487,
+      "gap_pt": 43.2,
+      "elite_traders": 1,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-11"
+    },
+    {
+      "market": "US-Iran Final Nuclear Deal by August 13, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8117,
+      "market_price_pct": 0.031,
+      "gap_pt": 78.1,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-13"
+    },
+    {
+      "market": "US x Iran Effective Ceasefire by August 14?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.89,
+      "gap_pt": 89.0,
+      "elite_traders": 2,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-14"
+    },
+    {
+      "market": "US announces end of Iranian blockade by August 15, 2026?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.58,
+      "gap_pt": 58.0,
+      "elite_traders": 1,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-15"
+    },
+    {
+      "market": "Israel closes its airspace by August 15?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.0583,
+      "gap_pt": 94.2,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-15"
+    }
+  ],
+  "scan_timestamp": "2026-08-09T08:37:22.168248+00:00"
+}

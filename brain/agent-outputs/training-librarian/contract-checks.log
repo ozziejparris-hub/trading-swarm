@@ -4,3 +4,4 @@
 2026-07-04 VIOLATION: clean_pool=22415 true_research_pool=13775 pool_c=2463 legendary_clean=14 — pool_c=2463 below threshold 2500 (continuing from 2026-06-27, signal written to signals.json)
 2026-07-11 PASS: clean_pool=26642 true_research_pool=16263 pool_c=3213 legendary_clean=14 — pool_c recovered (was 2463 Jul 4, 2155 Jun 27). First PASS in 3 weeks.
 2026-08-08 PASS: clean_pool=29539 true_research_pool=20264 pool_c=3271 legendary_clean=14
+2026-08-15 PASS: clean_pool=31043 true_research_pool=21061 pool_c=3556 legendary_clean=9 legendary_active=11 legendary_base=77 clean_markets=224551

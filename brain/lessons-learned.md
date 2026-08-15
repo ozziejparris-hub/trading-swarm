@@ -667,3 +667,34 @@ This document grows more valuable every week.
 - OPEN: score_str003_signals deduplication — 14 daily identical writes superseded this run (5th consecutive week noting this).
 - MONITOR: Contract Section 9 thresholds — now significantly below actual values; update needed for meaningful health monitoring.
 - MONITOR: LEGENDARY pool at 14 clean — post-O-37 equilibrium, now 4+ consecutive weeks.
+
+---
+
+## Lessons added 2026-08-15
+
+### System Architecture Lessons
+- 2026-08-15: Integration contract Section 9 validated against live DB — all metrics pass. clean_pool=31,043 (threshold 15,000), true_research_pool=21,061 (threshold 3,000), pool_c=3,556, legendary_clean=9. Contract version v2.13 matches most recent Section 8 changelog entry. However: all thresholds are now 3–7× below actual values. The contract's Section 9 health monitoring is no longer meaningful — a genuine degradation event would be masked by the large gap between threshold and actual. Oscar should update contract numbers to reflect current pool scale. (Source: training-librarian Responsibility 10, 2026-08-15)
+
+- 2026-08-15: findings.json maintenance summary this run: 3 ELO tier findings superseded (Jul 20 → Aug 10 versions), 1 signal-accuracy-insufficient superseded (Jul 20 → Aug 10), 2 findings expired by date (STR004-founding-case and ELO-validity-insufficient, both past Aug 11 expiry), 1 STRATEGY-OVERDUE expired (STR-002 is EXPERIMENTAL — OVERDUE classification was incorrect). Post-maintenance: 23 ACTIVE findings, 92 SUPERSEDED, 15 EXPIRED. No schema conformance fixes needed. No empty agent-output directories. (Source: training-librarian Responsibility 7, 2026-08-15)
+
+### Calibration Findings
+- 2026-08-15: CRITICAL — Elections negative edge confirmed at n=1,111 (all-2026 contested markets, Pool C). Brier=0.3181 vs naive=0.2545, dir_acc=54.0% (barely above random). This is a definitive finding: Pool C geo specialists who perform well in Geopolitics markets have NO transferable edge in Elections markets — they are actually harmful to follow in that category. Phase 6 portfolio construction must exclude Elections markets until a separate edge source is identified. (Source: performance-analyst 2026-08-10-weekly.md, n=1,111)
+
+- 2026-08-15: Geopolitics edge remains solid at n=1,110: Brier=0.2606 vs naive=0.2958, dir_acc=60.2%. The positive geo signal and the negative elections signal are independent findings — the Pool C geo traders have domain-specific skill that does not generalise. The earlier 2026-07-06 Brier target crossing (Geo 0.1798) was a short-window artefact; the full-year geo result (0.2606) is the authoritative calibration benchmark. (Source: performance-analyst 2026-08-10-weekly.md)
+
+### Strategy Insights
+- 2026-08-15: STR-002 all-time accuracy: 48/162 = 29.6% (avg edge = -0.0152). With 162 signals this is a large enough sample to be significant. The strategy as currently implemented has negative expected edge overall. The thesis cell (CONTESTED + has_proven_trader) has not been broken out separately in the last run — this subset may still show positive edge, but it is unconfirmed. Do not treat STR-002 as validated. (Source: performance-analyst 2026-08-10-weekly.md)
+
+- 2026-08-15: STR-003 accuracy frozen at 2/5 = 40% (gate-valid signals) for 3+ consecutive weeks. Three signals resolved WRONG since the 2/2 peak: STR003-003 (Warsh Fed NO), STR003-006 (Aliaga Peru YES), STR003-009 (Graham SC NO). Gate 3 requires 60% over 10+ signals. At current signal supply (legendary_clean=9, near-zero Pool C geo activity), reaching 10 signals may take 6+ months. Gate 3 is effectively blocked by pool depletion, not just sample size. (Source: performance-analyst 2026-08-10-weekly.md, signal-agent dark 21d as of Aug 10)
+
+### Positions Scan (Aug 10 — last scan before this report)
+- 2026-08-15: Aug 10 positions scan: 3 markets in report (11 scanned). No HIGH conviction signals (≥4 LEGENDARY, ≥30pt gap). Top signal: "Ukraine signs peace deal" (3 LEGENDARY NO, gap=18.5pt, CLEAN, SCI=LOW=35.1, 142 days to resolution). "US x Iran ceasefire" is a persistent MIXED_SIGNAL (both_sides_ratio=0.614 — do not use directionally). "Democrats win Maine Senate 2026" (2 LEGENDARY YES, gap=31.5pt, SCI=MEDIUM=51.7, Elections category — negative-edge territory per Aug 10 finding). No new STR-003 registrations warranted from this scan. (Source: 2026-08-10-positions-scan.json)
+
+### Open Questions (updated 2026-08-15)
+- **CRITICAL:** legendary_clean declined to 9 (Aug 15) from 10 (Aug 10), 14 (Aug 8). Seventh consecutive weekly drop. At this rate the pool will fall below the Section 9 minimum of 5 within 4–8 weeks. Root cause unknown — geo_elo_active decay is the proximate mechanism (traders dormant for 6+ months fall below threshold), but no new geo markets have generated fresh geo_elo scores to replenish the pool. Oscar should run `discover_leaderboard_traders.py` and `update_geo_elo.py` manually.
+- **CRITICAL:** Phase 2 (live paper trading) live recording loop not yet built. B7 (`paper_trades` table + scorer) is the next required build item. Every week without live signal recording is permanently lost n.
+- **URGENT:** STR003-004 (Putin NO) — still unresolved in DB. Run `fast_resolution_check.py`.
+- **URGENT:** SCL-004 feedback-loop-agent condition_id semantic conflict — 10th week PENDING OSCAR REVIEW.
+- **OPEN:** Elections fee classification verification — Polymarket API check needed before Phase 2 commits to cost model.
+- **OPEN:** Contract Section 9 thresholds now severely stale (3–7× below actual) — update needed.
+- **MONITOR:** SCL-007 system_observer.py LEGENDARY threshold — still unresolved in first-repo.
