@@ -249,12 +249,107 @@ at the *top* of elections' range — defensible, not generous.
    untested, correctly not run on a broken foundation, now testable.
 5. **`comprehensive_elo` / `calibration_analysis.py`** — analogous sign-error pattern
    flagged, out of scope all session, **still open and live-affecting.**
-6. **O-49 gap-flagging** — still diverging, not converging (tape_end-in-window
-   0 → 4,979 → 20,211 across Aug 07/09/14). Do not flag until two consecutive readings
-   are materially unchanged.
+6. **O-49 gap-flagging — CORRECTED 2026-08-16.** The prior framing here ("still
+   diverging, not converging, tape_end-in-window 0 → 4,979 → 20,211 across Aug
+   07/09/14") was wrong and had propagated across handovers. The 2026-08-16
+   reproducibility audit established that 20,211 and `trade_gap_flag` were never the
+   same measurement: 20,211 is an ad-hoc readiness count ("tape_end in outage
+   window"), never applied as a write; today's `markets.trade_gap_flag = 1` count is
+   250, comprising the SAME April-gap (166) + O-37-quarantine (84) components that
+   predate 08-15. The "do not flag until two consecutive readings are materially
+   unchanged" deferral applies to the readiness count, not to the flag — the flag
+   itself has not been touched by O-49 at all.
+   (`2026-08-16-result-of-record-reproducibility-audit.md`)
 7. **Carried:** elections calibration re-run (O-40), RQ1.1 repoint, O-38, O-18,
    canonical allowlist fix for `gap_recovery_20260811`, maintenance lock-file
    hardening.
+8. **v2f population bypass (found 2026-08-16).** The v2f pipeline does not call the
+   canonical `backtest_window_sql()` — it computes `tape_end` independently
+   (`build_tape_end_map`) and anchors its query on the `positions` table rather than
+   `markets`/`trades`. At the T_split boundary: canonical population = 6,842 markets;
+   v2f's implicit population = 6,588 — a 254-market symmetric difference, entirely
+   one-directional (v2f is a strict subset of canonical). Root cause: 166 markets have
+   trades but no FIFO-closed position; 88 have positions but `trade_result='pending'`
+   on a market flagged `resolved=1`. Because `edge = won − entry_price` requires a
+   closed position, the metric is structurally conditioned on clean closure — the
+   cohort's edge is measured on a non-random subset of the population, of unknown
+   direction and magnitude. The 88 `resolved=1`/`trade_result='pending'` markets are a
+   separate, open data-consistency item (`markets.resolved` and the entry trade's
+   `trade_result` can disagree).
+   (`2026-08-16-canonical-infrastructure-recon.md`, commit `f6cbbf0`)
+9. **Objective 2 cohort persistence gap (found 2026-08-16).** Objective 1 persists its
+   membership (`metric_v2f_intersection_cohort`, 295 trader addresses); Objective 2 —
+   the pipeline stage that actually produces the headline result — persisted only
+   aggregate counts, never the 148 qualifying / 120 surviving / 148 matched-control
+   trader addresses. This is the specific mechanism behind the 2026-08-16
+   UNREPRODUCIBLE verdict (see §6a): when cohort membership shifts, there is nothing
+   to diff against. The schema pattern needed already exists — Objective 1 uses it —
+   and was simply not applied to Objective 2.
+   (`2026-08-16-result-of-record-reproducibility-audit.md`, commit `5195b01`)
+
+---
+
+## 6a. REPRODUCIBILITY AUDIT — 2026-08-16
+
+**Verdict: UNREPRODUCIBLE.** Not because the finding changed character — the re-run is
+still null, still directionally positive, still ~2.3x the placebo's point estimate. It
+is UNREPRODUCIBLE because the audit's fixed criteria required row-level attribution for
+every discrepancy, and the audit could only rule causes *out*, not name the ones
+actually responsible.
+
+- **Code drift: ruled out entirely.** Current HEAD *is* `eaeabbc`, the
+  `generator_commit` persisted on every result-of-record row. Zero commits have landed
+  in first-repo since the result of record.
+- **Prior-state record: exists, and reconciles exactly.** The persisted
+  `metric_v2f_oos_result` / `metric_v2f_findings` tables match the stated figures
+  precisely — `generated_at = 2026-08-15T19:36:56.85Z`. The number of record is
+  genuinely the number persisted.
+- **Re-run deltas (same seed, same code, different data):**
+  - Objective 1 intersection cohort: 295 → 298.
+  - Objective 2 cohort: 3,032 → 3,033 positions, point estimate +0.03160 → +0.03184.
+  - Objective 2 placebo: 2,569/110 → 2,518/106 positions/traders, point estimate
+    +0.01271 → +0.01392.
+- **Mechanism confirmed active, but not resolved to specific rows.** Background
+  backfill is actively inserting pre-T_split-timestamped trades into the DB: 162,648
+  such rows among the most recent 553,800 inserted (by rowid). This plausibly explains
+  the shape of the drift but was not traced to the individual rows behind each figure —
+  see §6.9 for why (Objective 2's membership was never persisted to diff against).
+- **Pin-mechanism finding.** Nothing in the schema currently pins dataset state to a
+  decision-carrying number — only code (`generator_commit`) and time (`generated_at`).
+
+**New baseline fingerprint, 2026-08-16:** traders=170,430; trades=11,350,510;
+positions=7,476,972; markets=722,851; max trade timestamp=2026-08-16 14:12:03;
+resolved markets=224,828; Geopolitics/Elections resolved+gap-clean=10,448;
+`trade_gap_flag=1` count=250.
+
+Full detail: `2026-08-16-result-of-record-reproducibility-audit.md` (commit `5195b01`).
+
+---
+
+## 6b. CANONICAL INFRASTRUCTURE — ENFORCEMENT IS CONVENTION-ONLY (2026-08-16)
+
+Canonical adherence across this project is convention-only, not structural, with one
+exception. `check_canonical_definitions.py` (the drift guard wired into daily
+maintenance) covers geo_elo thresholds and Pool-C SQL shapes — it has **zero coverage
+of Section 6** (`backtest_window_sql`), confirmed by reading its AST rules directly.
+Nothing in the codebase would have flagged the v2f bypass (§6.8). More broadly,
+`run_tests.py` has no automatic trigger anywhere — no pre-commit hook, no CI — so even
+the tests that exist (including ones that would catch this class of drift) only fire on
+manual invocation.
+
+The one structurally-enforced counter-example: `json_safety.py` /
+`test_cross_repo_lock.py` — a test that imports both repos' independently-maintained
+copies of the lock-path logic and asserts they agree, plus runs real concurrent
+multiprocess writers across both. Even this runs only on manual invocation
+(`python3 -m pytest`), not automatically.
+
+Separately: the two repos' `brain/integration-contract.md` files are entirely different
+documents (v1.4, 275 lines vs. v2.13, 1,413 lines), not cross-linked, and both stale.
+The larger copy's documented daily-maintenance step list (19–20 steps) is missing 10+
+steps present in the actual current `daily_maintenance.py` (29 steps), including a
+blocking pre-ELO integrity gate that the "authoritative" contract does not mention.
+
+Full detail: `2026-08-16-canonical-infrastructure-recon.md` (commit `f6cbbf0`).
 
 ---
 
@@ -303,3 +398,15 @@ draws on `2026-08-15-skill-metric-rebuild.md`, `2026-08-15-session-summary.md`, 
 direct verification of repo state (git log, systemctl status) at time of writing. Treat
 it as a snapshot — verify anything load-bearing against current repo state before
 relying on it if significant time has passed.*
+
+*Amended 2026-08-16 (same day, later pass): §6 item 6 (O-49) corrected — the prior
+0 → 4,979 → 20,211 framing conflated an ad-hoc readiness count with the actual
+`trade_gap_flag` column, which the reproducibility audit found were never the same
+measurement. §6 items 8–9 and §6a–§6b added, covering the v2f `backtest_window_sql`
+population bypass, the Objective 2 cohort-persistence gap, the 2026-08-16
+reproducibility audit (verdict: UNREPRODUCIBLE) and its new baseline fingerprint, and
+the canonical-infrastructure enforcement finding (convention-only, one structurally-
+enforced exception). Sources: `2026-08-16-canonical-infrastructure-recon.md`
+(commit `f6cbbf0`) and `2026-08-16-result-of-record-reproducibility-audit.md`
+(commit `5195b01`). §1 and §2 (the metric teardown and the thesis result) are
+unchanged by this amendment.*
