@@ -22,6 +22,35 @@ anything newer before trusting it blindly.
 6. Both repos are public: `ozziejparris-hub/first-repo` (data/execution layer) and
    `ozziejparris-hub/trading-swarm` (orchestration + brain, this repo).
 
+=== SECTION: THE HYPOTHESIS, PLAINLY ===
+Strip away every layer of infrastructure and the question has always been one sentence: do skilled traders on Polymarket predict outcomes better than the market price, in a way that's identifiable in advance and tradeable after costs?
+That's it. Everything else — geo_elo, PIT reconstruction, event clustering, the cost model, the whole v2 metric rebuild — exists only to answer that one question honestly. When any of it stops serving that question, or when we can't tell whether it does, that's a signal to stop and re-anchor, not to keep building. This session's realignment happened because we lost sight of this for a period and let the instrument (the spec) become more complex than the question ever required.
+
+=== SECTION: HOW WE WORK ===
+A new instance should understand the working relationship, not just the findings, because the METHOD is as load-bearing as the results.
+
+Division of labour: Oscar sets direction, priorities, and makes final calls on anything ambiguous or consequential (thresholds, scope changes, cutover decisions). Claude reasons about design, spots risk, proposes and critiques methodology, and writes the precise instructions Claude Code executes. Claude Code is the hands — it runs queries, writes code, and reports findings, but it does not make judgment calls about what a finding MEANS or what to do next; that comes back to this conversation.
+
+The core discipline, in order of how often it's saved us:
+
+1. PRE-REGISTER BEFORE COMPUTING. Hypothesis, metric, and success criterion are written down and committed BEFORE any result exists. This is not bureaucracy — it is what makes a null result trustworthy and prevents unconsciously searching for a specification that produces a preferred answer. Every "vX" pass this session (Layer 0 through v2f) followed this pattern, and it is why the final null-but-underpowered result can be believed rather than second-guessed.
+
+2. TEST THE PREMISE BEFORE BUILDING THE INSTRUMENT. The single biggest mistake of the project's first month: we validated the plumbing (PIT reconstruction, positions, prices, clustering) to an exhaustive standard, and never directly asked "does the base skill metric predict anything at all" until forced to. That question was always the cheapest one available and should always be asked first on any new thesis or sub-question.
+
+3. IF A GATE FAILS, STOP AND REPORT — DO NOT RE-SPECIFY TO PASS IT. This happened repeatedly and explicitly this session (v2's calibration gate failing and staying failed until properly diagnosed; v2e's coverage simulation catching a real bug in the correction itself before it was reported). The instruction to Claude Code is always: if the pre-registered criterion isn't met, say so and stop, don't quietly adjust the method until it is.
+
+4. ESTABLISH FIELD SEMANTICS EMPIRICALLY, NEVER FROM NAMES OR DOCSTRINGS. The entire geo_elo sign-error saga traced back to inferring what a price field meant from its name and the surrounding code's apparent intent, rather than checking what the data actually contained. The fix, now standard practice: for any price/probability field, take paired opposite-side trades on the same market at the same moment and check whether they sum to ~1.0. That single test would have caught the bug on day one.
+
+5. CHECK WHETHER A STRIKING RESULT SITS AT A BOUNDARY WE CHOSE. Any time a reconstruction or measurement produces a dramatic finding, ask first whether it's a property of the world or an artifact of where WE decided to start looking (a lookback window, a data-availability cutoff, an outage boundary). This has fired twice this session alone — a stop-the-project "consensus only forms after certainty" conclusion that was entirely a lookback-window artifact, and a "trades are gone forever" conclusion (O-49) that turned out to be current-absence mistaken for permanent-absence.
+
+6. REPRODUCIBILITY IS NOT OPTIONAL. Any number that carries a project decision must come from a committed, parameterised, re-runnable script writing to a durable artifact with its generating parameters recorded — not a one-off background-agent run, not a number quoted from memory of a prior chat. We have been burned by this three separate times (the original B3 scoping's 9/8, a 28-formation retest, v2's first raw count) — each anchored real project decisions and none could be regenerated when questioned.
+
+7. WHEN SOMETHING SURPRISES YOU, DIAGNOSE IT RATHER THAN JUST REPORTING IT OR SUPPRESSING IT. A gate failure or a degenerate statistic is not just "the answer" — it's information about why the method broke, and that diagnosis is usually the most valuable output of the pass (see: the market-concentration diagnosis behind v2's gate failure, the t-vs-z coverage bug behind v2e's correction). But diagnosing is not license to then quietly fix and re-run without disclosing what happened — every self-caught error this session was reported explicitly, including the ones that were embarrassing.
+
+8. HONEST NULL RESULTS ARE THE GOAL, NOT A FAILURE MODE. The project's most valuable outputs this month were negative or ambiguous findings, arrived at rigorously: geo_elo doesn't measure what we thought; the backtest can't reach the required power; the corrected thesis test is null but underpowered rather than confirmed. Each of these closes off a wrong path cheaply instead of expensively. A confident wrong answer is a worse outcome than an honest "we don't know yet," and the entire methodology above exists to make the honest answer the only one the process can produce.
+
+A new chat instance inheriting this project should hold this posture from the first message: skepticism toward our own prior conclusions, insistence on empirical verification over inference from names/docs/intent, and comfort reporting "this doesn't work" or "we don't know" as a complete and valuable answer.
+
 ---
 
 ## 1. NORTH STAR — REVISED (read this before anything else)
