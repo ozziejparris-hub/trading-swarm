@@ -592,13 +592,26 @@
       "to": "orchestrator",
       "type": "telegram_notification",
       "timestamp": "2026-08-10T08:30:00Z",
-      "status": "pending",
+      "status": "processed",
       "payload": {
         "message": "Signal Agent \u2014 2026-08-10\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nNew STR-003 signals: 0 (13th consecutive zero-signal cycle)\nLEGENDARY clean: 10 | Near-legendary: 19\n\nKey finding: 0xd44e974a ($55K Ukraine/Russia NO cluster, 9 markets) misses STR-003 by max-2-market breadth rule. 5 individual markets pass all other filters (size, direction, price).\n\nGate 3: 2/5 = 40% | STR003-004 OVERDUE 41d (4th flag)\nSTR003-001 (Newsom NO) resolves in 22 days\n\nFull report: brain/agent-outputs/signal-agent/2026-08-10-08-signal-report.md",
         "priority": "NORMAL",
         "run_id": "signal-20260810",
         "chat": "agents"
-      }
+      },
+      "processed_at": "2026-08-10T08:10:57.810163"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
+        "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-08-17*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier Geo (7d): 0.1794 \u2705 n=2  |  Geo (30d): 0.4532 \u26a0 n=16\nBrier Elections (7d): 0.1552 \u2705\u2705  |  Elections (30d): 0.2193 \u2705\nPool C activity: 71 traders/703 trades \u2191\u2191\u2191 (was 2/2)\n\n\ud83d\udea8 Flags: [1 CRITICAL] [2 HIGH]\nCRITICAL: geo_elo confirmed unfit (5 structural bugs, 2026-08-15). STR-003 built on broken instrument. New metric built \u2014 cutover decision pending Oscar.\nHIGH: Phase 2 B7 still not built \u2014 n loss permanent and accelerating.\nHIGH: Integration contract diverged between repos.\n\nGate 3: 2/5 = 40% FROZEN (signal-agent dark; geo_elo architecture review needed)\nGate 4: BLOCKED (RQ-GEO-ELO-001 obsolete \u2014 requires respec with new metric)\nLegendary clean: 9 \u2193 | Near-legendary: 21 \u2191\u2191 RECOVERY\n\nFull report: brain/agent-outputs/performance-analyst/2026-08-17-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260817"
+      },
+      "timestamp": "2026-08-17T06:30:00Z",
+      "status": "pending"
     }
   ],
   "pending": [
