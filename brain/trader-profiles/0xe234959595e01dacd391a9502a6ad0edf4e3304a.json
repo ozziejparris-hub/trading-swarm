@@ -1,0 +1,50 @@
+{
+  "address": "0xe234959595e01dacd391a9502a6ad0edf4e3304a",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 2028.4,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 603 total resolved trades across 70 distinct markets. Domain breakdown: Unknown/Other 395 trades (48% acc, 55% contested), Geopolitics 208 trades (60% acc, 75% contested). 52% overall accuracy at 62% contested rate. NOTE: geo_resolved_trades_count in traders table = 10, while actual geo-tagged trades show 208 Geopolitics category — this discrepancy suggests categorization issues. The Geopolitics category trades (60% acc, 75% contested) are compelling if genuine. PNL=-$14,084 (significantly negative — the single largest negative PNL in the new qualifier pool). The negative PNL severely undermines the accuracy signal. DOMAIN_SPECIALIST assigned with LOW confidence based on Geopolitics category performance only — the overall 52% accuracy and deeply negative PNL cast doubt on the quality of the geo edge. Directionality=0.9008. Confidence LOW: conflicting signals between Geopolitics accuracy and overall PNL.",
+  "primary_domain": "Other",
+  "domain_strengths": [
+    "Geopolitics (tagged): 208 trades, 60% accuracy, 75% contested — compelling if genuine, but undermined by negative PNL"
+  ],
+  "domain_blindspots": [
+    "Unknown/Other: 395 trades, 48% accuracy — below chance at meaningful scale; primary PNL drag"
+  ],
+  "domain_summary": "Ambiguous profile. The Geopolitics-tagged trade accuracy (60%, 75% contested) would be strong if confirmed genuine. However, PNL=-$14,084 on 603 trades is a serious red flag — a trader with 60% accuracy on contested trades should not have deeply negative PNL. Possible explanations: (1) the geo trades are not as high-quality as the category suggests, (2) PNL is dominated by the Other/Unknown trades at below-chance accuracy, (3) position sizing is inverted (larger bets on losses). Investigation required before any signal use.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Setting MINIMAL (not EXCLUDE) as the conservative defensible value because the Geopolitics-tagged accuracy could be genuine. However, negative PNL (-$14,084) is the primary caution — the standard STR-003 PNL filter (realized_pnl > -100000) is technically met, but the scale of loss relative to trade count is concerning. Human review must resolve the PNL/accuracy conflict before any upgrade. Do NOT include in STR-003 signals.",
+  "behavioural_flags": [
+    "PNL anomaly: -$14,084 on 603 trades is the largest negative PNL in the new qualifier pool — serious concern regardless of accuracy figures",
+    "geo_resolved_trades_count=10 vs 208 Geopolitics-tagged trades in analysis — categorization discrepancy needs investigation",
+    "geo_elo_active=2028.4 vs geo_elo=2276.8 — recency decay indicates reduced recent geo activity"
+  ],
+  "risk_patterns": [
+    "Negative PNL at scale: -$14,084 across 603 trades suggests systematic position sizing issues or edge weakness not visible in raw accuracy",
+    "Categorization ambiguity: the geo_trades discrepancy (10 vs 208) suggests ELO may not reflect actual Geopolitics domain performance"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any signal use",
+    "PNL investigation: resolve -$14,084 PNL vs 60% Geopolitics accuracy conflict — which signal is correct?",
+    "Categorization investigation: 10 geo_resolved_trades in traders table vs 208 Geopolitics-tagged in trades table — determine which is authoritative",
+    "Do NOT upgrade to DOMAIN_ONLY until PNL/accuracy conflict is resolved"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "Ambiguous initial profile. Geopolitics-tagged accuracy (60%, 75% contested, 208 trades) is compelling but undermined by deeply negative PNL (-$14,084) and categorization discrepancies. LOW overall signal value pending investigation. Human review and PNL investigation required before any signal weight upgrade. MINIMAL assigned as conservative default.",
+  "data_snapshot": {
+    "geo_elo": 2276.8,
+    "geo_elo_active": 2028.4,
+    "resolved_trades": 603,
+    "distinct_markets": 70,
+    "directionality": 0.9008,
+    "pnl": -14084.4
+  }
+}

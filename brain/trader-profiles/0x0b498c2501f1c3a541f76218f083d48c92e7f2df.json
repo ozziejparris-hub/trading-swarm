@@ -1,0 +1,51 @@
+{
+  "address": "0x0b498c2501f1c3a541f76218f083d48c92e7f2df",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1965.5,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 1221 total resolved trades across 241 distinct markets. Domain breakdown: Other 1107 trades (40% acc, 41% contested), Trump_US 53 trades (24% acc, 45% contested), Iran_ME 26 trades (7% acc, 7% contested), Elections_nonUS 24 trades (41% acc, 8% contested), Russia_UKR 6 trades, China_Asia 4 trades. 38% overall accuracy at 39% contested rate. Problematic profile: 38% accuracy overall is below chance for a trader with this volume. Iran_ME at 7% accuracy on 26 trades with 7% contested rate is particularly striking — 7% contested means near-cert NO entries (buying NO at 0.07 means betting something won't happen, paying 93 cents of certainty). If these near-cert entries failed (7% accuracy means 93% of 26 trades LOST), this is a yield-harvesting failure pattern: picking up near-cert premium that blew up. Trump_US at 24% accuracy on 53 trades at 45% contested is also significantly below chance. The geo_elo_active=1965 and geo_elo=2429 combination is anomalous — suggests ELO accumulation in non-standard ways. Directionality=1.0 (fully directional). PNL=-$7,926 (significantly negative). Archetype YIELD_HARVESTER assigned with LOW confidence because the data is harder to interpret than a typical yield-harvester (the usual pattern is high near-cert accuracy with near-zero signal value, but this trader is losing on near-cert entries). Could alternatively be classified as a poor DOMAIN_SPECIALIST or a systematic over-bettor outside core competence. LOW confidence reflects this ambiguity.",
+  "primary_domain": "Other",
+  "domain_strengths": [],
+  "domain_blindspots": [
+    "Iran_ME: 26 trades, 7% accuracy, 7% contested — near-cert entries that failed systematically (yield-harvesting failures)",
+    "Trump_US: 53 trades, 24% accuracy, 45% contested — significantly below chance at meaningful sample size",
+    "Other: 1107 trades, 40% accuracy — below 50%, primary loss driver"
+  ],
+  "domain_summary": "A poorly performing trader with negative PNL (-$7,926) and 38% overall accuracy. The Iran_ME pattern (7% accuracy on near-cert NO entries) is a yield-harvesting failure — buying near-certainty positions that resolved against expectations. Trump_US at 24% accuracy across 53 contested trades is also systematically below chance. No domain shows meaningful positive edge. The geo_elo_active=1965 suggests ELO is inflated by particular market types or timing effects rather than actual forecasting skill.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Iran_ME",
+    "Trump_US",
+    "Other"
+  ],
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "Negative PNL (-$7,926), 38% overall accuracy, 7% Iran_ME accuracy — no domain demonstrates meaningful positive edge. EXCLUDE from all STR-003 signals. This trader's positions carry no predictive information for STR-003 purposes. The YIELD_HARVESTER archetype is assigned with LOW confidence given the unusual failure-on-near-cert pattern, but signal weight EXCLUDE is warranted regardless of archetype refinement.",
+  "behavioural_flags": [
+    "Negative PNL: -$7,926 — net loss across entire trade history",
+    "Below-chance overall accuracy: 38% on 1221 trades is a statistically significant negative result",
+    "Iran_ME near-cert failure: 7% accuracy on 26 trades at 7% contested rate — systematic near-cert losses in this domain",
+    "Trump_US below-chance: 24% accuracy on 53 trades at 45% contested — active money loss pattern"
+  ],
+  "risk_patterns": [
+    "Yield-harvesting failure: collecting near-cert positions that resolve against expected outcome — classic tail risk from near-cert premium collection",
+    "No demonstrated positive edge in any domain at meaningful sample sizes"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed — EXCLUDE weight means open positions carry no signal value. Do not surface positions from this trader in intelligence products.",
+  "watch_items": [
+    "Monitor: archetype LOW confidence — if new data emerges showing domain-specific edge in any category, revisit classification",
+    "No upgrade path until: (1) positive PNL demonstrated over 50+ new resolved trades, (2) domain accuracy above chance in at least one domain"
+  ],
+  "overall_signal_value": "NOISE",
+  "summary": "Poor-performing trader with negative PNL (-$7,926), 38% overall accuracy, and systematic below-chance performance across all major domains. Iran_ME shows yield-harvesting failure pattern (7% accuracy on near-cert entries). EXCLUDE signal weight appropriate — this trader's positions carry no predictive information for STR-003. The geo_elo_active=1965 appears to be an ELO inflation artifact rather than evidence of forecasting skill. LOW archetype confidence given unusual failure pattern.",
+  "data_snapshot": {
+    "geo_elo": 2429.1,
+    "geo_elo_active": 1965.5,
+    "resolved_trades": 1221,
+    "distinct_markets": 241,
+    "directionality": 1.0,
+    "pnl": -7925.6
+  }
+}

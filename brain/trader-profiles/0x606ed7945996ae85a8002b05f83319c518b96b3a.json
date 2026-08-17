@@ -1,0 +1,77 @@
+{
+  "address": "0x606ed7945996ae85a8002b05f83319c518b96b3a",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 2139.1,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 1056 total resolved trades across 226 distinct markets. Domain breakdown: Iran_ME 638 trades (61% acc, 45% contested, avg 0.463), Russia_UKR 357 trades (56% acc, 47% contested, avg 0.481), Other 48 trades (35% acc, 81% contested — weak), China_Asia 9 trades (55% acc — negligible), Trump_US 4 trades (50% acc — negligible). 58% overall accuracy at 47% contested entry rate. DOMAIN_SPECIALIST classification: clear dual-domain structure with Iran_ME primary (604 trades, 61% acc) and Russia_UKR secondary (357 trades, 56% acc). Both domains show consistent contested-price trading above chance at scale — robust data supports HIGH confidence. Directionality=0.9125 (fully directional, not LP). PNL=$5,491 (positive, plausible for trade volume). Contest rate 47% across all trades is at the boundary of DOMAIN_SPECIALIST/GENUINE_FORECASTER but domain concentration (Iran_ME+Russia_UKR dominate) and clear 35% accuracy in Other domain confirm specialist profile.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 638 resolved, 61% accuracy, 45% contested — primary domain, robust data, meaningful edge",
+    "Russia_UKR: 357 resolved, 56% accuracy, 47% contested — strong secondary domain"
+  ],
+  "domain_blindspots": [
+    "Other: 48 trades, 35% accuracy, 81% contested — actively losing on contesteded calls outside both trusted domains",
+    "Trump_US: 4 trades — negligible sample"
+  ],
+  "domain_summary": "Clear Iran_ME and Russia_UKR dual-domain specialist with 1056 resolved trades. The 35% accuracy in Other-domain contested markets (vs 58% overall) is a meaningful negative signal for out-of-domain trading. Iran_ME is primary at 61% accuracy across 638 trades — one of the larger Iran_ME sample sizes in the pool. Russia_UKR at 56% across 357 trades is a genuinely edge-generating secondary domain. Both accuracy figures are statistically robust at these trade counts.",
+  "trusted_domains": [
+    "Iran_ME",
+    "Russia_UKR"
+  ],
+  "discounted_domains": [
+    "Other",
+    "Trump_US"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Strong domain data with HIGH confidence (1056 trades, dual-domain edge confirmed) supports DOMAIN_ONLY weight. Setting MINIMAL for this initial profile as the conservative defensible value pending human review. Recommend upgrade to DOMAIN_ONLY (Iran_ME and Russia_UKR) after Oscar review — the evidence base is robust. Do NOT include in STR-003 signals until human review is cleared. geo_elo_active=2139.1 is only 36 points above NEAR_LEGENDARY threshold (2175 is LEGENDARY) — actually this is NEAR_LEGENDARY.",
+  "behavioural_flags": [
+    "geo_elo_active=2139.1: sitting at NEAR_LEGENDARY tier (below 2175 LEGENDARY threshold). geo_elo=2206 base score but recency decay brings to 2139. Trajectory watch needed.",
+    "Other-domain negative edge: 35% accuracy on high-contested-rate Other trades is an active loss pattern outside trusted domains"
+  ],
+  "risk_patterns": [
+    "Out-of-domain trading loss: 35% accuracy in Other domain at 81% contested is concerning — this trader is directional in markets outside their edge",
+    "geo_elo_active near boundary: any 3-4 week gap in geo trading will push below 2000, accelerating toward demotion"
+  ],
+  "notable_calls": [
+    {
+      "market": "Israel closes its airspace by June 8?",
+      "side": "No",
+      "entry_price": 0.5,
+      "result": "WON",
+      "significance": "Jun 8 2026 contested call at 50/50 — Iran_ME domain directional accuracy"
+    },
+    {
+      "market": "Israel closes its airspace by August 15?",
+      "side": "No",
+      "entry_price": 0.51,
+      "result": "WON",
+      "significance": "Jul 24 2026 contested Iran_ME call — continued active domain monitoring"
+    },
+    {
+      "market": "Will Russia capture all of Hryshyne by May 31?",
+      "side": "Yes",
+      "entry_price": 0.49,
+      "result": "WON",
+      "significance": "May 27 2026 Russia_UKR contested call — secondary domain accuracy confirmed"
+    }
+  ],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Do not include in STR-003 signals until Oscar review cleared",
+    "UPGRADE CANDIDATE: DOMAIN_ONLY for Iran_ME and Russia_UKR after human review — evidence base is robust (1056 trades, HIGH confidence archetype)",
+    "geo_elo_active watch: 2139.1 is NEAR_LEGENDARY. Monitor whether trader remains active in geo markets — any meaningful inactivity will push toward ELITE tier decay",
+    "Out-of-domain trading: flag if Other-domain trades continue to accumulate — the 35% accuracy in that category is an active loss generator"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "Iran_ME and Russia_UKR dual-domain specialist with 1056 resolved trades, 58% overall accuracy, HIGH archetype confidence. The strongest new qualifier this cycle by trade count and archetype clarity. DOMAIN_ONLY upgrade warranted after human review. geo_elo_active=2139.1 — NEAR_LEGENDARY tier, watch for decay below 1800 if geo activity reduces.",
+  "data_snapshot": {
+    "geo_elo": 2206.0,
+    "geo_elo_active": 2139.1,
+    "resolved_trades": 1056,
+    "distinct_markets": 226,
+    "directionality": 0.9125,
+    "pnl": 5491.2
+  }
+}

@@ -1,25 +1,25 @@
 {
   "address": "0xecaa8806a9a05049d7d5260a33dc924220e377a9",
-  "profile_date": "2026-08-10",
-  "geo_elo_active": 3283.0,
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 4200.6,
   "tier": "LEGENDARY",
   "archetype": "GENUINE_FORECASTER",
   "archetype_confidence": "MEDIUM",
-  "archetype_reasoning": "Original HIGH confidence (Jun 2026) downgraded to MEDIUM this cycle. At profiling this trader showed 723 geo-market resolved trades with 70%+ accuracy across Trump_US, Iran_ME, Russia_UKR, Europe — strong GENUINE_FORECASTER. Two new resolved trades since profiling (thin data: 2 trades) — no reclassification warranted. However, behavioral evidence has shifted: open positions are now overwhelmingly entertainment/movie markets (Devil Wears Prada 2, Avatar: Fire and Ash, Super Mario Galaxy, Oscars awards) with minimal geopolitical content. The geo content that remains shows mixed signals: Darline Nordone SC Senate YES at 0.487 CONTESTED (genuine call, 22,248 shares resolving Aug 11) alongside Khamenei out YES at 0.953 NEAR_CERT (yield-harvesting in geo). Performance flag: last-10 accuracy 40% below 45% threshold — driven by May 2026 Trump-says-X cluster of losses (5-6 near-cert bets at 0.87-0.90 that failed). GENUINE_FORECASTER archetype preserved but confidence reduced. The Nordone position is a genuine directional call; the entertainment book expansion is a significant behavioral shift. Archetype review warranted when more than 2 new geo resolved trades are available.",
+  "archetype_reasoning": "At original Jun 2026 profiling: 723 geo-market resolved trades, 70%+ accuracy across Trump_US, Iran_ME, Russia_UKR, Europe — core GENUINE_FORECASTER. Confidence downgraded HIGH→MEDIUM Aug 10 2026 due to entertainment portfolio shift and performance deterioration (last-10 at 40%). Aug 17 2026 update: 1 new resolved trade (thin data). Peggy Flanagan MN Senate Dem Nominee NO @ 0.060 WON (Elections, Aug 12) — near-cert entry consistent with yield-harvesting pattern in Elections domain. Last-10 accuracy now 50% (above 45% threshold — performance deterioration flag CLEARS). Nordone SC Senate still showing 'pending' in DB (Aug 11 resolution date passed — DB sync lag; likely WON based on pre-res scan intelligence). Archetype GENUINE_FORECASTER maintained — insufficient resolved evidence to reclassify (only 3 geo-relevant resolved trades since Jun profiling). Entertainment portfolio shift is unresolved behavioral question. Previous: GENUINE_FORECASTER set 2026-06-10, confidence downgraded HIGH→MEDIUM 2026-08-10, maintained 2026-08-17.",
   "primary_domain": "Trump_US",
   "domain_strengths": [
-    "Trump_US",
-    "Iran_ME",
-    "Russia_UKR",
-    "Europe"
+    "Trump_US: 72.1% accuracy on 534 trades at profiling — primary and statistically robust edge domain",
+    "Iran_ME: 78.6% accuracy on 14 geo trades — highest domain accuracy, thin data but striking",
+    "Russia_UKR: 76.2% accuracy — second strongest domain at profiling",
+    "Europe: 72.7% accuracy — broad multi-domain competence confirmed"
   ],
   "domain_blindspots": [
-    "Sports: Trump-says-X near-certainty cluster (0.87-0.90) in May 2026 resolved against — pattern of high-price entries on ambiguous outcome markets",
-    "Entertainment: massive positions in movie box office / Oscars markets with no demonstrated track record in this domain"
+    "Entertainment/Movies: no demonstrated track record — large position sizes in box office and Oscars markets outside STR-003 scope",
+    "Trump-says-X timing markets: near-cert entries (0.87-0.90) on ambiguous speech events failed systematically in May 2026"
   ],
-  "domain_summary": "At original profiling, dominant Trump_US (72.1% accuracy, 534 trades), strong Iran_ME (78.6%), Russia_UKR (76.2%), Europe (72.7%). Since June 2026, observable positions have shifted dramatically toward entertainment/pop culture (box office, awards, celebrity markets). Geopolitical positions now small by share count relative to entertainment. The Nordone SC Senate position (22,248 shares YES @ 0.487) is the largest active geo call. Whether this domain shift reflects temporary tactical reallocation or permanent strategy change cannot be assessed on 2 new resolved trades.",
+  "domain_summary": "Multi-domain GENUINE_FORECASTER with 70%+ accuracy across four geopolitical domains at profiling. Since Jun 2026, observable positions have shifted dramatically toward entertainment/pop culture. Geo positions still present but smaller by share count relative to entertainment. Elections near-cert (Flanagan NO @ 0.060 WON, Keohokalole NO @ 0.020 WON) are yield-harvesting entries in a GENUINE_FORECASTER context — low signal value despite wins. The SC Senate Nordone position (22,248 shares YES @ 0.487 CONTESTED, pending DB resolution) remains the most important recent directional call. geo_elo_active has risen dramatically (3283 → 4200) since last profile — likely reflects recent near-cert wins propagating into ELO.",
   "signal_weight": "FULL",
-  "signal_weight_reasoning": "Maintained FULL despite behavioral concerns — insufficient resolved evidence to downgrade (only 2 new geo resolved trades). FULL weight should apply ONLY to Geopolitics and Elections signals in trusted domains. Entertainment book positions carry no signal weight under STR-003 scope (non-geo markets). Note: the category visibility bug means this trader's geo positions appear as Unknown in most pipeline queries — STR-003 will not detect them through standard scans.",
+  "signal_weight_reasoning": "Maintained FULL based on Jun profiling track record. Insufficient resolved evidence to downgrade (only 3 new geo-relevant resolved trades since Jun, all near-cert). FULL weight applies ONLY to Geopolitics and Elections signals in trusted domains at contested prices (0.10-0.80). Near-cert Elections entries (Flanagan, Keohokalole) carry no STR-003 weight under standard criteria. Category visibility bug means this trader is invisible to standard pipeline queries — requires manual position monitoring.",
   "trusted_domains": [
     "Trump_US",
     "Iran_ME",
@@ -28,22 +28,21 @@
     "China_Asia"
   ],
   "discounted_domains": [
-    "Entertainment/Movies: no prior track record — large position sizes without demonstrated edge",
-    "Trump-says-X cluster: near-cert entries in ambiguous timing markets showed systematic failure in May 2026"
+    "Entertainment/Movies: no prior track record in box office/awards prediction — large position sizes without demonstrated edge",
+    "Trump-says-X timing markets: near-cert entries in ambiguous speech events showed systematic failure in May 2026"
   ],
   "behavioural_flags": [
-    "Category visibility bug: ALL open positions appear as Unknown in trades.market_category — trader is invisible to any pipeline query filtering by market_category. This has persisted across multiple consecutive weekly reports.",
-    "ENTERTAINMENT PORTFOLIO SHIFT (Aug 2026): dominant book positions are now movie box office (8,132sh Devil Wears Prada 2, 7,057sh Avatar Fire and Ash, 6,597sh Super Mario Galaxy, 6,247sh Plaid Cymru Welsh election). This is a dramatic behavioral shift from the geopolitical focus at profiling.",
-    "Performance deterioration: last-10 accuracy 40% as of Aug 10 2026 — below 45% threshold. Driven primarily by Trump-says-X May 2026 cluster losses.",
-    "Near-certainty geo entry: Khamenei out YES at 0.953 — YIELD_HARVESTER pattern within geo domain.",
-    "Sunk-cost accumulation and domain overextension: documented at original profiling; LatAm large-position risk confirmed (Lopez Aliaga position has since resolved).",
-    "High directionality (0.9604): nearly always takes a single directional stance — not LP artifact.",
-    "geo_elo_active decaying from 3707 (Jun) to 3283 (Aug) — consistent with activity concentrated in non-geo markets."
+    "Category visibility bug: ALL open positions appear as Unknown in trades.market_category — trader is invisible to any pipeline query filtering by market_category. Persistent across 3+ consecutive weekly reports.",
+    "ENTERTAINMENT PORTFOLIO SHIFT (Aug 2026): dominant book positions remain movie box office (Devil Wears Prada 2, Avatar: Fire and Ash, Super Mario Galaxy, KPop). Entertainment appears to be ongoing strategy, not tactical.",
+    "Performance deterioration CLEARED: last-10 accuracy now 50% (above 45% threshold). Prior flag was driven by May 2026 Trump-says-X cluster losses. With 1 new WON trade, flag clears.",
+    "Near-cert Elections pattern: Flanagan NO @ 0.060 WON, Keohokalole NO @ 0.020 WON — both are near-certainty entries collecting residual yield. Two consecutive near-cert Elections wins do not indicate YIELD_HARVESTER drift (only 2 data points, different from 17 YIELD_HARVESTERs who trade this way systematically).",
+    "Nordone SC Senate (22,248 shares YES @ 0.487) showing 'pending' in DB despite Aug 11 resolution — DB sync lag. Pre-res scan strongly suggests YES was correct; if confirmed, this is the strongest recent GENUINE_FORECASTER data point.",
+    "geo_elo_active surge: 3283→4200 (28% gain) — anomalously fast for geo ELO. Likely reflects near-cert wins propagating through ELO formula. Watch for over-inflation."
   ],
   "risk_patterns": [
-    "Entertainment domain entry without track record: multiple 1000+ share positions in movie/Oscars markets that fall outside STR-003 scope and outside the trader's proven edge domain",
-    "Near-cert geo entries: Khamenei at 0.953 mirrors the yield-harvesting behavior that caused May 2026 losses",
-    "Category visibility: if entertainment positions fail at scale, the PNL impact is substantial (pnl=$165,426 has grown dramatically, likely from entertainment wins — fragile if pattern reverses)"
+    "Entertainment domain entry without track record: multiple 1000+ share positions in movie/Oscars markets outside STR-003 scope and outside proven edge domain",
+    "Near-cert geo entries in contested traders: Khamenei out YES @ 0.953 mirrors yield-harvesting pattern documented in May 2026 losses",
+    "PNL concentration risk: pnl=$165,426 — heavily concentrated; entertainment wins likely driving recent PNL growth, potentially fragile if pattern reverses"
   ],
   "notable_calls": [
     {
@@ -79,39 +78,39 @@
       "side": "YES",
       "entry_price": 0.37,
       "result": "WON",
-      "significance": "Jul 11 2026 Sports/Unknown CONTESTED win — outside trusted geo domains but shows contested-price directional calling in non-geo markets"
-    },
-    {
-      "market": "Will Jarrett Keohokalole be the HI-01 Democratic nominee?",
-      "side": "YES",
-      "entry_price": 0.02,
-      "result": "WON",
-      "significance": "Aug 9 2026 US Elections near-certainty (0.020) win — concerning YIELD_HARVESTER pattern in Elections domain. 1 trade only — insufficient to signal archetype drift."
+      "significance": "Jul 11 2026 Sports/Unknown contested win — outside trusted geo domains but shows contested-price directional calling in non-geo markets"
     },
     {
       "market": "Will Darline Graham Nordone be the new Republican nominee for Senate in South Carolina?",
       "side": "YES",
       "entry_price": 0.487,
-      "result": "OPEN",
-      "significance": "Aug 2026 — 22,248 shares YES at 0.487 CONTESTED, resolving Aug 11. Largest visible geo position in current portfolio. Pre-res scan confirmed LEGENDARY tier signal: smart money at 91.9% YES vs market 48.7%. If this resolves correctly, it is the strongest recent GENUINE_FORECASTER data point."
+      "result": "PENDING (DB sync lag — Aug 11 resolution, likely WON per pre-res scan)",
+      "significance": "22,248 shares YES at 0.487 CONTESTED. Pre-res scan: smart money 91.9% YES vs market 48.7% on Aug 9. Largest visible geo directional call since Jun profiling. If confirmed WON, reinforces GENUINE_FORECASTER archetype."
+    },
+    {
+      "market": "Will Peggy Flanagan be the Democratic nominee for Senate in Minnesota?",
+      "side": "No",
+      "entry_price": 0.06,
+      "result": "WON",
+      "significance": "Aug 12 2026 Elections near-cert (0.060) win — low signal value for STR-003 but confirms active Elections monitoring"
     }
   ],
-  "open_positions_summary": "Current portfolio is dominated by entertainment/cultural prediction markets (box office revenue benchmarks, Oscars award predictions, sports championship markets — all appearing as Unknown category). Top positions by share count: Super Mario Galaxy box office (6,597sh NO @ 0.799), Avatar Fire and Ash (7,057sh YES @ 0.825, 2,407sh YES @ 0.798, 529sh NO @ 0.800), Devil Wears Prada 2 (8,132sh YES @ 0.880, 1,932sh NO @ 0.800), KPop Golden Demon Hunters (1,143sh YES @ 0.860). Geopolitical positions are minor by comparison: Darline Nordone SC Senate (22,248sh YES @ 0.487 CONTESTED — resolves Aug 11), US x Iran diplomatic meeting (6,996sh NO @ 0.765 CONTESTED), Plaid Cymru Welsh election (6,247sh YES @ 0.800 CONTESTED), Trump visit China (2,923sh YES @ 0.830), Khamenei out (213sh YES @ 0.953 NEAR_CERT). None of the geo positions are visible via market_category filter in the trades table — all appear as Unknown.",
+  "open_positions_summary": "Current portfolio dominated by entertainment/cultural prediction markets (box office, Oscars awards — all appearing as Unknown category). Top geo positions: US x Iran diplomatic meeting (6,996sh NO @ 0.765 CONTESTED), Plaid Cymru Welsh election (6,247sh YES @ 0.800), Trump visit China (2,923sh YES @ 0.830). 2026 Midterms: House Democratic control (NO position visible), Senate Democratic control YES @ 0.52. 2028 cycle: JD Vance 2028 Presidential YES @ 0.193 CONTESTED, Gavin Newsom Dem 2028 YES @ 0.243 CONTESTED, JD Vance 2028 GOP nom YES @ 0.491. Nordone SC Senate (22,248sh YES @ 0.487) still showing as pending — resolution expected imminently. All geo positions appear as Unknown in trades table due to category visibility bug.",
   "watch_items": [
-    "RESOLVES AUG 11 (TOMORROW): Darline Graham Nordone SC Senate YES @ 0.487 (22,248 shares). This is the most important near-term data point for archetype assessment. Win = confirms contested-price geo calling continues. Loss = adds to deterioration signal.",
-    "Performance deterioration flag active: last-10 accuracy 40%. Monitor next geo resolved trades — if below 45% continues, signal weight downgrade review required.",
-    "Entertainment book exit path: monitor whether entertainment positions resolve and whether the trader exits this domain or continues building. If entertainment trades resolve and geo positions re-accumulate, this may have been tactical reallocation.",
-    "Category visibility bug unresolved: ALL positions appear as Unknown in trades table. STR-003 pipeline cannot see this trader's geo positions through standard category queries. Manual position checking required for signal generation.",
-    "US x Iran diplomatic meeting NO @ 0.765 (6,996 shares) — contested, geo-relevant, no end_date visible. Cross-reference against resolution timeline."
+    "Nordone SC Senate resolution: market closed Aug 11 — resolve DB sync lag and update notable_calls when trade_result propagates",
+    "Entertainment book exit watch: monitor whether movie/Oscars positions resolve and whether geo positions re-accumulate next cycle — this cycle is the decision point for whether entertainment is tactical or permanent",
+    "Category visibility bug: persistent Unknown categorization blocks STR-003 pipeline visibility. Signal generation requires manual position checking for this trader.",
+    "geo_elo_active at 4200: anomalously high — verify ELO calculation integrity given near-cert wins driving rapid gain",
+    "2028 election positions (Vance YES @ 0.193, Newsom YES @ 0.243): these are contested-price calls at 18-24 months out — monitor for building consensus with other pool traders"
   ],
   "overall_signal_value": "HIGH",
-  "summary": "LEGENDARY GENUINE_FORECASTER with geo_elo_active=3283 and multi-domain accuracy track record. Profile confidence downgraded from HIGH to MEDIUM this cycle due to: (1) portfolio dramatically shifted to entertainment/movie markets, (2) last-10 accuracy at 40% (below 45% threshold), (3) near-cert geo entry pattern (Khamenei @ 0.953). Archetype preserved — insufficient resolved evidence to reclassify (only 2 new geo-relevant resolved trades). The Nordone SC Senate position (resolving Aug 11) is a genuine contested-price directional call and will be the key data point for next cycle. FULL signal weight maintained but applies only to geo/elections domains — entertainment positions carry no STR-003 weight. Category visibility bug makes this trader invisible to standard pipeline queries — requires manual monitoring.",
+  "summary": "LEGENDARY GENUINE_FORECASTER with geo_elo_active=4200 and multi-domain accuracy track record (70%+ across 4 domains at Jun profiling). Performance deterioration flag CLEARS this cycle (last-10 now 50%). Archetype maintained MEDIUM confidence — entertainment portfolio shift is the key unresolved behavioral question. FULL weight applies to geo/elections domains only — entertainment positions have no STR-003 weight. Category visibility bug continues to require manual monitoring. Nordone SC Senate (22,248sh YES @ 0.487) pending DB resolution — likely confirmed win per pre-res scan intelligence.",
   "data_snapshot": {
     "geo_elo": 4265.8,
-    "geo_elo_active": 3283.0,
-    "resolved_trades": 250,
-    "distinct_markets": 683,
+    "geo_elo_active": 4200.6,
+    "resolved_trades": 2775,
+    "distinct_markets": 684,
     "directionality": 0.9604,
-    "pnl": 165426
+    "pnl": 165426.1
   }
 }

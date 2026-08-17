@@ -1,0 +1,80 @@
+{
+  "address": "0x0cb10c40b0776e9ee8cef970af85724654dda76c",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1885.7,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "GENUINE_FORECASTER",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 1079 total resolved trades across 505 distinct markets. Domain breakdown: Trump_US 581 trades (58% acc, 71% contested), Other 228 trades (58% acc, 50% contested), Iran_ME 127 trades (53% acc, 66% contested), Russia_UKR 81 trades (59% acc, 62% contested), Elections_nonUS 29 trades (58% acc, 41% contested), China_Asia 17 trades (41% acc, 64% contested), Europe 16 trades (62% acc, 31% contested). 57% overall accuracy at 64% contested entry rate across 505 distinct markets. GENUINE_FORECASTER classification: the 64% contested entry rate is the key diagnostic — this trader operates at genuinely uncertain prices across a very broad market set (505 distinct markets). No domain shows weak accuracy except China_Asia (41%, thin data). Trump_US at 71% contested with 58% accuracy is the primary domain; the multi-domain consistency (Iran_ME 53%, Russia_UKR 59%, Europe 62%) at high contested rates confirms GENUINE_FORECASTER over DOMAIN_SPECIALIST. Directionality=0.9763 (fully directional, not LP). PNL=$5,899 (positive, consistent with trade volume and accuracy). Confidence MEDIUM: strong data but Trump_US dominance (54% of portfolio) is borderline between DOMAIN_SPECIALIST and GENUINE_FORECASTER.",
+  "primary_domain": "Trump_US",
+  "domain_strengths": [
+    "Trump_US: 581 resolved, 58% accuracy, 71% contested — primary domain with highest sample count and contested rate",
+    "Russia_UKR: 81 resolved, 59% accuracy, 62% contested — secondary edge confirmed",
+    "Europe: 16 resolved, 62% accuracy, 31% contested — thin but positive",
+    "Iran_ME: 127 resolved, 53% accuracy, 66% contested — active Iran_ME trading with moderate edge"
+  ],
+  "domain_blindspots": [
+    "China_Asia: 17 trades, 41% accuracy, 64% contested — below chance in contested China markets; avoid",
+    "Trump-says-X and other ambiguous timing markets: contested entry rate suggests active participation in volatile near-term events"
+  ],
+  "domain_summary": "Multi-domain trader with 64% contested entry rate across 505 markets. Trump_US is the primary domain by volume but the multi-domain pattern with consistent 53-62% accuracy across Iran_ME, Russia_UKR, and Europe at contested prices is the GENUINE_FORECASTER signature. China_Asia is a confirmed weak point (41% accuracy). The breadth (505 distinct markets) is the strongest differentiator from DOMAIN_SPECIALIST — no specialist would operate across this many markets with this consistency.",
+  "trusted_domains": [
+    "Trump_US",
+    "Russia_UKR",
+    "Iran_ME",
+    "Europe"
+  ],
+  "discounted_domains": [
+    "China_Asia"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "GENUINE_FORECASTER with robust data (1079 trades, 505 distinct markets) supports FULL weight eventually. Setting MINIMAL for initial profile as the conservative defensible value pending human review. Recommend upgrade to FULL after Oscar review — the evidence base is robust. geo_elo_active=1885.7 is well within NEAR_LEGENDARY range. Do NOT include in STR-003 signals until human review cleared.",
+  "behavioural_flags": [
+    "Trump_US dominance (54% of portfolio): borderline between DOMAIN_SPECIALIST and GENUINE_FORECASTER — the multi-domain consistency at contested prices is what tips toward GENUINE_FORECASTER",
+    "Iran_ME note: 53% accuracy at 66% contested is above chance but weaker than dedicated Iran_ME specialists (67-71%) — GENUINE_FORECASTER rather than specialist edge"
+  ],
+  "risk_patterns": [
+    "China_Asia blind spot: 41% accuracy at 64% contested is an active loss pattern — avoid China-specific signals from this trader",
+    "geo_elo_active=1885.7 is 325 points below LEGENDARY threshold (2175) — significant gap; would need sustained accurate geo trading to qualify"
+  ],
+  "notable_calls": [
+    {
+      "market": "US announces new Iran agreement/ceasefire extension by June 12?",
+      "side": "Yes",
+      "entry_price": 0.146,
+      "result": "WON",
+      "significance": "Jun 11 2026 contested Iran_ME call at very low probability — directional accuracy on fast-moving geo event"
+    },
+    {
+      "market": "US-Iran nuclear deal by June 30?",
+      "side": "Yes",
+      "entry_price": 0.18,
+      "result": "WON",
+      "significance": "Jun 10 2026 contested call at 18% — directional Iran_ME bet that paid"
+    },
+    {
+      "market": "US announces new Iran agreement/ceasefire extension by June 13?",
+      "side": "No",
+      "entry_price": 0.68,
+      "result": "WON",
+      "significance": "Jun 12 2026 contested Iran_ME call — showed both YES and NO positioning on adjacent ceasefire questions"
+    }
+  ],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Do not include in STR-003 signals until Oscar review cleared",
+    "UPGRADE CANDIDATE: FULL signal weight after human review — multi-domain contested accuracy is the GENUINE_FORECASTER case",
+    "China_Asia: 41% accuracy at 64% contested — do not include in any China-related signals",
+    "Trump_US primary: if this trader enters contested-price 2026 Midterm positions, flag for STR-003 consideration post-review"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "Multi-domain GENUINE_FORECASTER with 1079 resolved trades at 64% contested entry rate across 505 distinct markets. Trump_US is primary (58% acc, 71% contested), Iran_ME/Russia_UKR secondary. FULL signal weight upgrade warranted after human review. Closest thing to a second GENUINE_FORECASTER in the newly qualifying pool. geo_elo_active=1885.7 — solidly NEAR_LEGENDARY.",
+  "data_snapshot": {
+    "geo_elo": 1944.7,
+    "geo_elo_active": 1885.7,
+    "resolved_trades": 1079,
+    "distinct_markets": 505,
+    "directionality": 0.9763,
+    "pnl": 5899.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "address": "0x174e71b46911a87f25ba389de33b38c70f392a52",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1903.8,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 239 total resolved trades across 58 distinct markets. Domain breakdown: Unknown/Other 113 trades (43% acc, 53% contested), Geopolitics 84 trades (48% acc, 66% contested), Elections 42 trades (52% acc, 85% contested). 46% overall accuracy at 63% contested rate. Thin-moderate data. Elections domain (42 trades, 52% acc, 85% contested) is the strongest performer. Geopolitics (84 trades, 48% acc, 66% contested) is below chance. PNL=-$38 (approximately breakeven, plausible). DOMAIN_SPECIALIST classification with LOW confidence: the Elections edge (52% at 85% contested) is above chance but thin (42 trades). Geopolitics below chance is a concern — possible that geo_elo accumulation comes from Elections-tagged geo markets rather than hard geopolitical outcomes. Directionality=1.0. geo_elo_active=1903.8 with only 27 geo_resolved_trades in traders table.",
+  "primary_domain": "Elections_nonUS",
+  "domain_strengths": [
+    "Elections: 42 resolved, 52% accuracy, 85% contested — thin data but consistently contested-price trading"
+  ],
+  "domain_blindspots": [
+    "Geopolitics: 84 trades, 48% accuracy — below chance; primary geo category is not a strength",
+    "Other/Unknown: 113 trades, 43% accuracy — below chance"
+  ],
+  "domain_summary": "Thin-data profile with mixed signals. Elections at 85% contested and 52% accuracy is above chance but 42 trades is below the data-depth threshold for confident classification. Geopolitics underperforms at 48%. The most likely characterization is a trader who participates broadly across geo and elections markets without a clear domain edge. PNL near breakeven ($-38) is consistent with approximate chance-level performance.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "Geopolitics",
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Thin data (239 total, 42 Elections trades), below-chance Geopolitics performance, and ambiguous overall accuracy preclude any weight above MINIMAL. Do NOT include in STR-003 signals. Reassess when Elections trade count exceeds 100.",
+  "behavioural_flags": [
+    "geo_resolved_trades_count=27 in traders table vs 84 Geopolitics in analysis — minor categorization discrepancy",
+    "geo_elo_active=1903.8: fragile tier status given thin geo trade base (27 trades per DB)"
+  ],
+  "risk_patterns": [
+    "Thin data: 239 total trades across 58 markets is insufficient for confident archetype classification",
+    "Geopolitics below chance: 48% accuracy at 66% contested is an active loss domain"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any signal use",
+    "Monitor Elections domain: if Elections trade count grows past 100 with sustained accuracy above 55%, revisit DOMAIN_ONLY classification",
+    "Thin data flag: classification LOW confidence — do not rely on this profile for signal decisions"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "Thin-data initial profile with mixed signals. Elections domain shows slight positive edge (52% at 85% contested, 42 trades) but Geopolitics underperforms. Overall 46% accuracy below 50% chance. LOW confidence — insufficient data for reliable classification. MINIMAL signal weight, human review required.",
+  "data_snapshot": {
+    "geo_elo": 1948.3,
+    "geo_elo_active": 1903.8,
+    "resolved_trades": 239,
+    "distinct_markets": 58,
+    "directionality": 1.0,
+    "pnl": -38.0
+  }
+}

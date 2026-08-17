@@ -1,0 +1,80 @@
+{
+  "address": "0x9ca119b8cd7bdb890aecf1ff3b0f6e3a45cc13b5",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1865.7,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "HIGH",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 1724 total resolved trades across 498 distinct markets. Domain breakdown: Russia_UKR 843 trades (59% acc, 66% contested), Iran_ME 392 trades (52% acc, 63% contested), Other 363 trades (39% acc, 63% contested — weak), Elections_nonUS 61 trades (60% acc, 29% contested), Trump_US 54 trades (42% acc, 37% contested — below chance), Europe 7 trades (42% acc, 100% contested). 53% overall accuracy at 62% contested entry rate. DOMAIN_SPECIALIST classification: Russia_UKR at 843 trades with 59% accuracy and 66% contested is the primary domain. Iran_ME at 392 trades with 52% accuracy is a clear secondary. The 39% accuracy in Other-domain contested markets is the key differentiator from GENUINE_FORECASTER — out-of-domain performance is below chance. Trump_US also below chance (42% accuracy). This is a classic Russia_UKR/Iran_ME dual-domain specialist. Confidence HIGH: 1724 total trades, clear dual-domain structure, clear out-of-domain weakness. Directionality=0.902 (fully directional). PNL=$1,283 (positive, modest for trade volume).",
+  "primary_domain": "Russia_UKR",
+  "domain_strengths": [
+    "Russia_UKR: 843 resolved, 59% accuracy, 66% contested — primary domain, the largest Russia_UKR sample in the new qualifier pool",
+    "Iran_ME: 392 resolved, 52% accuracy, 63% contested — genuine secondary edge above chance"
+  ],
+  "domain_blindspots": [
+    "Other: 363 trades, 39% accuracy, 63% contested — actively losing on contested calls outside trusted domains",
+    "Trump_US: 54 trades, 42% accuracy, 37% contested — below chance, confirmed blind spot",
+    "Europe: 7 trades — negligible sample"
+  ],
+  "domain_summary": "The highest Russia_UKR trade-count specialist in the new qualifier pool. 843 Russia_UKR trades at 59% accuracy with 66% contested entry rate is a statistically robust signal. Iran_ME secondary at 392 trades, 52% accuracy is meaningful (above chance). The 39% accuracy in Other-domain contested markets is a meaningful negative signal that confirms the DOMAIN_SPECIALIST classification. PNL=$1,283 is modest relative to 1724 trades — investigate whether this is a pipeline sync issue similar to 3d03c46d.",
+  "trusted_domains": [
+    "Russia_UKR",
+    "Iran_ME"
+  ],
+  "discounted_domains": [
+    "Other",
+    "Trump_US",
+    "Europe"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Strong dual-domain data with HIGH confidence supports DOMAIN_ONLY weight. Setting MINIMAL for initial profile pending human review. Recommend upgrade to DOMAIN_ONLY for Russia_UKR and Iran_ME after Oscar review. PNL=$1,283 is modest relative to trade volume — investigate pipeline sync issue before upgrade. Do NOT include in STR-003 signals until human review cleared.",
+  "behavioural_flags": [
+    "PNL=$1,283 on 1724 resolved trades is low — possible pipeline sync issue similar to 3d03c46d ($129 on 1122 trades). Investigate before upgrade.",
+    "Other-domain negative edge: 39% accuracy on 363 contested trades outside trusted domains — systematic loss outside Russia_UKR and Iran_ME",
+    "Trump_US below chance: 42% accuracy on 54 trades — not noise at this sample size; confirmed weakness"
+  ],
+  "risk_patterns": [
+    "PNL anomaly risk: $1,283 on 1724 trades may indicate pipeline sync issue — blocking concern for signal inclusion",
+    "Out-of-domain trading: active participation in Other and Trump_US markets at below-chance accuracy suggests strategic drift outside core competence"
+  ],
+  "notable_calls": [
+    {
+      "market": "Will Oleksandr Syrskyi be out as Ukraine's Commander-in-Chief by August 31?",
+      "side": "Yes",
+      "entry_price": 0.654,
+      "result": "WON",
+      "significance": "Jul 21 2026 Russia_UKR contested call — multiple entries at 0.648-0.664 all won, demonstrates active domain-specific intelligence"
+    },
+    {
+      "market": "US x Iran permanent peace deal by December 31, 2026?",
+      "side": "No",
+      "entry_price": 0.29,
+      "result": "WON",
+      "significance": "Jun 1 2026 Iran_ME contested call — directional Iran_ME accuracy"
+    },
+    {
+      "market": "US announces new Iran agreement/ceasefire extension by June 7?",
+      "side": "No",
+      "entry_price": 0.41,
+      "result": "WON",
+      "significance": "May 29 2026 Iran_ME contested call, multiple entries all won — active Iran_ME monitoring with accuracy"
+    }
+  ],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Do not include in STR-003 signals until Oscar review cleared",
+    "UPGRADE CANDIDATE: DOMAIN_ONLY for Russia_UKR and Iran_ME after human review — evidence base is HIGH confidence",
+    "PNL anomaly: $1,283 on 1724 trades — investigate pipeline sync before finalizing upgrade decision",
+    "Syrskyi calls (Jul 2026): multiple contested YES entries all won — monitor for follow-through patterns in Ukraine command structure markets"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "Russia_UKR and Iran_ME dual-domain specialist with the highest Russia_UKR trade count of new qualifiers (843 trades, 59% acc, 66% contested). HIGH archetype confidence. PNL anomaly ($1,283 on 1724 trades) needs investigation before DOMAIN_ONLY upgrade. Out-of-domain performance (39% accuracy in Other) is a clear below-chance signal that validates the domain restriction. geo_elo_active=1865.7 — solidly NEAR_LEGENDARY.",
+  "data_snapshot": {
+    "geo_elo": 2054.2,
+    "geo_elo_active": 1865.7,
+    "resolved_trades": 1724,
+    "distinct_markets": 498,
+    "directionality": 0.902,
+    "pnl": 1282.7
+  }
+}

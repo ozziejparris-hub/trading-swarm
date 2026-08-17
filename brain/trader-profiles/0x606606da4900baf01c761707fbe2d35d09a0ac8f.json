@@ -1,0 +1,52 @@
+{
+  "address": "0x606606da4900baf01c761707fbe2d35d09a0ac8f",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1834.1,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 573 total resolved trades across 146 distinct markets. Domain breakdown: Unknown/Other 301 trades (47% acc, 58% contested), Geopolitics 267 trades (53% acc, 59% contested), Elections 5 trades (20% acc — negligible). 50% overall accuracy at 58% contested rate. Moderate data. Geopolitics at 53% accuracy across 267 trades with 59% contested rate is above chance at moderate scale. Unknown/Other at 47% is below chance. DOMAIN_SPECIALIST (Geopolitics) with LOW confidence: the Geopolitics advantage is real but modest (53% at 267 trades is approximately 1-2 Sharpe ratios of edge above chance). Directionality=0.702 — lowest of all new qualifiers, suggesting some LP or multi-side activity. PNL=$-17 (essentially breakeven despite 267 Geopolitics trades at 53%). The near-zero PNL with moderate accuracy suggests small position sizes or position size management issues. geo_elo_active=1834.1, fragile at 34 points above 1800 threshold.",
+  "primary_domain": "Geopolitics",
+  "domain_strengths": [
+    "Geopolitics: 267 resolved, 53% accuracy, 59% contested — moderate above-chance performance"
+  ],
+  "domain_blindspots": [
+    "Unknown/Other: 301 trades, 47% accuracy — below chance at this scale",
+    "Elections: 5 trades, 20% accuracy — negligible and poor"
+  ],
+  "domain_summary": "Moderate Geopolitics specialist with 53% accuracy at 59% contested rate across 267 trades. The Geopolitics edge is real but modest — less compelling than the top-tier domain specialists (9ca119 at 59%, c722c1a1 at 67%). The near-zero PNL suggests position sizing is not following edge strength. Directionality=0.702 is the lowest in the new qualifier pool — investigate whether LP activity or multi-side hedging is occurring.",
+  "trusted_domains": [
+    "Geopolitics"
+  ],
+  "discounted_domains": [
+    "Other",
+    "Elections"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Modest Geopolitics edge (53% at 267 trades) and near-zero PNL make MINIMAL the appropriate initial weight. The LOW archetype confidence (directionality concerns, modest accuracy) means this profile needs more data before any upgrade. Human review required. Do NOT include in STR-003 signals.",
+  "behavioural_flags": [
+    "Directionality=0.702: notably lower than other traders in the pool — investigate whether partial LP activity or two-sided hedging is occurring. If LP activity is present, geo_elo may be inflated.",
+    "PNL=-$17 on 573 trades: approximately breakeven despite above-chance Geopolitics accuracy. May indicate small position sizes or poor risk management."
+  ],
+  "risk_patterns": [
+    "Directionality concern: 0.702 is unexpectedly low for a classification in this pool — verify bot_type is NULL and LP activity not distorting profile",
+    "Modest edge: 53% at 267 trades is only weakly above chance; insufficient for high-confidence signal generation"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED before any signal use",
+    "Investigate directionality=0.702: determine if LP or two-sided activity is occurring — if yes, revisit geo_elo validity",
+    "Insufficient edge for STR-003 at 53% accuracy: needs to grow to 57%+ at scale before upgrade consideration"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "Modest Geopolitics specialist with 53% accuracy at 59% contested rate across 267 trades. Near-zero PNL and low directionality (0.702) are concerns. LOW archetype confidence. MINIMAL signal weight, human review required. geo_elo_active=1834.1 — fragile NEAR_LEGENDARY status.",
+  "data_snapshot": {
+    "geo_elo": 2098.8,
+    "geo_elo_active": 1834.1,
+    "resolved_trades": 573,
+    "distinct_markets": 146,
+    "directionality": 0.7021,
+    "pnl": -16.8
+  }
+}

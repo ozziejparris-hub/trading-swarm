@@ -1,0 +1,50 @@
+{
+  "address": "0x73208f3ef621fb4238743a2edf48ecd5c4c35ef3",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1803.6,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "YIELD_HARVESTER",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 593 total resolved trades across 156 distinct markets. Domain breakdown: Unknown/Other 198 trades (53% acc, 60% contested), China_Asia 159 trades (50% acc, 9% contested — near-cert dominant), Russia_UKR 105 trades (53% acc, 45% contested), Trump_US 88 trades (51% acc, 72% contested), Elections_nonUS 21 trades (61% acc, 57% contested), Iran_ME 20 trades (50% acc, 80% contested), Europe 2 trades. 52% overall accuracy at 46% contested rate. YIELD_HARVESTER classification driven by China_Asia: 159 trades at 9% contested rate is near-cert harvesting in the China domain. The combination of near-cert China positions and ~50-53% accuracy elsewhere creates a profile consistent with a yield-harvester who also makes genuine contested calls in other domains. However, confidence is LOW because the mixed behavior (near-cert China vs contested Trump_US/Iran_ME) is harder to categorize cleanly. Directionality=1.0. PNL=$3,056 (positive, plausible). The 61% Elections accuracy (21 trades) is promising but thin.",
+  "primary_domain": "China_Asia",
+  "domain_strengths": [
+    "Elections_nonUS: 21 trades, 61% accuracy, 57% contested — thin but above chance at meaningful rate",
+    "Other: 198 trades, 53% accuracy, 60% contested — slight positive edge at scale"
+  ],
+  "domain_blindspots": [
+    "China_Asia: 159 trades at 9% contested — near-certainty premium collection in this domain, not forecasting",
+    "Iran_ME: 20 trades, 50% accuracy — negligible edge"
+  ],
+  "domain_summary": "Mixed profile with near-cert China harvesting behavior (9% contested on 159 trades) combined with contested-price trading in other domains. The China_Asia near-cert behavior is the yield-harvesting signature. Other domains show modest accuracy (50-53%) that could reflect genuine edge or random variation at these trade counts. PNL=$3,056 is positive. The 159 China_Asia near-cert trades are the clearest behavioral signal — these positions carry no forecasting information for STR-003.",
+  "trusted_domains": [],
+  "discounted_domains": [
+    "China_Asia"
+  ],
+  "signal_weight": "EXCLUDE",
+  "signal_weight_reasoning": "YIELD_HARVESTER classification means EXCLUDE from all STR-003 signals. China_Asia near-cert positions carry no predictive information. Even if other domains show slight accuracy, the yield-harvesting pattern in China_Asia means this trader cannot be trusted to signal genuine geo forecasting. LOW archetype confidence — revisit if 50+ new contested-price calls in a non-China domain show sustained 57%+ accuracy.",
+  "behavioural_flags": [
+    "China_Asia near-cert pattern: 159 trades at 9% contested rate — systematic near-certainty premium collection in this domain",
+    "geo_elo_active=1803.6: only 3.6 points above the 1800 demotion threshold — extremely fragile NEAR_LEGENDARY status"
+  ],
+  "risk_patterns": [
+    "Yield-harvesting tail risk: near-cert China_Asia entries at 9% contested = buying NO at 0.09 or YES at 0.91 — one regime shift event could generate large losses",
+    "geo_elo_active demotion risk: 3.6 points above threshold, any 1-2 week gap in geo trading triggers demotion"
+  ],
+  "notable_calls": [],
+  "open_positions_summary": "Not assessed in initial profile — yield-harvesting classification means positions not surfaced in intelligence products.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED for archetype clarity — LOW confidence classification",
+    "geo_elo_active demotion risk: 1803.6, essentially at threshold — likely to dip below 1800 within 2 weeks without active geo trading",
+    "China_Asia near-cert watch: if trader stops making near-cert China entries and shifts to contested-price calls in other domains, revisit archetype"
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "Mixed profile classified as YIELD_HARVESTER due to 159 China_Asia near-cert entries (9% contested rate). Other domains show modest accuracy (50-53%). LOW archetype confidence given mixed behavior. EXCLUDE signal weight — yield-harvesting pattern in primary domain disqualifies from STR-003. geo_elo_active=1803.6 — essentially at demotion threshold.",
+  "data_snapshot": {
+    "geo_elo": 1852.8,
+    "geo_elo_active": 1803.6,
+    "resolved_trades": 593,
+    "distinct_markets": 156,
+    "directionality": 1.0,
+    "pnl": 3056.1
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "address": "0x3a591e337729dd9f891f6d94ba77d01c3a626c6f",
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 1823.2,
+  "tier": "NEAR_LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "MEDIUM",
+  "archetype_reasoning": "Initial profile Aug 17 2026. 294 total resolved trades across 51 distinct markets. Domain breakdown: Iran_ME 286 trades (64% acc, 55% contested), Russia_UKR 4 trades (50% acc), Other 4 trades (50% acc). 63% overall accuracy at 55% contested rate. Highly concentrated Iran_ME specialist — 97% of resolved trades are in Iran_ME or closely adjacent markets. 64% accuracy at 55% contested entry rate across 286 trades is statistically meaningful. The trader's geo_resolved_trades_count in the traders table is only 20 — the gap (20 vs 286 in my domain analysis) is a pipeline categorization issue — many Iran_ME trades are classified as Unknown market_category due to lag. Confidence MEDIUM: strong accuracy data but the category discrepancy makes it harder to fully validate the geo_elo source. Directionality=1.0 (fully directional). PNL=$859 (positive, plausible). Contrast with c722c1a1 (67% accuracy at 0.35 avg on 294 trades) — this trader operates at slightly higher average price (more near-cert entries mixed in) explaining the moderate 64% vs 67%.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: 286 resolved, 64% accuracy, 55% contested — primary and essentially only domain; focused and accurate"
+  ],
+  "domain_blindspots": [
+    "Russia_UKR: 4 trades only — negligible sample, no conclusion",
+    "All domains outside Iran_ME: essentially untested based on trade history"
+  ],
+  "domain_summary": "Iran_ME hyperfocused specialist with 286 trades and 64% accuracy. The focus is specifically on Hormuz Strait traffic, Iran-US ceasefire timelines, and Iranian airspace/enrichment markets. Recent notable calls include Hormuz NO @ 0.55 WON (Aug 7), Iran enrichment end NO @ 0.45-0.53 WON (Jun 18). This is an active Iran situational trader with clear accuracy in the domain. The modest contest rate (55%) reflects some near-cert entries mixed with truly contested calls.",
+  "trusted_domains": [
+    "Iran_ME"
+  ],
+  "discounted_domains": [
+    "Russia_UKR",
+    "Other"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "Iran_ME 64% accuracy across 286 trades supports DOMAIN_ONLY weight in that domain. Setting MINIMAL for initial profile pending human review. Recommend upgrade to DOMAIN_ONLY (Iran_ME only) after Oscar review. The trader is more specialized than c722c1a1 but with less data (286 vs 294) and slightly lower accuracy (64% vs 67% at deeper contested prices). Do NOT include in STR-003 signals until human review cleared.",
+  "behavioural_flags": [
+    "geo_resolved_trades_count=20 in traders table vs 286 in domain analysis — pipeline categorization lag: most Iran_ME trades appearing as Unknown category",
+    "geo_elo_active=1823.2 is close to the 1800 threshold — any 4-6 week gap in geo trading risks demotion below NEAR_LEGENDARY"
+  ],
+  "risk_patterns": [
+    "geo_elo_active near demotion threshold: 1823.2 is only 23 points above 1800 — fragile tier status",
+    "Hyperfocus risk: 97% concentration in Iran_ME means geo_elo is entirely dependent on one domain's market availability and resolution pace"
+  ],
+  "notable_calls": [
+    {
+      "market": "US-Iran Hormuz Agreement by August 15?",
+      "side": "No",
+      "entry_price": 0.55,
+      "result": "WON",
+      "significance": "Aug 7 2026 Iran_ME contested call — recent directional accuracy on fast-moving Hormuz situation"
+    },
+    {
+      "market": "Iran agrees to end enrichment of uranium by June 30?",
+      "side": "No",
+      "entry_price": 0.51,
+      "result": "WON",
+      "significance": "Jun 18 2026 Iran_ME contested call — multiple entries in enrichment markets all won"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by July 15?",
+      "side": "No",
+      "entry_price": 0.61,
+      "result": "WON",
+      "significance": "Jun 18 2026 Iran_ME contested call on Hormuz normalization"
+    },
+    {
+      "market": "Russia x Ukraine diplomatic meeting by December 31, 2026?",
+      "side": "No",
+      "entry_price": 0.157,
+      "result": "WON",
+      "significance": "Jun 22 2026 low-probability contested call on Russia_UKR — shows interest in both Iran_ME and Russia diplomatic timelines"
+    }
+  ],
+  "open_positions_summary": "Not assessed in initial profile — pending human review.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: Do not include in STR-003 signals until Oscar review cleared",
+    "UPGRADE CANDIDATE: DOMAIN_ONLY for Iran_ME after human review — evidence base supports it at 286 trades, 64% accuracy",
+    "geo_elo_active watch: 1823.2 is only 23 points above 1800 demotion threshold — monitor closely if trading activity reduces",
+    "Compare to c722c1a1 (Iran_ME specialist, DOMAIN_ONLY candidate): both occupy the same domain with similar trade counts; this trader has slightly lower accuracy at slightly higher prices"
+  ],
+  "overall_signal_value": "HIGH",
+  "summary": "Iran_ME hyperfocused DOMAIN_SPECIALIST with 286 trades and 64% accuracy. Highly concentrated in Hormuz/enrichment/ceasefire markets. DOMAIN_ONLY upgrade warranted after human review. geo_elo_active=1823.2 is close to demotion threshold — monitor activity. Strong Iran_ME signal potential, particularly on Hormuz-adjacent and nuclear deal timeline markets.",
+  "data_snapshot": {
+    "geo_elo": 1880.3,
+    "geo_elo_active": 1823.2,
+    "resolved_trades": 294,
+    "distinct_markets": 51,
+    "directionality": 1.0,
+    "pnl": 859.3
+  }
+}

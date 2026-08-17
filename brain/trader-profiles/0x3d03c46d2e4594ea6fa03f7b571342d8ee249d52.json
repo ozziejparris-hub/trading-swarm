@@ -1,60 +1,61 @@
 {
   "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
-  "profile_date": "2026-07-20",
-  "geo_elo_active": 2923.2,
+  "profile_date": "2026-08-17",
+  "geo_elo_active": 2624.4,
   "tier": "LEGENDARY",
   "archetype": "DOMAIN_SPECIALIST",
   "archetype_confidence": "MEDIUM",
-  "archetype_reasoning": "737 resolved geo trades across 75 distinct markets with 59% accuracy and 67% contested entries (avg price 0.441). Dual-domain edge: Iran_ME (429 trades, 60% acc, 71% contested) and Russia_UKR (241 trades, 59% acc, 70% contested). Trump_US is weak (36 trades, 47% acc) and below chance. Archetype unchanged Jul 20 2026: 1 new resolved trade (Max Holloway KO/TKO MMA bet, SPORTS, Jul 12 LOST @ 0.450) — outside both trusted domains. DOMAIN_SPECIALIST confirmed. Previous archetype: DOMAIN_SPECIALIST (set 2026-06-29, confirmed unchanged 2026-07-20).",
+  "archetype_reasoning": "737+ resolved geo trades with 59% accuracy and 67% contested entries across Iran_ME (primary) and Russia_UKR (secondary). Archetype unchanged Aug 17 2026: 4 new resolved trades since Jul 20 — thin data, no reclassification warranted. New trades: US-Iran Hormuz YES @ 0.200 LOST, US-Iran Hormuz YES @ 0.220 LOST (both contested, Iran_ME domain), Francesca Hong WI Gov Dem Primary YES @ 0.965 LOST (near-cert, outside trusted domain), US-Iran Ceasefire YES @ 0.940 WON (near-cert, Iran_ME). The Hormuz losses are directional calls inside trusted domain at genuinely contested prices — not yield-harvesting failures. Performance deterioration flag persists: last-10 accuracy 40% (<45% threshold). Previous history: DOMAIN_SPECIALIST set 2026-06-29, confirmed unchanged 2026-07-20, confirmed unchanged 2026-08-17.",
   "primary_domain": "Iran_ME",
   "domain_strengths": [
-    "Iran_ME: 429 resolved, 60% accuracy at 0.453 avg price, 71% contested — primary edge",
-    "Russia_UKR: 241 resolved, 59% accuracy at 0.373 avg price, 70% contested — strong secondary edge"
+    "Iran_ME: 429+ resolved, 60% accuracy at 0.453 avg price, 71% contested — primary edge",
+    "Russia_UKR: 241+ resolved, 59% accuracy at 0.373 avg price, 70% contested — strong secondary edge"
   ],
   "domain_blindspots": [
-    "Trump_US: 36 trades, 47% accuracy — below chance, no meaningful edge",
-    "Sports: 1 contested MMA bet lost — outside agent scope and outside trusted domains",
-    "China_Asia: 5 trades, 100% accuracy but negligible sample (no conclusion possible)"
+    "Trump_US: 36+ trades, 47% accuracy — below chance, no meaningful edge",
+    "US Elections outside core geo domains: Francesca Hong WI Gov primary near-cert LOST (Aug 11) — 3rd loss outside trusted domains in recent weeks",
+    "China_Asia: 5 trades, 100% accuracy — negligible sample, no conclusion possible"
   ],
-  "domain_summary": "Genuine forecasting edge in both Iran_ME and Russia_UKR, demonstrated across hundreds of contested-price trades. Both domains show ~59-60% accuracy at deeply contested average prices (0.37-0.45), meaningful above random at scale. The Iran_ME concentration (58% of portfolio) is the primary hunting ground. Trump_US is clearly outside core competence. New this week: one Sports bet outside trusted domains (losing) — does not affect domain thesis.",
+  "domain_summary": "Genuine forecasting edge in Iran_ME and Russia_UKR demonstrated across hundreds of contested-price trades. Both domains show ~59-60% accuracy at deeply contested average prices (0.37-0.45), meaningful above random at scale. New Hormuz YES positions (0.20/0.22 LOST) are legitimate low-probability directional calls — Iran-Hormuz agreement at 0.20 was a directional stance, not yield-harvesting. Trump_US and Elections outside trusted domains remain weak. Performance deterioration flag (40% last-10 accuracy) driven partly by near-cert losses in non-geo markets.",
   "trusted_domains": [
     "Iran_ME",
     "Russia_UKR"
   ],
   "discounted_domains": [
     "Trump_US",
-    "Sports",
+    "Elections_nonUS",
     "Other"
   ],
   "signal_weight": "MINIMAL",
-  "signal_weight_reasoning": "Strong domain data supports DOMAIN_ONLY weight, but realized_pnl=$137 on 737+ resolved trades is anomalously low and triggers the STR-003 pnl filter investigation requirement. Setting MINIMAL pending Oscar review of PNL anomaly. If PNL issue resolves to a legitimate positive P&L, upgrade to DOMAIN_ONLY immediately. NEVER include in STR-003 signals at current weight.",
+  "signal_weight_reasoning": "Strong domain data supports DOMAIN_ONLY weight, but realized_pnl=$129 on 1122+ resolved trades remains anomalously low and triggers the STR-003 pnl filter. Performance deterioration flag (40% last-10 accuracy) is an additional caution. Maintaining MINIMAL pending PNL anomaly resolution. If PNL issue resolves to legitimate positive P&L, upgrade to DOMAIN_ONLY immediately.",
   "behavioural_flags": [
-    "realized_pnl=$137 anomaly on 737+ resolved trades — investigate whether non-redemption account or data pipeline issue before any signal use",
-    "geo_resolved_trades_count stored as 44 in traders table but actual resolved geo trades = 737 — data integrity issue",
-    "NEW Jul 20 2026: 1 Sports market bet (Max Holloway KO/TKO MMA, Jul 12, LOST @ 0.450 CONTESTED) — outside both trusted domains. Thin data (1 trade), observation only.",
-    "Open positions include US Elections markets (House control, CA Governor, Maine Senate, Alaska Governor) outside core Iran_ME/Russia_UKR trusted domains — breadth of domain stepping predates profiling"
+    "realized_pnl=$129 anomaly on 1122+ resolved trades — data pipeline issue suspected; blocking DOMAIN_ONLY upgrade",
+    "geo_resolved_trades_count=62 in traders table vs 737+ actual resolved geo trades — persistent data integrity issue",
+    "Performance deterioration: last-10 accuracy 40% (below 45% threshold) as of Aug 17 2026 — 4 of last 10 include 2 contested Hormuz YES losses and 1 near-cert Wisconsin Gov primary loss",
+    "Francesca Hong WI Gov Dem Primary YES @ 0.965 LOST (Aug 11) — near-cert entry outside trusted domains, continues pattern of US Elections exposure beyond Iran_ME/Russia_UKR",
+    "Open positions include US Elections markets (House control, CA Governor, Maine Senate, French 2027 elections) outside core Iran_ME/Russia_UKR trusted domains"
   ],
   "risk_patterns": [
-    "No yield-harvesting pattern observed — 67% contested entries at ~0.44 avg is genuine directional trading",
-    "PNL anomaly is the primary risk before signal inclusion",
-    "Domain expansion risk: betting on Sports and US Elections outside trusted domains without demonstrated edge in those areas"
+    "PNL anomaly is the primary risk before signal inclusion — trade volume does not match PNL",
+    "Domain expansion risk: repeated entries in US Elections and French elections outside trusted domains without demonstrated edge",
+    "Near-cert entries in non-geo markets: Francesca Hong Wisconsin Gov @ 0.965 LOST — pattern of near-cert failures outside trusted domains"
   ],
   "notable_calls": [],
-  "open_positions_summary": "Multiple US Elections open positions (established Apr-May 2026, pre-profiling): 70 shares YES @ 0.836 House Democratic control (Nov 2026), 59 shares NO @ 0.970 Chad Bianco CA Governor (Nov 2026), 26 shares YES @ 0.750 Democrats Maine Senate 2026, 20 shares NO @ 0.670 Claman Alaska Governor primary (Aug 18 2026), 10 shares YES @ 0.620 Kash Patel leave Trump admin. Also 5 shares YES @ 0.353 on Ukraine peace deal before 2027 (Russia_UKR domain, contested). Small Iran_ME positions: 24 shares YES @ 0.408 on overdue Israel-Hezbollah ceasefire market (no end_date, April 26 deadline passed). All US Elections positions are outside Iran_ME/Russia_UKR trusted domains. None qualify for STR-003 at current MINIMAL weight.",
+  "open_positions_summary": "Open as of Aug 17 2026. US Elections: 70 shares YES @ 0.836 House Democratic control (Nov 2026, near-cert), 59 shares NO @ 0.970 Chad Bianco CA Governor (Nov 2026, near-cert), 26 shares YES @ 0.750 Democrats Maine Senate 2026, 10 shares YES @ 0.620 Kash Patel leave Trump admin. Iran_ME (trusted domain): small positions on stale overdue markets (Israel-Hezbollah ceasefire no end_date). Russia_UKR: 5 shares YES @ 0.353 Ukraine peace deal before 2027 (contested). French 2027: 24 shares NO @ 0.940 Marine Le Pen, 24 shares YES @ 0.024 Raphaël Glucksmann (near-cert). Alaska Governor primary (Matt Claman NO @ 0.670, 20 shares) — resolves Aug 18 (tomorrow), outside trusted domain, small position. None qualify for STR-003 at current MINIMAL weight.",
   "watch_items": [
-    "BLOCKING: Oscar must investigate realized_pnl=$137 anomaly. If legitimate, upgrade to DOMAIN_ONLY immediately.",
-    "Domain expansion monitor: 1 new Sports bet (Jul 12) and multiple US Elections open positions — track whether this represents systematic broadening outside trusted domains",
-    "Overdue position: 24 shares YES @ 0.408 on Israel-Hezbollah ceasefire by April 26 (no end_date, market overdue) — should have resolved; DB pipeline failure",
-    "Alaska Governor primary (Aug 18): 20 shares NO @ 0.670 on Matt Claman — approaching in 29 days, outside trusted domain"
+    "RESOLVES AUG 18 (TOMORROW): Matt Claman Alaska Governor primary NO @ 0.670 (20 shares) — outside trusted domain, small position",
+    "BLOCKING: Oscar must investigate realized_pnl=$129 anomaly before DOMAIN_ONLY upgrade can proceed",
+    "Performance deterioration flag active: last-10 accuracy 40% (<45%). Monitor next cycle — if 4 new resolved trades are domain-appropriate wins, deterioration may clear",
+    "Two Hormuz YES @ 0.20/0.22 LOST: the losing directional calls on Iran-Hormuz agreement are legitimate domain-appropriate bets. The losses do not contradict DOMAIN_SPECIALIST thesis — they confirm active directional trading inside trusted domains at genuinely contested prices"
   ],
   "overall_signal_value": "HIGH",
-  "summary": "Strong DOMAIN_SPECIALIST with 737 resolved geo trades, 59-60% accuracy at contested prices across Iran_ME and Russia_UKR. Archetype unchanged. One new Sports bet outside trusted domains this week (thin data, no reclassification). MINIMAL signal weight pending PNL anomaly resolution. If PNL clears: DOMAIN_ONLY promotion in both trusted domains is warranted. geo_elo_active=2923.2 — strongly LEGENDARY with wide safety margin.",
+  "summary": "DOMAIN_SPECIALIST with proven contested-price edge in Iran_ME and Russia_UKR across 737+ geo resolved trades. Archetype unchanged (3rd consecutive confirmation). Performance deterioration flag active (40% last-10 accuracy, thin data driver). PNL anomaly ($129 on 1122+ trades) continues to block DOMAIN_ONLY upgrade. Two new Hormuz contested YES losses are legitimate directional calls within trusted domain — not yield-harvesting failures. geo_elo_active=2624.4, safely LEGENDARY.",
   "data_snapshot": {
     "geo_elo": 3711.5,
-    "geo_elo_active": 2923.2,
-    "resolved_trades": 737,
-    "distinct_markets": 75,
-    "directionality": 0.84,
-    "pnl": 137.4
+    "geo_elo_active": 2624.4,
+    "resolved_trades": 1122,
+    "distinct_markets": 124,
+    "directionality": 0.837,
+    "pnl": 129.4
   }
 }
