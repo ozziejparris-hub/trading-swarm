@@ -115,8 +115,39 @@ for "tradeable" vs merely "provably nonzero." Percentile explicitly **rejected**
 primary — a percentile cut always has a top 1% even under zero true skill variance, so
 it can't distinguish skill from luck by construction.
 
-**LEGENDARY overlap with the new metric's equivalent tier: 15/81 (18.5%).** The current
-production tier has little in common with what a defensible metric calls the top tier.
+**LEGENDARY overlap with the new metric's equivalent tier — CORRECTED 2026-08-18.**
+Originally reported here as **15/81 (18.5%)**, measured against a hardcoded
+`geo_elo >= 2175` predicate used across all six `trader_skill_metric_v2*.py` sites. That
+predicate is **not** the canonical gate (`cd.LEGENDARY_GATE_WHERE`: `geo_elo_active >=
+2175 AND geo_accuracy_pool=1 AND research_excluded=0 AND bot_type IS NULL`), so the
+reference set of 81 was inflated. The 15/81 figure itself reproduces exactly as of
+2026-08-18 — it is not data drift, it is the wrong denominator. **15/81 is superseded;
+do not quote it going forward.**
+
+**Corrected overlap: 3/10 (30.0%), as-of 2026-08-18T19:25:10Z.** This figure MUST NOT be
+quoted without that timestamp: `geo_elo_active` carries continuous time decay, so the
+canonical LEGENDARY set moves as time passes even with no code changes. It is also
+structurally unstable at this sample size — n=10 means each trader is worth 10
+percentage points and each overlap trader ~33 points; small changes here carry no
+information.
+
+Why the number changed: the original was measured against a non-canonical gate, not
+against different underlying data — a future reader must not mistake this for
+population drift. Decomposition of the 81 inflated traders against the four canonical
+conditions: the `geo_elo_active` time-decay condition alone disqualifies 69/81 (85.2%) —
+the dominant driver by far; `geo_accuracy_pool=1` removes 21; `research_excluded=0`
+removes 4; `bot_type IS NULL` removes 1; 20 traders fail more than one condition. The
+inflated reference set was inflated almost entirely by including traders whose ELO has
+since decayed below the bar, not by pool/exclusion/bot-type differences.
+
+The claim survives, restated at the corrected strength: **70% of the canonical
+LEGENDARY tier is still absent from the new metric's cohort** — substantially
+different, on a small and unstable sample — rather than "little in common," which
+overstated the original 18.5% figure by roughly 1.6x.
+
+Source: `2026-08-18-legendary-overlap-recompute.md` (commit `dd2261a`), generating
+script `scripts/characterize_legendary_overlap_recompute.py` (first-repo, commit
+`fd9e329`).
 
 Full derivation, all eight pre-registered passes (Layer 0 → v2f), and the audit trail:
 `brain/decisions/2026-08-15-skill-metric-rebuild.md`.
@@ -238,6 +269,11 @@ at the *top* of elections' range — defensible, not generous.
 
 1. **Cutover decision** — does the new metric replace `geo_elo` in production? **Not
    made.** Requires its own pre-registration and a before/after on cohort membership.
+   **Added 2026-08-18:** the "before" state for that before/after must anchor on the
+   corrected canonical n=10 LEGENDARY set (see §1), not the inflated n=81. With n=10
+   and continuous decay, a noise threshold must be fixed in the pre-registration
+   BEFORE computing, or the comparison will not be decidable. This is a decision for
+   Oscar, not yet made.
 2. **Category-split cost floor** — the blended 0.02 bar works for geopolitics but is
    tight for elections (see §5). Not fully resolved.
 3. **Ingestion detection** — still mandatory before any months-long passive run. No
@@ -410,3 +446,13 @@ enforced exception). Sources: `2026-08-16-canonical-infrastructure-recon.md`
 (commit `f6cbbf0`) and `2026-08-16-result-of-record-reproducibility-audit.md`
 (commit `5195b01`). §1 and §2 (the metric teardown and the thesis result) are
 unchanged by this amendment.*
+
+*Amended 2026-08-18 (later pass): §1's LEGENDARY overlap figure corrected — 15/81
+(18.5%), measured against a hardcoded non-canonical gate across all six
+`trader_skill_metric_v2*.py` sites, replaced with 3/10 (30.0%, as-of
+2026-08-18T19:25:10Z) against the canonical `cd.LEGENDARY_GATE_WHERE`, with the
+time-decay decomposition and an explicit instability/as-of warning. §6.1 (cutover
+decision) updated to anchor any before/after on the corrected n=10 set. §2 (the thesis
+result) is unaffected by this amendment. Sources: `2026-08-18-legendary-overlap-
+recompute.md` (commit `dd2261a`) and its generating script
+`scripts/characterize_legendary_overlap_recompute.py` (first-repo, commit `fd9e329`).*
