@@ -307,11 +307,60 @@ at the *top* of elections' range — defensible, not generous.
    one-directional (v2f is a strict subset of canonical). Root cause: 166 markets have
    trades but no FIFO-closed position; 88 have positions but `trade_result='pending'`
    on a market flagged `resolved=1`. Because `edge = won − entry_price` requires a
-   closed position, the metric is structurally conditioned on clean closure — the
-   cohort's edge is measured on a non-random subset of the population, of unknown
-   direction and magnitude. The 88 `resolved=1`/`trade_result='pending'` markets are a
-   separate, open data-consistency item (`markets.resolved` and the entry trade's
-   `trade_result` can disagree).
+   closed position, the metric is structurally conditioned on clean closure. This is
+   still an open structural issue — v2f should be made to call the canonical function.
+   **Updated 2026-08-18/19: both components are now characterised, and neither can
+   touch the measured out-of-sample edge — for different reasons that determine
+   durability, both stated below rather than collapsed into one line.**
+   - The pending-resolution component (88 on 08-16, 103 on 08-18, **92 on 08-19** —
+     the count is not monotonic: it grew, then fell) is **PERSISTENT-BOUNDED**. The
+     underlying inconsistency is permanent — no writer clears `trade_result='pending'`
+     once `resolved=1` is set — but it is structurally unable to reach the cohort:
+     affected markets have a median of **1 trade** (mean 1.73) against a canonical
+     baseline median of **7** (mean 47.74), and cohort membership requires **M≥10**
+     positions, so these thin, mostly single-trade markets cannot produce a cohort
+     member. Verified zero overlap between affected traders and the 295-trader
+     Objective-1 cohort superset. (`2026-08-18-pending-resolution-inconsistency.md`,
+     commit `aa6eb28`; reproducible via
+     `scripts/characterize_pending_resolution_inconsistency.py`, commit `31d65ac`)
+   - The no-FIFO-close component (166 on 08-16, 161 on both 08-18 and 08-19 — stable
+     after the initial drop) is orphan SELL trades with no matching BUY, silently
+     dropped at `monitoring/position_tracker.py:330`. Scoped verdict
+     **MATERIAL-OPEN**: the population is 100% pre-split *by construction*, because
+     the population is defined as `tape_end < T_split` — so every affected trader's
+     post-split dropped-market count is exactly zero, verified directly (not
+     inferred). It can affect **who qualifies** for the cohort; it cannot touch the
+     **measured edge** of anyone who does qualify.
+     (`2026-08-18-no-fifo-close-markets.md`, commit `969d9a1`;
+     `2026-08-18-orphan-sell-scope.md`, commit `29d10e4`; scripts
+     `scripts/characterize_no_fifo_close_markets.py` commit `3fcb083` and
+     `scripts/characterize_orphan_sell_scope.py` commit `5141fc1`)
+
+   **Residual — MATERIAL-OPEN, not closed.** Two traders (`0x0a7aaf83...`,
+   `0x2c719eda...`) would cross the M≥10 qualification threshold if their dropped
+   markets counted (6 visible + 13 dropped = 19; 9 visible + 1 dropped = 10). Whether
+   they would actually have qualified is **UNKNOWABLE** from this database: an orphan
+   SELL has no entry price anywhere in the DB, so the edge on those specific dropped
+   markets cannot be computed. Both traders' *current* visible edge is negative, but
+   inferring non-qualification from that is explicitly declined as invalid — visible
+   markets are not a random sample of a trader's record, they are the subset where a
+   BUY happened to exist in the feed to begin with. This pair is the sole reason the
+   verdict is MATERIAL-OPEN rather than closed; it closes the moment their missing BUY
+   trades are re-ingested and `n_pairs`/edge can be recomputed for real.
+
+   **Standing caveat — profile skew.** The no-FIFO-close population skews 81.4%
+   Elections (30/161 Geopolitics, 131/161 Elections) against a 64.6% Elections
+   baseline, and 83.2% resolving "No" against a 71.0% baseline. This is the same axis
+   `geo_elo` was condemned for in §1 (favourite-betting/No selection bias), arrived at
+   by an entirely different mechanism (silent orphan-SELL drop, not a scoring-formula
+   defect) — worth flagging for anyone later assessing whether the surviving
+   population is non-randomly composed.
+
+   **Counts move; don't assume a direction.** Pending-resolution: 88 → 103 → 92
+   (08-16 → 08-18 → 08-19, non-monotonic). No-FIFO-close: 166 → 161 → 161 (08-16 →
+   08-18 → 08-19, stable after the initial drop). Committed, re-runnable scripts now
+   exist for both, with ID lists persisted from 08-18 forward so a future session can
+   diff instead of re-deriving.
    (`2026-08-16-canonical-infrastructure-recon.md`, commit `f6cbbf0`)
 9. **Objective 2 cohort persistence gap (found 2026-08-16).** Objective 1 persists its
    membership (`metric_v2f_intersection_cohort`, 295 trader addresses); Objective 2 —
@@ -456,3 +505,22 @@ decision) updated to anchor any before/after on the corrected n=10 set. §2 (the
 result) is unaffected by this amendment. Sources: `2026-08-18-legendary-overlap-
 recompute.md` (commit `dd2261a`) and its generating script
 `scripts/characterize_legendary_overlap_recompute.py` (first-repo, commit `fd9e329`).*
+
+*Amended 2026-08-19 (later pass): §6 item 8 updated to reflect the 2026-08-18/19
+characterisation of its two named components. "Of unknown direction and magnitude"
+and "a separate, open data-consistency item" are superseded: the pending-resolution
+component is now PERSISTENT-BOUNDED (permanent, but structurally confined below the
+M≥10 cohort floor by its median-1-trade thinness vs. a median-7 baseline, zero cohort
+overlap verified) and the no-FIFO-close component is now scoped MATERIAL-OPEN (100%
+pre-split by construction, zero post-split contamination, but two named traders'
+qualification status remains genuinely unknowable without re-ingesting missing BUY
+trades). A profile-skew caveat (81.4% Elections / 83.2% No vs. 64.6%/71.0% baseline —
+the same axis §1's `geo_elo` teardown flagged, different mechanism) and the counts'
+non-monotonic movement (88→103→92; 166→161→161) were added. §1 and §2 are unaffected
+by this amendment. Sources: `2026-08-18-pending-resolution-inconsistency.md`
+(commit `aa6eb28`), `2026-08-18-no-fifo-close-markets.md` (commit `969d9a1`),
+`2026-08-18-orphan-sell-scope.md` (commit `29d10e4`), and their generating scripts
+`scripts/characterize_pending_resolution_inconsistency.py` (first-repo, commit
+`31d65ac`), `scripts/characterize_no_fifo_close_markets.py` (first-repo, commit
+`3fcb083`), and `scripts/characterize_orphan_sell_scope.py` (first-repo, commit
+`5141fc1`) — the last two re-run 2026-08-19 to produce the 92/161 figures above.*
