@@ -28,14 +28,54 @@ for three different kinds of fact, and conflating them is exactly how
 | **3 (lowest — not a claim at all)** | **Hardcoded default, no live evidence** | #1a (`resolved=False` at stub creation) | This isn't establishing a fact — it's an initial null state at INSERT time. It should never be able to compete with, let alone overwrite, an actual claim from any other source. Modeled as rank 3 only so the ranking is total; in practice this "source" should never reach `mark_market_resolved()` at all (see H). |
 | **n/a** | **Caller-supplied, unspecified** | #1 generic case, #2 | `update_market`'s ON CONFLICT branch and `update_market_resolution` take whatever the caller passes with no source tag at all today. Under this design they inherit the rank of whatever evidence the *caller* actually had — they are not their own source, they're a pass-through with no current discipline about what's on the other end. This absence of a tag is itself part of the problem (see F, E). |
 
+**The rank-timing wrinkle — [V] found incidentally while answering Q1
+(`c75a906`), and an argument *for* this ranking model, not against it.**
+One of the two markets sampled for the CLOB field check showed CLOB
+`closed: false` with **both** tokens `winner: false`, despite one token
+already pricing at `0.9995` — i.e., a Rank-2 (Gamma price-inference)
+determination is fully capable of arriving **before** the Rank-1 (CLOB
+declaration) source populates for the very same market. This does not
+weaken the ranking: a direct declaration is still a stronger *type* of
+evidence than an inference, independent of which one happens to update
+first. But it means the comparator inside `mark_market_resolved()` will
+**routinely** encounter an already-stored Rank-2 value that a later
+Rank-1 write needs to outrank and overwrite — this is not a rare tiebreak
+condition, it is expected, frequent, ordinary operation of the ranking
+logic. **Stage 3's verification (G) should expect to observe exactly
+this pattern on real candidates** — a Rank-1 CLOB write superseding an
+already-present Rank-2 Gamma value — and should not treat it as an
+anomaly if seen.
+
 ### A2. Ranking for `resolution_date` as **event-time** (once the column is split — see D)
+
+**[V] CLOB's own resolution timestamp is a closed negative, not an open
+question — resolved by `2026-08-19-canonical-design-open-questions.md`
+(`c75a906`), Q1.** Two live calls against independently selected resolved
+markets dumped the CLOB `/markets/{condition_id}` response in full (every
+top-level field, not just the ones existing code reads). No field carries
+a resolution or settlement timestamp. The one candidate,
+`accepting_order_timestamp`, was ruled out empirically: on both sampled
+markets it precedes the market's own last trade in the local DB by more
+than 7 months, and clusters on an unrelated historical-import date
+(`2025-12-11`, matching `backfill_o16_tier1.py`'s own documented
+migration-batch date) rather than any per-market lifecycle event — a true
+resolution timestamp cannot predate 7 further months of trading. **This
+is not deferred to Stage 3 for confirmation; it is established.**
+
+**Structural fact of the design, stated plainly rather than left implicit:**
+the highest-authority source for the resolution **fact** (CLOB, A1 Rank
+1) and the highest-authority source for the resolution **timestamp**
+(Gamma's `closedTime` / `umaEndDate` / `endDate`, A2 Rank 1 below) are
+**different sources, permanently** — not a temporary artifact Stage 3
+might unify. CLOB has nothing to contribute to this ranking at any rank;
+it is absent from the table below entirely, not listed and marked
+unpopulated.
 
 | Rank | Source | Writers using it today | Justification |
 |---|---|---|---|
-| **1** | **True API-sourced resolution timestamp** — Gamma's `closedTime` / `umaEndDate` / `endDate` fields | #7, #8, #11 | An actual timestamp attributable to the market's real-world resolution event, not a guess. |
-| **1 — but currently unpopulated** | **CLOB's own resolution timestamp, if the API exposes one** | none of #4/#5/#6/#12 currently extract it | **[D] Finding, not a fact already established:** CLOB is Rank 1 for *who won* (A1) but none of the current CLOB-evidence writers extract an event-time field from the CLOB response — they all fall through to `datetime.now()` for `resolution_date` today. If the CLOB API exposes a resolution timestamp, migrating #4/#5/#6/#12 (G) should extract it, closing this gap for the venue's own highest-authority source. **Not verified this session whether the CLOB market endpoint carries such a field** — flagged for whoever implements Stage 3 (G) to check before assuming it exists. |
+| **1** | **True API-sourced resolution timestamp** — Gamma's `closedTime` / `umaEndDate` / `endDate` fields | #7, #8, #11 | An actual timestamp attributable to the market's real-world resolution event, not a guess. The only real event-time source found across either API — see the closed-negative finding above. |
 | **2** | **`end_date` (scheduled end date), used explicitly as a proxy** | #1 (fallback), monitor.py's proxy writes (out of scope, see H) | Real evidence, but evidence of a *different* fact (when the market was scheduled to end) being used to estimate a fact it resembles (when it actually resolved). Explicitly a downgrade, not a lie — this is why it's ranked, not excluded. |
-| **n/a — moved out of this ranking entirely** | `datetime.now()` at write time | #2, #3, #9, #10, #12, #13 (6 of 13; #4/#5/#6 also fall back to it when Rank-1 CLOB timestamp extraction doesn't happen) | **This is the core fix.** Write-time is not evidence about the market at all — it's evidence about *our system*. Under the split schema (D) it stops competing in this ranking altogether; it goes to its own column with its own, non-competing meaning ("when we recorded this"), which every writer populates unconditionally with no ranking question involved. |
+| **n/a — moved out of this ranking entirely** | `datetime.now()` at write time | #2, #3, #9, #10, #12, #13 (6 of 13; #4/#5/#6 also fall back to it, now confirmed unconditionally rather than pending CLOB extraction) | **This is the core fix.** Write-time is not evidence about the market at all — it's evidence about *our system*. Under the split schema (D) it stops competing in this ranking altogether; it goes to its own column with its own, non-competing meaning ("when we recorded this"), which every writer populates unconditionally with no ranking question involved. |
 
 ### A3. `winning_outcome = NULL` on a resolved market (the no-winner case)
 
@@ -276,6 +316,34 @@ touch it via copy-pasted code that doesn't also set `evidence_source`
 non-tautological but incomplete detector**, not a complete one; stated
 honestly rather than oversold.
 
+**Architectural consequence, now that F's `trg_require_recorded_at`
+(Stage 5, G) exists alongside this invariant — stated plainly, because
+detection and prevention here cover each other's blind spots and
+**neither can be retired once the other lands**:**
+
+- **This invariant's own admitted gap, case (a)** — a writer that
+  ignores both new columns entirely, never touching
+  `resolution_recorded_at` at all — **is closed by
+  `trg_require_recorded_at` for every write shape that goes through
+  SQLite's normal `UPDATE` path**, since the trigger aborts the statement
+  outright rather than letting a column-less write land silently. The
+  invariant no longer needs to be the only thing standing between a
+  forgotten writer and an unnoticed gap once Stage 5 lands the trigger.
+- **The trigger's own admitted gap, `INSERT OR REPLACE`** (F) — is where
+  this invariant remains the *only* backstop: a delete-then-insert
+  statement bypasses the trigger entirely, but if it also fails to set
+  `resolution_recorded_at`, this invariant's `SELECT COUNT(*) ...` cannot
+  see it either, because case (a) is exactly what an `INSERT OR REPLACE`
+  omitting the new columns produces. **What remains uncovered by both,
+  stated explicitly rather than implied to be solved:** a future writer
+  that uses `INSERT OR REPLACE` on `markets` and does not set
+  `resolution_recorded_at` is invisible to the trigger (bypassed) and
+  invisible to this invariant (case-(a) blind spot) simultaneously. This
+  is not a live risk today (no current writer uses that statement shape
+  on this table), but it is a genuine residual gap in the combined
+  detection-and-prevention model, not something either mechanism alone
+  or both together fully close.
+
 **Tier and promotion condition — the part the ELO arc's design never
 answered concretely:**
 - **Starts at Tier 0 / OBSERVE**, same convention as the ELO arc's Stage
@@ -351,10 +419,22 @@ forced.** Three structural reasons, not one:
   function itself write (it would need to distinguish "the sanctioned
   path" from "everyone else," which SQLite has no session-scoped
   mechanism for beyond fragile conventions like a temp table flag). **Not
-  recommended as the primary mechanism for this reason, but worth
-  revisiting as a defense-in-depth backstop specifically for the
-  `resolved`-can't-flip-back-to-0 case**, which is simple enough to
-  express as a plain trigger without needing the ranking table at all.
+  recommended as the primary mechanism for this reason, but adopted as a
+  defense-in-depth backstop specifically for the `resolved`-can't-flip-back-to-0
+  case and for requiring the `resolution_recorded_at` co-write**, both
+  simple enough to express as plain triggers without needing the ranking
+  table at all — built, tested at production scale in an isolated scratch
+  DB, and sequenced into G (`c75a906`, Q3). **A residual limitation, named
+  rather than left to be discovered later: `INSERT OR REPLACE` bypasses
+  `BEFORE UPDATE` triggers entirely.** SQLite implements it as an atomic
+  delete-then-insert, not an update — confirmed by direct test (`c75a906`
+  Q3d): neither trigger fires, and a `resolved=1` row can be silently
+  reset to `resolved=0` via this statement shape with no interception at
+  all. **Not a live risk today** — checked against all 13 writers; none
+  use `INSERT OR REPLACE` on `markets` (creation paths use
+  `INSERT OR IGNORE`, resolution paths use plain `UPDATE`) — but a
+  **permanent** hole in the trigger layer for any future writer that does.
+  See E for how this interacts with the invariant's own coverage gap.
 - **Import-time / module-privacy guard** (e.g., only the canonical
   module holds a connection with write permission to `markets.resolved`,
   everyone else gets a restricted view). **Cost/risk:** SQLite has no
@@ -397,13 +477,55 @@ anything behavior-changing.
 
 | Stage | What moves | Verification before proceeding | Reversible how |
 |---|---|---|---|
-| **0** | Add the 3 new columns (D) + build `mark_market_resolved()` (C), unused by anything yet. No writer touched. | Schema migration applies cleanly; new columns nullable, no existing reader affected (confirm via `run_tests.py`, same non-tautological standard as this session's clobber fix). | `DROP COLUMN` / revert the migration commit — nothing depends on the columns yet. |
+| **0** | Add the 3 new columns (D) + build `mark_market_resolved()` (C), unused by anything yet. **Also create `trg_resolved_no_unresolve`** — see below. No writer touched. | Schema migration applies cleanly; new columns nullable, no existing reader affected (confirm via `run_tests.py`, same non-tautological standard as this session's clobber fix). Trigger tested in an isolated scratch DB, not production, prior to this stage (`c75a906`, Q3) — confirmed to break none of the 13 writers, since every establishing writer's candidate query already requires `resolved=0`. | `DROP COLUMN` / revert the migration commit — nothing depends on the columns yet. Trigger: `DROP TRIGGER`. |
 | **1** | Migrate **#11 `hydrate_stub_markets.py`** first — already the most conservative writer in the cluster (fill-only-if-empty on every column it touches), so subordinating it should be a pure no-op in observable output. | Before/after dry-run diff across its full candidate population — same methodology as this session's trade-evaluator repoint (§Part 3 of `2026-08-19-trade-evaluator-repoint.md`): zero behavioral difference expected, verify it. | `git revert` the one commit; #11 goes back to direct writes, harmless since the new columns stay empty for its rows either way. |
 | **2** | Migrate **#3 `batch_update_resolved_markets`** — already carries this session's one-line COALESCE patch (`0a5891c`); folding it into the canonical function retires that patch in favor of the real mechanism. | Live, bounded, read-only dry-run against the known at-risk population — same 12-real-market methodology already proven in `2026-08-19-resolution-date-clobber-fix.md`. Confirm identical accept/reject decisions to the patched-but-not-yet-canonical version. | `git revert`; #3 reverts to its already-safe (COALESCE-guarded) direct-write state from Stage 2 of the prior fix — not back to the original unguarded version, since that commit stays in history. |
-| **3** | Migrate **#4/#5/#6** (the 3 CLOB sibling passes) together — same file, same Rank-1 evidence tier. **First real exercise of cross-tier logic** (CLOB Rank 1 vs. the Rank-2 writers already migrated in Stages 1–2). Check whether the CLOB response actually exposes an event-time field (A2's flagged open question) — extract it if so. | Confirm via live dry-run that CLOB-sourced writes now out-rank any Rank-2 value already present from Stage 2, on real overlapping candidates if any exist. | `git revert`, same as above. |
+| **3** | Migrate **#4/#5/#6** (the 3 CLOB sibling passes) together — same file, same Rank-1 evidence tier. **First real exercise of cross-tier logic** (CLOB Rank 1 vs. the Rank-2 writers already migrated in Stages 1–2) — per A1's rank-timing wrinkle, expect this to fire routinely, not rarely. CLOB supplies `evidence_source="clob"` for the fact only; `resolution_event_time` is `None` from these writers (A2, `c75a906` Q1 — no CLOB field carries one), unless a Gamma cross-reference is added in the same call, which is not designed here. | Confirm via live dry-run that CLOB-sourced writes now out-rank any Rank-2 value already present from Stage 2, on real overlapping candidates if any exist. | `git revert`, same as above. |
 | **4** | Migrate **#9/#10** (`resolve_legendary_markets.py` / `legendary_positions_scan.py`) — **the one confirmed same-rank collision pair (B)**. This is where flag-for-review becomes live-testable for real, not just designed. | Specifically construct or find a live case where both would fire on the same market and confirm: matching values → silent no-op; differing values → flagged, first-recorded value retained, disagreement logged. | `git revert`. |
-| **5** | Migrate remaining dormant/one-off writers for completeness and to close the two **latent** overwrite risks the cluster doc identified (#1's ON CONFLICT branch, #2) — low urgency since none are live, but leaving them un-migrated would mean the Stage-6 promotion condition (zero non-canonical write sites) can never actually be met. | `scan_write_paths.py` re-run confirms zero direct `UPDATE markets SET (resolved\|winning_outcome\|resolution_date)` statements remain outside the canonical module. | `git revert` per writer; each is independent. |
-| **6** | **Promote the invariant (E) from OBSERVE to Tier 1/CRITICAL** — gated exactly on Stage 5's `scan_write_paths.py` confirmation, per E's stated promotion condition. | The promotion criterion **is** the verification for this stage — nothing further needed if Stage 5's census is clean. | Demote the tier back to 0; no data changes involved in this stage at all. |
+| **5** | Migrate remaining dormant/one-off writers for completeness and to close the two **latent** overwrite risks the cluster doc identified (#1's ON CONFLICT branch, #2) — low urgency since none are live, but leaving them un-migrated would mean the Stage-6 promotion condition (zero non-canonical write sites) can never actually be met. **Also create `trg_require_recorded_at`** — see below. | `scan_write_paths.py` re-run confirms zero direct `UPDATE markets SET (resolved\|winning_outcome\|resolution_date)` statements remain outside the canonical module. Trigger: re-confirm in a scratch DB seeded from the now-migrated codebase's actual write shapes that every remaining writer's statement sets `resolution_recorded_at` (all should, since all now call `mark_market_resolved()`). | `git revert` per writer; each is independent. Trigger: `DROP TRIGGER`. |
+| **6** | **Promote the invariant (E) from OBSERVE to Tier 1/CRITICAL** — gated exactly on Stage 5's `scan_write_paths.py` confirmation, per E's stated promotion condition. Bundled with Stage 5's trigger addition — both are gated on the identical fact (all 13 writers migrated) and address the same failure mode from complementary angles (E: SQL detects it after the fact; the trigger: prevents it outright at write time). | The promotion criterion **is** the verification for this stage — nothing further needed if Stage 5's census is clean. | Demote the tier back to 0; no data changes involved in this stage at all. |
+
+**Triggers, tested and measured (`c75a906`, Q3) — not designed in the
+abstract:**
+
+```sql
+-- Stage 0
+CREATE TRIGGER trg_resolved_no_unresolve
+BEFORE UPDATE OF resolved ON markets
+WHEN OLD.resolved = 1 AND NEW.resolved = 0
+BEGIN SELECT RAISE(ABORT, 'resolved cannot transition from 1 to 0'); END;
+
+-- Stage 5
+CREATE TRIGGER trg_require_recorded_at
+BEFORE UPDATE OF resolved, winning_outcome, resolution_date ON markets
+WHEN (
+    (NEW.resolved IS NOT OLD.resolved)
+    OR (NEW.winning_outcome IS NOT OLD.winning_outcome)
+    OR (NEW.resolution_date IS NOT OLD.resolution_date)
+)
+AND NEW.resolution_recorded_at IS OLD.resolution_recorded_at
+BEGIN SELECT RAISE(ABORT, 'writes to resolved/winning_outcome/resolution_date must also set resolution_recorded_at'); END;
+```
+
+`trg_resolved_no_unresolve` is placed at Stage 0, not later, because it
+was **verified to break no existing writer** — every establishing writer
+in the cluster already requires `resolved=0` in its own candidate
+selection, so none ever attempts the transition this trigger forbids; it
+has no dependency on the canonical function or on any writer migration.
+`trg_require_recorded_at` cannot move earlier than Stage 5: it was
+**verified empirically, not assumed,** to reject every one of the 13
+writers' current UPDATE shapes, because none of them set a column that
+doesn't exist until Stage 0 and isn't populated by any of them until
+their own migration — placed at Stage 5 alongside the last writers'
+migration and bundled with Stage 6's invariant promotion since both share
+the same gating fact.
+
+**Performance, measured, not assumed:** 733,000 synthetic rows (matching
+production's live `markets` row count), a representative 5,000-row
+single-statement bulk `UPDATE`: **1.5ms absolute overhead with both
+triggers active, ~27% relative** — against writers whose real per-market
+cost is hundreds of milliseconds to seconds of network-bound API latency,
+not the local SQLite write. Not a performance concern at any stage.
 
 **Not included as a stage:** building the CI lint rule from F. **[D]**
 That is prevention infrastructure, independent of any single writer's
@@ -431,14 +553,18 @@ would break" discipline from the prior write-path census:**
   null slot" the way this design assumes — the dry-run diff step exists
   specifically to catch that before Stage 2 changes anything with real
   overwrite stakes.
-- **Stage 3 (CLOB migration):** **the specific, concrete risk this
-  document flags rather than assumes away** — if the CLOB API does not
-  in fact expose an event-time field (A2's open question), Stage 3 simply
-  continues writing write-time via `resolution_recorded_at` for those
-  writers with `evidence_source='clob'` and a NULL true event-time,
-  exactly as designed for that case (D). Not a failure, but worth
-  checking rather than assuming, since Rank 1 evidence with no timestamp
-  is a slightly odd combination worth confirming isn't a modeling error.
+- **Stage 3 (CLOB migration):** **resolved, not outstanding.** The risk
+  this document originally flagged — that the CLOB API might not expose
+  an event-time field — is answered: it does not (A2, `c75a906` Q1,
+  established by dumping the full response for two independent resolved
+  markets and ruling out the one candidate field empirically). Stage 3
+  supplies `evidence_source="clob"` for the resolution **fact** only;
+  `resolution_event_time` passed to `mark_market_resolved()` from these
+  writers will be `None` unless a Gamma cross-reference is performed in
+  the same call, which this design does not specify. This is expected
+  behavior under the corrected A2 ranking, not a gap to investigate
+  further at Stage 3 — the checking has already happened, at design time,
+  not deferred to migration time.
 - **Stage 4 (tie case goes live):** if the flag-for-review log/audit
   surface is never actually looked at by anyone, this stage silently
   degrades to "first-wins, no-op on disagreement" in practice — the same
@@ -471,15 +597,29 @@ a failure:**
   it never asserts a resolution fact (`resolved=False` always, no
   `winning_outcome`), it's INSERT-time stub initialization. Correctly
   outside `mark_market_resolved()`'s scope, not a gap.
-- **#1b (`store_market_dict`) is a genuine partial fit, named as such:**
-  it currently passes `resolved` from Gamma's `closed`/`archived` flags
-  but hardcodes `winning_outcome=None` regardless. Under this design it
-  *could* call `mark_market_resolved()` with a real winning_outcome if
-  one is extractable from the same initial API response it already has
-  — today it simply doesn't try. This is a **behavior improvement the
-  migration would produce as a side effect**, not something the design
-  fails to accommodate — named per H's instruction, not implemented here
-  (writers are out of scope for this task).
+- **#1b (`store_market_dict`) is a genuine partial fit, named as such —
+  and now checked empirically rather than left as a plausible concern
+  (`c75a906`, Q2):** it currently passes `resolved` from Gamma's
+  `closed`/`archived` flags but hardcodes `winning_outcome=None`
+  regardless, even though a winner is structurally extractable from the
+  same Gamma object already in memory — a genuine discard in the code.
+  **But the live database shows zero currently-observable instances of
+  the failure shape this would produce** (`resolved=1,
+  winning_outcome=NULL` with `data_source='live_monitoring'`): all 123
+  rows in that state trace to one unrelated, already-known backfill
+  (`gamma_backfill_tier2_2026-07-06`), none to this path. **[I]** Most
+  plausibly because `store_market_from_trade` (#1a)'s continuous
+  trade-tape-driven discovery usually creates a market's stub (with
+  `resolved=False`, no discard possible) before #1b's ~2.5-hourly
+  category scan would independently reach it, and because
+  `hydrate_stub_markets.py`'s own fill-only-if-empty guard (candidate-gated
+  on `resolution_date IS NULL`, not on `resolved` status) plausibly
+  self-heals the rare row that does slip through, without needing to know
+  #1b's gap exists. **Confirms this is a genuine footnote, not a
+  reprioritization case** — checked, not merely asserted. Under this
+  design it *could* call `mark_market_resolved()` with a real
+  winning_outcome if one is extractable — still a natural follow-on, not
+  implemented here (writers are out of scope for this task).
 - **`monitor.py`'s proxy writes are correctly excluded, not
   accommodated** — per the prior doc's own Q5 (`85965c5`), these answer a
   different question (estimate an upcoming deadline) and folding them
@@ -499,7 +639,7 @@ a failure:**
 | 1b | `store_market_dict` | Unchanged behaviorally in this design's minimum scope; a natural follow-on (not implemented here) would let it call `mark_market_resolved(evidence_source="gamma")` with a real winner when extractable, instead of hardcoding `None`. |
 | 2 | `update_market_resolution()` | Migrated in Stage 5 for completeness (dormant, no live caller) — becomes a thin wrapper calling `mark_market_resolved(evidence_source=<caller-supplied, now required>)`. |
 | 3 | `batch_update_resolved_markets` | Migrated in Stage 2. Calls `mark_market_resolved(evidence_source="gamma", resolution_event_time=None)` — the COALESCE patch from this session's prior fix is retired in favor of the canonical function's own guard logic. |
-| 4–6 | The 3 CLOB passes | Migrated in Stage 3 as a batch. Call `mark_market_resolved(evidence_source="clob", ...)` — first real exercise of Rank-1 evidence in the canonical path; extract a true event-time from CLOB if the API supports it (open question, A2). |
+| 4–6 | The 3 CLOB passes | Migrated in Stage 3 as a batch. Call `mark_market_resolved(evidence_source="clob", resolution_event_time=None, ...)` — first real exercise of Rank-1 evidence in the canonical path, expected (per A1's rank-timing wrinkle) to routinely outrank an already-present Rank-2 value; `resolution_event_time` is always `None` from these writers since CLOB carries no timestamp field (A2, `c75a906` Q1, closed). |
 | 7–8 | `backfill_o16_tier1/tier2` | Already-run, dormant — migrated in Stage 5 for completeness only. Would call `mark_market_resolved(evidence_source="gamma", resolution_event_time=<true API timestamp>, allow_no_winner=True)` for the sentinel case — the one writer whose event-time discipline was already correct, now made structural instead of a per-writer convention. |
 | 9–10 | `resolve_legendary_markets.py` / `legendary_positions_scan.py` | Migrated in Stage 4 — the tie-case pair (B) becomes live for the first time. Both call `mark_market_resolved(evidence_source="gamma")`. |
 | 11 | `hydrate_stub_markets.py` | Migrated first, Stage 1. Its fill-only-if-empty discipline for `resolved`/`winning_outcome`/`resolution_date` becomes exactly what "propose, defer to existing" already means under source-ranking — its category/title-filling logic (a different concern) stays separate, untouched. |
@@ -519,3 +659,36 @@ and the Stage 0–5 staging discipline this design follows),
 referenced for the migration sequence's own verification steps). No code
 written, no schema changed, no writer modified, no invariant built. This
 is a specification for review.*
+
+---
+
+*Amended 2026-08-19 (later pass): folded in the three open questions
+resolved by `2026-08-19-canonical-design-open-questions.md` (`c75a906`).
+A2's "CLOB event-time, currently unpopulated" row deleted as a closed
+negative (no CLOB field carries a resolution timestamp, established by
+dumping the full response for two independently-sampled resolved markets
+and empirically ruling out the one candidate field against tape_end) and
+replaced with a stated structural fact — the fact-authority source (CLOB)
+and timestamp-authority source (Gamma) are permanently different, not a
+gap Stage 3 might close. A1 gained the rank-timing wrinkle (a Rank-2
+value can and will routinely arrive before the Rank-1 source populates
+for the same market — expected, frequent operation of the ranking logic,
+not an anomaly). G gained two tested triggers at two stages:
+`trg_resolved_no_unresolve` at Stage 0 (verified to break no existing
+writer) and `trg_require_recorded_at` at Stage 5, bundled with the Stage
+6 invariant promotion (verified empirically to break all 13 writers
+pre-migration, and measured at negligible performance cost — 1.5ms
+absolute overhead on a 5,000-row bulk update at production's 733,000-row
+scale). E and F gained the `INSERT OR REPLACE`-bypasses-triggers finding
+and its architectural consequence: the invariant and the Stage-5 trigger
+now close most of each other's admitted blind spots, except the one
+statement shape (`INSERT OR REPLACE` omitting the new columns) both still
+miss simultaneously — not a live risk today, named rather than left to be
+discovered later. H's Stage 3 entry and #1b entry updated from
+open-question framing to resolved findings — the CLOB risk is closed, and
+#1b's discard, while real in code, produced zero observable live
+instances, confirming (not merely asserting) the design's original
+footnote treatment. Oscar's four directions are unchanged; no
+restructuring. Sources: `2026-08-19-canonical-design-open-questions.md`
+(`c75a906`), which cites its own live-call and scratch-DB evidence in
+full.*
