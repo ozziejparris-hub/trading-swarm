@@ -14,6 +14,36 @@ Designing to Oscar's four directions as given — none re-litigated.
 
 ## A. The source ranking
 
+**Scope statement — added 2026-08-20, see amendment note at the end of this
+document.** This design's canonical path owns the resolution **assertion**,
+not the three columns as such:
+
+- `mark_market_resolved()` asserts that a market **has** resolved. It has
+  no branch for "not yet resolved," and — stated plainly, since Stage 1's
+  attempted migration first raised this as a question — that is correct,
+  not a gap. A function whose entire contract is "record what resolution
+  occurred" has nothing to say about a market that hasn't resolved.
+- A write that fills `resolution_date` as a scheduled-**end-date proxy** on
+  a market that has **not** resolved is a different operation. It answers
+  "when is this scheduled to end," not "what did this resolve to," and is
+  outside this design's scope — the same reasoning §H already applies to
+  `monitor.py`'s proxy writes, extended here to name it as a general
+  category rather than a fact about one script.
+- Two writers performing this proxy-fill operation are known:
+  `monitor.py` (already excluded by §H) and `hydrate_stub_markets.py`'s
+  `is_resolved == 0` branch (identified 2026-08-20, see
+  `2026-08-20-stage1-hydrate-stub-migration.md`).
+- **This remains an open concern, not a closed one:** `resolution_date`
+  carrying both a true-event-time/assertion meaning and a proxy-fill
+  meaning in the same column is the O-36 problem this design already
+  exists to address (D). Identifying two writers that legitimately
+  perform the proxy operation does not consolidate them or resolve that
+  tension — it only names it precisely enough to stop mistaking it for a
+  gap in `mark_market_resolved()`. Whether proxy fills should eventually
+  get their own canonical path is a separate question this design does
+  not answer (see the open questions appended in the 2026-08-20
+  amendment).
+
 Three separate rankings are needed, because the 13 writers supply evidence
 for three different kinds of fact, and conflating them is exactly how
 `resolution_date` ended up carrying two incompatible meanings.
@@ -351,18 +381,45 @@ answered concretely:**
   and even once they do, the first migrated writers (G, Stage 1–2) need
   to run for a real period before the check's own baseline is trustworthy.
 - **Promotion to Tier 1 / CRITICAL is gated on a checkable, mechanical
-  condition, not a calendar date:** re-run `scripts/scan_write_paths.py`
-  (already committed, this session) against `markets.resolved` /
-  `winning_outcome` / `resolution_date` and confirm **zero** direct
-  `UPDATE markets SET (resolved|winning_outcome|resolution_date)`
-  statements remain outside `mark_market_resolved()`'s own module — i.e.,
-  promotion happens exactly when Migration Stage 5 (G) is verified
-  complete by the same tooling that produced the original 13-writer map,
-  not by someone remembering to flip a flag. **This is the concrete
-  answer the ELO arc's own design document specified in prose
-  ("gating from end of Stage 3") but never actually wired into
-  `audit_invariants.py`'s tier-0-forever hardcoding** — naming that
-  precedent explicitly so this design doesn't repeat it silently.
+  condition, not a calendar date — revised 2026-08-20, see amendment
+  note.** The condition as originally stated ("zero direct `UPDATE
+  markets SET (resolved|winning_outcome|resolution_date)` statements
+  outside the canonical module") can **never** be met under the scope
+  statement now in §A: legitimate proxy-fill writers write
+  `resolution_date` directly, by design, permanently — they are not
+  migrating away, because they are not resolution assertions and
+  `mark_market_resolved()` has no path for them. The condition must be
+  scoped to resolution **assertions**, with known proxy writers carved
+  out by an explicit, enumerated allowlist rather than a vague exemption:
+
+  **Allowlist of known direct proxy writers (as of 2026-08-20):**
+  1. `monitor.py`'s proxy writes (excluded per §H since the original
+     design).
+  2. `hydrate_stub_markets.py`'s `is_resolved == 0` branch (identified
+     2026-08-20, `2026-08-20-stage1-hydrate-stub-migration.md`).
+
+  Revised condition: re-run `scripts/scan_write_paths.py` against
+  `markets.resolved` / `winning_outcome` / `resolution_date` and confirm
+  **zero** direct `UPDATE markets SET (resolved|winning_outcome|resolution_date)`
+  statements remain outside `mark_market_resolved()`'s own module **except
+  those attributable to a writer on the allowlist above.** A direct write
+  from any writer *not* on the allowlist fails the condition, full stop —
+  the allowlist is not a general escape hatch. **Adding a writer to the
+  allowlist requires a documented justification** (why this write is a
+  proxy fill, not a resolution assertion, following the same reasoning as
+  the §A scope statement) recorded in this document via a dated amendment,
+  not a silent addition — otherwise the allowlist becomes a hole in the
+  condition rather than a boundary on it. The condition remains
+  mechanically checkable by `scan_write_paths.py`: the script's output
+  (a list of direct-write sites) is diffed against the allowlist's fixed
+  set of writer identities, not evaluated by eyeballing a shrinking count.
+  Promotion happens exactly when Migration Stage 5 (G) is verified
+  complete against this revised condition by the same tooling that
+  produced the original 13-writer map, not by someone remembering to flip
+  a flag. **This is the concrete answer the ELO arc's own design document
+  specified in prose ("gating from end of Stage 3") but never actually
+  wired into `audit_invariants.py`'s tier-0-forever hardcoding** — naming
+  that precedent explicitly so this design doesn't repeat it silently.
 
 ---
 
@@ -478,7 +535,7 @@ anything behavior-changing.
 | Stage | What moves | Verification before proceeding | Reversible how |
 |---|---|---|---|
 | **0** | Add the 3 new columns (D) + build `mark_market_resolved()` (C), unused by anything yet. **Also create `trg_resolved_no_unresolve`** — see below. No writer touched. | Schema migration applies cleanly; new columns nullable, no existing reader affected (confirm via `run_tests.py`, same non-tautological standard as this session's clobber fix). Trigger tested in an isolated scratch DB, not production, prior to this stage (`c75a906`, Q3) — confirmed to break none of the 13 writers, since every establishing writer's candidate query already requires `resolved=0`. | `DROP COLUMN` / revert the migration commit — nothing depends on the columns yet. Trigger: `DROP TRIGGER`. |
-| **1** | Migrate **#11 `hydrate_stub_markets.py`** first — already the most conservative writer in the cluster (fill-only-if-empty on every column it touches), so subordinating it should be a pure no-op in observable output. | Before/after dry-run diff across its full candidate population — same methodology as this session's trade-evaluator repoint (§Part 3 of `2026-08-19-trade-evaluator-repoint.md`): zero behavioral difference expected, verify it. | `git revert` the one commit; #11 goes back to direct writes, harmless since the new columns stay empty for its rows either way. |
+| **1** | **Revised 2026-08-20 — split migration, not a single-path one.** Migrate **#11 `hydrate_stub_markets.py`**'s `is_resolved == 1` branch to `mark_market_resolved(evidence_source="hydration_fill")`; its `is_resolved == 0` branch (the scheduled-end-date proxy fill, §A scope statement, allowlisted in §E) stays a direct write, untouched. Originally scoped as a single clean migration under the assumption that fill-only-if-empty maps totally onto "propose, defer to existing" — the Stage 1 stop (`2026-08-20-stage1-hydrate-stub-migration.md`) found this false for the dominant real case (7 of 8 live writes) and this row was corrected accordingly. | Before/after dry-run diff across its full candidate population — same methodology as this session's trade-evaluator repoint (§Part 3 of `2026-08-19-trade-evaluator-repoint.md`) — must show **zero behavioral difference across both branches**: the migrated `is_resolved == 1` assertion branch (now routed through `mark_market_resolved()`) and the untouched `is_resolved == 0` proxy branch (still a direct write). A diff that's clean only on one branch does not satisfy this stage. | `git revert` the one commit; #11 goes back to direct writes on both branches, harmless since the new columns stay empty for its rows either way. |
 | **2** | Migrate **#3 `batch_update_resolved_markets`** — already carries this session's one-line COALESCE patch (`0a5891c`); folding it into the canonical function retires that patch in favor of the real mechanism. | Live, bounded, read-only dry-run against the known at-risk population — same 12-real-market methodology already proven in `2026-08-19-resolution-date-clobber-fix.md`. Confirm identical accept/reject decisions to the patched-but-not-yet-canonical version. | `git revert`; #3 reverts to its already-safe (COALESCE-guarded) direct-write state from Stage 2 of the prior fix — not back to the original unguarded version, since that commit stays in history. |
 | **3** | Migrate **#4/#5/#6** (the 3 CLOB sibling passes) together — same file, same Rank-1 evidence tier. **First real exercise of cross-tier logic** (CLOB Rank 1 vs. the Rank-2 writers already migrated in Stages 1–2) — per A1's rank-timing wrinkle, expect this to fire routinely, not rarely. CLOB supplies `evidence_source="clob"` for the fact only; `resolution_event_time` is `None` from these writers (A2, `c75a906` Q1 — no CLOB field carries one), unless a Gamma cross-reference is added in the same call, which is not designed here. | Confirm via live dry-run that CLOB-sourced writes now out-rank any Rank-2 value already present from Stage 2, on real overlapping candidates if any exist. | `git revert`, same as above. |
 | **4** | Migrate **#9/#10** (`resolve_legendary_markets.py` / `legendary_positions_scan.py`) — **the one confirmed same-rank collision pair (B)**. This is where flag-for-review becomes live-testable for real, not just designed. | Specifically construct or find a live case where both would fire on the same market and confirm: matching values → silent no-op; differing values → flagged, first-recorded value retained, disagreement logged. | `git revert`. |
@@ -547,12 +604,23 @@ would break" discipline from the prior write-path census:**
   all 13 writers immediately (they don't know the new columns exist) —
   this is why D specifies nullable, additive-only, and Stage 0's
   verification is exactly "confirm nothing existing breaks."
-- **Stage 1–2 (low-risk migrations):** if the ranking model (A) is wrong
-  in some way not yet surfaced — e.g., if `hydrate_stub_markets.py`'s
-  fill-only-if-empty guard doesn't map cleanly onto "Rank 2 filling a
-  null slot" the way this design assumes — the dry-run diff step exists
-  specifically to catch that before Stage 2 changes anything with real
-  overwrite stakes.
+- **Stage 1–2 (low-risk migrations): resolved, not outstanding — updated
+  2026-08-20.** This entry originally flagged, as a risk to watch for,
+  that `hydrate_stub_markets.py`'s fill-only-if-empty guard might not map
+  cleanly onto "Rank 2 filling a null slot," and that the dry-run diff
+  step existed specifically to catch that before Stage 2 changes anything
+  with real overwrite stakes. **It did catch it.** The Stage 1 attempt
+  (`2026-08-20-stage1-hydrate-stub-migration.md`) found the guard does
+  *not* map cleanly for the `is_resolved == 0` branch — a full-population
+  dry run showed 7 of 8 real writes are proxy fills on open markets, a
+  case `mark_market_resolved()` structurally cannot express — and the
+  attempt stopped rather than improvising a fix, exactly per the standing
+  instruction. The mechanism this design put in place to catch a wrong
+  assumption before it reached a real-overwrite-stakes stage **worked as
+  intended.** The resolution is the scope statement now in §A and the
+  corrected #11 row in the summary table, not a change to the ranking
+  model itself — the ranking model (A1/A2) was never in question; the gap
+  was scope, not rank.
 - **Stage 3 (CLOB migration):** **resolved, not outstanding.** The risk
   this document originally flagged — that the CLOB API might not expose
   an event-time field — is answered: it does not (A2, `c75a906` Q1,
@@ -628,6 +696,27 @@ a failure:**
   write path, unguarded by this design, exactly as decided in the prior
   document — restated here rather than silently dropped.
 
+**Two open questions, surfaced by the Stage 1 stop (2026-08-20), recorded
+here and not answered by this amendment:**
+
+- **`hydrate_stub_markets.py`'s live-hit rate is 8 in 1,258** (0.6%) — of
+  the script's full current candidate population, 1,250 return `not_found`
+  from Gamma (delisted or otherwise unavailable) and only 8 return a live
+  result to act on at all. This is unexamined here and does not block
+  Stage 1 as scoped by this amendment, but a live-hit rate this low
+  suggests the script's candidate-selection query may not be finding what
+  it's intended to find. Worth a separate look, not assumed benign.
+- **Whether `hydrate_stub_markets.py`'s `is_resolved == 0` proxy fill and
+  `monitor.py`'s proxy write are the *same* operation or merely similar**
+  — both fill `resolution_date` with a scheduled-end-date estimate on an
+  unresolved market, but this document has not checked whether they use
+  the same source field, the same computation, or agree when both could
+  apply to the same market. If they turn out to be the same operation,
+  that's a fifth cluster member for the write-path census (the original
+  13 writers plus this proxy-fill operation, counted once instead of
+  twice) and possibly grounds for its own small canonical path later — a
+  question for a future session, not resolved by naming it here.
+
 ---
 
 ## Summary — what each of the 13 writers becomes
@@ -642,7 +731,7 @@ a failure:**
 | 4–6 | The 3 CLOB passes | Migrated in Stage 3 as a batch. Call `mark_market_resolved(evidence_source="clob", resolution_event_time=None, ...)` — first real exercise of Rank-1 evidence in the canonical path, expected (per A1's rank-timing wrinkle) to routinely outrank an already-present Rank-2 value; `resolution_event_time` is always `None` from these writers since CLOB carries no timestamp field (A2, `c75a906` Q1, closed). |
 | 7–8 | `backfill_o16_tier1/tier2` | Already-run, dormant — migrated in Stage 5 for completeness only. Would call `mark_market_resolved(evidence_source="gamma", resolution_event_time=<true API timestamp>, allow_no_winner=True)` for the sentinel case — the one writer whose event-time discipline was already correct, now made structural instead of a per-writer convention. |
 | 9–10 | `resolve_legendary_markets.py` / `legendary_positions_scan.py` | Migrated in Stage 4 — the tie-case pair (B) becomes live for the first time. Both call `mark_market_resolved(evidence_source="gamma")`. |
-| 11 | `hydrate_stub_markets.py` | Migrated first, Stage 1. Its fill-only-if-empty discipline for `resolved`/`winning_outcome`/`resolution_date` becomes exactly what "propose, defer to existing" already means under source-ranking — its category/title-filling logic (a different concern) stays separate, untouched. |
+| 11 | `hydrate_stub_markets.py` | **Corrected 2026-08-20 — not a clean total mapping.** Its `is_resolved == 1` branch migrates to `mark_market_resolved(evidence_source="hydration_fill")` in Stage 1, and there its fill-only-if-empty discipline for `resolved`/`winning_outcome`/`resolution_date` is exactly what "propose, defer to existing" means under source-ranking. Its `is_resolved == 0` branch is a scheduled-end-date **proxy fill** (see the scope statement in §A), out of this design's scope, and remains a direct write, unmigrated — per the Stage 1 stop's full-population dry run, this is not a corner case: **7 of the 8 real writes** the script makes today are this branch (`2026-08-20-stage1-hydrate-stub-migration.md`). Its category/title-filling logic (a different concern) stays separate, untouched, as before. |
 | 12 | `fetch_market_resolutions.py` | Dormant, no live caller — migrated in Stage 5. Would call `mark_market_resolved(evidence_source="clob")`. |
 | 13 | `fix_expired_unresolved.py` | Dormant, narrow (10 hardcoded markets), already run — migrated in Stage 5 for completeness. Calls `mark_market_resolved(evidence_source="manual_verified", evidence_detail=<the hardcoded market list's context>)`. |
 | — | `monitor.py`'s proxy writes | **Unchanged, explicitly out of scope** — answers a different question (Q5, prior doc), stays a separate write path. |
@@ -692,3 +781,43 @@ footnote treatment. Oscar's four directions are unchanged; no
 restructuring. Sources: `2026-08-19-canonical-design-open-questions.md`
 (`c75a906`), which cites its own live-call and scratch-DB evidence in
 full.*
+
+---
+
+*Amended 2026-08-20: distinguishes resolution ASSERTIONS from proxy
+end-date FILLS, in response to the Stage 1 migration stop
+(`2026-08-20-stage1-hydrate-stub-migration.md`, `49f2f89`), which found
+that a full-population dry run against writer #11
+(`hydrate_stub_markets.py`) produces 7 direct proxy writes for every 1
+resolution assertion — the design's own summary-table claim that this
+writer's guard maps cleanly onto "propose, defer to existing" does not
+hold for that dominant branch. Added a scope statement to §A: the
+canonical path owns the resolution assertion, not the three columns as
+such; a scheduled-end-date proxy fill on an unresolved market is a
+structurally different operation, out of scope, with two known writers
+(`monitor.py`, already excluded by §H, and `hydrate_stub_markets.py`'s
+`is_resolved == 0` branch, newly identified) — and this remains an open
+concern, not a closed one, since it is the O-36 dual-meaning problem
+restated rather than solved. Corrected the summary table's row for writer
+#11 to describe the split: its `is_resolved == 1` branch migrates to
+`mark_market_resolved(evidence_source="hydration_fill")`, its
+`is_resolved == 0` branch stays a direct write. Revised §E's promotion
+condition — the original "zero direct writes outside the canonical
+module" wording could never be satisfied once proxy fills are
+acknowledged as legitimate — to scope it to resolution assertions against
+an explicit, enumerated allowlist of the two known proxy writers, with
+any new direct writer failing the condition by default and any addition
+to the allowlist requiring a documented, dated justification, remaining
+mechanically checkable by `scan_write_paths.py`. Revised §G's Stage 1 row
+to describe the split migration and require the before/after dry-run diff
+to show zero behavioral difference across both the migrated assertion
+branch and the untouched proxy branch. Updated §H's Stage 1–2 risk entry
+from an open risk to a resolved finding: the dry-run-diff mechanism this
+design put in place to catch exactly this kind of wrong assumption caught
+it, on the first real attempt. Recorded two open questions the Stage 1
+stop surfaced but did not answer: `hydrate_stub_markets.py`'s 8-in-1,258
+live-hit rate against Gamma, and whether its proxy fill and `monitor.py`'s
+proxy write are the same operation or merely similar. Oscar's four
+directions are unchanged; no restructuring. Stage 1 implementation itself
+is not part of this amendment and follows separately. Source:
+`2026-08-20-stage1-hydrate-stub-migration.md` (`49f2f89`).*
