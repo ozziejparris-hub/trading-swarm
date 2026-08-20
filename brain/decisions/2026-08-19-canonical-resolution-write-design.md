@@ -55,7 +55,8 @@ for three different kinds of fact, and conflating them is exactly how
 | **1 (highest)** | **CLOB API `token.winner` flag** | #4, #5, #6, #12 | A direct, declarative signal from the trading venue itself — the CLOB marks a specific token as the winner. Not an inference. The cluster doc's own code comment (`run_stale_clob_pass`'s docstring) already calls this "the authoritative resolution source" — this design adopts that judgment rather than inventing a new one. |
 | **2** | **Gamma API price-threshold inference** (`outcomePrices >= 0.99`, `winnerIndex` fallback, `__RESOLVED_NO_WINNER__` sentinel for all-zero-price closed markets) | #1b (resolved-flag only), #3, #7, #8, #9, #10, #11 | An algorithmic *inference* from market price data, not a direct declaration. Generally reliable (this is the majority evidence source in the cluster) but structurally one step removed from source-of-truth — a market could sit at 0.97 without being un-resolved, or price data could lag. |
 | **2 (stated as equal, not ranked separately)** | **Human-verified-then-hardcoded** | #13 | A human confirmed the outcome by reading Gamma at some point in the past and hardcoded it into the script. This is not stronger evidence than a live Gamma read — a human reading Gamma data by eye is the same underlying evidence base as #7/#8/#9/#10's automated extraction, just performed once, manually, and frozen. **No basis was found to rank it above or below Tier 2 — stated as equal rather than inventing a distinction.** Its weakness is staleness (frozen at check-time, never re-verified), not evidentiary quality; staleness is not a ranking axis, it's an argument for the evidence_source tag to record *when* it was checked (see C), not for a rank of its own. |
-| **3 (lowest — not a claim at all)** | **Hardcoded default, no live evidence** | #1a (`resolved=False` at stub creation) | This isn't establishing a fact — it's an initial null state at INSERT time. It should never be able to compete with, let alone overwrite, an actual claim from any other source. Modeled as rank 3 only so the ranking is total; in practice this "source" should never reach `mark_market_resolved()` at all (see H). |
+| **3** | **`backfill_verified`** — added 2026-08-20, not yet implemented (see A4) | *(none yet — a future pre-registered backfill task, not any of the 13 writers)* | A live source re-checked at backfill time, original asserting writer unknown. Same evidentiary quality as a live Gamma check, but ranked strictly below Rank 2 by deliberate design choice (A4) so a genuine canonical-path write, even at Gamma's own tier, can always overwrite a backfill-only tag rather than being gated by the same-rank tie policy (B). |
+| **4 (lowest — not a claim at all)** | **Hardcoded default, no live evidence** | #1a (`resolved=False` at stub creation) | This isn't establishing a fact — it's an initial null state at INSERT time. It should never be able to compete with, let alone overwrite, an actual claim from any other source. Modeled as rank 4 only so the ranking is total; in practice this "source" should never reach `mark_market_resolved()` at all (see H). |
 | **n/a** | **Caller-supplied, unspecified** | #1 generic case, #2 | `update_market`'s ON CONFLICT branch and `update_market_resolution` take whatever the caller passes with no source tag at all today. Under this design they inherit the rank of whatever evidence the *caller* actually had — they are not their own source, they're a pass-through with no current discipline about what's on the other end. This absence of a tag is itself part of the problem (see F, E). |
 
 **The rank-timing wrinkle — [V] found incidentally while answering Q1
@@ -117,6 +118,66 @@ currently distinguish "resolved with no winner" from "not yet resolved" —
 every other writer either doesn't handle the case or (per #1b) sets
 `resolved=True` with `winning_outcome=NULL` without ever declaring
 whether that's deliberate.
+
+### A4. Migration vs. backfill — the policy, decided once, not re-litigated per stage
+
+**[D] Decided by Oscar, 2026-08-20, source: the Stage 2 stop
+(`2026-08-20-stage2-stop.md`, `d2fe369`).** That stop found
+`batch_update_resolved_markets`'s hard `if is_resolved: continue` guard
+diverges from `mark_market_resolved()`'s untagged-legacy-improvement
+behavior (above) at real, non-trivial volume — 1,618 of 2,100 currently-
+fetched Gamma-resolved markets were already `resolved=1` in the DB with no
+evidence tag. Rather than settle "should a migrated writer opportunistically
+backfill legacy tags" per writer at every future stage, it is settled once,
+here, for the whole arc:
+
+1. **Migrating a writer is behavior-preserving.** This is not a new rule —
+   it is the bar §G already sets for every stage, and the one Stage 1 met
+   (before/after dry-run diff, zero behavioral difference). Stated
+   explicitly so no later stage re-derives the question: where a writer's
+   own guard would decline a write, the migrated writer still declines it.
+   `mark_market_resolved()` is called only where the writer would have
+   written anyway — its own comparator (rank comparison, untagged-legacy
+   improvement, same-rank flag) governs *what happens on that call*, not
+   *whether the writer is even allowed to make it*. A writer's existing
+   skip guard is not something migration removes.
+2. **Legacy provenance backfill is a separate, pre-registered task.**
+   Tagging the ~224,954 untagged resolved rows (D) is a one-time pass
+   unrelated to any particular writer. It must not ride along inside a
+   nightly maintenance step. It requires its own pre-registration and a
+   deliberately observed run — not scheduled by this amendment; recorded
+   here as an open item for a future task.
+3. **The backfill tag is distinct from a canonical-path evidence source.**
+   Tagging a legacy row `'gamma'` would claim provenance this design does
+   not have — a live Gamma read at backfill time tells us Gamma agrees
+   *today*, not which writer, if any, originally established the value, or
+   what evidence tier that writer would have carried. A fifth
+   evidence-source value, **`backfill_verified`**, is added to the design
+   to preserve that distinction, meaning: value reconciled against a live
+   source at backfill time, original writer unknown. This is the same
+   reasoning that split event-time from write-time (D) — a distinction
+   that is unrecoverable once lost. **Consequence, recorded not
+   implemented:** this requires adding `'backfill_verified'` to both the
+   `resolution_evidence_source` CHECK constraint (D) and the
+   `evidence_source` `Literal` type (C) — a schema and signature change
+   belonging to the backfill task's own pre-registration, **not** to any
+   migration stage, and **not** implemented by this amendment.
+4. **Ranking `backfill_verified` — reasoned, not asserted.** Its
+   underlying evidence is the same live Gamma read a Rank-2 `gamma` write
+   uses — by evidentiary quality alone it could sit at Rank 2, tied. But a
+   rank-2 tie is resolved by the same-rank policy (B): matching values
+   silently no-op, differing values flag for review — neither path lets a
+   genuine future Rank-2 write **overwrite** a backfilled tag on agreement,
+   because a tie doesn't overwrite, it only compares. That is the wrong
+   shape for a tag whose whole purpose is to mark "we don't know who
+   really established this" as strictly weaker than "a writer actually
+   asserted this." **Ranked at Rank 3 — below `gamma` (Rank 2), above the
+   INSERT-time non-claim (renumbered Rank 4 below) — its own tier, not
+   tied to Gamma's.** This guarantees any genuine future canonical-path
+   write, at any real evidence tier including Gamma's own, always
+   outranks and can unconditionally improve on a backfilled tag — the
+   property a reconciliation-only tag should have and an
+   original-assertion tag should not need.
 
 ---
 
@@ -298,6 +359,20 @@ that would be an unverifiable assumption about *which writer touched a
 given row*, which is not recorded anywhere either. **Historical rows
 remain exactly as unreliable for event-time purposes as O-36 already
 established them to be** — this design does not and cannot fix the past.
+
+**Addendum, 2026-08-20 (§A4, `d2fe369`) — a narrow, later exception to "no
+backfill" above, stated precisely so it isn't read as reversing the
+reasoning just given.** The rejection above is of *heuristic
+reclassification* — guessing which of the 13 writers touched a given
+historical row and backdating an evidence tag to match it, an
+unverifiable assumption about the past. §A4 records a different, additive
+operation: re-checking a legacy row against a *live* source *today* and
+tagging the result `backfill_verified` — a tag that is honest about not
+knowing the original writer, rather than one that guesses it. This still
+requires a schema change (adding `'backfill_verified'` to the
+`resolution_evidence_source` CHECK constraint above) — not made here, and
+not the responsibility of any migration stage; it belongs to the backfill
+task's own pre-registration (§A4) when and if that task is scheduled.
 
 ---
 
@@ -536,7 +611,7 @@ anything behavior-changing.
 |---|---|---|---|
 | **0** | Add the 3 new columns (D) + build `mark_market_resolved()` (C), unused by anything yet. **Also create `trg_resolved_no_unresolve`** — see below. No writer touched. | Schema migration applies cleanly; new columns nullable, no existing reader affected (confirm via `run_tests.py`, same non-tautological standard as this session's clobber fix). Trigger tested in an isolated scratch DB, not production, prior to this stage (`c75a906`, Q3) — confirmed to break none of the 13 writers, since every establishing writer's candidate query already requires `resolved=0`. | `DROP COLUMN` / revert the migration commit — nothing depends on the columns yet. Trigger: `DROP TRIGGER`. |
 | **1** | **Revised 2026-08-20 — split migration, not a single-path one.** Migrate **#11 `hydrate_stub_markets.py`**'s `is_resolved == 1` branch to `mark_market_resolved(evidence_source="hydration_fill")`; its `is_resolved == 0` branch (the scheduled-end-date proxy fill, §A scope statement, allowlisted in §E) stays a direct write, untouched. Originally scoped as a single clean migration under the assumption that fill-only-if-empty maps totally onto "propose, defer to existing" — the Stage 1 stop (`2026-08-20-stage1-hydrate-stub-migration.md`) found this false for the dominant real case (7 of 8 live writes) and this row was corrected accordingly. | Before/after dry-run diff across its full candidate population — same methodology as this session's trade-evaluator repoint (§Part 3 of `2026-08-19-trade-evaluator-repoint.md`) — must show **zero behavioral difference across both branches**: the migrated `is_resolved == 1` assertion branch (now routed through `mark_market_resolved()`) and the untouched `is_resolved == 0` proxy branch (still a direct write). A diff that's clean only on one branch does not satisfy this stage. | `git revert` the one commit; #11 goes back to direct writes on both branches, harmless since the new columns stay empty for its rows either way. |
-| **2** | Migrate **#3 `batch_update_resolved_markets`** — already carries this session's one-line COALESCE patch (`0a5891c`); folding it into the canonical function retires that patch in favor of the real mechanism. | Live, bounded, read-only dry-run against the known at-risk population — same 12-real-market methodology already proven in `2026-08-19-resolution-date-clobber-fix.md`. Confirm identical accept/reject decisions to the patched-but-not-yet-canonical version. | `git revert`; #3 reverts to its already-safe (COALESCE-guarded) direct-write state from Stage 2 of the prior fix — not back to the original unguarded version, since that commit stays in history. |
+| **2** | **Revised 2026-08-20 (§A4, `d2fe369`) — behavior-preserving, not also a backfill pass.** Migrate **#3 `batch_update_resolved_markets`**: keep its `if is_resolved: continue` hard-skip guard ahead of the `mark_market_resolved()` call (§A4 policy 1) — the migrated writer calls the canonical function only where the current writer would already have written, so legacy-tag backfill (§A4 policy 2) is explicitly deferred, not bundled into this stage. Its one-line COALESCE patch (`0a5891c`) is retired because the Stage 2 stop confirmed it is **behaviorally identical** to the canonical three-tier fallback for this writer's actual inputs (Q1, `2026-08-20-stage2-stop.md`: this writer never supplies a true event-time, so both mechanisms reduce to "keep the existing `resolution_date` if non-null, else write-time") — not "in favor of a different mechanism" as this row originally said; corrected here. | Before/after dry-run diff across the full candidate population, same bar as Stage 1 — must show **zero behavioral difference**, confirming the hard-skip guard was preserved and no untagged legacy row was touched. Live, bounded, read-only dry-run against the `resolution_date` at-risk population (1,349, re-verified 2026-08-20) as an additional cross-check, same methodology as `2026-08-19-resolution-date-clobber-fix.md`. | `git revert`; #3 reverts to its already-safe (COALESCE-guarded) direct-write state from Stage 2 of the prior fix — not back to the original unguarded version, since that commit stays in history. |
 | **3** | Migrate **#4/#5/#6** (the 3 CLOB sibling passes) together — same file, same Rank-1 evidence tier. **First real exercise of cross-tier logic** (CLOB Rank 1 vs. the Rank-2 writers already migrated in Stages 1–2) — per A1's rank-timing wrinkle, expect this to fire routinely, not rarely. CLOB supplies `evidence_source="clob"` for the fact only; `resolution_event_time` is `None` from these writers (A2, `c75a906` Q1 — no CLOB field carries one), unless a Gamma cross-reference is added in the same call, which is not designed here. | Confirm via live dry-run that CLOB-sourced writes now out-rank any Rank-2 value already present from Stage 2, on real overlapping candidates if any exist. | `git revert`, same as above. |
 | **4** | Migrate **#9/#10** (`resolve_legendary_markets.py` / `legendary_positions_scan.py`) — **the one confirmed same-rank collision pair (B)**. This is where flag-for-review becomes live-testable for real, not just designed. | Specifically construct or find a live case where both would fire on the same market and confirm: matching values → silent no-op; differing values → flagged, first-recorded value retained, disagreement logged. | `git revert`. |
 | **5** | Migrate remaining dormant/one-off writers for completeness and to close the two **latent** overwrite risks the cluster doc identified (#1's ON CONFLICT branch, #2) — low urgency since none are live, but leaving them un-migrated would mean the Stage-6 promotion condition (zero non-canonical write sites) can never actually be met. **Also create `trg_require_recorded_at`** — see below. | `scan_write_paths.py` re-run confirms zero direct `UPDATE markets SET (resolved\|winning_outcome\|resolution_date)` statements remain outside the canonical module. Trigger: re-confirm in a scratch DB seeded from the now-migrated codebase's actual write shapes that every remaining writer's statement sets `resolution_recorded_at` (all should, since all now call `mark_market_resolved()`). | `git revert` per writer; each is independent. Trigger: `DROP TRIGGER`. |
@@ -621,6 +696,22 @@ would break" discipline from the prior write-path census:**
   corrected #11 row in the summary table, not a change to the ranking
   model itself — the ranking model (A1/A2) was never in question; the gap
   was scope, not rank.
+- **Operational constraint found during the Stage 2 stop (2026-08-20),
+  not a design risk but load-bearing for any future volume estimate:**
+  `scripts/fast_resolution_check.py`'s Gamma `/markets` fetch
+  (`fetch_all_resolved_markets`) returns HTTP 422 once `offset` passes
+  2100 — confirmed as a standing condition, not a one-off, against
+  `logs/daily_maintenance.log`'s history of real production runs (every
+  recent run logs `Resolved markets from API: 2100` exactly). The
+  function's own comment references a 50,000-market safety cap that is
+  **never reached in practice** — the real, binding cap is Gamma's own,
+  at 2,100, every run. Writer #3's effective per-run candidate population
+  is therefore far smaller and more stable than its code's own comments
+  imply. Recorded here because it directly bounds the Stage 2 divergence's
+  blast radius (`2026-08-20-stage2-stop.md`'s 1,618-row figure is against
+  this same 2,100-row ceiling, not the ~513,000-row full unresolved
+  population) and should be re-checked, not assumed, if Gamma's API
+  behavior ever changes.
 - **Stage 3 (CLOB migration):** **resolved, not outstanding.** The risk
   this document originally flagged — that the CLOB API might not expose
   an event-time field — is answered: it does not (A2, `c75a906` Q1,
@@ -727,7 +818,7 @@ here and not answered by this amendment:**
 | 1a | `store_market_from_trade` | Unchanged — never asserts a resolution fact, out of scope. |
 | 1b | `store_market_dict` | Unchanged behaviorally in this design's minimum scope; a natural follow-on (not implemented here) would let it call `mark_market_resolved(evidence_source="gamma")` with a real winner when extractable, instead of hardcoding `None`. |
 | 2 | `update_market_resolution()` | Migrated in Stage 5 for completeness (dormant, no live caller) — becomes a thin wrapper calling `mark_market_resolved(evidence_source=<caller-supplied, now required>)`. |
-| 3 | `batch_update_resolved_markets` | Migrated in Stage 2. Calls `mark_market_resolved(evidence_source="gamma", resolution_event_time=None)` — the COALESCE patch from this session's prior fix is retired in favor of the canonical function's own guard logic. |
+| 3 | `batch_update_resolved_markets` | **Corrected 2026-08-20 (§A4, `d2fe369`).** Migrated in Stage 2, behavior-preserving: the `if is_resolved: continue` guard stays ahead of the call, so `mark_market_resolved()` fires only where the writer would already have written. Calls `mark_market_resolved(evidence_source="gamma", resolution_event_time=None)` — confirmed by the Stage 2 stop (Q1) that this writer never holds a true event-time, so the COALESCE patch (`0a5891c`) is retired in favor of a canonical fallback that is **behaviorally identical** for this writer's actual inputs, not merely "the real mechanism" as this row originally said. Legacy-tag backfill for the ~1,618 already-resolved-untagged rows currently in this writer's Gamma window is explicitly **out of scope**, deferred to the separate pre-registered backfill task (§A4). |
 | 4–6 | The 3 CLOB passes | Migrated in Stage 3 as a batch. Call `mark_market_resolved(evidence_source="clob", resolution_event_time=None, ...)` — first real exercise of Rank-1 evidence in the canonical path, expected (per A1's rank-timing wrinkle) to routinely outrank an already-present Rank-2 value; `resolution_event_time` is always `None` from these writers since CLOB carries no timestamp field (A2, `c75a906` Q1, closed). |
 | 7–8 | `backfill_o16_tier1/tier2` | Already-run, dormant — migrated in Stage 5 for completeness only. Would call `mark_market_resolved(evidence_source="gamma", resolution_event_time=<true API timestamp>, allow_no_winner=True)` for the sentinel case — the one writer whose event-time discipline was already correct, now made structural instead of a per-writer convention. |
 | 9–10 | `resolve_legendary_markets.py` / `legendary_positions_scan.py` | Migrated in Stage 4 — the tie-case pair (B) becomes live for the first time. Both call `mark_market_resolved(evidence_source="gamma")`. |
@@ -821,3 +912,40 @@ proxy write are the same operation or merely similar. Oscar's four
 directions are unchanged; no restructuring. Stage 1 implementation itself
 is not part of this amendment and follows separately. Source:
 `2026-08-20-stage1-hydrate-stub-migration.md` (`49f2f89`).*
+
+---
+
+*Amended 2026-08-20 (later pass): states the migration-vs-backfill policy
+once, for all stages, in response to the Stage 2 stop
+(`2026-08-20-stage2-stop.md`, `d2fe369`), which found
+`batch_update_resolved_markets`'s hard `if is_resolved: continue` guard
+diverging from `mark_market_resolved()`'s untagged-legacy-improvement
+behavior at real volume (1,618 of 2,100 currently-fetched Gamma-resolved
+markets already resolved=1, untagged — all confirmed to already carry the
+same `winning_outcome` Gamma reports now, so value-safe, but new and large
+for an unattended nightly step). Added §A4: migrating a writer is
+behavior-preserving (existing skip guards stay, matching the bar §G
+already set and Stage 1 already met); legacy provenance backfill is a
+separate, pre-registered task, not scheduled by this amendment; a fifth
+evidence-source value, `backfill_verified`, is added to the design
+(schema/signature change deferred to that future task's own
+pre-registration, not implemented here) to keep backfilled rows
+distinguishable from rows a writer actually asserted; and
+`backfill_verified` is ranked at a new Rank 3 in A1 — below `gamma`
+(Rank 2), above the INSERT-time non-claim (renumbered Rank 4) — reasoned
+explicitly so that a genuine future canonical-path write can always
+overwrite a backfill-only tag rather than being gated by the same-rank tie
+policy (B). D gained a narrow addendum distinguishing this from the
+heuristic-reclassification backfill already rejected there. G's Stage 2
+row and the summary table's writer #3 row were both corrected: the
+migration keeps the `is_resolved` guard (behavior-preserving, per §A4),
+and the COALESCE patch is retired because Stage 2's own stop confirmed it
+is behaviorally *identical* to the canonical fallback for this writer, not
+merely replaced by a different mechanism as originally stated. H gained an
+operational-constraint entry: Gamma's `/markets` endpoint returns HTTP 422
+past `offset=2100`, confirmed as a standing condition against production
+logs, meaning writer #3's real per-run population is far smaller than its
+code's own 50,000-market comment implies. Oscar's four directions are
+unchanged; no restructuring. Stage 2 implementation itself is not part of
+this amendment and follows separately. Source:
+`2026-08-20-stage2-stop.md` (`d2fe369`).*
