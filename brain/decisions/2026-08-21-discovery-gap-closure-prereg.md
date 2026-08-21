@@ -20,7 +20,7 @@ Five operations, strictly ordered, each gating the next:
 
 | # | Operation | Gates on | Produces |
 |---|---|---|---|
-| 1 | Extend `backfill_market_dates.py`'s `_fetch_by_clob` with a `mark_market_resolved()` assertion branch | Nothing (code change) | A dry-run diff artifact (§B) |
+| 1 | Extend `backfill_market_dates.py`'s `_fetch_by_clob` with a `mark_market_resolved()` assertion branch — scope revised 2026-08-21, see amendment note at the end of this document | Nothing (code change) | A dry-run diff artifact + the 317-market correctness pre-check, now a required gate (§B) |
 | 2 | Widen candidate scope (drop `--geo-only`) | Step 1's diff passing | Updated invocation, no data written yet |
 | 3 | Extract `closedTime` in `fast_resolution_check.py`'s Gamma pass | Nothing (independent code change, can run in parallel with 1-2) | A dry-run diff artifact (§B) |
 | 4 | One-time catch-up sweep | Steps 1-3's diffs all passing, backup taken, tranche 1 clean | Hundreds of thousands of `resolved=1` writes (§C) |
@@ -37,6 +37,13 @@ partially-verified code.
 - **Step 1 or 3's dry-run diff shows any behavioral difference on the
   untouched branch(es)** → stop. Do not proceed to step 4. Fix the code,
   re-run the diff from scratch, do not patch around a partial failure.
+- **Step 1's read-only correctness pre-check against the 317-market Q2
+  census population (§B item 3, promoted to a gate 2026-08-21) does not
+  reproduce the freshly-re-derived expected resolved count, within a
+  small tolerance** → stop. Do not proceed to step 2 or step 4. This is
+  not hypothetical — it is what happened on the first attempt (a clean
+  diff, an inert branch); see the amendment note at the end of this
+  document.
 - **Step 2's widened query, run in `--dry-run` mode, returns a population
   wildly inconsistent with this document's stated estimate (515,491 [V],
   §C)** — e.g., off by more than an order of magnitude — → stop. That means
@@ -66,6 +73,81 @@ partially-verified code.
 `2026-08-19-canonical-resolution-write-design.md`; methodology precedent:
 `2026-08-19-trade-evaluator-repoint.md`'s three-part verification).
 
+**Amendment, 2026-08-21 (`d41d02b`) — step 1's scope, revised after its
+first stop.** Full account: `2026-08-21-step1-implementation.md`. The
+first attempt built the assertion branch exactly as originally specified
+here, passed the branch-split dry-run diff cleanly, then failed a
+read-only correctness pre-check against the known 317-market Q2 census
+population by a wide margin (0 markets classified resolved against a
+freshly-re-derived expected ~203). Traced to root cause, not patched
+around: `_fetch_by_clob`'s existing success gate —
+`if data.get("end_date_iso") or data.get("endDateIso")` — silently
+discards a fetched, fully-parsed CLOB response whenever the market's
+`end_date_iso` is null, regardless of whether `closed`/`tokens[].winner`
+are present and usable. Verified: 316 of 317 markets in the Q2 census
+population returned no response through this function at all; direct
+sampling of 3 of them confirmed all three are `closed: true` with a real
+winning token and `end_date_iso: null` — the response was fetched and
+discarded before the new assertion branch (confirmed correct in isolation,
+at the unit level) ever saw it.
+
+**Root cause, stated precisely:** the gate conflates two distinct
+questions — "did we get a usable date?" and "did we get a usable
+response?" — and answers both with the date test. That was correct for
+the only caller that existed when it was written (the proxy branch, which
+only ever wanted a date) and became wrong the moment a second caller
+needed a different thing from the same response. This is the same shape
+as the design's own §A finding about `resolution_date` carrying two
+meanings in one column — one artifact serving two questions, silently
+breaking the newer one the moment it's added.
+
+**The change, added to step 1's scope:** separate the gate from the
+fetch. `_fetch_by_clob` returns the parsed response whenever the HTTP call
+itself succeeds (a genuine fetch failure — bad status code, malformed
+JSON, network error — is still `None`); each caller applies its own
+usability test against the returned dict. The proxy branch keeps its
+existing `end_date_iso`/`endDateIso` requirement, applied by the proxy
+branch itself, exactly where it already runs today — its behavior is
+preserved exactly, not merely intended to be. The assertion branch applies
+its own test: `closed == true` AND some token has `winner == true`.
+
+**Two alternatives considered and rejected:**
+- **A second, dedicated fetch function for the assertion branch.**
+  Rejected as duplicative — this project has been consolidating away from
+  exactly that pattern (`2026-08-19-trade-evaluator-repoint.md`'s three
+  near-identical scripts folded onto one canonical function; the
+  discovery-fix assessment's own elegance judgement,
+  `2026-08-21-discovery-fix-assessment.md`, choosing to extend
+  `backfill_market_dates.py` rather than build a new CLOB-calling script
+  from scratch). Two functions making the identical HTTP call for two
+  different reasons is the same coherence cost this arc has twice already
+  ruled against.
+- **A mode flag on the existing function** (e.g.
+  `_fetch_by_clob(session, condition_id, require_date=True)`). Smaller
+  blast radius than a full separation, but retains the conflation inside
+  one function's control flow rather than removing it — the next caller
+  with a third requirement would need a third flag, not a third,
+  independent test. Rejected in favor of the cleaner separation.
+
+**The verification bar is unchanged and now harder to meet — stated
+explicitly, not left implicit.** Item 2 below's requirement that the
+proxy branch show ZERO behavioral difference now applies to a refactor of
+shared code (the gate moving out of `_fetch_by_clob` and into each
+caller), not merely to an additive branch alongside untouched code. The
+proxy branch must produce byte-identical decisions across its full
+candidate population despite the gate having moved — same markets
+touched, same markets skipped, same `end_date` values. If it does not,
+that is a stop, not an acceptable consequence of refactoring.
+
+**Deferred items, unchanged by this amendment.** `ORDER BY market_id` and
+pacing remain deferred exactly as originally scoped (§C) — `ORDER BY`
+belongs to the sweep driver (step 4), since the production invocation's
+`--limit` means adding an ordering would change *which* markets are
+selected, a real behavioral difference outside a refactor's scope; pacing
+is an additive `--sleep` parameter defaulting to the current `0.1s`, so
+today's scheduled invocation is unaffected and step 4 can pass `0.25`
+explicitly. Neither is affected by the gate-separation change above.
+
 1. **Pre-change behavior extracted from git, not hand-transcribed.**
    Before editing either file, capture the *current* `_fetch_by_clob`
    (`backfill_market_dates.py:62-78`) and the *current*
@@ -91,7 +173,11 @@ partially-verified code.
        skipped. This is the load-bearing check — the task's own
        instruction singles this out because a defect here would mean the
        extension broke the thing that already works, which is worse than
-       building nothing.
+       building nothing. **Now a refactor check, not merely an additive
+       one** (2026-08-21 amendment, above) — the gate the proxy branch
+       depends on has moved out of `_fetch_by_clob` and into the proxy
+       branch's own call site; this diff is what proves that move changed
+       nothing observable.
      - **New assertion branch (markets where `closed == true`): the ONLY
        observable change.** Before: not_found/no-op (the field was never
        read). After: a `mark_market_resolved()` call recorded, with its
@@ -107,17 +193,41 @@ partially-verified code.
      change touches exactly one argument
      (`resolution_event_time=None` → `resolution_event_time=<parsed
      closedTime>`) in one call site and nothing else.
-3. **What a failed diff means: stop, do not proceed.** Per the task's
-   explicit instruction — this is not "investigate and adjust the fix
-   until the diff passes," it is "a failed diff means the change as
-   specified is wrong, fix it, and re-run the *entire* diff from a clean
-   baseline, not a delta on top of the failed attempt." No partial
-   credit — a diff that's clean on one branch but not the other (step 1) or
-   clean on 95% of markets but not all (step 3) does not satisfy this bar,
-   per the exact wording Stage 1 already used for itself (§G's migration
-   table: "A diff that's clean only on one branch does not satisfy this
-   stage").
-4. **Test suite**, both changes: `run_tests.py` must show no new failure
+3. **Read-only correctness pre-check against the 317-market Q2 census
+   population — a required gate, not optional.** Added 2026-08-21
+   (`d41d02b`), after this exact check — introduced ad hoc, as an
+   "additional" item, in step 1's first attempt — is what actually caught
+   the inert branch. **The branch-split diff (item 2) passed cleanly on
+   that same attempt while the assertion branch had, in practice, zero
+   reach — a clean branch-split diff alone would have let an inert change
+   ship.** It is necessary but not sufficient: it only proves the
+   untouched branch stayed untouched, and says nothing about whether the
+   new branch actually does anything when the production-scope candidate
+   population happens to exercise it zero or few times (as it did).
+   Method: run the modified code's own extraction/classification functions
+   (not a reimplementation) against the freshly re-derived Q2 census
+   population — re-derive live via `2026-08-20-discovery-gap-sizing-prereg.md`
+   §3's predicate, do not hardcode the 08-20 figure of 203/98/16 as
+   gospel, since the population drifts. **Required to proceed:** the
+   assertion branch's resolved count must land within a small tolerance of
+   the freshly-derived expected count, and the indeterminate rate must be
+   consistent with the sizing run's ~5% baseline. A materially different
+   result — as happened on the first attempt (0 resolved found against an
+   expected ~203) — is a stop, per falsification condition 1 (§I, amended
+   2026-08-21), not a tweak.
+4. **What a failed diff or failed pre-check means: stop, do not proceed.**
+   Per the task's explicit instruction — this is not "investigate and
+   adjust the fix until the check passes," it is "a failure means the
+   change as specified is wrong, fix it, and re-run the *entire*
+   verification bar from a clean baseline, not a delta on top of the
+   failed attempt." No partial credit — a diff that's clean on one branch
+   but not the other (step 1), clean on 95% of markets but not all (step
+   3), or a clean diff paired with a failed correctness pre-check (item 3
+   — exactly what happened on the first attempt) does not satisfy this
+   bar, per the exact wording Stage 1 already used for itself (§G's
+   migration table: "A diff that's clean only on one branch does not
+   satisfy this stage").
+5. **Test suite**, both changes: `run_tests.py` must show no new failure
    against the standing baseline (16 files, 15 passing, 19/24 in
    `test_backtest_window_population.py`) — this baseline is expected to
    still hold *before* the sweep (step 4); it is explicitly expected to
@@ -636,9 +746,31 @@ particular run needs a retry or a parameter tweak:
    materially different result, the extension to `_fetch_by_clob` is
    built on a wrong assumption about the CLOB response shape or the
    comparator logic — not a sampling artifact, since this is a full
-   census, not a sample. This would falsify the specific implementation,
-   and likely the assumption (carried from the assessment) that this
-   script's existing CLOB call already returns everything needed.
+   census, not a sample.
+
+   **Amended 2026-08-21 (`d41d02b`): this has already happened once, at
+   the read-only pre-check stage (§B item 3), not yet at tranche 1
+   itself.** Step 1's first attempt found 0 resolved against an expected
+   ~203 (`2026-08-21-step1-implementation.md`), traced to root cause:
+   `_fetch_by_clob`'s success gate discarded usable, fully-parsed CLOB
+   responses (`closed: true`, a real winning token) whenever `end_date_iso`
+   was null, before the new assertion branch — confirmed correct in
+   isolation — ever saw them. **The assumption that this script's existing
+   CLOB call already returns everything needed has been falsified, once.**
+   The response was to widen step 1's scope — separate the gate from the
+   fetch (§B amendment, 2026-08-21) — not to abandon the CLOB-by-market_id
+   approach, because the failure traced to a specific, narrow, fixable
+   cause (a gate written for one caller's needs, silently wrong for a
+   second) rather than to any defect in the classification logic itself.
+
+   **What would falsify the approach itself, on a second failure:** if the
+   pre-check (or tranche 1) still does not reproduce the expected count
+   *after* the gate-separation change — i.e. the assertion branch now
+   receives the response but still misclassifies it, or still fails to
+   reach the population for a *different* reason than the one just fixed —
+   the problem is no longer reach, and the CLOB-by-market_id shape itself
+   is in question, not merely this script's plumbing. That would be the
+   point to stop and reconsider the shape, not patch a second time.
 2. **The indeterminate rate at scale (tranche 2 or the full sweep) is
    systematically far above the sizing run's ~5%** (not just an isolated
    batch — see abort condition 3's 20% cumulative threshold) — this would
@@ -697,3 +829,33 @@ invariant count, DB fingerprint), `scripts/backfill_market_dates.py`,
 `2026-08-19-pending-invariant-regression.md`,
 `2026-07-07-silent-failure-audit-FABLE.md` (all trading-swarm). No writer
 modified, no schema touched, no data repaired, no measurement recomputed.*
+
+---
+
+*Amended 2026-08-21: revises step 1's scope in response to its first stop
+(`2026-08-21-step1-implementation.md`, `d41d02b`), which built the
+assertion branch exactly as originally specified here, passed the
+branch-split dry-run diff, and then failed a read-only correctness
+pre-check against the known 317-market Q2 census population (0 resolved
+found against a freshly-derived expected ~203). Root cause traced to
+`_fetch_by_clob`'s existing success gate conflating "did we get a usable
+date?" with "did we get a usable response?" — the same one-artifact/
+two-questions shape as the design's own §A finding about `resolution_date`.
+§A's step 1 row and stop-condition list, and §B, gained the fix (separate
+the gate from the fetch; each caller applies its own usability test) and
+the reasoning for rejecting two alternatives (a second fetch function;
+a mode flag on the existing one). §B's numbered verification list gained
+a new item 3, promoting the 317-market read-only correctness pre-check
+from an ad hoc addition in the first attempt to a required gate — it is
+what caught the inert branch; the clean branch-split diff alone did not.
+Existing items renumbered (old 3→4, old 4→5); item 2's proxy-branch
+requirement gained an explicit note that it now covers a refactor of
+shared code, not merely an additive branch. §I's falsification condition
+1 gained a record that its own premise has already been falsified once,
+that the response was to widen scope rather than abandon the approach, and
+a stated condition for what would falsify the approach itself on a second
+failure. §C's thresholds, abort conditions, and staged-rollout tranches;
+§E's interpretation rule; §D; §F; §G; and §H are unchanged by this
+amendment. Oscar's four directions are unchanged; no restructuring. Step
+1's re-attempt itself is not part of this amendment and follows
+separately.*
