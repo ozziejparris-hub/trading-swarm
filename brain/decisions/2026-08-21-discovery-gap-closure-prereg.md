@@ -263,6 +263,29 @@ step 4 actually runs — the pre-sweep fingerprint (§G) records the actual
 population size at run time, not this document's figure, which is a
 planning estimate only.
 
+**Amended 2026-08-22 (`a972731`, `9dc11e3`): the 0.25s figure is the
+pacing directive, not the measured per-call cost — those are different
+numbers, and both are now known.** Tranche 2 (5,000 candidates, 10
+batches, all abort-condition-clear) measured **0.416s/call, averaged
+across all ten batches in a tight ±3% band (202.6s–214.0s per 500-row
+batch)** — real CLOB round-trip time on top of the deliberate 0.25s
+sleep, not sleep-timer drift or an anomaly in one batch. **The 0.25s
+pacing directive itself is unchanged** — the measured figure is the
+*result* of that pacing plus real API overhead, not a reason to speed it
+up or slow it down.
+
+A fresh population count [V] (same predicate, live query,
+`2026-08-22-sweep-execution-model.md` §5) returns **513,770** — the
+**first time this figure has been below the original 515,491 planning
+estimate**, not a concerning decrease: tranches 1 and 2's combined 4,926
+resolutions (203 + 4,723) have outpaced organic new-market arrival since
+this document was written, exactly the self-shrinking behavior the
+resumability design (below) predicted. **Re-projected runtime at the
+measured rate: 513,770 × 0.416s ≈ 213,728s ≈ 59.4 hours ≈ 2.5 days** —
+not the ~36-hour planning figure. This spans **three nights**, not one,
+and materially changes the execution-model and concurrency reasoning
+below.
+
 ### Batching and resumability
 
 **The box has crashed three times in the last month — this must survive
@@ -314,6 +337,172 @@ that, not merely tolerate a clean restart.**
   (batch N always covers the same slice of the *remaining* population, not
   an unpredictable one), not for correctness.
 
+**Amended 2026-08-22 (`a972731`, `9dc11e3`): execution mode revised from
+a single continuous detached run to chunked, scheduled segments; this
+section previously said nothing about `daily_maintenance` concurrency at
+all — that gap is closed below.**
+
+#### Execution mode: chunked and scheduled, not one continuous run
+
+At the ~36-hour planning estimate, a single continuous detached run
+(`nohup`, per the bullet above) was reasonable — a human could stay
+loosely aware of it across roughly one overnight period. **At the
+revised ~59.4 hours (three nights), that reasoning no longer holds.**
+Reconsidered explicitly, not just noted: a systemd unit with
+`Restart=on-failure` was assessed again given the longer runtime and
+**still rejected** — not because 60 hours doesn't matter, but because
+automatic restart applies no judgment about *whether* restarting
+immediately is wise at that moment (e.g. mid-incident, as
+`2026-08-22-overnight-incident.md` demonstrated for an unrelated
+process), and because the actual per-interruption cost is small enough
+(below) that automating the restart buys little.
+
+**Adopted instead: chunked, scheduled segments, launched deliberately —
+not a fixed segment-size rule, but bounded by two things that already
+exist:** the existing 500-row batch/checkpoint boundary (a segment is
+some whole number of batches, chosen at launch time, not mid-batch), and
+the concurrency window below (a segment is scheduled to avoid, not
+overlap, `daily_maintenance`'s 06:00–~10:00 UTC window). This is the
+only execution mode in which a human applies judgment about whether
+conditions are currently favorable — abort-condition history, box
+health, maintenance-window proximity — at each segment boundary, rather
+than committing to one posture (uninterrupted run, or automatic restart)
+across 60 unattended hours.
+
+#### Concurrency with `daily_maintenance` — not previously addressed
+
+**This section previously said nothing about `daily_maintenance` at
+all.** `daily_maintenance.py` fires at `0 6 * * *` and currently takes
+3-4 hours. **Two of its steps are independent writers into the sweep's
+own evidence-source family and candidate shape, not one:**
+
+| Step | Writes to `markets`? | Touches the sweep's own rows? |
+|---|---|---|
+| `resolution_sweep.py` (step 5) | **[V] Yes** — calls into the same assertion-branch-style write path | **Directly** — same `evidence_source="clob"` family, same `resolved=0` candidate shape |
+| `Backfill market dates` (step 32, held at `--limit 2000` per `bd672fb`) | **[V] Yes** | **Directly** — its own literal candidate query (no `resolved` filter) overlaps wherever both are still `resolved=0`, and separately re-touches recently-sweep-resolved rows via its `end_date IS NULL` clause (9,122 such rows existed even before tranche 2's writes, `2026-08-22-tranche2-execution.md` pre-flight question 1) |
+| `hydrate_stub_markets.py`, `backfill_market_categories.py`, `resolve_legendary_markets.py` | **[V] Yes**, each | Different or narrower populations, same table/row-lock contention |
+| `sync_trade_categories.py`, `evaluate_new_trader_results.py`, `reconcile_geo_resolved_counts.py` | **[V] No** | n/a |
+
+**SQLite's actual behavior, checked rather than assumed:** both
+`backfill_market_dates.py`'s `_get_connection()` and
+`monitoring/database.py` set `PRAGMA journal_mode=WAL` and `PRAGMA
+busy_timeout=30000` explicitly [V]. Under WAL, a second writer blocks up
+to 30s then raises `database is locked` if still contended — 30s is
+generous for the sweep's own short, per-row, immediately-committed
+transactions, so **serialization via brief blocking, not errors, is the
+expected outcome for the sweep itself.**
+
+**The exposure runs the other way from what this document originally
+assumed.** `2026-07-07-silent-failure-audit-FABLE.md` item 3.2 [V]:
+roughly 25 daily-maintenance-step scripts call raw `sqlite3.connect()`
+with no `busy_timeout` set at all (Python's default is effectively 5s) —
+including `update_research_exclusions.py` (step 0, blocking),
+`fast_resolution_check.py` (×8 sites), `verify_market_titles.py`,
+`sync_trade_categories.py`, `update_geo_elo.py`,
+`resync_position_counts.py`, and most snapshot/backfill steps. **If the
+sweep holds the write lock, those ~25 scripts are what fails or silently
+skips — not the sweep, which simply waits out its 30s timeout.** This is
+a pre-existing exposure in the codebase; the sweep does not create it,
+but running a sustained, high-frequency writer for 59+ hours makes it
+**far more likely to actually fire** than it has been historically.
+
+**Evidence for real dropped writes under contention, not merely benign
+retries:** `2026-06-29-overhang-ledger.md` [V] documents `database is
+locked` causing `background_pnl_worker.py` (a 5s-timeout writer) to roll
+back an entire trader's position-insert batch while still marking the
+trader "done" with zero positions persisted — **11 separate days, April
+26 through July 5, bursts up to 150/day.** This is a confirmed pattern of
+actual failed writes under a different, unhardened writer, not evidence
+about the sweep's own (hardened) exposure specifically — cited here as
+the real basis for treating lock contention as consequential, in place
+of two figures that do not have one.
+
+**Correcting the record:** a "06:01:36" `pnl_worker` lock error and
+"~3,874 historical occurrences" were cited earlier in this arc's working
+conversation but **could not be independently located** in
+`2026-08-19-market-resolution-write-cluster.md`, the O-13/O-15/O-20/O-27
+decision docs, or `brain/agent-outputs/` — **not to be treated as
+established, and not to be propagated further.** The `overhang-ledger`
+citation above stands in their place as the actual verified evidence.
+
+**The WAL-checkpoint step** (`sqlite3 <db> "PRAGMA wal_checkpoint(PASSIVE);"`,
+run near the end of `daily_maintenance.py`'s sequence) checkpoints
+without blocking concurrent readers/writers but will not truncate WAL
+pages held by an open transaction elsewhere. The sweep's own transactions
+are short and committed per-row (unconditional `conn.commit()` after
+every accepted write, confirmed in the driver both tranches used) — it
+does not hold a long-lived open transaction, so **sustained WAL growth
+from the sweep's own write pattern specifically is not expected**, and
+none was observed across either tranche.
+
+`polymarket-monitoring`'s always-on 15-minute loop is a **third**
+independent writer into `markets` (`monitoring/monitor.py`, 2
+`UPDATE markets` sites, confirmed by direct grep) — it ran concurrently
+throughout both tranches with **zero abort-condition fires or atomicity
+violations**, the strongest empirical evidence available that
+30s-busy_timeout writers coexist safely with each other. It does not
+change the risk profile above: the concern is the ~25 unhardened
+maintenance steps, not the hardened always-on services.
+
+#### Daily-step policy during the sweep
+
+**Hold `backfill_market_dates.py`'s daily invocation at `--limit 2000`
+through the sweep's actively-running segments; let it run unheld
+(restored, or at minimum not held down) on at least one day the sweep is
+paused.** Running it held *concurrently* with an active segment adds
+brief write-lock contention during a chunk already moving as fast as
+safely possible, duplicate CLOB calls the sweep would make anyway on the
+same rows (resolved harmlessly by the comparator, but wasteful), and a
+second source of `resolved`-flip activity to reason about if an abort
+condition fires mid-chunk. But holding it down for the sweep's *entire*
+duration is not free either: an unheld run is the first plausible chance
+for the untagged-legacy-improvement branch to fire in production, since
+the script's own literal (non-`resolved`-filtered) query — unlike every
+tranche this arc has scoped to this document's `resolved`-filtered
+predicate — can reach already-resolved-but-still-null-`end_date` rows
+(9,122 as of tranche 2's pre-flight check, since grown by tranche 2's own
+4,723 writes, which also lack `end_date`). The chunked-scheduling model
+above already creates gaps between segments; use one of those gap-days to
+let the daily step run at full `--limit 2000`, capturing that value
+without contending against a live segment. A scheduling decision, not a
+code change.
+
+#### Interruption cost is not a deciding factor — closing this off explicitly
+
+Tranche 2's own measured data closes a question the revised runtime might
+otherwise reopen: per-batch elapsed time ranged 202.6s–214.0s across all
+ten batches; a restart always re-issues the entire interrupted batch's
+500 calls from scratch (confirmed both kill tests: `fresh=500,
+skipped=0`) — already-written rows correctly no-op via the comparator,
+but the wall-clock cost of re-fetching them is not avoided. **Worst case:
+~208s (≈3.5 minutes) of redundant work per interruption; best case ~0s**
+(a kill landing between batches). Even several worst-case interruptions
+across a 59-hour run cost minutes, not hours. **Batch size stays at
+500** — a smaller batch would cut worst-case rework proportionally
+(~42s at 100 rows) but at five times the checkpoint-write volume for a
+total-runtime improvement measured in tens of hours, no meaningful gain.
+This was reconsidered given the revised runtime, not merely carried
+forward unexamined, and the conclusion is unchanged.
+
+#### The checkpoint skip-list's actual role — a finding from tranche 2, recorded here
+
+Tranche 2's second kill test (`2026-08-22-tranche2-completion.md` §c)
+found that the checkpoint's per-market skip list (`resolved_market_ids`)
+**cannot structurally fire** under this driver's design: the fixed
+sample has no duplicate `market_id`s, batches are non-overlapping fixed
+slices, and the loop never re-enters a completed batch — so a
+`market_id` already in the skip list can never appear in any batch this
+driver will process. **The no-double-write guarantee the skip list was
+believed to help provide rests entirely on `mark_market_resolved()`'s own
+idempotent same-rank-match comparator logic** — independently confirmed
+under a real SIGKILL twice, at two different points in a run (before any
+checkpoint existed, and mid-batch with checkpoints already on disk), both
+times verified by direct timestamp inspection, not count alone. The
+skip-list field remains a more accurate historical record of confirmed-
+resolved markets (per its own defect-2 fix,
+`2026-08-22-tranche2-driver-fixes.md`) but should not be relied upon, or
+described, as an active runtime protection.
+
 ### Backup
 
 **Before the sweep begins, not before step 1's code change** (the code
@@ -325,6 +514,16 @@ WAL-mode writer per the script's own comment), followed by
 the run reported as failed if the check does not return `ok`. **Confirm
 the backup completes and passes integrity check before proceeding to
 tranche 1** — this is itself an abort condition (below).
+
+**Amended 2026-08-22 (`a972731`): unchanged in substance, one note
+added.** With execution now chunked across multiple scheduled segments
+(above) rather than one continuous run, the backup taken before the
+sweep's *first* segment (`markets_20260822_143948.db`, taken for tranche
+2) may need refreshing depending on how much time and how many other
+writes elapse before the full sweep's first chunk actually starts — per
+§G's own "fresh capture immediately before" rule, applied here to mean
+before the first sweep segment specifically, not necessarily re-taken
+before every subsequent segment.
 
 ### Abort conditions, fixed in advance
 
@@ -935,6 +1134,24 @@ particular run needs a retry or a parameter tweak:
    algorithmic Gamma price-inference should agree in the overwhelming
    majority of cases. A high rate here is a finding about the underlying
    evidence sources, not a code bug to patch around.
+
+   **Amended 2026-08-22 (`a972731`): a related, not-yet-falsifying
+   observation worth tracking, not confused with the disagreement case
+   above.** The *cross-rank overwrite* branch (`"written: proposed
+   evidence outranks existing"` — CLOB's rank-1 proposal legitimately
+   beating an existing rank-2 Gamma value, distinct from same-rank
+   disagreement) has fired **zero times across 9,723 candidates** (317 in
+   tranche 1, 5,000 in tranche 2, plus tranche 2's own re-attempts) despite
+   §A1 predicting a CLOB write should *routinely* outrank an
+   already-present Gamma value at scale. This is not evidence of a defect
+   — the branch was fabricated and confirmed working correctly in
+   isolation (`2026-08-22-tranche2-driver-fixes.md`) — but it is real,
+   accumulating evidence about how CLOB and Gamma actually populate
+   relative to each other in this codebase's data, not merely an absence
+   of opportunity so far. **Not revised here** — §A1's ranking and premise
+   are unchanged by this amendment — but named so a 60-hour run's ~40x
+   larger volume is read as the test of this specific prediction, one way
+   or the other, rather than assumed settled either way.
 4. **The corrected cohort/placebo gap widens materially** (§E) — this
    doesn't falsify the discovery-gap-closure plan itself, but it would
    falsify the specific mechanistic prediction (thin-population inflation)
@@ -1036,3 +1253,45 @@ driver rather than fixed in that file). §A, §B, §D, §E, §F, §G, §H, and �
 are unchanged by this amendment; the tranche definitions and every other
 abort condition are unchanged. This amendment is documentation only — no
 code was written, no script was run, tranche 1 was not resumed.*
+
+---
+
+*Amended 2026-08-22 (`a972731`, `9dc11e3`), prompted by tranche 2's
+completion and the resulting execution-model assessment: §C's Pacing
+section gained the measured per-call rate (0.416s, ±3% across ten
+batches, versus the 0.25s planning figure — the pacing directive itself
+is unchanged), a fresh population count (513,770, the first reading below
+the original 515,491 estimate, attributable to tranches 1+2's own 4,926
+writes), and a re-projected runtime (~59.4 hours, up from ~35.8). §C's
+Batching and resumability section, previously silent on
+`daily_maintenance` entirely, gained: an execution-mode change from one
+continuous detached run to chunked, scheduled segments (a systemd unit
+was reconsidered given the longer runtime and rejected again, for
+reasons specific to the automatic-restart tradeoff, not merely carried
+forward); a concurrency accounting naming two independent
+`daily_maintenance` writers into the sweep's own evidence-source family
+(`resolution_sweep.py` step 5 and the held `backfill_market_dates.py`
+step 32, not one); a finding that the real exposure runs toward roughly
+25 unhardened (no-`busy_timeout`) daily-maintenance scripts, not toward
+the sweep itself; a citation to `2026-06-29-overhang-ledger.md` as the
+verified evidence for real dropped writes under contention, replacing two
+specific figures ("06:01:36," "~3,874 occurrences") that could not be
+independently located and are recorded as unverified rather than
+propagated; a daily-step policy (held during active segments, unheld on
+at least one paused day, to preserve the untagged-legacy-improvement
+branch's first plausible production exercise); a closed-off finding that
+interruption cost (~208s worst case) is not a deciding factor and batch
+size stays at 500; and a recorded finding that the checkpoint skip-list
+cannot structurally fire under this driver's design, with the actual
+no-double-write guarantee resting on `mark_market_resolved()`'s
+comparator, confirmed twice under real SIGKILL. §C's Backup section gained
+one note about refreshing the backup before the sweep's first segment
+specifically, unchanged in substance otherwise. §I's falsification
+condition 3 gained a tracked, not-yet-falsifying observation: the
+cross-rank-overwrite branch has fired zero times across 9,723 candidates
+despite §A1 predicting it routine — named for the full sweep's much
+larger volume to actually test, §A1 itself unrevised. §A, §B, §D, §E, §F,
+§G, and §H are unchanged; the tranche definitions, the n=100 floor, the
+abort thresholds, and §E's interpretation rule are all unchanged. This
+amendment is documentation only — no code was written, no sweep was
+started.*
