@@ -347,6 +347,110 @@ run to keep it going is exactly the kind of after-the-fact adjustment this
 document exists to prevent — if a threshold turns out to be miscalibrated,
 that is itself a finding to report, not a number to move.
 
+**Amended 2026-08-22 (`4436119`): minimum-sample floor added to
+conditions 2 and 3, as an evaluation precondition — the 10%/20% rates
+above are unchanged.**
+
+Tranche 1's execution (`2026-08-22-tranche1-execution.md`, `4436119`)
+paused at row 25 of 317 when condition 2 fired: 3 indeterminate results in
+25 processed rows, 12.0%, crossing the 10% batch threshold. The harness
+stopped immediately, as designed. **This was correct behaviour under the
+threshold as written, and the harness stopping rather than reasoning past
+it is the outcome this document's own protocol wanted** — the sentence
+immediately above, "if a threshold turns out to be miscalibrated, that is
+itself a finding to report, not a number to move," is exactly what this
+amendment does. [V]
+
+The threshold as originally written carries no minimum sample size — it
+evaluates on whatever count exists at the first checkpoint, with no floor
+below which a reading is recorded but deferred rather than acted on. At
+n=25, against a population whose true indeterminate rate is 5.05%
+(16/317, established by the 2026-08-20 sizing census and reproduced
+exactly by tranche 1's own fresh dry-run this session,
+`2026-08-22-tranche1-execution.md` §1), observing 3 or more indeterminates
+is an ordinary outcome, not a signal. [V, exact binomial, computed for
+this amendment]:
+
+```
+X ~ Binomial(n=25, p=0.0505)
+P(X=0) = 0.9495^25              ≈ 0.274
+P(X=1) = 25 × 0.0505 × 0.9495^24 ≈ 0.364
+P(X=2) = C(25,2) × 0.0505² × 0.9495^23 ≈ 0.232
+P(X≥3) = 1 − [P(X=0)+P(X=1)+P(X=2)] ≈ 1 − 0.870 ≈ 13.0%
+```
+
+Roughly a 1-in-7-8 chance of crossing 10% by pure sampling variance at
+n=25, given the true rate is 5.05%. The threshold fired on noise, not
+signal — a **miscalibrated threshold**, not a wrong decision to stop on
+it once fired.
+
+**This is a correction to the threshold's evaluation precondition, not a
+relaxation of the rates.** Legitimate: the threshold structurally could
+not distinguish variance from signal below some minimum n, and the
+correction would have been correct had it been written this way from the
+start. Not legitimate, and not what is done here: raising 10%/20%
+themselves, or declaring 12% acceptable because the run happened to stop
+at an inconvenient point. **The 10% and 20% rates in the table above are
+unchanged.**
+
+**Minimum-sample floor: n = 100, for both condition 2 and condition 3.**
+Chosen so a crossing at the floor is itself informative — a low
+probability of occurring by chance if the true rate matches the
+established 5.05% baseline:
+
+```
+Condition 2 (10% batch threshold), n=100, crossing = X ≥ 11:
+Poisson approximation, λ = np = 5.05:
+P(X≥11 | λ=5.05) ≈ 1.5%   [V, computed for this amendment]
+
+Condition 3 (20% cumulative threshold), n=100, crossing = X ≥ 21:
+P(X≥21 | λ=5.05) is vanishingly small (<0.01%) — condition 3's much
+larger margin from the 5.05% baseline (20 vs. 10 percentage points)
+means the same n=100 floor gives far more headroom there than for
+condition 2, which is the binding constraint the floor is sized to.
+```
+
+~1.5% at the floor, versus the ~13% actually observed at n=25 this
+session — an order-of-magnitude reduction in false-trigger probability,
+at a sample size that still allows multiple checkpoints within tranche 1
+itself (317 total) and is a small fraction of tranche 2's and the full
+sweep's existing 500-row batch size (Batching and resumability, above) —
+i.e. this floor changes tranche 1's checkpoint cadence specifically; it
+does not change tranche 2's or the full sweep's, which already batch at a
+scale comfortably above it.
+
+**Below n=100, the indeterminate rate is recorded and reported at every
+checkpoint, but does not by itself trigger a PAUSE or HARD ABORT** —
+evaluation of conditions 2 and 3 is deferred until the floor is reached,
+not skipped.
+
+**Batch and cumulative are two separate counters, each with its own n=100
+floor — an implementation must not substitute one for the other.**
+Tranche 1's own harness (`tranche1_write.py`,
+`2026-08-22-tranche1-execution.md` §3) tracked a single cumulative tally
+and evaluated condition 2 against it, which did not matter at the first
+checkpoint (batch and cumulative are numerically identical when only one
+checkpoint's worth of data exists) but would produce a wrong answer at any
+later checkpoint in a longer run, where the two diverge. **Named as an
+implementation defect to fix before tranche 1 resumes or tranche 2 runs —
+not fixed by this amendment, which is documentation only.**
+
+**A second implementation defect, named for the same reason:**
+`backfill_market_dates.py`'s own assertion-branch `conn.commit()` (its
+existing code, unmodified by this arc) is conditional on the CLOB
+response also carrying a usable end-date field, which step 1's own
+finding (`2026-08-21-step1-implementation.md`, `d41d02b`) established is
+commonly absent for already-resolved markets — meaning the production
+script's own code path can accept a resolution write via
+`mark_market_resolved()` and never call `conn.commit()` for that market's
+turn through the loop, leaving the write in an open transaction until
+some later iteration's commit happens to flush it. Tranche 1's driver
+(`tranche1_write.py`) worked around this defensively, committing
+unconditionally after every accepted write, without modifying
+`backfill_market_dates.py` itself. **Named here as a defect in that file
+to fix before any run that invokes it directly (rather than through a
+purpose-built driver) — not fixed by this amendment.**
+
 ### Staged rollout
 
 **Do not sweep 515k rows as the first action.** Two tranches before the
@@ -370,6 +474,51 @@ remainder:
   figure), indeterminate rate consistent with the ~5% baseline (not
   triggering abort condition 2), zero trigger fires, zero unpredicted
   rejection patterns.
+
+  **Amended 2026-08-22 (`4436119`): tranche 1 executed, paused at row
+  25/317 on condition 2 — see the minimum-sample floor amendment above —
+  with 16 verified writes landed, and two corrections recorded below.**
+
+  **Scoping correction.** This document's own predicate for tranche 1
+  (above) was, and remains, exact and correct. What required correction
+  was an assumption elsewhere in this arc that `backfill_market_dates.py`'s
+  `--geo-only` flag was equivalent to it, or could be used to invoke it via
+  the CLI directly. It is not equivalent: `--geo-only`'s query joins on
+  `trades.market_category` (not `markets.category`, which this document's
+  predicate uses), applies no `trade_gap_flag` filter at all, and uses
+  `end_date IS NULL OR resolution_date IS NULL` (OR) rather than this
+  predicate's `AND`. [V, confirmed by reading `get_markets_to_backfill()`
+  directly, `2026-08-22-tranche1-execution.md` §2]. Tranche 1 was
+  therefore executed via a separate driver script (`tranche1_write.py`)
+  built against this document's exact predicate, calling the unmodified
+  `_fetch_by_clob`, `_extract_clob_resolution`, and `mark_market_resolved`
+  — not via the `--geo-only` CLI flag, which would have processed a
+  different, unverified population had it been used, in violation of "do
+  not run it unscoped."
+
+  **16 real writes landed before the pause**, all `reason="written"`
+  (trivial first-write), zero rejected, zero trigger fires,
+  `check_resolution_write_atomicity` = 0 throughout and after. Full
+  figures: `2026-08-22-tranche1-execution.md` §5.
+
+  **On the untagged-legacy-improvement branch remaining unfired in
+  production.** All 16 writes, and the freshly re-derived dry-run's
+  predicted 203, take the trivial first-write branch (`reason="written"`)
+  exclusively — not by chance, but structurally. Reading
+  `monitoring/resolution_writer.py`'s branch logic directly: the branch
+  taken is decided by `prev_resolved` (the market's OLD `resolved` value)
+  — `if not prev_resolved: reason = "written"`; every other branch
+  (untagged-legacy-improvement, cross-rank overwrite, same-rank
+  match/disagreement) requires `prev_resolved` to already be truthy.
+  Tranche 1's own selection predicate requires `resolved = 0 OR resolved
+  IS NULL`, which excludes every row that could take any branch but the
+  trivial one. **The untagged-legacy-improvement branch is therefore
+  structurally unreachable for the tranche-1 population — its absence
+  here is not evidence of a defect, and should not be read as one.** It
+  becomes reachable only in the wider sweep population (which does not
+  exclude already-`resolved=1` rows the same way tranche 1's `AND`-based
+  predicate does) — if it fires for the first time in production, that is
+  where it will happen, not in tranche 1.
 - **Tranche 2 — a 5,000-market random sample** of the remaining candidate
   population (seeded, e.g. `random.seed(20260821)`, matching this
   project's own convention of a fixed, documented seed for any sampling
@@ -859,3 +1008,31 @@ failure. §C's thresholds, abort conditions, and staged-rollout tranches;
 amendment. Oscar's four directions are unchanged; no restructuring. Step
 1's re-attempt itself is not part of this amendment and follows
 separately.*
+
+---
+
+*Amended 2026-08-22 (`4436119`), prompted by tranche 1's execution
+(`2026-08-22-tranche1-execution.md`): §C's abort conditions gained a
+minimum-sample floor (n=100) for conditions 2 and 3, evaluated as a
+precondition on when the rate is acted on, not a change to the 10%/20%
+rates themselves — those are unchanged, per the statistical justification
+now recorded inline (a spurious 10%+ reading at n=25 against the
+established 5.05% baseline has ≈13% probability by chance; at the n=100
+floor, ≈1.5%). Batch and cumulative indeterminate-rate tracking are now
+stated as two separate counters, each with its own floor, since tranche
+1's ad hoc harness conflated them (immaterial at its first checkpoint,
+would not be at a later one). §C's Staged rollout section gained the
+tranche 1 pause record (paused at row 25/317, 16 verified writes landed,
+zero trigger fires, zero unpredicted rejections, all `reason="written"`),
+a scoping correction (`--geo-only` is not equivalent to this document's
+tranche-1 predicate and was not used; a separate driver against the exact
+predicate was), and a note that the untagged-legacy-improvement branch's
+absence from tranche 1 is structural, not a defect. Two implementation
+defects are named for future fixing, not fixed by this amendment: the
+harness's batch/cumulative conflation, and a gap in
+`backfill_market_dates.py`'s own assertion-branch commit logic (conditional
+on a usable end-date being present, worked around defensively in the
+driver rather than fixed in that file). §A, §B, §D, §E, §F, §G, §H, and §I
+are unchanged by this amendment; the tranche definitions and every other
+abort condition are unchanged. This amendment is documentation only — no
+code was written, no script was run, tranche 1 was not resumed.*
