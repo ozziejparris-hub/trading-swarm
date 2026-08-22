@@ -286,6 +286,150 @@ not the ~36-hour planning figure. This spans **three nights**, not one,
 and materially changes the execution-model and concurrency reasoning
 below.
 
+**Amended 2026-08-22 (`b5fd6f4`): a structurally-unresolvable cohort
+carved out of the candidate population — a finding about the data, not a
+threshold change.**
+
+Segment 1 (the first run under the segmented execution model, above)
+paused at batch 12/206 on a batch-level indeterminate rate of 13.6%
+(n=500, five times the n=100 floor — a real signal, not the small-sample
+noise the floor amendment addressed). Root-caused, not pattern-matched
+from one batch: **all 67 of that batch's `no_clob_response` markets share
+a precise structural signature — a synthetic `market_id` ending in a long
+run of zeros (`...0000000000000000000000000000`), an empty
+`condition_id`, an empty `api_id`, and a multi-leg compound-bet title**
+(e.g. *"Will United States win on 2026-06-19? AND Will Brazil win on
+2026-06-19? AND ..."*) — **combo/parlay markets, never single-outcome
+markets CLOB tracks, and permanently incapable of returning a CLOB
+response by construction, not transiently unavailable.**
+
+**Scope, quantified [V]:** **15,427 such markets exist in the current
+candidate population** (live query: `... AND market_id LIKE
+'%0000000000000000000000000000'`, same predicate otherwise). Confirmed
+they carry real trade records (`EXISTS (SELECT 1 FROM trades WHERE
+trades.market_id = markets.market_id)` returns all 15,427) — they are not
+a zero-trade/stub artifact, they are traded positions on a compound bet
+type this write path was never meant to resolve. Within segment 1's own
+market-id-ordered list, 15,208 of them cluster contiguously across an
+estimated 35 more batches (13–47) — continuing unassisted would have
+re-tripped the same threshold repeatedly, not once.
+
+**Carved out of the sweep's candidate population.** The exclusion
+predicate: `... AND market_id NOT LIKE '%0000000000000000000000000000'`,
+added to the sweep's own `(resolved = 0 OR resolved IS NULL) AND
+(end_date IS NULL OR resolution_date IS NULL)` predicate everywhere it is
+used (population counts, segment materialization, the abort-condition
+denominators).
+
+**Why this is not threshold-moving, stated precisely:** the sweep's
+predicate is a *proxy* for "might be resolvable via CLOB" — resolved=0
+and no recorded date are necessary conditions for a market to still be a
+live candidate, but they are not sufficient, and for this cohort the
+proxy is simply wrong. These markets were never sweep candidates in the
+sense the predicate was designed to capture; they fail the thing the
+predicate is a stand-in for, not an edge case of it. **Excluding a
+population that provably cannot produce a result is different in kind
+from relaxing a threshold to tolerate results already disliked** — the
+10%/20% rates, the n=100 floor, and every other abort condition are
+unchanged, and continue to apply to the (corrected) candidate population
+exactly as before.
+
+**Two alternatives considered and rejected, named so this isn't revisited
+as unconsidered:**
+- **Processing the cohort at a relaxed threshold** — walking all ~35
+  affected batches (~4 hours, ~15,000 CLOB calls) at a loosened
+  indeterminate-rate tolerance. Rejected: guaranteed zero yield (every
+  call in this cohort returns `no_clob_response` by construction, not by
+  chance), for real API cost and wall-clock time, in exchange for
+  learning nothing not already established this session.
+- **Stepping through manually, expecting ~35 repeated pauses** —
+  the most conservative option on its face, but rejected for a specific
+  reason: deliberately tripping an abort condition dozens of times on a
+  known, understood cause corrodes the threshold's meaning as surely as
+  moving the number would. A condition that fires routinely and is
+  routinely waved through stops functioning as a signal.
+
+**Verification required before this carve-out is applied — not
+pattern-matched from segment 1's 67 rows, per the task that produced
+this amendment.** The implementing task must establish, and record
+having established:
+1. **A sample of the 15,427 genuinely lacks usable identifiers** — not
+   assumed from the batch-12 subset alone; drawn fresh from the full
+   15,427 and checked for empty `condition_id` and `api_id` directly.
+2. **No legitimate, resolvable market is caught by the exclusion
+   predicate** — the zero-padded-suffix pattern must be checked against
+   a sample for false positives (a real market whose genuine identifier
+   happens to end in zeros by coincidence, however unlikely that is for
+   a hash-shaped `market_id`).
+3. **The predicate is stated exactly** (as above) **and its row count
+   re-derived live** at implementation time, not carried forward as
+   today's 15,427 without re-checking, since the population continues to
+   change.
+
+**A failure at any of these three blocks the carve-out** — it is not
+optional verification, it is the condition under which excluding a
+population "because it cannot produce a result" is itself established
+rather than assumed.
+
+**Revised population and runtime, post-carve-out:** current candidate
+population (live, `b5fd6f4`) is **507,956** (513,770 at tranche 2's draw,
+minus segment 1's own 5,814 resolutions, which correctly shrank the
+self-shrinking set by exactly that amount — confirmed, not merely
+expected). **Minus the 15,427-market carve-out: 492,529 candidates.**
+**Re-projected runtime at 0.416s/call: 492,529 × 0.416s ≈ 204,892s ≈
+56.9 hours ≈ 2.37 days** — modestly less than the pre-carve-out ~59.4
+hours, since the excluded cohort was never going to be productive time
+regardless.
+
+**A correction to `2026-08-20-discovery-gap-sizing-result.md`'s Q1
+estimate, narrow and quantified from existing figures — not
+re-sampled.** That document's ~99.3% pooled-O resolved-fraction estimate
+(N=510,378, p̂=99.28%, ≈506,700 estimated resolved) was computed over a
+population that necessarily included this same combo/parlay cohort
+(these are old, structurally-distinct markets, not a recent arrival —
+reasonably assumed present in similar count on 08-20 as today, though not
+independently re-counted for that date) — and, since all 15,427 have
+trade records, they fall within the O stratum (509,585), not Z. **If the
+O stratum's non-combo markets retain the observed 99.3% rate and the
+combo subset is corrected to its true, structural 0%** (rather than
+implicitly averaged in at 99.3%): corrected O-stratum resolved ≈
+(509,585 − 15,427) × 0.993 ≈ 490,699, and corrected total estimated
+resolved ≈ 491,347 of 510,378 ≈ **96.27%**, versus the reported 99.28% —
+**a ≈3.0 percentage point, ≈15,300-market downward correction.** [I —
+this assumes the full 15,427 count applied unchanged to the 08-20
+population and that they were not disproportionately represented in the
+150-market O sample itself; not verified against that sample's actual
+membership.] **This does not change any conclusion drawn from that
+document.** The boundary check's own finding stands: this is "a real,
+large population of resolved-but-unrecorded markets, not an artifact of
+where or how this method looked" — 96.3% undiscovered-resolved is still
+an overwhelming majority, the age-distribution and ingestion-path
+findings are untouched by this correction, and the corrected figure still
+supports every downstream decision (the sizing, the staged rollout, the
+segmented execution model) made on the strength of "the overwhelming
+majority of this population is resolved and undiscovered." Not re-run;
+this is a narrow numerical correction to one reported percentage, not a
+re-derivation of the underlying result.
+
+**The general lesson, recorded because it will recur:** tranche 2's
+seeded random sample would have scattered this cohort at roughly 1.5% per
+batch (15,427 of ~510k ≈ 3%, diluted across ten batches of a random
+draw) — invisible against a ~3.5–4% baseline. Segment 1's scan-order walk
+concentrated it, because `market_id` sorts by shared ID *format*, not by
+insertion time — the mechanism is precise (a lexicographic sort
+clustering a common suffix), not the vaguer "old markets cluster
+together" intuition. **A random sample characterizes the average of a
+population, not its shape** — validating a method on a sample and then
+executing it in scan order can surface cohorts the validation was never
+positioned to see, however large and however carefully the sample was
+drawn. This is the **second** dead cohort found this way in this arc,
+after the ~98-row, CLOB-purged, 2020-era markets at the head of
+`backfill_market_dates.py`'s own insertion-ordered scan (step 2,
+2026-08-21) — different root cause each time (purged legacy markets,
+then combo/parlay markets never real CLOB markets at all), same
+structural lesson: **scan order is a lens a random sample does not use,
+and it can show you populations the sample's averaging hid.**
+
 ### Batching and resumability
 
 **The box has crashed three times in the last month — this must survive
@@ -737,6 +881,22 @@ remainder:
   (already removed from the candidate set by their own successful writes),
   run only after both tranches pass cleanly.
 
+  **Amended 2026-08-22 (`b5fd6f4`): the Remainder now runs as segments,
+  per the execution-mode amendment above — segment 1's results to date.**
+  11 batches (5,500 markets) ran clean at **0.0–1.6% indeterminate
+  rate — below tranche 2's own ~3.5–4% band**, before batch 12 paused the
+  run (see the Pacing section's carve-out amendment for the full root
+  cause). **5,814 markets resolved before the stop, every one
+  `reason="written"`, zero rejected, zero trigger fires,
+  `check_resolution_write_atomicity` = 0 throughout and after, every
+  fingerprint delta reconciling exactly against the confirmed-resolved
+  count** (`2026-08-22-sweep-segment1.md` §post-write verification). **The
+  batch-12 pause was correct behaviour on a real signal, not a defect in
+  the segment or the driver** — the same driver, unmodified, that passed
+  tranche 2 cleanly, applied to a population segment 1 (walking in
+  `market_id` order for the first time, unlike tranche 2's random sample)
+  was positioned to discover.
+
 ---
 
 ## D. What the sweep changes downstream
@@ -1152,6 +1312,15 @@ particular run needs a retry or a parameter tweak:
    are unchanged by this amendment — but named so a 60-hour run's ~40x
    larger volume is read as the test of this specific prediction, one way
    or the other, rather than assumed settled either way.
+
+   **Amended 2026-08-22 (`b5fd6f4`): still zero.** Segment 1's 5,814
+   further writes (before its batch-12 pause) add zero further
+   occurrences — the branch has now not fired across **15,723 total
+   candidates** (317 + 5,000 + 5,814, plus tranche 2's own re-attempts).
+   The accumulating zero continues to weigh against §A1's "routine"
+   prediction, more so with each session that adds volume without a
+   single confirming instance — still not treated as settled, §A1 still
+   unrevised here.
 4. **The corrected cohort/placebo gap widens materially** (§E) — this
    doesn't falsify the discovery-gap-closure plan itself, but it would
    falsify the specific mechanistic prediction (thin-population inflation)
@@ -1295,3 +1464,45 @@ larger volume to actually test, §A1 itself unrevised. §A, §B, §D, §E, §F,
 abort thresholds, and §E's interpretation rule are all unchanged. This
 amendment is documentation only — no code was written, no sweep was
 started.*
+
+---
+
+*Amended 2026-08-22 (`b5fd6f4`), prompted by segment 1's batch-12 pause:
+§C's Pacing section gained a carve-out of a structurally-unresolvable
+combo/parlay market cohort from the candidate population — 15,427
+markets, a precise signature (zero-padded synthetic `market_id`, empty
+`condition_id` and `api_id`, multi-leg compound-bet titles), confirmed to
+carry real trade records (so they fall in the sizing result's O stratum,
+not Z), permanently incapable of returning a CLOB response by
+construction. Recorded as a finding about the data — the sweep's
+predicate is a proxy for "might be resolvable," and for this cohort the
+proxy is wrong — not a threshold change; the 10%/20% rates and n=100
+floor are untouched. Two alternatives (relaxed-threshold processing;
+manual step-through expecting repeated pauses) considered and rejected,
+both for corroding the threshold's meaning as surely as moving it would.
+A three-part verification requirement (usable-identifier sampling, false-
+positive check, live re-derivation of the exact predicate and count) is
+specified as a precondition the implementing task must establish, not
+assume from segment 1's 67 rows — failure on any part blocks the
+carve-out. Population and runtime revised: 507,956 (post-segment-1) minus
+15,427 = 492,529 candidates, ≈56.9 hours at 0.416s/call. A narrow,
+figures-only correction to `2026-08-20-discovery-gap-sizing-result.md`'s
+Q1 estimate is recorded (≈99.3% → ≈96.3% pooled-O resolved-fraction,
+≈15,300 fewer estimated resolved markets) — not a re-sampling, and does
+not change that document's conclusion, which remains an overwhelming
+majority of the population resolved-and-undiscovered. The general lesson
+(a random sample characterizes a population's average, not its shape;
+scan order can surface what a validating sample's averaging hid) is
+recorded, noting this is the second such cohort found this way, after the
+~98-row CLOB-purged 2020-era prefix. §C's Staged rollout section gained
+segment 1's results to date: 11 clean batches (0.0–1.6% indeterminate,
+below tranche 2's baseline), 5,814 markets resolved before the pause, all
+`reason="written"`, zero trigger fires, atomicity clean throughout, every
+delta reconciling — and a statement that the pause was correct behaviour
+on a real signal, not a defect. §I's cross-rank-overwrite tracking note
+updated: still zero, now across 15,723 total candidates; §A1 still
+unrevised. §A, §B, §D, §E, §F, §G, and §H are otherwise unchanged; the
+tranche definitions, the n=100 floor, the abort thresholds, and §E's
+interpretation rule are all unchanged. This amendment is documentation
+only — no code was written, no sweep was resumed; the carve-out's
+implementation follows separately.*
