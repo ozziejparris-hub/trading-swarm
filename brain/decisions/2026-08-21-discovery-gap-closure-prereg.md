@@ -513,6 +513,46 @@ health, maintenance-window proximity — at each segment boundary, rather
 than committing to one posture (uninterrupted run, or automatic restart)
 across 60 unattended hours.
 
+**Amended 2026-08-23 (`752cdbd`): two gaps in this execution mode, found
+rather than assumed closed, recorded as standing operator
+requirements — not implemented here.** Source:
+`2026-08-23-sweep-inhibitor-survey.md` items 2 and 7,
+`2026-08-23-post-segment2-status.md`.
+
+**No automated completion or abort signal exists for a detached
+segment.** The persistent background monitor used to watch segment 2
+(task `bkl2qudts`) died silently with its own launching session and left
+only `[killed]` — no report, no terminal-state notification, nothing.
+**The sweep's own checkpoint file and log are the ONLY authoritative
+completion evidence** — this is how segment 2's clean 121/121 finish was
+actually confirmed, by reading them directly, not by any signal the run
+itself produced. `monitoring/telegram_bot.py` exists and is send-capable
+[V, module present, confirmed this amendment], but no sweep driver to date
+references it — a detached segment currently has no way to tell anyone,
+human or automated, that it aborted or died, short of someone manually
+reading the checkpoint/log the way this arc's status checks have done
+after the fact. **A terminal marker file (status/batches/reason on exit,
+success or failure) and a Telegram message on exit are to be added before
+further segments are left running unattended for extended stretches** —
+not implemented by this amendment, named as a requirement.
+
+**The 06:00 runway computation is a manual operator step, not an
+automated guarantee — stated as a standing requirement, not an
+assumption.** Segment 2's own launch correctly computed its runway against
+`next_maintenance_fire_utc` with a 2-hour target margin (its pre-write
+fingerprint), and it worked — the segment finished at ≈04:06 UTC, over
+ninety minutes clear of 06:00, and daily_maintenance never overlapped it.
+But this worked because a human (or an agent acting under this document's
+discipline) redid that arithmetic by hand at launch time, exactly once,
+correctly — nothing in the codebase checks it automatically, and nothing
+prevents a future segment from being sized or scheduled without redoing
+it. **Every future segment launch must recompute runway the same way
+segment 2's did — a live population count, the target margin, and the
+actual runway to the next 06:00 fire — before launch, not carried forward
+from a prior segment's arithmetic.** This is unchanged from what §C
+already implicitly required; it is recorded here explicitly because the
+survey found no automated net behind it.
+
 #### Concurrency with `daily_maintenance` — not previously addressed
 
 **This section previously said nothing about `daily_maintenance` at
@@ -588,6 +628,54 @@ violations**, the strongest empirical evidence available that
 change the risk profile above: the concern is the ~25 unhardened
 maintenance steps, not the hardened always-on services.
 
+**Amended 2026-08-23 (`752cdbd`): both concurrency claims above corrected,
+not merely refined — established wrong, not merely imprecise.** Source:
+`2026-08-23-sweep-inhibitor-survey.md`, supported by
+`2026-08-23-post-segment2-status.md`.
+
+**`resolution_sweep.py` (step 5) is not a second writer into `markets` at
+all.** The table above's claim that it "calls into the same
+assertion-branch-style write path" and touches the sweep's rows "Directly"
+is wrong. [V, re-read directly this amendment]: the script contains no
+`UPDATE markets` and no call to `mark_market_resolved()` anywhere — it
+only reads `markets WHERE resolved = 1` (to find newly-resolved markets
+worth checking for new participants) and writes exclusively to the
+`traders` table (`INSERT INTO traders`, `UPDATE traders`). It is a
+downstream reader of the sweep's output, not a co-writer into
+`resolution_evidence_source`. It already opens its connection with
+`timeout=30`, matching the sweep's own hardening. **It needs no hold and
+no fix** — the "two independent writers" framing that opened this table's
+introduction should be read as one (`backfill_market_dates.py`'s held
+daily step), not two.
+
+**The "~25 unhardened daily-maintenance scripts" figure is also wrong**,
+not merely rounded. Re-audited directly, script by script, distinguishing
+DB `busy_timeout`/`sqlite3.connect(..., timeout=N)` from unrelated HTTP
+`requests.get(..., timeout=N)` calls a naive grep on the string `timeout=`
+conflates: of the ~30 scripts `daily_maintenance.py` invokes, only **five**
+genuinely lack any DB-lock timeout (Python's sqlite3 default, effectively
+~5s) — `promote_high_pnl_traders.py`, `resync_position_counts.py`,
+`fast_resolution_check.py`, `resolve_legendary_markets.py`, and
+`check_canonical_definitions.py` (the last of which makes no DB writes at
+all — a pure static-analysis lint script, zero concurrency exposure). Of
+the remaining four, only **two write to the `markets` table**:
+`fast_resolution_check.py` (raw `UPDATE markets SET resolved = 1, ...`,
+bypassing `mark_market_resolved()` entirely) and
+`resolve_legendary_markets.py` (same pattern, `--limit 50/day`, smaller
+volume). **The exposure is smaller in count than previously stated but
+sharper in character**: the two scripts most exposed to losing a lock race
+against the sweep are the same two writing `markets.resolved` outside the
+canonical rank-checked path — a lock timeout there is not merely a dropped
+write, it is a dropped write from a source that could otherwise have
+silently clobbered a higher-ranked value with a lower-ranked one,
+independent of whether the sweep is even running. **Link to the canonical
+arc, not scheduled here:** Stage 3 of
+`2026-08-19-canonical-resolution-write-design.md` (§H, above —
+"untouched") was already scoped to migrate `fast_resolution_check.py`'s
+CLOB passes to `mark_market_resolved()`; completing that migration would
+close this specific exposure as a side effect. Not rescheduled by this
+amendment — named only so the link is on record.
+
 #### Daily-step policy during the sweep
 
 **Hold `backfill_market_dates.py`'s daily invocation at `--limit 2000`
@@ -610,6 +698,57 @@ above already creates gaps between segments; use one of those gap-days to
 let the daily step run at full `--limit 2000`, capturing that value
 without contending against a live segment. A scheduling decision, not a
 code change.
+
+**Amended 2026-08-23 (`752cdbd`): the hold above has never been
+enforced — it was recorded as policy, never implemented as a
+mechanism.** By segment 2 (the fourth run under this policy), the actual
+implementation was still the static `--limit 2000` value added ad hoc
+(`2026-08-22-daily-limit-hold.md`) with no code checking whether a segment
+is actually running — it fires unconditionally every day, "held" or not.
+Source: `2026-08-23-sweep-inhibitor-survey.md` item 1.
+
+**Mechanism decided: checkpoint-recency, not a lock/sentinel file, DB
+flag, or running-process detection.** All four were assessed:
+- **Lock/sentinel file** the sweep writes on start, removes on clean
+  exit — simplest to reason about, but a bare lock has no expiry: if the
+  sweep process dies (kill -9, OOM, power loss) without removing it, the
+  lock never clears and every subsequent daily_maintenance run holds this
+  step forever until a human intervenes manually. **Rejected given this
+  box's crash history** (§C's own "the box has crashed three times in the
+  last month" framing, above) — a hard crash is exactly the failure mode a
+  bare lock does not survive, because the cleanup that would clear it
+  lives in code a hard crash skips entirely.
+- **DB flag** (a row/column marking "sweep active") — same staleness
+  problem as a sentinel file unless paired with its own timestamp/TTL, in
+  which case it collapses to the recency check below anyway. Rejected as a
+  redundant, DB-write-carrying version of the same idea.
+- **Running-process detection** (the step `pgrep`s for the driver script's
+  name before running) — crash-safe by construction, since a dead process
+  is simply not found, no cleanup required. Rejected as the *sole*
+  mechanism because it is fragile to exactly how the sweep is invoked
+  (script name, wrapper, screen/tmux session) and to PID reuse in the
+  narrow window after a crash; kept as a plausible supplement, not a
+  replacement.
+- **Checkpoint-recency (adopted):** hold the step if
+  `data/checkpoints/segment*_checkpoint.json`'s mtime is within a recency
+  window of the current time; run unheld otherwise. Self-healing against
+  this box's crash history specifically: if the sweep dies, the checkpoint
+  simply stops getting fresher and the hold releases itself on its own
+  within one window's length, with no explicit cleanup step for a crash to
+  skip. This was the deciding property, not merely a preference among
+  otherwise-equal options.
+
+**Recency window: not fixed by the survey, and not fixed here.** The
+implementing task must set and justify it, sized against the observed
+per-batch checkpoint cadence (roughly every 500 markets / ~3-4 minutes at
+the measured 0.15-0.22s/call pace observed across tranches and segments to
+date) — wide enough that ordinary inter-batch gaps don't spuriously
+release the hold, narrow enough that a genuinely-dead sweep doesn't hold
+the step for hours after it stopped. **At the boundary** (a checkpoint
+exactly at or just past the window edge): the implementing task must also
+specify which side of the boundary is treated as active — this document
+takes no position on rounding direction, only that it must be stated
+explicitly, not left to whatever a stray `>` vs `>=` happens to do.
 
 #### Interruption cost is not a deciding factor — closing this off explicitly
 
@@ -896,6 +1035,40 @@ remainder:
   tranche 2 cleanly, applied to a population segment 1 (walking in
   `market_id` order for the first time, unlike tranche 2's random sample)
   was positioned to discover.
+
+  **Amended 2026-08-23 (`752cdbd`): segment 2's results, the fourth run
+  under this staged rollout.** Source: `2026-08-23-post-segment2-status.md`,
+  `2026-08-23-sweep-inhibitor-survey.md`. **121/121 batches, 60,500/60,500
+  markets processed, 59,236 resolved, 910 open, 326 indeterminate, 28
+  no-CLOB-response — a clean natural finish, not an abort.** No
+  error/abort/traceback/exception/WARN/threshold line anywhere in the
+  segment's log; the checkpoint independently confirms the same 121/121
+  completion state. `PRAGMA integrity_check` = ok;
+  `check_resolution_write_atomicity` = 0, unchanged from the segment's own
+  pre-write fingerprint; `trg_resolved_no_unresolve` fired zero times
+  (checked via journalctl and logs, not assumed silent); every fingerprint
+  field increased, zero count decreases anywhere. **No third contiguous
+  dead cohort found** — segment 2's per-batch `no_clob_response` counts are
+  scattered singles (max 3 in any one batch), not a contiguous run
+  resembling either of the two already on record (the ~98-row CLOB-purged
+  prefix, the 15,427-row combo/parlay cohort above). **Roughly 65,000
+  markets have now been processed across the four runs to date** (tranche
+  1's 203 + tranche 2's 4,745 + segment 1's 5,814 + segment 2's 59,236
+  accepted writes — 69,998 accepted candidates walked in total,
+  cross-referenced against §I below), **against the carved-out population
+  of 492,529 — on the order of 13% complete, ~427,000 candidates
+  remaining, on the order of 50 more hours at the measured rate.**
+
+  **Resource headroom checked and clear for the remaining run.** 1.2TB of
+  disk free (backups accumulate at ~16.5GB each, no near-term risk), 83GB
+  memory available, WAL checkpoints cleanly with no stray file — none of
+  these are constraints on the remaining ~50 hours. One back-loaded,
+  low-severity cost worth noting for later, larger segments: the
+  checkpoint file's `resolved_market_ids` list is rewritten in full on
+  every batch, so the per-batch write cost grows across a segment as that
+  list grows — small in absolute terms at segment 2's scale (a 4.4MB
+  checkpoint at 121 batches) but worth watching, not fixing, as segments
+  scale up.
 
 ---
 
@@ -1321,6 +1494,36 @@ particular run needs a retry or a parameter tweak:
    prediction, more so with each session that adds volume without a
    single confirming instance — still not treated as settled, §A1 still
    unrevised here.
+
+   **Amended 2026-08-23 (`752cdbd`): still zero, now across 69,998 total
+   accepted candidates — no longer a small sample.** Source:
+   `2026-08-23-sweep-inhibitor-survey.md`, traced directly through
+   `mark_market_resolved()`'s "written: proposed evidence outranks
+   existing" branch (`monitoring/resolution_writer.py:174-176`) across all
+   four runs' logs: tranche 1 (203), tranche 2 (4,745, including
+   re-attempts), segment 1 (5,814), and segment 2 (59,236) — every single
+   one of the 69,998 accepted writes to date carries the bare
+   `reason="written"` (a previously-unresolved row), never the
+   cross-rank-overwrite variant. Segment 2 alone was the largest single
+   population walked yet and did not change this. **Stated plainly, per
+   instruction: this is no longer a small sample, and §A1's "routine"
+   prediction is now materially in tension with the accumulated
+   evidence** — not merely tracked as pending, as the two prior amendments
+   framed it. **Two candidate explanations recorded, neither chosen:** (a)
+   §C's `resolved = 0` candidate-selection predicate structurally excludes
+   exactly the rows where a cross-rank overwrite could occur — a market
+   already carrying a lower-ranked (Gamma) resolution has `resolved = 1`
+   set, and so is never a sweep candidate in the first place, meaning the
+   branch may be correctly unreachable by this document's own predicate
+   rather than empirically rare; or (b) §A1's model of how CLOB and Gamma
+   actually populate relative to each other in this codebase's data — that
+   a CLOB write should routinely outrank an already-present Gamma value at
+   scale — is wrong, and the two sources simply don't overlap on the same
+   markets the way that model assumed. **Not adjudicated here, and §A1's
+   ranking is not revised by this amendment** — named as the two live
+   explanations for whoever next examines this, since 69,998 zero-count
+   candidates is a large enough sample that "not yet enough volume" is no
+   longer available as a third explanation.
 4. **The corrected cohort/placebo gap widens materially** (§E) — this
    doesn't falsify the discovery-gap-closure plan itself, but it would
    falsify the specific mechanistic prediction (thin-population inflation)
@@ -1506,3 +1709,45 @@ tranche definitions, the n=100 floor, the abort thresholds, and §E's
 interpretation rule are all unchanged. This amendment is documentation
 only — no code was written, no sweep was resumed; the carve-out's
 implementation follows separately.*
+
+---
+
+*Amended 2026-08-23 (`752cdbd`), prompted by
+`2026-08-23-sweep-inhibitor-survey.md` (supported by
+`2026-08-23-post-segment2-status.md`): two factual corrections and five
+recorded decisions/findings, no restructuring. **Corrections:** §C's
+concurrency table wrongly listed `resolution_sweep.py` (daily_maintenance
+step 5) as a second writer into `markets` — re-read directly, it only
+reads `resolved=1` rows and writes to `traders`, never touches
+`markets.resolved`, already carries the matching 30s timeout, and needs no
+hold; and §C's "~25 unhardened daily-maintenance scripts" figure was
+wrong — re-audited script by script, only five genuinely lack a DB-lock
+timeout, and only two (`fast_resolution_check.py`,
+`resolve_legendary_markets.py`) write to `markets` at all, both via raw
+`UPDATE` bypassing `mark_market_resolved()` — smaller in count, sharper in
+character, with a named (not rescheduled) link to Stage 3 of the canonical
+arc. **Decisions and findings recorded:** the daily
+`backfill_market_dates.py` hold is decided as a checkpoint-recency check
+(self-healing against this box's crash history, unlike a lock/sentinel
+file, DB flag, or bare process-detection, each assessed and its failure
+mode stated), with the exact recency window and boundary behavior left for
+the implementing task to fix and justify; no automated completion/abort
+signal exists for a detached segment (the `bkl2qudts` monitor died
+silently with its session) — a terminal marker plus Telegram-on-exit is
+named as required before further unattended segments, not implemented;
+the 06:00 runway computation is recorded as a standing manual operator
+requirement with no automated net, not an assumption; segment 2's clean
+121/121 results (59,236 resolved, 910 open, 326 indeterminate, 28
+no-CLOB-response, no third dead cohort, no count decreases) are recorded
+in the Staged rollout section, bringing the total to ~65,000 of 492,529
+processed and ~50 hours remaining; resource headroom (disk, memory, WAL)
+is recorded clear for the remaining run, with the checkpoint file's
+per-batch full-rewrite cost named as a low-severity, back-loaded item to
+watch; and §I's cross-rank-overwrite tracking is updated to zero across
+69,998 total accepted candidates, stated plainly as now in material
+tension with §A1's "routine" prediction, with two candidate explanations
+recorded and neither chosen. §A, §B, §D, §E, §F, §G, and §H are otherwise
+unchanged; the tranche/segment definitions, the abort thresholds, the
+n=100 floor, §E's interpretation rule, and §A1's ranking are all
+unchanged. This amendment is documentation only — no code was written, no
+segment was launched, nothing was fixed.*
