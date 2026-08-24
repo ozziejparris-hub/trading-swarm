@@ -5,6 +5,18 @@
       "to": "orchestrator",
       "type": "telegram_notification",
       "payload": {
+        "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-08-24*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier GEO (7d, n=84): 0.0895 \u2705 edge=+0.170 DirAcc=59.5%\nBrier GEO (30d, n=99): 0.3149 \u26a0 worse than naive\nBrier ELEC (30d, n=78): 0.3506 \u26a0 DirAcc=50% random\nn counts jumped: discovery-gap Segment 2 resolved 59,236 markets\n\n\ud83d\udea8 Flags: [1 CRITICAL] [2 HIGH] [2 MEDIUM]\nCRITICAL: geo_elo cutover decision STILL PENDING (3 weeks outstanding)\nHIGH: Phase 2 B7 not built \u2014 n loss permanent\nHIGH: Sweep 13% complete, Segment 3 ready\n\nClean markets: 295,492 \u2191\u2191\u2191 (was 224,614)\nGate 3: 2/5 = 40% FROZEN (5th week)\nLEGENDARY clean: 10 | Near-legendary: 25 \u2191\u2191\n\nFull report: brain/agent-outputs/performance-analyst/2026-08-24-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260824"
+      },
+      "timestamp": "2026-08-24T06:30:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
         "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-07-06*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier Geo (30d): 0.1798 \u2705\u2705 BEST \u2014 FIRST TIME BELOW 0.20 TARGET\nBrier Elections (30d): 0.1912 \u2705\u2705 BEST \u2014 FIRST TIME BELOW 0.20 TARGET\nCombined accuracy (30d): ~81.5% on 157 markets\n\n\ud83d\udea8 Flags: [1 critical \u2014 CI 9th week] [3 high]\nTop flag: CI lint 9th Sunday (20-min fix). RQ-GEO-ELO-001 Jul 1 deadline MISSED (6+ weeks). STR003-004 (Putin NO) not resolved in DB.\n\nGate 3: 2/5 = 40% \u2191 (was 1/4=25%) \u2014 STR003-008 EU Security correct \u2705\nGate 4: BLOCKED \u2014 RQ-GEO-ELO-001 never executed, Phase 5 stalled\nLegendary clean: 14 (declining 3rd week, was 17 peak)\n7d Brier: 0.0519 Geo \u26a0 CAUTION \u2014 bulk June-30 stub markets (near-certainty NO)\n\nFull report: brain/agent-outputs/performance-analyst/2026-07-06-weekly.md",
         "priority": "HIGH",
         "run_id": "analyst-20260706"
@@ -611,7 +623,8 @@
         "run_id": "analyst-20260817"
       },
       "timestamp": "2026-08-17T06:30:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-08-17T06:17:07.680583"
     }
   ],
   "pending": [
