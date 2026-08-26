@@ -808,6 +808,63 @@ writes elapse before the full sweep's first chunk actually starts — per
 before the first sweep segment specifically, not necessarily re-taken
 before every subsequent segment.
 
+**Amended 2026-08-26: the starvation mechanism, and a new scheduling
+rule.** Source: `2026-08-26-backup-overlap-investigation.md`,
+`2026-08-26-backup-guard-and-scheduling.md`. This section's "before the
+sweep begins" framing addressed only the one-time pre-flight backup taken
+before the sweep's first segment. It said nothing about the separate,
+ongoing `0 3 * * *` cron backup (`trading-swarm/scripts/cron_wrappers/
+run_database_backup.sh` → `backup_database.sh`, `sqlite3 <db> ".backup
+..."`) that keeps firing every night the sweep is active — that gap is
+what this amendment closes.
+
+**a. The starvation mechanism — segment 4's actual abort cause.** SQLite's
+Online Backup API restarts its copy from the point a previously-copied
+page is found modified in the source, and per its own documented
+semantics can be starved indefinitely if the source is modified on every
+step. A continuously-writing sweep segment is exactly that kind of
+source. This is not a coincidence of timing: **a sustained high-frequency
+writer and this backup mechanism are structurally incompatible.** This is
+what actually happened to segment 4: its own ABORT CONDITION 7 (pacing)
+fired at batch 101/133 because a second, overlapping backup instance (the
+2026-08-25 instance, itself starved to 35.56h, plus a fresh 2026-08-26
+instance launched on top of it) was driving heavy, sustained I/O
+contention against the same live DB segment 4 was committing to every
+~0.25-1s.
+
+**b. New scheduling rule: segments must finish before the 03:00 UTC
+backup fires, not cross it.** At the sweep's own clean, uncontended
+measured rate (segment 3: 39,022.5s / 93,000 markets = 0.4196s/market =
+209.8s per 500-market batch), and using the same 1800s margin already
+established for the maintenance-stop boundary
+(`MAINTENANCE_STOP_MARGIN`), a segment must stop no later than **02:30:00
+UTC**. Verified against this arc's own launch history — a flat "~10 hour
+segment" does NOT fit this rule at any of the three recorded launch times
+(17:15:37, 20:24:28, 20:59:32 UTC), all of which are later than the
+16:30:00 UTC latest-launch a 10h segment would require. **The rule is
+launch-time-dependent, not a fixed batch count:** `max_batches =
+floor((seconds from launch to the next 02:30:00 UTC) / 209.8)`. At the
+three recorded launch times this works out to 158 batches (17:15 launch),
+104 batches (20:24), and 94 batches (20:59) — materially smaller than
+segment 3's 186 or segment 4's planned 133. Full detail and the
+alternatives considered (shorter segments — adopted; pausing the sweep
+for the backup window; moving the backup — not adopted) in
+`2026-08-26-backup-guard-and-scheduling.md`.
+
+**c. The flock overlap guard — implemented, not merely specified.**
+`run_database_backup.sh` now wraps its entire body in a non-blocking
+`flock -n` guard (kernel-held, releases on any crash without needing
+cleanup code, per the same self-healing reasoning already used for
+checkpoint-recency). **A blocked run SKIPS with a log line naming how
+long the holder has been running — it does not queue.** This is a
+deliberate consequence, not an oversight: because a starved backup can
+hold the lock for 35+ hours, queueing would mean a blocked instance could
+wait behind one that itself runs for a day or more, compounding rather
+than resolving the pileup. The scheduling rule in (b) is the primary fix;
+this guard is the backstop that stops a collision from becoming a second,
+worse overlap. Full verification in
+`2026-08-26-backup-guard-and-scheduling.md`.
+
 ### Abort conditions, fixed in advance
 
 Evaluated **after every batch** (500 markets, per above), not only at the
@@ -932,6 +989,31 @@ unconditionally after every accepted write, without modifying
 `backfill_market_dates.py` itself. **Named here as a defect in that file
 to fix before any run that invokes it directly (rather than through a
 purpose-built driver) — not fixed by this amendment.**
+
+**Amended 2026-08-26: condition 7's own metric conflates two different
+things — a defect named, not fixed.** Source:
+`2026-08-26-segment4-pacing-diagnostic.md`,
+`2026-08-26-backup-overlap-investigation.md`. Condition 7's `avg_pace`
+(checkpoint-recorded seconds/call) is measured in `segment*_write.py`
+from immediately before the CLOB fetch to immediately after
+`mark_market_resolved()` + `conn.commit()` for any market classified
+`resolved` — i.e. it times CLOB latency and the local DB write together,
+as one number. Combined with the driver's own `PRAGMA
+busy_timeout=30000`, **lock contention against another writer produces
+exactly the same signal as a slow CLOB API: silent slowdown, no
+exception, no distinguishing log line.** Condition 7 **fired correctly**
+on segment 4 (pacing sustained above 1.0s/call for 2 batches) and
+correctly stopped the run — but its own label pointed at "pacing"/CLOB,
+and the actual cause (see the Backup section's amendment above) was
+local write-lock contention with an overlapping backup instance, not
+CLOB throttling. This was only established after the fact, by
+cross-referencing an entirely separate log (`backup.log`) and system
+telemetry (`sar`), not from anything condition 7 itself recorded.
+**Specified, not implemented:** splitting `avg_pace` into two separately
+accumulated, separately logged timers — one wrapping only the CLOB fetch
+call(s), one wrapping only the `mark_market_resolved()` + `conn.commit()`
+call — so a future occurrence could be attributed correctly from the
+sweep's own log alone. No driver code is changed by this amendment.
 
 ### Staged rollout
 
@@ -1069,6 +1151,54 @@ remainder:
   list grows — small in absolute terms at segment 2's scale (a 4.4MB
   checkpoint at 121 batches) but worth watching, not fixing, as segments
   scale up.
+
+  **Amended 2026-08-26: segment 4's results, the fifth run under this
+  staged rollout, and a new gap this run surfaces.** Source:
+  `2026-08-26-post-segment4-status.md`,
+  `2026-08-26-segment4-pacing-diagnostic.md`,
+  `2026-08-26-backup-overlap-investigation.md`.
+
+  **e. Outcome: ABORTED at batch 101/133, not a clean finish.** 50,500 of
+  66,500 materialized markets processed (49,176 resolved, 979 open, 247
+  indeterminate, 98 no-CLOB-response) before ABORT CONDITION 7 (pacing)
+  fired and stopped the run — a clean, logged stop, not a crash (see the
+  Backup section's amendment above for the actual root cause). The
+  terminal marker (`status: "ABORTED"`) and the terminal Telegram
+  notification both fired correctly — the **first live confirmation**
+  that the launch-environment (`set -a` around sourcing `.env_trading`)
+  fix actually works under this driver's real launch conditions, not just
+  a manual test message. CONFIRM-BEFORE-ABORT (the atomicity-check
+  re-query path) and Fix 1's checkpoint-recency hold branch both remained
+  **unexercised** this segment — `check_resolution_write_atomicity`
+  stayed 0 throughout, and the checkpoint was genuinely stale (~1h56m
+  old) by the time 06:00 maintenance checked it, so the hold correctly
+  did not fire either way. No data damage found: `PRAGMA
+  integrity_check` = ok, `trg_resolved_no_unresolve` fired zero times,
+  zero count decreases on any fingerprint field, cross-rank overwrite
+  still zero (now 210,485 cumulative accepted writes across the arc).
+
+  **f. THE 16,000-MARKET GAP — a decision recorded, not yet
+  implemented.** Segment 4 *materialized* 66,500 market IDs into
+  `segment4_list.json` before writing (per this document's own
+  "materialize the exact list once, before the write" design), but the
+  abort at batch 101/133 means only 50,500 of them were actually walked
+  against the CLOB. The exclusion set every subsequent segment's
+  materialize step draws against is built from the **materialized
+  list**, not from what was actually **processed** — so batches 102-133's
+  16,000 markets would be permanently excluded from every future
+  segment's draw despite never having been checked, silently shrinking
+  the true candidate population by 16,000 rows that were never actually
+  resolved one way or the other. **Decision:** segment 5 must resume
+  segment 4's own list starting at batch 102 (the 16,000 un-walked
+  markets) before drawing any fresh markets, AND the exclusion-set
+  derivation used by `segmentN_materialize.py`-style scripts must be
+  corrected to key off **processed** IDs (i.e. what the checkpoint's
+  `resolved_market_ids`/accepted-write log actually walked) rather than
+  **materialized** ones, so a future abort cannot silently remove
+  unprocessed markets from the candidate pool again. **Neither the
+  resume nor the derivation fix is implemented by this amendment** —
+  recorded here so segment 5 cannot be launched correctly without
+  addressing it first.
 
 ---
 
