@@ -1,0 +1,85 @@
+{
+  "date": "2026-08-19",
+  "markets_checked": 24,
+  "signals_found": 7,
+  "signals": [
+    {
+      "market": "Will a player representing Portugal be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.2428,
+      "market_price_pct": 0.004,
+      "gap_pt": 23.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing Brazil be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.697,
+      "market_price_pct": 0.021,
+      "gap_pt": 67.6,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.1706,
+      "market_price_pct": 0.003,
+      "gap_pt": 16.8,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing England be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9605,
+      "market_price_pct": 0.001,
+      "gap_pt": 96.0,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing Germany be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5744,
+      "market_price_pct": 0.007,
+      "gap_pt": 56.7,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "US-Iran 60 day negotiation period extended?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.2841,
+      "market_price_pct": 0.033,
+      "gap_pt": 25.1,
+      "elite_traders": 8,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "US announces end of Iranian blockade by August 22, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9716,
+      "market_price_pct": 0.1832,
+      "gap_pt": 78.8,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-22"
+    }
+  ],
+  "scan_timestamp": "2026-08-19T08:24:14.793702+00:00"
+}

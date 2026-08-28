@@ -1,0 +1,52 @@
+{
+  "date": "2026-08-24",
+  "markets_checked": 18,
+  "signals_found": 4,
+  "signals": [
+    {
+      "market": "SCOTUS strikes down Trump's Birthright Citizenship EO?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.1498,
+      "market_price_pct": 0.999,
+      "gap_pt": 84.9,
+      "elite_traders": 11,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US x Iran permanent peace deal by August 31, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7756,
+      "market_price_pct": 0.999,
+      "gap_pt": 22.3,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Mojtaba Khamenei seen in public by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7748,
+      "market_price_pct": 0.041,
+      "gap_pt": 73.4,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by August 31?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.307,
+      "market_price_pct": 0.024,
+      "gap_pt": 28.3,
+      "elite_traders": 27,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    }
+  ],
+  "scan_timestamp": "2026-08-24T08:42:12.016857+00:00"
+}

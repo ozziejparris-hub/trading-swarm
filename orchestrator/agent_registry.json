@@ -15,6 +15,22 @@
       "retries": 1,
       "pr": null,
       "verified": false
+    },
+    {
+      "id": "hygiene-20260828",
+      "agent": "code-hygiene-agent",
+      "description": "Run weekly code hygiene audit. Check both repos: /home/parison/projects/first-repo and /home/parison/trading-swarm. Full audit per template.",
+      "branch": "feat/hygiene-20260828",
+      "tmux_session": "code-hygiene-agent-hygiene-20260828",
+      "model": "claude-sonnet-4-6 (Tier 3)",
+      "tier": "3",
+      "worktree": "/tmp/trading-swarm-worktrees/hygiene-20260828",
+      "log": "/home/parison/trading-swarm/logs/agent_logs/hygiene-20260828.log",
+      "started_at": "2026-08-28T20:00:01.379298",
+      "status": "running",
+      "retries": 0,
+      "pr": null,
+      "verified": false
     }
   ]
 }

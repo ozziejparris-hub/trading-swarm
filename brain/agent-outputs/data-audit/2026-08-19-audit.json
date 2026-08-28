@@ -1,0 +1,727 @@
+{
+  "summary": {
+    "audit_date": "2026-08-19",
+    "run_at": "2026-08-19T20:48:46",
+    "total": 26,
+    "pass": 16,
+    "regression": 4,
+    "critical": 0,
+    "observe": 6,
+    "headline": "4 invariants violated, 0 critical."
+  },
+  "checks": [
+    {
+      "name": "successful_trades > total_trades",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "win_rate > 1.0 (fraction-scale violation)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "win_rate > 100 (percentage-scale corruption)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "specialisation_ratio > 1.0",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_elo out of range [0,5000] for pool members",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_accuracy_pool=1 with geo_elo_active < 500",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "duplicate markets.market_id",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "trades only join via condition_id (JOIN-fix regression)",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "geo_resolved_trades_count mismatch vs recomputed",
+      "tier": 1,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": []
+    },
+    {
+      "name": "pending on resolved non-gap markets (flagged traders)",
+      "tier": 2,
+      "floor": 0,
+      "count": 139,
+      "status": "REGRESSION",
+      "examples": [
+        {
+          "trade_id": "0xddc35005d5e8932867302e5face9964baca28ba26aa536b5213f26eba2791116-43943728",
+          "trader_address": "0x418d51e13d019913bb027db22ecc723fe1ad88a3",
+          "market_id": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+          "title": "Will Spain win the 2026 FIFA World Cup?"
+        },
+        {
+          "trade_id": "0x8f225ac098d3d09e026a6e9383277d58d70bc0f212f6b5dcddb0d2f2c68f3d11-43943728",
+          "trader_address": "0x418d51e13d019913bb027db22ecc723fe1ad88a3",
+          "market_id": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+          "title": "Will Spain win the 2026 FIFA World Cup?"
+        },
+        {
+          "trade_id": "0xa25778db2966486ea2f191cb9b4d40b6d4f5a27ce89f95605b1eba8f94eee21c-43943728",
+          "trader_address": "0x418d51e13d019913bb027db22ecc723fe1ad88a3",
+          "market_id": "0x7976b8dbacf9077eb1453a62bcefd6ab2df199acd28aad276ff0d920d6992892",
+          "title": "Will Spain win the 2026 FIFA World Cup?"
+        },
+        {
+          "trade_id": "0x260a56057e9553ff3b3e4d06c92adaba4695458fa9c28511189d4c59350c2aac-98258440",
+          "trader_address": "0x418d51e13d019913bb027db22ecc723fe1ad88a3",
+          "market_id": "0xe70fd51f42e61fc309d8e57019a7b76c8dc7bd19b473351d56ff1e125ae0d9d4",
+          "title": "Will IR Iran win on 2026-06-15?"
+        },
+        {
+          "trade_id": "0x067636dfab9c61e33771b4d62e8e4b36d91d232c2e562a4b403d86c5b9005c1d-10753894",
+          "trader_address": "0x418d51e13d019913bb027db22ecc723fe1ad88a3",
+          "market_id": "0xcc987f154d6eaf68543866178cd1addc2df3e57ae32b91c141c8cf2db0c36523",
+          "title": "Los Angeles Angels vs. Arizona Diamondbacks"
+        }
+      ]
+    },
+    {
+      "name": "pending on resolved non-gap geo/elections markets",
+      "tier": 2,
+      "floor": 0,
+      "count": 24719,
+      "status": "REGRESSION",
+      "examples": [
+        {
+          "trade_id": "0xddb70c748401dd3c3151d8ca6b1434d4e958581d4098863d5e459a69367e5f8d",
+          "trader_address": "0x38e59b36aae31b164200d0cad7c3fe5e0ee795e7",
+          "market_id": "0x04f1a10e79a106d18dc45e6087f0757456197ec5c6ffec2506cd066e8215fc62",
+          "title": "Billionaire one-time wealth tax on California ballot?",
+          "category": "Elections"
+        },
+        {
+          "trade_id": "0x483f60d3e2931d7f092862b27672bbdf8dd442f0084eb05a3b1ca6b2267af47c",
+          "trader_address": "0x38e59b36aae31b164200d0cad7c3fe5e0ee795e7",
+          "market_id": "0x04f1a10e79a106d18dc45e6087f0757456197ec5c6ffec2506cd066e8215fc62",
+          "title": "Billionaire one-time wealth tax on California ballot?",
+          "category": "Elections"
+        },
+        {
+          "trade_id": "0xf8ef9f4d014f05e46f75995cdf160d94f04316fca6fa5a0f330b51615217c57f",
+          "trader_address": "0x38e59b36aae31b164200d0cad7c3fe5e0ee795e7",
+          "market_id": "0x04f1a10e79a106d18dc45e6087f0757456197ec5c6ffec2506cd066e8215fc62",
+          "title": "Billionaire one-time wealth tax on California ballot?",
+          "category": "Elections"
+        },
+        {
+          "trade_id": "0x2e4dc943a4faccbe3ddb8caa242afcfdc3e6af503a117d84861b53d4b29f2ba7",
+          "trader_address": "0xa802d3769e7ee00e24e774c90a4e2f74accb23df",
+          "market_id": "0xc0ca47efaff5155cf78d38b18753f46d7420e0d917297b0483936222e5a6fb39",
+          "title": "Iran strike on US military by January 31?",
+          "category": "Geopolitics"
+        },
+        {
+          "trade_id": "0x7a339c2ee1f3201a6e50ff3e0b560cd7d44e5d82b189d533550ab44fa8b06dd1",
+          "trader_address": "0x214c69288c346a70b96007cad9d8c59fac216378",
+          "market_id": "0xc71ae60417a812b0a16d7eca04bbd5db4a330a56b3c8cb4fe254f2a7b77207f3",
+          "title": "Will Russia capture Bilytske by March 31, 2026?",
+          "category": "Geopolitics"
+        }
+      ]
+    },
+    {
+      "name": "trades.market_category='Unknown' where market.category is known",
+      "tier": 2,
+      "floor": 122417,
+      "count": 20262,
+      "status": "PASS",
+      "examples": [
+        {
+          "trade_id": "0x112ad412ed2fe6355dff9028d77cd59ab552dc2eaee698d6cb04ef6710253a12-26103360",
+          "market_id": "0x20d0bc282552ac5ec6f61cd7101cb42a5948cae07e7651bdf40ede1a8b2c5eac",
+          "market_category": "Unknown",
+          "market_cat": "Elections"
+        },
+        {
+          "trade_id": "0xa728916aaf623ebe72746119107e37fbcd950232b887fb78c61aa2133366d5c4-47762771",
+          "market_id": "0x8fcd8d30e559d75d1f1ac26fb61c118910d271a55ecce8e05367b1a6114bf20e",
+          "market_category": "Unknown",
+          "market_cat": "Geopolitics"
+        },
+        {
+          "trade_id": "0x885887c134a9076f52bc0875fc2bc48f43662c3d5fa941d9c27cc5fe437ebcae-50862799",
+          "market_id": "0x836b850fc838195374862551a36f1c8691d96ff01e58b0a071f0fc1a0e357fb1",
+          "market_category": "Unknown",
+          "market_cat": "Elections"
+        },
+        {
+          "trade_id": "0xab32717ad30a24f85d452903863619fb9426c24bc03aad45361d9a54fa2335ca-50862799",
+          "market_id": "0x836b850fc838195374862551a36f1c8691d96ff01e58b0a071f0fc1a0e357fb1",
+          "market_category": "Unknown",
+          "market_cat": "Elections"
+        },
+        {
+          "trade_id": "0x2f0b3c71415719dc8f5b5143d256f440ecbf4fc4161be706e7031a16f5bcf6e4-34449641",
+          "market_id": "0x30cfb887558b20373a984da60c372fe5a90c0296aa6d8bb413a8aa7543846da2",
+          "market_category": "Unknown",
+          "market_cat": "Elections"
+        }
+      ]
+    },
+    {
+      "name": "timestamp mixed formats (per-column breakdown)",
+      "tier": 2,
+      "floor": 24996,
+      "count": 24189,
+      "status": "PASS",
+      "examples": [
+        {
+          "column": "trades.timestamp",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "markets.end_date",
+          "canonical": "space-sep",
+          "non_canonical": 829,
+          "floor": 946,
+          "status": "PASS",
+          "example_value": "2028-11-07T00:00:00+00:00"
+        },
+        {
+          "column": "markets.resolution_date",
+          "canonical": "space-sep",
+          "non_canonical": 802,
+          "floor": 881,
+          "status": "PASS",
+          "example_value": "2028-11-07T00:00:00+00:00"
+        },
+        {
+          "column": "traders.elo_last_updated",
+          "canonical": "space-sep",
+          "non_canonical": 22558,
+          "floor": 22560,
+          "status": "PASS",
+          "example_value": "2026-07-07T08:58:24.859434"
+        },
+        {
+          "column": "positions.entry_timestamp",
+          "canonical": "T-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.exit_timestamp",
+          "canonical": "T-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.created_at",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        },
+        {
+          "column": "positions.last_updated",
+          "canonical": "space-sep",
+          "non_canonical": 0,
+          "floor": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "data_source IS NULL (write-path omission)",
+      "tier": 2,
+      "floor": 0,
+      "count": 0,
+      "status": "PASS",
+      "examples": [
+        {
+          "table": "traders",
+          "null_count": 0,
+          "status": "PASS"
+        },
+        {
+          "table": "markets",
+          "null_count": 0,
+          "status": "PASS"
+        },
+        {
+          "table": "trades",
+          "null_count": 0,
+          "status": "PASS"
+        },
+        {
+          "table": "positions",
+          "null_count": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "data_source not in canonical set (write-path regression)",
+      "tier": 2,
+      "floor": 0,
+      "count": 577,
+      "status": "REGRESSION",
+      "examples": [
+        {
+          "table": "traders",
+          "invalid_count": 0,
+          "allowed": [
+            "backfill",
+            "blockchain_scan",
+            "external_seed",
+            "leaderboard",
+            "live_feed",
+            "manual_watchlist",
+            "market_scan",
+            "orphan_repair",
+            "resolution_sweep",
+            "simulation"
+          ],
+          "status": "PASS"
+        },
+        {
+          "table": "markets",
+          "invalid_count": 178,
+          "allowed": [
+            "api_refresh",
+            "background_backfill",
+            "gamma_backfill_2026-07-02",
+            "gamma_backfill_tier2_2026-07-06",
+            "historical_backfill",
+            "live_monitoring",
+            "manual_entry",
+            "simulation",
+            "stub_placeholder"
+          ],
+          "status": "REGRESSION",
+          "examples": [
+            {
+              "data_source": "gap_recovery_20260811",
+              "cnt": 178
+            }
+          ]
+        },
+        {
+          "table": "trades",
+          "invalid_count": 399,
+          "allowed": [
+            "backfill_import",
+            "background_backfill",
+            "blockchain_scan",
+            "computed",
+            "polymarket_api",
+            "simulation"
+          ],
+          "status": "REGRESSION",
+          "examples": [
+            {
+              "data_source": "gap_recovery_20260811",
+              "cnt": 399
+            }
+          ]
+        },
+        {
+          "table": "positions",
+          "invalid_count": 0,
+          "allowed": [
+            "backfill_historical",
+            "position_tracker",
+            "simulation",
+            "synthetic_resolution"
+          ],
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "traders with API total_trades but 0 local records",
+      "tier": 3,
+      "floor": 114047,
+      "count": 20370,
+      "status": "PASS",
+      "examples": [
+        {
+          "address": "0x18907d766b015a4220026846b7d1f8d43bd1d328",
+          "total_trades": 500,
+          "win_rate": 0.0
+        },
+        {
+          "address": "0x4beccbc49b279a0c7b8950ae9a2abf17f41bb8f8",
+          "total_trades": 500,
+          "win_rate": 0.0
+        },
+        {
+          "address": "0x61faa7b73071accbc4bb71a343e3bed3939f7f62",
+          "total_trades": 500,
+          "win_rate": 0.0
+        },
+        {
+          "address": "0x9055a9e36aa73274e3a92dc2dbb081bb4d9e756a",
+          "total_trades": 500,
+          "win_rate": 0.0
+        },
+        {
+          "address": "0x7ea571c40408f340c1c8fc8eaacebab53c1bde7b",
+          "total_trades": 500,
+          "win_rate": 0.0
+        }
+      ]
+    },
+    {
+      "name": "BUY trades with no position record",
+      "tier": 3,
+      "floor": 275254,
+      "count": 3608,
+      "status": "PASS",
+      "examples": [
+        {
+          "trade_id": "0x1d4b27b06b2d5ffab2b641c017ddfa772c663528fefa89f756e2b8ee670b1830",
+          "trader_address": "0xd6d35b777089235c9ccdcd4830bf1bbda2a06300",
+          "market_id": null,
+          "timestamp": "2026-03-06 20:23:49"
+        },
+        {
+          "trade_id": "0x6be8870079db61fc52ae61f57256e91734d5ce3071a41d174ccb88bffc1a047d",
+          "trader_address": "0x240ad5b58ae0f9f7179df37054be4f71b124b35d",
+          "market_id": null,
+          "timestamp": "2026-06-22 08:19:17"
+        },
+        {
+          "trade_id": "0xb3851dc89083e7293048bfc8dead9d75758f6faa3584b15ef17b4cd0f5ffee81-66978259",
+          "trader_address": "0x9ff1fa3a6bf3ed6e43a133e90eee5ab35d364766",
+          "market_id": "0x64cce50d62a844361269581af6f3a3be0880698f721dbb2262fc0825c63a7145",
+          "timestamp": "2026-08-19 03:19:25"
+        },
+        {
+          "trade_id": "0x7b5d4353259634353afbaedca53068f265102e54050003b9247f955afc974d25-66978259",
+          "trader_address": "0x9ff1fa3a6bf3ed6e43a133e90eee5ab35d364766",
+          "market_id": "0x64cce50d62a844361269581af6f3a3be0880698f721dbb2262fc0825c63a7145",
+          "timestamp": "2026-08-19 03:18:55"
+        },
+        {
+          "trade_id": "0xb113b73dab727215407abee11080e425cd404ea55333324b7f8afb5da0652c80-99470383",
+          "trader_address": "0x9ff1fa3a6bf3ed6e43a133e90eee5ab35d364766",
+          "market_id": "0xcbd1b7b966c7a82b4896bc623d292d9934daec1c430e67edd39cd0ab76a3c756",
+          "timestamp": "2026-08-18 18:35:31"
+        }
+      ]
+    },
+    {
+      "name": "total_volume > $1B outliers",
+      "tier": 3,
+      "floor": 75,
+      "count": 25,
+      "status": "PASS",
+      "examples": [
+        {
+          "address": "0xdeb2f701008a75ddc22c530185cb928e05582cf1",
+          "total_volume": 1616061511.5122385
+        },
+        {
+          "address": "0x18af5535614baf1183a300f2537583af9802b69e",
+          "total_volume": 1590919925.715539
+        },
+        {
+          "address": "0x56f94ddbc895744fcaa367c18b834ed04d4214f5",
+          "total_volume": 1546593734.0094943
+        },
+        {
+          "address": "0x84710b2f7d058663142aab510886efdb58133396",
+          "total_volume": 1516906548.2943013
+        },
+        {
+          "address": "0xa45835b3a81fa15e78b82a7a5eb75fbfeef47d3b",
+          "total_volume": 1491928719.6508746
+        }
+      ]
+    },
+    {
+      "name": "total_invested vs SUM(entry_total_cost) mismatch >5%",
+      "tier": 3,
+      "floor": 0,
+      "count": 10072,
+      "status": "REGRESSION",
+      "examples": [
+        {
+          "address": "0x072cf24b0b9f75d2d824e0187be7702a96f4f037",
+          "total_invested": 0.004169799735501863,
+          "calc_invested": 101244.16,
+          "pct_diff": 2428034091.6
+        },
+        {
+          "address": "0x3507ea2517b1aee2b0b18ccced03ddac39d7a02e",
+          "total_invested": 9.773253269179369e-05,
+          "calc_invested": 100.0,
+          "pct_diff": 102321740.2
+        },
+        {
+          "address": "0x999dfbfd8a81dac79797f4032284e5fb592d6009",
+          "total_invested": 0.0008495849966475047,
+          "calc_invested": 841.74,
+          "pct_diff": 99076839.6
+        },
+        {
+          "address": "0xf0bdb01343ba787c54a8e0e6e405aca60ea4f682",
+          "total_invested": 0.00098814599679722,
+          "calc_invested": 901.93,
+          "pct_diff": 91274971.7
+        },
+        {
+          "address": "0x25cbc60255e468d3aba6997718c57cda287836db",
+          "total_invested": 0.0019979999999527537,
+          "calc_invested": 1561.0,
+          "pct_diff": 78128017.9
+        }
+      ]
+    },
+    {
+      "name": "successful_trades > actual won trades + 5 (Tier-3 population)",
+      "tier": 3,
+      "floor": 608,
+      "count": 4,
+      "status": "PASS",
+      "examples": [
+        {
+          "address": "0xff77e4e9eecb887b687ddd0bfee053c6df131be5",
+          "successful_trades": 343,
+          "won_count": 161,
+          "discrepancy": 182
+        },
+        {
+          "address": "0xa972613376a5c6df8ad4f761057107340f7540c2",
+          "successful_trades": 69,
+          "won_count": 51,
+          "discrepancy": 18
+        },
+        {
+          "address": "0x01d49b1b277f68b432a815c56decbfc59a67d272",
+          "successful_trades": 24,
+          "won_count": 12,
+          "discrepancy": 12
+        },
+        {
+          "address": "0xd71c7cacf7ab47c9dae037cfcd340313eff520b3",
+          "successful_trades": 351,
+          "won_count": 341,
+          "discrepancy": 10
+        }
+      ]
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo out of [400,3500]",
+      "tier": 0,
+      "floor": 0,
+      "count": 0,
+      "status": "OBSERVE",
+      "examples": [
+        {
+          "n": 31797,
+          "min_elo": 479.6966,
+          "max_elo": 3330.9473,
+          "mean_elo": 1356.18418434129
+        }
+      ]
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo exceeds soft cap (1500+resolved*150)",
+      "tier": 0,
+      "floor": 0,
+      "count": 0,
+      "status": "OBSERVE",
+      "examples": []
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo non-NULL with a NULL component column",
+      "tier": 0,
+      "floor": 0,
+      "count": 1025,
+      "status": "OBSERVE",
+      "examples": [
+        {
+          "address": "0xe62ba7565e0c36ffe2284e8c78446f4b0088bdf9",
+          "base_category_elo": 1500.0,
+          "behavioral_modifier": 0.8753085599999999,
+          "advanced_modifier": 1.1,
+          "pnl_modifier": 1.0,
+          "kelly_alignment_score": null,
+          "patience_score": 0.2827030203493481,
+          "timing_score": 0.01098901098901095
+        },
+        {
+          "address": "0x1ff14023ccd7767a8667090e89d152022dfd7809",
+          "base_category_elo": 1500.0,
+          "behavioral_modifier": 0.8320683171359999,
+          "advanced_modifier": 1.1,
+          "pnl_modifier": 1.0,
+          "kelly_alignment_score": null,
+          "patience_score": 0.5464477055359505,
+          "timing_score": 0.5879120879120879
+        },
+        {
+          "address": "0x8a30be85b881dd97f311f9fc8786088b0f43cfa4",
+          "base_category_elo": 1500.0,
+          "behavioral_modifier": 0.909695682,
+          "advanced_modifier": 1.1,
+          "pnl_modifier": 1.0,
+          "kelly_alignment_score": null,
+          "patience_score": 0.402198147922247,
+          "timing_score": 0.09890109890109888
+        },
+        {
+          "address": "0x0b50698ca0d2730a92199494c82b366eb865df6a",
+          "base_category_elo": 1500.0,
+          "behavioral_modifier": 0.8320683171359999,
+          "advanced_modifier": 1.1,
+          "pnl_modifier": 1.0,
+          "kelly_alignment_score": null,
+          "patience_score": 0.6081204603618275,
+          "timing_score": 0.2692307692307694
+        },
+        {
+          "address": "0x8d64f373cf6aa8ccd922bf4cadad474917f24e53",
+          "base_category_elo": 1500.0,
+          "behavioral_modifier": 0.89150176836,
+          "advanced_modifier": 1.1,
+          "pnl_modifier": 1.0,
+          "kelly_alignment_score": null,
+          "patience_score": 0.7236297154875283,
+          "timing_score": 0.12903225806451613
+        }
+      ]
+    },
+    {
+      "name": "[0d/OBSERVE] behavioral materialization (comp == pnl-only despite eligible behavioral)",
+      "tier": 0,
+      "floor": 0,
+      "count": 8768,
+      "status": "OBSERVE",
+      "examples": [
+        {
+          "address": "0xf2ebb6fb4982c8ff49ddc89c802c70b250f16eb5",
+          "comprehensive_elo": 1547.709,
+          "base_category_elo": 1498.2662015406527,
+          "behavioral_modifier": 1.3201130234880003,
+          "pnl_modifier": 1.033,
+          "resolved_trades_count": 62
+        },
+        {
+          "address": "0x39fd921acf9be28b17a422bf624dc6b30685849e",
+          "comprehensive_elo": 1666.5825,
+          "base_category_elo": 1480.0910653780422,
+          "behavioral_modifier": 1.2021110838374405,
+          "pnl_modifier": 1.126,
+          "resolved_trades_count": 79
+        },
+        {
+          "address": "0x4df7da721042bf8b75bd1cb7acbeb7f83aaf522d",
+          "comprehensive_elo": 1472.3267,
+          "base_category_elo": 1497.789132982803,
+          "behavioral_modifier": 1.0791361728000002,
+          "pnl_modifier": 0.983,
+          "resolved_trades_count": 86
+        },
+        {
+          "address": "0x9be90ea78bff3f81f3564a11d5e12b2a0783c030",
+          "comprehensive_elo": 1240.9617,
+          "base_category_elo": 1498.746024167842,
+          "behavioral_modifier": 1.0791361728000002,
+          "pnl_modifier": 0.828,
+          "resolved_trades_count": 46
+        },
+        {
+          "address": "0x6586fb56a335aeb953b09b299eb181de3ffd497c",
+          "comprehensive_elo": 1474.1424,
+          "base_category_elo": 1499.636217174703,
+          "behavioral_modifier": 1.1670981396480005,
+          "pnl_modifier": 0.983,
+          "resolved_trades_count": 134
+        }
+      ]
+    },
+    {
+      "name": "[0d/OBSERVE] comprehensive_elo population drift (weekly mean/tier stability)",
+      "tier": 0,
+      "floor": 0,
+      "count": 0,
+      "status": "OBSERVE",
+      "examples": [
+        {
+          "today": {
+            "n": 31797,
+            "mean_elo": 1356.18418434129,
+            "tier_1500": 6448,
+            "tier_1800": 1590,
+            "tier_2175": 657
+          },
+          "trailing_baseline": {
+            "n": 31055,
+            "mean_elo": 1355.8324232844952,
+            "tier_1500": 6351,
+            "tier_1800": 1548,
+            "tier_2175": 639
+          },
+          "mean_delta": 0.35176105679465763,
+          "tier_delta_pct": {
+            "tier_1500": 0.015273185325145646,
+            "tier_1800": 0.027131782945736434,
+            "tier_2175": 0.028169014084507043
+          }
+        }
+      ]
+    },
+    {
+      "name": "[resolution-stage0/OBSERVE] resolution_recorded_at set without resolution_evidence_source",
+      "tier": 0,
+      "floor": 0,
+      "count": 0,
+      "status": "OBSERVE",
+      "examples": []
+    }
+  ]
+}

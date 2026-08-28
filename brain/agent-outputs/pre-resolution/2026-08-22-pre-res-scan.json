@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-22",
+  "markets_checked": 5,
+  "signals_found": 1,
+  "signals": [
+    {
+      "market": "US announces end of Iranian blockade by August 22, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9716,
+      "market_price_pct": 0.0065,
+      "gap_pt": 96.5,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-22"
+    }
+  ],
+  "scan_timestamp": "2026-08-22T09:32:59.737358+00:00"
+}

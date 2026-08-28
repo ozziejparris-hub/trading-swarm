@@ -1,0 +1,151 @@
+{
+  "date": "2026-08-16",
+  "markets_checked": 89,
+  "signals_found": 13,
+  "signals": [
+    {
+      "market": "Will Kai and Speed beat the Minecraft challenge by August 17?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.1407,
+      "market_price_pct": 0.9309,
+      "gap_pt": 79.0,
+      "elite_traders": 2,
+      "legendary_traders": 2,
+      "resolution_date": "2026-08-17"
+    },
+    {
+      "market": "Will James Fishback be the Republican nominee for Florida Governor?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.489,
+      "market_price_pct": 0.014,
+      "gap_pt": 47.5,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Jay Collins be the Republican nominee for Florida Governor?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.2298,
+      "market_price_pct": 0.006,
+      "gap_pt": 22.4,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Jared Moskowitz be the Democratic nominee for Senate in Florida?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.3234,
+      "market_price_pct": 0.015,
+      "gap_pt": 30.8,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Click Bishop advance from the 2026 Alaska Governor primary election?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0019,
+      "market_price_pct": 0.38,
+      "gap_pt": 37.8,
+      "elite_traders": 7,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Dan Bilzerian be the Republican nominee for FL-06?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.3952,
+      "market_price_pct": 0.028,
+      "gap_pt": 36.7,
+      "elite_traders": 20,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "US-Iran Final Nuclear Deal by August 18, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.43,
+      "market_price_pct": 0.035,
+      "gap_pt": 39.5,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will Eric Barlow win the 2026 Wyoming Governor Republican primary election?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9509,
+      "market_price_pct": 0.771,
+      "gap_pt": 18.0,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-18"
+    },
+    {
+      "market": "Will a player representing Portugal be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.2428,
+      "market_price_pct": 0.004,
+      "gap_pt": 23.9,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing Brazil be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.697,
+      "market_price_pct": 0.021,
+      "gap_pt": 67.6,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing Argentina be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.1706,
+      "market_price_pct": 0.003,
+      "gap_pt": 16.8,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "Will a player representing Germany be the top goalscorer at the 2026 FIFA World Cup?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.5744,
+      "market_price_pct": 0.007,
+      "gap_pt": 56.7,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-20"
+    },
+    {
+      "market": "US announces end of Iranian blockade by August 22, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.2064,
+      "gap_pt": 79.4,
+      "elite_traders": 4,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-22"
+    }
+  ],
+  "scan_timestamp": "2026-08-16T08:46:28.543220+00:00"
+}

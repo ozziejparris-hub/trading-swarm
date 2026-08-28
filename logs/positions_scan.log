@@ -624,3 +624,119 @@
 [LEGEND] Computing Signal Credibility Scores for 11 market(s)...
 [LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-13-positions-scan.json
 [LEGEND] Done — 14 scanned, 11 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-13-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 1 overdue open market(s) — checking Gamma API...
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+[LEGEND] 8 market(s) with >= 2 LEGENDARY traders
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-07-20 07:30 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 8  (skipped no-price: 0, stale-price: 0, overdue: 0)
+======================================================================
+    1. [ 2 LEG] NO  ▼  100% vs mkt 50.5%  gap=+50.5pt  cap=$1.8K  res=164d
+       US obtains Iranian enriched uranium by December 31?
+
+    2. [ 2 LEG] NO  ▼  100% vs mkt 50.5%  gap=+50.5pt  cap=$750  res=?
+       US x Iran ceasefire by April 30?
+
+    3. [ 2 LEG] YES ▲  100% vs mkt 50.5%  gap=+49.5pt  cap=$239  res=11d
+       US x Iran permanent peace deal by July 31, 2026?
+
+    4. [ 2 LEG] NO  ▼  100% vs mkt 34.8%  gap=+34.9pt  cap=$103  res=284d
+       Will Marine Le Pen win the 2027 French presidential election?
+
+    5. [ 2 LEG] NO  ▼  80% vs mkt 50.5%  gap=+30.1pt  cap=$104  res=?
+       Israel x Hezbollah Ceasefire extended by April 26, 2026?
+
+    6. [ 2 LEG] NO  ▼  100% vs mkt 19.5%  gap=+19.5pt  cap=$3.7K  res=164d
+       Ukraine signs peace deal with Russia before 2027?
+
+    7. [ 2 LEG] NO  ▼  67% vs mkt 50.5%  gap=+17.7pt  cap=$274  res=? [MIXED_SIGNAL]
+       US x Iran ceasefire by March 31?
+
+    8. [ 2 LEG] YES ▲  100% vs mkt 84.5%  gap=+15.5pt  cap=$98  res=106d
+       Will the Democratic Party control the House after the 2026 Midterm e
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 8 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-20-positions-scan.json
+[LEGEND] Done — 8 scanned, 8 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-07-20-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 1 overdue open market(s) — checking Gamma API...
+  Checking: Will Russia capture Lyman by December 31, 2026? (end 2025-12-31)
+    → Not yet resolved on Gamma
+[LEGEND] 11 market(s) with >= 2 LEGENDARY traders
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-08-10 07:30 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 3  (skipped no-price: 0, stale-price: 0, overdue: 0)
+======================================================================
+    1. [ 3 LEG] NO  ▼  100% vs mkt 18.5%  gap=+18.5pt  cap=$3.9K  res=143d
+       Ukraine signs peace deal with Russia before 2027?
+
+    2. [ 2 LEG] YES ▲  62% vs mkt 4.7%  gap=+57.2pt  cap=$145  res=? [MIXED_SIGNAL]
+       US x Iran ceasefire by March 31?
+
+    3. [ 2 LEG] YES ▲  100% vs mkt 68.5%  gap=+31.5pt  cap=$42  res=?
+       Will the Democrats win the Maine Senate race in 2026?
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 3 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-08-10-positions-scan.json
+[LEGEND] Done — 11 scanned, 3 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-08-10-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 1 overdue open market(s) — checking Gamma API...
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+[LEGEND] 8 market(s) with >= 2 LEGENDARY traders
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-08-17 07:30 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 3  (skipped no-price: 0, stale-price: 0, overdue: 0)
+======================================================================
+    1. [ 2 LEG] YES ▲  100% vs mkt 4.5%  gap=+95.5pt  cap=$90  res=?
+       US x Iran ceasefire by March 31?
+
+    2. [ 2 LEG] YES ▲  100% vs mkt 25.0%  gap=+75.0pt  cap=$56  res=136d
+       Will Kash Patel leave the Trump administration before 2027?
+
+    3. [ 2 LEG] NO  ▼  100% vs mkt 16.5%  gap=+16.5pt  cap=$3.7K  res=136d
+       Ukraine signs peace deal with Russia before 2027?
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 3 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-08-17-positions-scan.json
+[LEGEND] Done — 8 scanned, 3 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-08-17-positions-scan.json
+[LEGEND] Starting legendary positions scan...
+[STALE] 3 overdue open market(s) — checking Gamma API...
+  Checking: Will Matt Claman advance from the 2026 Alaska Governor primary electio (end 2026-08-18)
+    → Not yet resolved on Gamma
+  Checking: Kharg Island no longer under Iranian control by August 31? (end 2026-06-30)
+    → Not yet resolved on Gamma
+  Checking: Will Nithya Raman win the 2026 Los Angeles mayoral election? (end 2026-06-02)
+    → Not yet resolved on Gamma
+[LEGEND] 6 market(s) with >= 2 LEGENDARY traders
+
+======================================================================
+  LEGENDARY POSITIONS SCAN — 2026-08-24 07:30 UTC
+  Filters: min_traders=2, min_gap=15.0pt
+  Markets shown: 2  (skipped no-price: 0, stale-price: 0, overdue: 0)
+======================================================================
+    1. [ 2 LEG] YES ▲  100% vs mkt 25.5%  gap=+74.5pt  cap=$56  res=129d
+       Will Kash Patel leave the Trump administration before 2027?
+
+    2. [ 2 LEG] NO  ▼  100% vs mkt 15.5%  gap=+15.5pt  cap=$3.7K  res=129d
+       Ukraine signs peace deal with Russia before 2027?
+
+======================================================================
+
+[LEGEND] Computing Signal Credibility Scores for 2 market(s)...
+[LEGEND] Output → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-08-24-positions-scan.json
+[LEGEND] Done — 6 scanned, 2 in report → /home/parison/trading-swarm/brain/agent-outputs/positions-scan/2026-08-24-positions-scan.json

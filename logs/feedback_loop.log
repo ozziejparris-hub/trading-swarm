@@ -354,3 +354,119 @@ python3: can't open file '/home/parison/scripts/run_feedback_loop_agent.py': [Er
 [feedback-loop-agent] Telegram notification sent
 [feedback-loop-agent] Run complete — new findings: 5, report: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-07-13-weekly-audit.md
 [2026-07-13T07:00:03Z] Finished feedback-loop-agent (exit: 0)
+[2026-07-20T07:00:01Z] Starting feedback-loop-agent
+[feedback-loop-agent] Weekly run — 2026-07-20
+[feedback-loop-agent] DB: /home/parison/projects/first-repo/data/polymarket_tracker.db
+[feedback-loop-agent] Repo: /home/parison/trading-swarm
+[feedback-loop-agent] Feedback memory: 1 rejected, 4 approved
+[feedback-loop-agent] Run count: 16
+[feedback-loop-agent] Step 1 — Signal accuracy audit
+[feedback-loop-agent]   Total signals in bus: 25, HIGH/MEDIUM: 3
+[feedback-loop-agent]   Resolved: 2, correct: 1, incorrect: 1, unresolved: 0, sufficient data: False
+[feedback-loop-agent] Step 2 — Pre-resolution intelligence audit
+[feedback-loop-agent]   Found 1 pre-resolution file(s)
+[feedback-loop-agent]   Signals audited: 4, sufficient data: False
+[feedback-loop-agent] Step 3 — ELO predictive validity check
+[feedback-loop-agent]   Markets resolved in past 7 days: 121
+[feedback-loop-agent]   After production filter: 100 markets pass (21 excluded)
+[feedback-loop-agent]   Non-sports markets with elite directional positions: 58
+[feedback-loop-agent]   LEGENDARY: 6/20 = 30%
+[feedback-loop-agent]   ELITE: 17/27 = 63%
+[feedback-loop-agent]   QUALIFIED: 28/46 = 61%
+[feedback-loop-agent] Step 4 — Strategy registry review
+[feedback-loop-agent]   Strategies parsed: 5, overdue: 1
+[feedback-loop-agent]   OVERDUE: STR-002 — Pre-Resolution Intelligence — Past next revalidation due date 2026-07-01 (19 days overdue)
+[feedback-loop-agent]   Revalidation signal already exists for STR-002 — Pre-Resolution Intelligence — skipping
+[feedback-loop-agent] Step 5 — Writing findings to findings.json
+[feedback-loop-agent]   5 new finding(s) written
+[feedback-loop-agent]   Report written: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-07-20-weekly-audit.md
+[feedback-loop-agent] Telegram notification sent
+[feedback-loop-agent] Run complete — new findings: 5, report: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-07-20-weekly-audit.md
+[2026-07-20T07:00:03Z] Finished feedback-loop-agent (exit: 0)
+[2026-08-10T07:00:01Z] Starting feedback-loop-agent
+[feedback-loop-agent] Weekly run — 2026-08-10
+[feedback-loop-agent] DB: /home/parison/projects/first-repo/data/polymarket_tracker.db
+[feedback-loop-agent] Repo: /home/parison/trading-swarm
+[feedback-loop-agent] Feedback memory: 1 rejected, 4 approved
+[feedback-loop-agent] Run count: 17
+[feedback-loop-agent] Step 1 — Signal accuracy audit
+[feedback-loop-agent]   Total signals in bus: 26, HIGH/MEDIUM: 3
+[feedback-loop-agent]   Resolved: 2, correct: 1, incorrect: 1, unresolved: 0, sufficient data: False
+[feedback-loop-agent] Step 2 — Pre-resolution intelligence audit
+[feedback-loop-agent]   Found 1 pre-resolution file(s)
+[feedback-loop-agent]   Signals audited: 4, sufficient data: False
+[feedback-loop-agent] Step 3 — ELO predictive validity check
+[feedback-loop-agent]   Markets resolved in past 7 days: 161
+[feedback-loop-agent]   After production filter: 113 markets pass (48 excluded)
+[feedback-loop-agent]   Non-sports markets with elite directional positions: 41
+[feedback-loop-agent]   LEGENDARY: 2/10 = 20%
+[feedback-loop-agent]   ELITE: 22/31 = 71%
+[feedback-loop-agent]   QUALIFIED: 12/24 = 50%
+[feedback-loop-agent] Step 4 — Strategy registry review
+[feedback-loop-agent]   Strategies parsed: 5, overdue: 1
+[feedback-loop-agent]   OVERDUE: STR-002 — Pre-Resolution Intelligence — Past next revalidation due date 2026-07-01 (40 days overdue)
+[feedback-loop-agent]   Revalidation signal already exists for STR-002 — Pre-Resolution Intelligence — skipping
+[feedback-loop-agent] Step 5 — Writing findings to findings.json
+[feedback-loop-agent]   5 new finding(s) written
+[feedback-loop-agent]   Report written: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-08-10-weekly-audit.md
+[feedback-loop-agent] Telegram notification sent
+[feedback-loop-agent] Run complete — new findings: 5, report: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-08-10-weekly-audit.md
+[2026-08-10T07:00:03Z] Finished feedback-loop-agent (exit: 0)
+[2026-08-17T07:00:01Z] Starting feedback-loop-agent
+[feedback-loop-agent] Weekly run — 2026-08-17
+[feedback-loop-agent] DB: /home/parison/projects/first-repo/data/polymarket_tracker.db
+[feedback-loop-agent] Repo: /home/parison/trading-swarm
+[feedback-loop-agent] Feedback memory: 1 rejected, 4 approved
+[feedback-loop-agent] Run count: 18
+[feedback-loop-agent] Step 1 — Signal accuracy audit
+[feedback-loop-agent]   Total signals in bus: 28, HIGH/MEDIUM: 3
+[feedback-loop-agent]   Resolved: 2, correct: 1, incorrect: 1, unresolved: 0, sufficient data: False
+[feedback-loop-agent] Step 2 — Pre-resolution intelligence audit
+[feedback-loop-agent]   Found 1 pre-resolution file(s)
+[feedback-loop-agent]   Signals audited: 4, sufficient data: False
+[feedback-loop-agent] Step 3 — ELO predictive validity check
+[feedback-loop-agent]   Markets resolved in past 7 days: 125
+[feedback-loop-agent]   After production filter: 82 markets pass (43 excluded)
+[feedback-loop-agent]   Non-sports markets with elite directional positions: 45
+[feedback-loop-agent]   LEGENDARY: 5/12 = 42%
+[feedback-loop-agent]   ELITE: 13/23 = 57%
+[feedback-loop-agent]   QUALIFIED: 26/37 = 70%
+[feedback-loop-agent] Step 4 — Strategy registry review
+[feedback-loop-agent]   Strategies parsed: 5, overdue: 1
+[feedback-loop-agent]   OVERDUE: STR-002 — Pre-Resolution Intelligence — Past next revalidation due date 2026-07-01 (47 days overdue)
+[feedback-loop-agent]   Revalidation signal already exists for STR-002 — Pre-Resolution Intelligence — skipping
+[feedback-loop-agent] Step 5 — Writing findings to findings.json
+[feedback-loop-agent]   5 new finding(s) written
+[feedback-loop-agent]   Report written: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-08-17-weekly-audit.md
+[feedback-loop-agent] Telegram notification sent
+[feedback-loop-agent] Run complete — new findings: 5, report: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-08-17-weekly-audit.md
+[2026-08-17T07:00:03Z] Finished feedback-loop-agent (exit: 0)
+[2026-08-24T07:00:01Z] Starting feedback-loop-agent
+[feedback-loop-agent] Weekly run — 2026-08-24
+[feedback-loop-agent] DB: /home/parison/projects/first-repo/data/polymarket_tracker.db
+[feedback-loop-agent] Repo: /home/parison/trading-swarm
+[feedback-loop-agent] Feedback memory: 1 rejected, 4 approved
+[feedback-loop-agent] Run count: 19
+[feedback-loop-agent] Step 1 — Signal accuracy audit
+[feedback-loop-agent]   Total signals in bus: 29, HIGH/MEDIUM: 3
+[feedback-loop-agent]   Resolved: 2, correct: 1, incorrect: 1, unresolved: 0, sufficient data: False
+[feedback-loop-agent] Step 2 — Pre-resolution intelligence audit
+[feedback-loop-agent]   Found 1 pre-resolution file(s)
+[feedback-loop-agent]   Signals audited: 4, sufficient data: False
+[feedback-loop-agent] Step 3 — ELO predictive validity check
+[feedback-loop-agent]   Markets resolved in past 7 days: 70803
+[feedback-loop-agent]   After production filter: 2540 markets pass (68263 excluded)
+[feedback-loop-agent]   Non-sports markets with elite directional positions: 1404
+[feedback-loop-agent]   LEGENDARY: 154/348 = 44%
+[feedback-loop-agent]   ELITE: 420/587 = 72%
+[feedback-loop-agent]   QUALIFIED: 764/1071 = 71%
+[feedback-loop-agent] Step 4 — Strategy registry review
+[feedback-loop-agent]   Strategies parsed: 5, overdue: 1
+[feedback-loop-agent]   OVERDUE: STR-002 — Pre-Resolution Intelligence — Past next revalidation due date 2026-07-01 (54 days overdue)
+[feedback-loop-agent]   Revalidation signal already exists for STR-002 — Pre-Resolution Intelligence — skipping
+[feedback-loop-agent] Step 5 — Writing findings to findings.json
+[feedback-loop-agent]   5 new finding(s) written
+[feedback-loop-agent]   Report written: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-08-24-weekly-audit.md
+[feedback-loop-agent] Telegram notification sent
+[feedback-loop-agent] Run complete — new findings: 5, report: /home/parison/trading-swarm/brain/agent-outputs/feedback-loop/2026-08-24-weekly-audit.md
+[2026-08-24T07:00:03Z] Finished feedback-loop-agent (exit: 0)

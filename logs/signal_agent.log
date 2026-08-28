@@ -313,3 +313,99 @@ Kill it:    tmux kill-session -t signal-agent-signal-20260713
 
 Routing decisions: /brain/model-routing.md
 [2026-07-13T08:00:02Z] Finished signal-agent (exit: 0)
+[2026-07-20T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260720
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260720
+HEAD is now at ef93aa9 feat: trader-intelligence-agent run #11 — Jul 20 weekly
+Spawning tmux session: signal-agent-signal-20260720
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260720
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260720
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260720.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260720
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260720
+
+Routing decisions: /brain/model-routing.md
+[2026-07-20T08:00:02Z] Finished signal-agent (exit: 0)
+[2026-08-10T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260810
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260810
+HEAD is now at f7bcbf4 docs: trader-intelligence weekly run 2026-08-10
+Spawning tmux session: signal-agent-signal-20260810
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260810
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260810
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260810.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260810
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260810
+
+Routing decisions: /brain/model-routing.md
+[2026-08-10T08:00:01Z] Finished signal-agent (exit: 0)
+[2026-08-17T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260817
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260817
+HEAD is now at d1ac98c docs: trader intelligence weekly report 2026-08-17 (run 14)
+Spawning tmux session: signal-agent-signal-20260817
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260817
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260817
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260817.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260817
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260817
+
+Routing decisions: /brain/model-routing.md
+[2026-08-17T08:00:01Z] Finished signal-agent (exit: 0)
+[2026-08-24T08:00:01Z] Starting signal-agent
+──────────────────────────────────────
+Spawning agent: signal-agent-signal-20260824
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Routine signal scan. Rescan all active STR-003 signals for upgrade conditions. Check for new qualifying legendary traders at 95% directional threshold. Update signals.json with rescan notes.
+──────────────────────────────────────
+Creating git worktree: feat/signal-20260824
+HEAD is now at 5f50345 docs: weekly performance analysis 2026-08-24 -- run 14
+Spawning tmux session: signal-agent-signal-20260824
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  signal-agent-signal-20260824
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/signal-20260824
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/signal-20260824.log
+
+Watch it:   tmux attach -t signal-agent-signal-20260824
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t signal-agent-signal-20260824
+
+Routing decisions: /brain/model-routing.md
+[2026-08-24T08:00:01Z] Finished signal-agent (exit: 0)

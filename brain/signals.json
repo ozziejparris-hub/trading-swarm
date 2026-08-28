@@ -10,7 +10,8 @@
         "run_id": "analyst-20260824"
       },
       "timestamp": "2026-08-24T06:30:00Z",
-      "status": "pending"
+      "status": "processed",
+      "processed_at": "2026-08-24T06:10:02.845751"
     },
     {
       "from": "performance-analyst-agent",
@@ -625,6 +626,24 @@
       "timestamp": "2026-08-17T06:30:00Z",
       "status": "processed",
       "processed_at": "2026-08-17T06:17:07.680583"
+    },
+    {
+      "type": "hygiene_complete",
+      "from": "code-hygiene-agent",
+      "status": "pending",
+      "timestamp": "2026-08-28T20:03:47.012039",
+      "payload": {
+        "message": "Weekly code hygiene complete \u2014 2026-08-28. 3 Elon DELETE candidates, 4 archive proposals, 2 duplicate consolidation proposals. No critical security issues. Contract freshness PASS. 26 logs archived.",
+        "report": "brain/agent-outputs/code-hygiene/2026-08-28-weekly.md",
+        "action_required": true,
+        "approvals_needed": [
+          "DELETE RQ3.2/rq3_2_crowd_vs_elite.py (Elon score 4, confirm findings captured)",
+          "DELETE RQ2.2/rq2_2_entry_timing.py (Elon score 4, confirm findings captured)",
+          "DELETE GEO-ELO-003/geo_elo_oos_validation.py (Elon score 4, confirm findings captured)",
+          "Archive scripts/market_filter.py, polymarket_changelog_monitor.py, write_integration_health.py, run_research_scout.py",
+          "Approve shared_utils.py consolidation proposal (sqlite_connection x6, telegram_send x4)"
+        ]
+      }
     }
   ],
   "pending": [

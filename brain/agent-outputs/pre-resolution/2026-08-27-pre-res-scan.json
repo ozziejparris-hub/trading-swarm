@@ -1,0 +1,283 @@
+{
+  "date": "2026-08-27",
+  "markets_checked": 117,
+  "signals_found": 25,
+  "signals": [
+    {
+      "market": "SCOTUS strikes down Trump's Birthright Citizenship EO?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.1502,
+      "market_price_pct": 0.999,
+      "gap_pt": 84.9,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US x Iran permanent peace deal by August 31, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7756,
+      "market_price_pct": 0.999,
+      "gap_pt": 22.3,
+      "elite_traders": 10,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Mojtaba Khamenei seen in public by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7687,
+      "market_price_pct": 0.041,
+      "gap_pt": 72.8,
+      "elite_traders": 9,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Strait of Hormuz traffic returns to normal by August 31?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.3318,
+      "market_price_pct": 0.002,
+      "gap_pt": 33.0,
+      "elite_traders": 30,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US x Iran diplomatic meeting by August 31, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.3772,
+      "market_price_pct": 0.0198,
+      "gap_pt": 35.7,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US-Iran Final Nuclear Deal by August 31, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4092,
+      "market_price_pct": 0.003,
+      "gap_pt": 40.6,
+      "elite_traders": 9,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Iran full airspace closure by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.7451,
+      "market_price_pct": 0.034,
+      "gap_pt": 71.1,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Israel military action against Greater Beirut by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9356,
+      "market_price_pct": 0.061,
+      "gap_pt": 87.5,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Israel x Iran ceasefire continues through August 31?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4722,
+      "market_price_pct": 0.94,
+      "gap_pt": 46.8,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Will the US announce withdrawal from MOU negotiations by August 31?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.565,
+      "market_price_pct": 0.031,
+      "gap_pt": 53.4,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Will Anthropic have the best AI model at the end of August 2026?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.6861,
+      "market_price_pct": 0.986,
+      "gap_pt": 30.0,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US x Iran Effective Ceasefire by August 31?",
+      "tier": "LEGENDARY",
+      "direction": "NO",
+      "smart_money_pct": 0.0899,
+      "market_price_pct": 0.998,
+      "gap_pt": 90.8,
+      "elite_traders": 2,
+      "legendary_traders": 1,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Iran invades Kuwait by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.999,
+      "market_price_pct": 0.014,
+      "gap_pt": 98.5,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Bab el-Mandeb Strait effectively closed by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8235,
+      "market_price_pct": 0.011,
+      "gap_pt": 81.3,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US reissues Iran oil sanction relief by August 31?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.995,
+      "market_price_pct": 0.04,
+      "gap_pt": 95.5,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Will GPT-6 be released by August 31, 2026?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9607,
+      "market_price_pct": 0.05,
+      "gap_pt": 91.1,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Ukraine signs peace deal with Russia by August 31?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.9997,
+      "market_price_pct": 0.02,
+      "gap_pt": 98.0,
+      "elite_traders": 6,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "NATO x Russia military clash by August 31, 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4251,
+      "market_price_pct": 0.034,
+      "gap_pt": 39.1,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "NATO downs another Russian drone by August 31?",
+      "tier": "QUALIFIED",
+      "direction": "NO",
+      "smart_money_pct": 0.0603,
+      "market_price_pct": 0.982,
+      "gap_pt": 92.2,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "US-Iran Hormuz Agreement by August 31?",
+      "tier": "QUALIFIED",
+      "direction": "YES",
+      "smart_money_pct": 0.9415,
+      "market_price_pct": 0.0651,
+      "gap_pt": 87.6,
+      "elite_traders": 0,
+      "legendary_traders": 0,
+      "resolution_date": "2026-08-31"
+    },
+    {
+      "market": "Will Maxx Crosby play for Las Vegas Raiders next?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 0.8893,
+      "market_price_pct": 0.7231,
+      "gap_pt": 16.6,
+      "elite_traders": 1,
+      "legendary_traders": 0,
+      "resolution_date": "2026-09-01"
+    },
+    {
+      "market": "Will Seth Moulton be the Democratic nominee for Senate in Massachusetts?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.4907,
+      "market_price_pct": 0.33,
+      "gap_pt": 16.1,
+      "elite_traders": 5,
+      "legendary_traders": 0,
+      "resolution_date": "2026-09-01"
+    },
+    {
+      "market": "Will Databricks have the greatest valuation growth in August 2026?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.36,
+      "gap_pt": 36.0,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-09-01"
+    },
+    {
+      "market": "Will Julian Alvarez stay at Atletico Madrid?",
+      "tier": "ELITE",
+      "direction": "NO",
+      "smart_money_pct": 0.0,
+      "market_price_pct": 0.57,
+      "gap_pt": 57.0,
+      "elite_traders": 3,
+      "legendary_traders": 0,
+      "resolution_date": "2026-09-02"
+    },
+    {
+      "market": "Will \u00dclle Madise be the next President of Estonia?",
+      "tier": "ELITE",
+      "direction": "YES",
+      "smart_money_pct": 1.0,
+      "market_price_pct": 0.77,
+      "gap_pt": 23.0,
+      "elite_traders": 2,
+      "legendary_traders": 0,
+      "resolution_date": "2026-09-02"
+    }
+  ],
+  "scan_timestamp": "2026-08-27T08:27:58.174845+00:00"
+}

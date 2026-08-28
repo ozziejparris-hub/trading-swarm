@@ -286,3 +286,99 @@ Kill it:    tmux kill-session -t performance-analyst-agent-analyst-20260713
 
 Routing decisions: /brain/model-routing.md
 [2026-07-13T06:00:01Z] Finished performance-analyst-agent (exit: 0)
+[2026-07-20T06:00:01Z] Starting performance-analyst-agent
+──────────────────────────────────────
+Spawning agent: performance-analyst-agent-analyst-20260720
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly performance analysis. Brier scores, ELO health, signal quality, strategy pipeline, resource usage. Update brain/kpis.md.
+──────────────────────────────────────
+Creating git worktree: feat/analyst-20260720
+HEAD is now at 83cbe7b docs: 2026-07-19 session summary — O-37 quarantine closed (84 markets / 965,542 trades), Writer A Sunday run confirmed clean
+Spawning tmux session: performance-analyst-agent-analyst-20260720
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  performance-analyst-agent-analyst-20260720
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/analyst-20260720
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/analyst-20260720.log
+
+Watch it:   tmux attach -t performance-analyst-agent-analyst-20260720
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t performance-analyst-agent-analyst-20260720
+
+Routing decisions: /brain/model-routing.md
+[2026-07-20T06:00:01Z] Finished performance-analyst-agent (exit: 0)
+[2026-08-10T06:00:01Z] Starting performance-analyst-agent
+──────────────────────────────────────
+Spawning agent: performance-analyst-agent-analyst-20260810
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly performance analysis. Brier scores, ELO health, signal quality, strategy pipeline, resource usage. Update brain/kpis.md.
+──────────────────────────────────────
+Creating git worktree: feat/analyst-20260810
+HEAD is now at 90638a0 docs: session summary 2026-08-08/09 — O-49 self-healing correction, B3 power shortfall, Phase 2 reframe
+Spawning tmux session: performance-analyst-agent-analyst-20260810
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  performance-analyst-agent-analyst-20260810
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/analyst-20260810
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/analyst-20260810.log
+
+Watch it:   tmux attach -t performance-analyst-agent-analyst-20260810
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t performance-analyst-agent-analyst-20260810
+
+Routing decisions: /brain/model-routing.md
+[2026-08-10T06:00:01Z] Finished performance-analyst-agent (exit: 0)
+[2026-08-17T06:00:01Z] Starting performance-analyst-agent
+──────────────────────────────────────
+Spawning agent: performance-analyst-agent-analyst-20260817
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly performance analysis. Brier scores, ELO health, signal quality, strategy pipeline, resource usage. Update brain/kpis.md.
+──────────────────────────────────────
+Creating git worktree: feat/analyst-20260817
+HEAD is now at a1804ad docs: bank 2026-08-16 session -- reconciliation day, three characterisation passes
+Spawning tmux session: performance-analyst-agent-analyst-20260817
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  performance-analyst-agent-analyst-20260817
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/analyst-20260817
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/analyst-20260817.log
+
+Watch it:   tmux attach -t performance-analyst-agent-analyst-20260817
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t performance-analyst-agent-analyst-20260817
+
+Routing decisions: /brain/model-routing.md
+[2026-08-17T06:00:01Z] Finished performance-analyst-agent (exit: 0)
+[2026-08-24T06:00:01Z] Starting performance-analyst-agent
+──────────────────────────────────────
+Spawning agent: performance-analyst-agent-analyst-20260824
+Model: claude-sonnet-4-6 (Tier 3)
+Task: Run weekly performance analysis. Brier scores, ELO health, signal quality, strategy pipeline, resource usage. Update brain/kpis.md.
+──────────────────────────────────────
+Creating git worktree: feat/analyst-20260824
+HEAD is now at 4b3f69e decision: sweep safety fixes implemented and verified -- checkpoint-recency hold, terminal marker + Telegram-on-exit
+Spawning tmux session: performance-analyst-agent-analyst-20260824
+<stdin>:22: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+Task registered in registry
+
+✓ Agent spawned successfully
+  Session:  performance-analyst-agent-analyst-20260824
+  Model:    claude-sonnet-4-6 (Tier 3)
+  Branch:   feat/analyst-20260824
+  Logs:     /home/parison/trading-swarm/logs/agent_logs/analyst-20260824.log
+
+Watch it:   tmux attach -t performance-analyst-agent-analyst-20260824
+Detach:     Ctrl+B then D
+Kill it:    tmux kill-session -t performance-analyst-agent-analyst-20260824
+
+Routing decisions: /brain/model-routing.md
+[2026-08-24T06:00:02Z] Finished performance-analyst-agent (exit: 0)

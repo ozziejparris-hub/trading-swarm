@@ -1,0 +1,96 @@
+{
+  "scan_date": "2026-08-17",
+  "scan_timestamp": "2026-08-17T07:30:29.904103+00:00",
+  "filters": {
+    "min_traders": 2,
+    "min_gap_pt": 15.0
+  },
+  "markets_scanned": 8,
+  "markets_in_report": 3,
+  "skipped_no_price": 0,
+  "skipped_stale_price": 0,
+  "skipped_overdue": 0,
+  "markets": [
+    {
+      "rank": 1,
+      "market_id": "0x3c6bcb7da14ea576e5af25547dbd96f2bb24ac34e748e76aecff2ee9195dd1ac",
+      "title": "US x Iran ceasefire by March 31?",
+      "category": "Geopolitics",
+      "legendary_count": 2,
+      "smart_money_direction": "YES",
+      "smart_money_pct": 100.0,
+      "yes_capital": 90.0,
+      "no_capital": 0.0,
+      "total_capital": 90.0,
+      "both_sides_ratio": 0.0,
+      "signal_quality": "CLEAN",
+      "current_price_yes": 0.0445,
+      "gap_pt": 95.5,
+      "days_to_resolution": null,
+      "resolution_date": "",
+      "signal_credibility_score": 10.0,
+      "signal_credibility_tier": "LOW",
+      "signal_credibility_components": {
+        "net_position_conviction": 10.0,
+        "two_sidedness_penalty": -0.0,
+        "entry_timing_alpha": 0.0,
+        "conviction_depth": 0.0
+      },
+      "net_committed_traders": 2
+    },
+    {
+      "rank": 2,
+      "market_id": "0xde2be5c360bafeb33cc43bd0a49368ed89371daca90e1cc6da8bf7f93d5bbadf",
+      "title": "Will Kash Patel leave the Trump administration before 2027?",
+      "category": "Elections",
+      "legendary_count": 2,
+      "smart_money_direction": "YES",
+      "smart_money_pct": 100.0,
+      "yes_capital": 56.2,
+      "no_capital": 0.0,
+      "total_capital": 56.2,
+      "both_sides_ratio": 0.0,
+      "signal_quality": "CLEAN",
+      "current_price_yes": 0.25,
+      "gap_pt": 75.0,
+      "days_to_resolution": 135.7,
+      "resolution_date": "2026-12-31",
+      "signal_credibility_score": 42.0,
+      "signal_credibility_tier": "MEDIUM",
+      "signal_credibility_components": {
+        "net_position_conviction": 40.0,
+        "two_sidedness_penalty": -0.0,
+        "entry_timing_alpha": 0.0,
+        "conviction_depth": 2.0
+      },
+      "net_committed_traders": 3
+    },
+    {
+      "rank": 3,
+      "market_id": "0x4167e22670f31e5f93d132f78108f3fae809bd15cadf78983eff096845ed1415",
+      "title": "Ukraine signs peace deal with Russia before 2027?",
+      "category": "Geopolitics",
+      "legendary_count": 2,
+      "smart_money_direction": "NO",
+      "smart_money_pct": 100.0,
+      "yes_capital": 1.7,
+      "no_capital": 3703.0,
+      "total_capital": 3704.7,
+      "both_sides_ratio": 0.0,
+      "signal_quality": "CLEAN",
+      "current_price_yes": 0.165,
+      "gap_pt": 16.5,
+      "days_to_resolution": 135.7,
+      "resolution_date": "2026-12-31",
+      "signal_credibility_score": 28.3,
+      "signal_credibility_tier": "LOW",
+      "signal_credibility_components": {
+        "net_position_conviction": 10.0,
+        "two_sidedness_penalty": -0.0,
+        "entry_timing_alpha": 10.0,
+        "conviction_depth": 8.3
+      },
+      "net_committed_traders": 2
+    }
+  ]
+}
