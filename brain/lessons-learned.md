@@ -698,3 +698,40 @@ This document grows more valuable every week.
 - **OPEN:** Elections fee classification verification — Polymarket API check needed before Phase 2 commits to cost model.
 - **OPEN:** Contract Section 9 thresholds now severely stale (3–7× below actual) — update needed.
 - **MONITOR:** SCL-007 system_observer.py LEGENDARY threshold — still unresolved in first-repo.
+
+---
+
+## Lessons added 2026-08-29
+
+### System Architecture Lessons
+- 2026-08-29: Integration contract Section 9 validated — all metrics PASS. clean_pool=34,097 (threshold 15,000), true_research_pool=27,177 (threshold 3,000), pool_c=3,977 (threshold 1,700), legendary_clean=10 (threshold 5), legendary_active=11, legendary_base=84, clean_markets=437,837. Contract version v2.13 matches most recent Section 8 changelog entry (SCL-012). WARNING: thresholds remain 3–10× below actual values — Section 9 health monitoring is still non-functional for early warning. Oscar update needed. Notable: clean_markets jumped from 295,492 (Aug 24 analyst report) to 437,837 live (+142,000) — suggests Segment 3 of the discovery-gap sweep completed between Aug 24 and Aug 29. (Source: training-librarian Responsibility 10, 2026-08-29)
+
+- 2026-08-29: findings.json maintenance this run: 30 findings SUPERSEDED (21 daily STR003-ACC-006 duplicates Aug 8–28; 3 ELO tier weekly rolling Aug 10+17; 2 signal-accuracy Aug 10+17; 1 STRATEGY-OVERDUE Aug 17; 3 older ELO tier entries previously missed), 4 EXPIRED by date (RQ1.1-RERUN-001 and GEO-ELO-003-OOS-001 past Aug 26 expiry; LH-001-LIFECYCLE-001 past Aug 20; GEO-ELO-001 past Aug 23), 1 STRATEGY-OVERDUE expired (Aug 24 STR-002 overdue finding — STR-002 is EXPERIMENTAL not overdue). Post-maintenance ACTIVE: 11. No schema conformance fixes needed. No empty directories. (Source: training-librarian Responsibility 7, 2026-08-29)
+
+- 2026-08-29: Daily STR003-ACC-006 accumulation is a systemic maintenance burden. This run superseded 21 consecutive daily entries (Aug 8–28), all with identical accuracy=50.0% and no information content. The previous week's run (Aug 15) superseded similar clusters. This creates recurring noise with real maintenance cost (31 findings consumed by housekeeping). The score_str003_signals script needs a change-detection gate: write a new entry ONLY when sample_size or accuracy changes. See 2026-06-27 lesson (6th time flagging this). (Source: training-librarian Responsibility 7, 2026-08-29)
+
+- 2026-08-29: canonical definitions drift guard (check_canonical_definitions.py) has been failing daily since 2026-08-20. The root cause is documented in brain/decisions/2026-08-16-canonical-infrastructure-recon.md (backtest_window_sql enforcement gap). This is non-blocking but means the drift guard is not trustworthy. Any agent relying on this check to confirm canonical definitions are live should be aware that the check may return false negatives. (Source: performance-analyst 2026-08-24-weekly.md)
+
+### Calibration Findings
+- 2026-08-29: First statistically meaningful 7d GEO Brier reading in system history: Brier=0.0895, edge=+0.170, DirAcc=59.5%, n=84 (from Aug 24 performance-analyst report). The n jump was caused by Segment 2 of the discovery-gap sweep resolving ~59,236 previously-missing markets in the DB. Caveat: geo_elo is confirmed unfit (replacement metric waiting for Oscar cutover decision) — these numbers describe Pool C behaviour under the broken metric and should be treated as tracking data only, not calibration proof.
+
+- 2026-08-29: 30d GEO Brier=0.3149 (n=99), Brier worse than naive (0.2580) but DirAcc=56.6% positive. The contradiction (right directionally but worse Brier) is explained by YIELD_HARVESTER contamination — a few Pool C traders bet 0.92+ probability on markets that resolved the other way, producing disproportionate Brier penalty. Pool cleaning after geo_elo cutover may resolve this. Elections remains random at both 7d (DirAcc=49.0%) and 30d (DirAcc=50.0%), consistent with all-2026 baseline finding (Elections is confirmed negative-edge territory). (Source: performance-analyst 2026-08-24-weekly.md)
+
+### Strategy Insights
+- 2026-08-29: STR-003 gate-valid accuracy remains FROZEN at 2/5=40% for the 5th consecutive week (Aug 24 analyst report). Signal engine correctly paused — no new signals registered while geo_elo is confirmed unfit. Gate 3 requires 60% over 10+ signals; at current rate reaching n=10 is blocked by both pool depletion (legendary_clean=10, near-zero geo Pool C activity) and the unfit metric. The cutover decision is the prerequisite to all downstream progress. (Source: performance-analyst 2026-08-24-weekly.md)
+
+- 2026-08-29: geo_elo cutover creates a material pool discontinuity: only 15/81 current LEGENDARY traders would be LEGENDARY under the replacement metric (18.5% overlap). The near-legendary pool (1800–2174 geo_elo_active) will also shuffle materially. Any position scan or signal generation using the pre-cutover LEGENDARY pool composition will not be comparable to post-cutover results. This is expected but must be documented clearly: pre-cutover and post-cutover STR-003 signal histories are not directly comparable. (Source: performance-analyst 2026-08-24-weekly.md)
+
+### Positions Scan (Aug 17 + Aug 24)
+- 2026-08-29: Two-week scan summary. No HIGH conviction signals (≥4 LEGENDARY, ≥30pt) in either Aug 17 or Aug 24 scans — 9th consecutive scan week without a qualifying HIGH signal. The Iran ceasefire MIXED_SIGNAL (persistent since Jun 27) appears to have resolved or fallen off the scan — it was last seen Aug 17 (2 LEGENDARY YES, 95.5pt gap, but no expiry date on market = LOW SCI despite large gap). Kash Patel (2 LEGENDARY YES, gap=74–75pt, Elections, MEDIUM SCI) appears in both scans but is in the confirmed negative-edge Elections category. Ukraine peace deal (2 LEGENDARY NO, gap=15.5–16.5pt, LOW SCI) appears in both scans. No new STR-003 registrations warranted from either scan. (Source: 2026-08-17 + 2026-08-24 positions-scan.json)
+
+### Open Questions (updated 2026-08-29)
+- **CRITICAL (3rd week):** geo_elo cutover decision — still pending Oscar. Nothing downstream can be built on stable foundations until resolved. Phase 2 B7 table definition needs new LEGENDARY tier; Gate 4 RQs blocked; signal-agent correctly dark pending decision.
+- **CRITICAL:** Phase 2 B7 not built — every week without live signal recording is permanently lost n for the replacement metric's live validation. Build B7 immediately after geo_elo cutover decision.
+- **URGENT:** STR003-004 (Putin NO) — still DB unresolved, now 60+ days since June 30 resolution. Run fast_resolution_check.py targeted to this market.
+- **URGENT:** score_str003_signals deduplication — recurring maintenance overhead (21 identical daily entries superseded this run, 7th consecutive week flagging). Add change-detection gate to script.
+- **OPEN:** Contract Section 9 thresholds — now 3–10× below actual values. Update needed.
+- **OPEN:** legendary_clean trajectory — 10 (Aug 29) recovering from 9 low. Near-legendary at 25 (recovering). Monitor over next 4 weeks.
+- **MONITOR:** check_canonical_definitions.py failing daily since Aug 20. Drift guard not trustworthy.
+- **MONITOR:** SCL-007 system_observer.py LEGENDARY threshold — still unresolved in first-repo.
+- **MONITOR:** SCL-004 feedback-loop-agent condition_id semantic conflict — 12th week PENDING OSCAR REVIEW.
