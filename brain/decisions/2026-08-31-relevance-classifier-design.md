@@ -5,9 +5,20 @@ classified. ~19 live Gamma calls were made to characterise the slug input (Part 
 counts stated inline.
 **Predecessors:** `2026-08-31-geo-scoping-inventory.md` (3b367dd),
 `2026-08-31-why-unknown-investigation.md` (ce35996),
-`2026-08-31-ingest-category-defect.md` (6df24e6).
+`2026-08-31-ingest-category-defect.md` (6df24e6),
+`2026-08-31-local-llm-consolidation-assessment.md` (7099743, see Amendment below).
 **Tagging:** `[V]` verified this session; `[I]` inferred. Every claim in the prompt
 treated as a hypothesis.
+
+**Amendment 2026-08-31** — cites `2026-08-31-local-llm-consolidation-assessment.md`
+(7099743). Adds §2.8 (module shape / M9 subsumption), §2.9 (canonical decision
+authority), §2.10 (M6 is dead code, not a shortcut), and an **Open Items** section
+(~300 markets/day dropped at ingest; `AI_FILTER_MODE="ai_only"` is a mode that does
+not exist). The §2.5 concurrency note is repointed to §2.8. The cascade shape, the
+keyset cursor, the guarded category-only write, the provenance column + sidecar log,
+and **every** validation-gate threshold (§3.8–3.11) are unchanged. (Note: this design
+doc did not itself carry the "M6 LIVE (hybrid mode)" claim — that is in the
+geo-scoping inventory; §2.10 records the correction.)
 
 ---
 
@@ -42,6 +53,17 @@ treated as a hypothesis.
   (residual); pre-filter false-exclusion **≤ 0.5 %**. **On failure: STOP** — the
   corpus is spent; at most one retry against a *fresh independently-drawn* corpus with
   the fix specified in advance; a second failure means abandon.
+- **Module & authority (Amendment):** built as `relevance_classifier.py` — one model,
+  one prompt, one output vocabulary, one cursor — and it **subsumes M9**: after the
+  gate passes, `daily_maintenance.py`'s category step is repointed to it and M9's
+  bespoke script is retired. It is also the **first** thing built as a canonical
+  *decision* authority for "is this market Geopolitics/Elections" — the write side has
+  been canonical since `column_definitions.py`; the decision side never was (nine
+  scattered code paths, five vocabularies). See §2.8–2.9.
+- **M6 correction (Amendment):** `monitor.py`'s Mistral KEEP/EXCLUDE gate is **dead
+  code in production** (`ai_agent=None` — zero `[AI PATH]` lines in ~3 months of
+  journald), its cache is always empty, and reactivating it is a rewrite, not a reuse.
+  Not a cheaper path. See §2.10.
 
 ---
 
@@ -201,12 +223,12 @@ the batch** (not "+ batch_size" — the actual last row).
   `last_market_id = ''` and sweep again. Rows already classified are filtered by
   `category='Unknown'`; only genuinely-still-`Unknown` rows are revisited. Each full
   sweep is idempotent and cheap once the backlog is drained.
-- **Concurrency with M9:** if M9 keeps running, both target `category='Unknown'`.
-  SQLite serialises writes (WAL + `busy_timeout`). Because both sides only ever move a
-  row *out* of `Unknown`, last-writer-wins is harmless (same terminal state family).
-  Recommend M9 be paused for the one-off backlog run to avoid the two cursors
-  interfering, but it is not required for correctness. (Decision on pausing M9 is out
-  of scope here.)
+- **Concurrency with M9:** M9 is not run alongside this — it is **subsumed** (§2.8).
+  Until the repoint, if M9 is still scheduled, both target `category='Unknown'`;
+  SQLite serialises writes (WAL + `busy_timeout`) and, because both sides only ever
+  move a row *out* of `Unknown`, last-writer-wins is harmless (same terminal state
+  family). The one-off backlog run should still execute with M9's daily step paused,
+  but that is an operational detail of the cutover, not a correctness requirement.
 
 **Sweep-scoping use (prompt goal (a)):** the same deterministic pre-filter, run over
 the *unswept* candidate set, produces the "sweep only what is plausibly relevant"
@@ -288,6 +310,93 @@ the fact." Adding a classifier that writes tens of thousands of category values
   table join rather than an archaeology exercise.
 - Adding a column and a table is a schema migration — **specified here, not
   performed.**
+
+### 2.8 Module shape and M9 subsumption *(Amendment — 7099743)*
+
+The classifier is built as a **module** (`monitoring/relevance_classifier.py` or
+similar), not a standalone script:
+
+- **One** model (Qwen3-Coder — already M9's model, so the model does not change),
+  **one** prompt, **one** output vocabulary `{Geopolitics, Elections, NotRelevant}`,
+  **one** keyset cursor (§2.5), **one** cascade (§2.4).
+- **Invocation sites** — called from each, reimplemented in none:
+  1. the one-off backlog run + sweep-scoping (now);
+  2. `daily_maintenance.py`'s "Backfill market categories" step (after the gate — see
+     below);
+  3. the ingest hook (future — §2.10 and `2026-08-31-ingest-category-defect.md`).
+- **The repoint to `daily_maintenance.py` happens ONLY AFTER the gate (§3) passes.**
+  Until then, M9's `backfill_market_categories.py` remains the nightly step. A regression
+  in the nightly category write therefore cannot slip in behind an unvalidated
+  replacement — the swap is gated on the same evidence as everything else here.
+- **Preserved from M9** `[V]` (7099743): the `WHERE category='Unknown'` write guard,
+  and the **dual write** to `markets.category` **and** `trades.market_category` in the
+  same pass.
+- **Retired from M9:** the 37-keyword `KEYWORD_FILTER` pre-filter (reaches only ~2.5 %
+  of the backlog, over-selects true geo/elec 2–3×), and the `LIMIT/OFFSET` iteration
+  loop (the confirmed step-over pathology, ~19,000 rows permanently skipped —
+  `2026-08-30-category-classifier-investigation.md`).
+- Net: same model, changed candidate selection, changed iteration, added slug inputs,
+  and the conservative "default Unknown" prompt instruction dropped (§ "What remains
+  unspecified").
+
+### 2.9 Canonical decision authority *(Amendment — 7099743)*
+
+`markets.category`'s **write** side has been canonical and structurally self-tested
+since `monitoring/column_definitions.py` — the `BACKTEST_WINDOW_BASE_WHERE` self-test
+forbids `trades.market_category` in population SQL. The **decision** side — *is this
+market Geopolitics or Elections* — **has never had a designated authority.** 7099743
+enumerated **nine** independent code paths across **five** vocabularies:
+
+1. `monitor.py` keyword-exclusion + `geopolitics_signals` fast-path (live)
+2. `monitor.py._ai_categorization_check` — Mistral (dead code — §2.10)
+3. `backfill_market_categories.py` — Qwen (M9; live, nightly)
+4. `backfill_missing_markets.py.CATEGORY_TAG_MAP` — keyword→category (live, ≈inert)
+5. `swarm/scripts/market_filter.py.should_include_market` — keyword fork, last synced 2026-05-02 (feedback-loop only)
+6. `scripts/detect_insider_activity.py._is_geopolitics` — older inline keyword fork
+7. `analysis/unified_elo_system.py.categorize_market` — DB-category-then-keyword, own 7-value vocabulary
+8. `analysis/trader_specialization_analysis.py.categorize_market` — keyword-score-max, own `CATEGORY_KEYWORDS`
+9. `analysis/consensus_divergence_detector.py.classify_market_by_disagreement` — disagreement-based, tangential
+
+**This module is the first built as the decision authority.** It mirrors
+`column_definitions.py`'s role on the write side: one place the geo-relevance decision
+is defined; other code calls it, does not re-derive it. The **ingest hook is a
+declared future caller** — once the classifier is trusted, running it at first sighting
+prevents an `Unknown` instead of repairing one nightly.
+
+**Explicitly OUT OF SCOPE — recorded as known, not-yet-converged, not force-fitted:**
+
+- `analysis/*` `categorize_market` (#7, #8): serve ELO / specialisation logic with
+  their own multi-value vocabularies (Economics, Sports, …), not thesis relevance.
+- Cross-repo keyword forks — `swarm/market_filter.py` (#5) and
+  `detect_insider_activity._is_geopolitics` (#6): different repo, different runtime
+  constraints (no Ollama in some contexts), different callers.
+- Converging those is a separate project. This module's authority is over the
+  geo-relevance decision for `markets.category` — it does not claim the ELO, insider,
+  or feedback-loop paths.
+
+### 2.10 M6 is dead code, not a shortcut *(Amendment — 7099743)*
+
+`[V]` (7099743): `monitor.py`'s Mistral KEEP/EXCLUDE gate (`_ai_categorization_check`,
+"M6" in the geo-scoping inventory) is **not running in production.** The service runs
+`scripts/start_monitoring.py → monitoring.main_telegram_safe`, which constructs the
+monitor with **`ai_agent=None` (hardcoded)**; the Layer-2 guard `if … and
+self.ai_agent` fails on `None`, so `_ai_categorization_check` has **never been
+called** — **zero `[AI PATH]` / `[AI FILTER]` lines across ~3 months of retained
+journald**. The geo-scoping inventory's "M6 LIVE (hybrid mode)" was inferred from the
+`AI_FILTER_MODE = "hybrid"` module constant, not verified against the entrypoint; it
+is wrong.
+
+- **`ai_cache` is in-memory, non-persistent (recreated empty on every start),
+  title→bool, 10 k cap.** In production it is **always empty** — its only writer never
+  runs. **There is no discarded intelligence to recover — none was ever computed.**
+- **Reactivating M6 is a rewrite, not a reuse.** Its vocabulary is binary
+  KEEP/EXCLUDE with **Elections folded into "GEOPOLITICS"** and **ECONOMICS also
+  kept** — a different, wider net than Geopolitics/Elections. Its input is
+  **title-only** (no slug). Its cache is volatile. To make it write `markets.category`
+  at ingest you replace the prompt, the vocabulary, the input set, and the cache, and
+  wire an `ai_agent`. **Only the hook location survives.** The consolidated classifier
+  (this module) *is* that rewrite; "just turn M6 back on" is not a cheaper alternative
+  and should not be proposed as one.
 
 ---
 
@@ -415,7 +524,37 @@ Fixed now. **Not "iterate until it passes."**
   suits M9's keyword-pre-filtered candidates but would hurt recall here).
 - Schema migration mechanics for `category_source` + `category_classification_log`
   (backup, `ALTER`, `'legacy'` backfill of ~11,967 rows).
-- Whether M9 is paused for the one-off run (recommended, not required — noted in 2.5).
+- Operational cutover detail: M9's daily step stays live until the gate passes, then
+  the `daily_maintenance.py` category step is repointed to this module (§2.8); the
+  one-off backlog run executes with M9's step paused.
 - Staging-table design for the one-time Gamma slug fetch.
+
+---
+
+## OPEN ITEMS SURFACED BY THE CONSOLIDATION ASSESSMENT (7099743)
+
+Not parts of this design left unspecified — questions the assessment raised that sit
+*upstream of or beside* this classifier, recorded here so they are not lost.
+
+1. **~300 markets/day are dropped at ingest and never get a `markets` row at all.**
+   `[I]` In production the monitor's Layer-1 keyword-exclusion gate is the only active
+   exclusion (Gate 0 ≈never fires; Layer 2 is dead — §2.10). Markets it excludes are
+   `continue`-skipped **before** storage — **absent, not miscategorised**. Journald
+   over a single 2-hour window showed ~25 `[KEYWORD FILTER] [EXCLUDED]` lines ⇒
+   ~300/day extrapolated. **That filter's correctness has never been audited.** If it
+   has false-exclusions, relevant markets are being lost *upstream* of everything this
+   design addresses — the classifier can only act on markets that got a row. The
+   figure needs measuring over a proper window (days, not one 2-hour sample), and the
+   filter's false-exclusion rate needs a ground-truth check, before its impact can be
+   sized. Open.
+
+2. **`AI_FILTER_MODE = "ai_only"` is a mode that does not exist.** `[V]` In
+   `monitor.py._should_exclude_market` the test is `AI_FILTER_MODE in
+   ["hybrid","ai_only"]`, and Layer 1's keyword exclusion short-circuits before it
+   either way, so `"ai_only"` behaves **identically to `"hybrid"`** — there is no
+   "AI decides everything" path. Recorded so the next reader of `monitor.py` is not
+   misled into thinking a stricter mode exists.
+
+---
 
 No implementation. This is the design and the pre-registered gate.
