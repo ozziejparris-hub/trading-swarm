@@ -113,10 +113,155 @@ System target:                  < 0.20 minimum
 
 ## Current Week
 
-Last updated: 2026-08-24
-Updated by: performance-analyst-agent (run 14)
+Last updated: 2026-08-31
+Updated by: performance-analyst-agent (run 15)
 
-### Week of 2026-08-24
+### Week of 2026-08-31
+
+#### Prediction Accuracy
+```
+⚠ CONTEXT: geo_elo confirmed unfit (2026-08-15). Pool C Brier scores computed on broken metric.
+  Replacement metric (metric_v2f) built but cutover PENDING Oscar (4 weeks outstanding).
+  NOTE ON METHODOLOGY: All queries this week use geo_elo_active>=1800 filter (elite Pool C subset).
+  Full Pool C (all geo_accuracy_pool=1) numbers are materially different — see all-2026 note.
+
+PRIMARY: elite Pool C (geo_accuracy_pool=1, geo_elo_active>=1800, contested 0.05-0.95):
+  GEOPOLITICS (7d, Aug 24-31):
+    Brier score (7d):            0.2178  ❌ worse than naive (0.1072), edge=-0.1105
+    Directional accuracy (7d):   50.0%   (n=2 — INSUFFICIENT SAMPLE, not interpretable)
+    NOTE: n collapsed from 84 (Aug 24) to 2 — Aug 24's spike was sweep artefact.
+  GEOPOLITICS (30d, Aug 1-31):
+    Brier score (30d):           0.3738  ❌ worse than naive (0.3060), edge=-0.068
+    Directional accuracy (30d):  60.9%   (n=23 — marginal, directionally positive)
+  ELECTIONS (7d, Aug 24-31):
+    n=0 — no elections markets with elite Pool C activity resolved this week
+  ELECTIONS (30d, Aug 1-31):
+    Brier score (30d):           0.2401  ❌ slightly worse than naive (0.2287), edge=-0.011
+    Directional accuracy (30d):  66.7%   (n=6 — too small for trend)
+
+  ALL-2026 BASELINES (elite Pool C, geo_elo_active>=1800 — this run's authoritative numbers):
+    GEO (all 2026, elite Pool C):
+      Brier:          0.2204  ✅ beats naive (0.3786), edge=+0.1582
+      Dir accuracy:   72.8%   (n=415)
+    ELECTIONS (all 2026, elite Pool C):
+      Brier:          0.2856  ✅ beats naive (0.3205), edge=+0.0349
+      Dir accuracy:   68.5%   (n=340) — POSITIVE EDGE for elite subset
+      → KEY FINDING: Elections negative edge (confirmed Aug 10, n=1,111 full Pool C) is
+        concentrated in LOWER-ELO Pool C members. Elite subset (>=1800) shows positive edge.
+        Phase 6: limit both categories to geo_elo_active>=1800 tier, not full Pool C.
+
+  VALIDATED BASELINE (HIGH confidence, prior runs):
+    Full Pool C GEO 2026:       70.7%  (2026-06-05-POOL-C-GEO-FULL-2026-001, n=444)
+    LEGENDARY geo_elo tier:     79.6%  (n=49 markets)
+```
+
+#### ELO System Health
+```
+Total traders (DB):                   186,822  ↑  (vs 177,182 Aug 24, +5.4%)
+True research pool (resolved≥20):     27,245   ↑  (vs 23,994 Aug 24, +13.5%)
+Research pool (research_excluded=0):  37,082   ↑  (vs 33,700 Aug 24, +10%)
+Pool C (geo_accuracy_pool=1):         3,982    ↑  (vs 3,826 Aug 24, +4.1%)
+geo_elo LEGENDARY (geo_elo ≥ 2175):    83     ↑  (vs 79 Aug 24, +5%)
+geo_elo LEGENDARY (geo_elo_active ≥ 2175): 10/11 ↓ (vs 12 Aug 24 — 2 decayed)
+legendary_clean (geo_elo_active≥2175, pool_c, research_excl=0): 10 → (stable)
+near_legendary_clean (geo_elo_active 1800-2174): 27 ↑ (vs 25 Aug 24)
+Closest to LEGENDARY threshold:       geo_elo_active=2158.2 (gap=16.8 pts)
+  0x2884f981: gap=16.8 | 0xb6ce892d: gap=20.3 — two traders near threshold
+Active traders (7d, all):             523  ↑  (vs 457 Aug 24, +14.4%)
+Pool C geo activity (7d):             25 traders, 65 trades ↓ (was 84/242 Aug 24)
+Clean markets (DB):                   438,301  ↑↑↑  (was 295,492 Aug 24, +48.3%)
+Total markets in DB:                  792,792  (779,004 Unknown category = 98.4%)
+Geo+Elections resolved:               10,982 of 11,949 total — sweep geo pool essentially exhausted
+geo_elo fitness:                      UNFIT — confirmed 2026-08-15
+Contract violations (Section 9):      NONE — all thresholds met ✅
+```
+
+#### Signal Quality
+```
+STR-003 (geo_elo_active criteria — geo_elo confirmed unfit):
+  Qualifying traders (legendary_clean): 10  (stable 6 weeks)
+  Gate-valid scored accuracy:           2/5 = 40%  (FROZEN — signal-agent dark, 6th week)
+  STR003-004 (Putin NO):               DB UNRESOLVED ⚠ (62+ days overdue)
+  New signals this week:               NONE
+  Signal-agent status:                 Dark — geo_elo unfit, pause appropriate
+  Gate 3 status:                       FROZEN / cutover decision required
+
+STR-002 (all scored signals):
+  Total: 216, scored 201 (correct=65, wrong=136, pending=15)
+  Accuracy: 32.3% (was 29.6% Aug 24) ↑ slight
+  Average edge: -0.0083 (was -0.0152 Aug 24) ↑ slight improvement
+  THESIS CELL (CONTESTED + has_proven_trader=1): 48.0% (12/25) — NOT showing edge
+  NEAR_RESOLVED + proven: 32.6% (45/138) — noise as expected
+
+LH-001 (insider signals): 4/7 = 57.1% — unchanged
+```
+
+#### Strategy Pipeline
+```
+Phase 2 (paper trading):   PRIMARY EXPERIMENT
+  B7 paper_trades table:   NOT BUILT ⚠ (4th consecutive week CRITICAL)
+  Blocker:                 geo_elo cutover decision (pool definition unstable)
+
+Discovery-gap sweep:       ~55% complete
+  Segments 3+4:            DRIVERS BUILT (93K + 66.5K markets), NOT YET RUN
+  CRITICAL FINDING:        requeue gate drops 91% of sweep-resolved markets
+                           ELO data not propagating — fix needed before next segments
+  Unknown category:        779,004 markets (98.4%) — structural cap on geo/elec research
+
+Replacement metric:        metric_v2f (2026-08-15) — OOS point gap +0.0316, CI crosses zero
+                           Cutover decision PENDING Oscar (4 weeks outstanding — CRITICAL)
+geo_elo:                   UNFIT (5 structural defects confirmed)
+STR-003:                   EXPERIMENTAL — paused (geo_elo unfit)
+STR-002:                   EXPERIMENTAL — 32.3% accuracy; thesis cell at 48% (no edge)
+STR-004:                   HYPOTHESIS — 0/1
+LH-001:                    CONDITIONAL_PASS — 4/7 (57.1%) — unchanged
+RQ1.1:                     BLOCKED — requires replacement metric cutover
+RQ3.2:                     INCONCLUSIVE — reframe needed
+ELO Arc:                   Stage 3 COMPLETE
+```
+
+#### System Resources
+```
+Estimated API spend (7d Aug 24-31): ~$1  (performance-analyst only)
+trading-swarm orchestrator:        ACTIVE (05:53 UTC healthy)
+polymarket-monitoring:             ACTIVE
+Services:                          All running
+Git commits (trading-swarm, 7d): 17 (requeue gate, backup guard, sweep segments 3+4 docs)
+Git commits (first-repo, 7d):    4  (sweep segments 3+4 drivers, geo/elec backlog artifact)
+Brain directory size:              12MB (↑ from 11MB Aug 24)
+First-repo DB:                     18GB (↑ from 17GB Aug 24)
+CI pipeline:                       STATUS UNKNOWN this week
+Signal-agent:                      DARK — 14 days (intentional, geo_elo unfit)
+Feedback-loop:                     Run 17 complete Aug 17 ✅ (Gate 1: 17/4) | Run 18 due Sep 7
+Order book capture:                ACTIVE
+ELO snapshots:                     Running
+Backup guard:                      flock overlap guard live (2026-08-25)
+```
+
+#### Week-on-Week Trends
+```
+Brier (geo, 7d):                    0.0895 (Aug 24, n=84 sweep artefact) → 0.2178 (n=2) — n collapse
+Brier (geo, 30d):                   0.3149 (Aug 24, n=99) → 0.3738 (Aug 31, n=23) ↓ worse
+Brier (elec, 30d):                  0.3506 (Aug 24, n=78) → 0.2401 (Aug 31, n=6) ↑ better (tiny n)
+GEO elite DirAcc (all 2026, n=415): 72.8% ✅ (first time measured at >=1800 filter)
+ELEC elite DirAcc (all 2026, n=340): 68.5% ✅ NEW FINDING: elite pool positive in Elections
+Legendary ACTIVE (geo_elo_active≥2175): 12→10 ↓ (two decayed)
+Legendary CLEAN:                    10→10 → stable (6th week)
+NEAR_LEGENDARY clean:               25→27 ↑ recovering
+True research pool (resolved≥20):  23,994→27,245 ↑↑
+Pool C:                             3,826→3,982 ↑
+Active traders (7d):                457→523 ↑
+Clean markets (DB):                 295,492→438,301 ↑↑↑ (sweep continuing)
+Phase 5 Gate 1:                     ✅ COMPLETE (17 runs)
+Phase 5 Gate 2:                     ✅ COMPLETE (confirmed Jun 5)
+Phase 5 Gate 3:                     2/5 = 40% (FROZEN — 6th consecutive week)
+Phase 5 Gate 4:                     BLOCKED — geo_elo unfit, replacement metric cutover needed
+geo_elo cutover decision:           PENDING (4 weeks outstanding — Oscar ⚠)
+STR-002 thesis cell:                48.0% (n=29 CONTESTED+proven) — no demonstrated edge
+Sweep:                              ~55% complete, requeue gate fix needed before segments 3+4
+```
+
+### Previous Week (2026-08-24 — for reference)
 
 #### Prediction Accuracy
 ```
@@ -834,7 +979,7 @@ Clean markets (DB):                 92,144
 
 ## Phase 5 Gate Tracker
 
-Last updated: 2026-08-24 (performance-analyst-agent run 14)
+Last updated: 2026-08-31 (performance-analyst-agent run 15)
 
 ```
 Gate 1 — Feedback-loop runs: 17/4 ✅ GATE MET
@@ -873,28 +1018,30 @@ Gate 3 — Pre-resolution accuracy: 2/5 gate-valid — IN PROGRESS (AT RISK — 
     STR003-008 (EU Security NO):    RESOLVED_CORRECT ✅ (Jul 4)
     STR003-009 (Graham SC NO):      RESOLVED_WRONG ✗
   Not gate-valid: STR003-007 (Iran — retrospective), STR003-004 (Putin — fails geo_elo)
-  STR003-004 outcome: DB shows resolved=0 ⚠ — 24+ DAYS OVERDUE, needs manual fix
-  Gate-valid accuracy: 2/5 = 40% (FROZEN since Jul 4)
+  STR003-004 outcome: DB shows resolved=0 ⚠ — 62+ DAYS OVERDUE, needs manual fix
+  Gate-valid accuracy: 2/5 = 40% (FROZEN since Jul 4 — 6th consecutive week)
   Total (incl non-scorable 007): 3/6 = 50%
   Need: 6+ correct from 5+ remaining to reach 60% on n=10
-  Risk: LEGENDARY_clean now 10 (declining weekly), signal-agent dark 21d
-  Pool decay note: legendary_clean 17→16→16→14→14→13→10 (8 weeks of decline)
+  Risk: signal-agent dark (geo_elo unfit), pool stable at 10 but no signal flow
+  Pool note: legendary_clean 17→16→14→13→10→10→10 (9 weeks stable at 10)
   Context: Phase 2 reframe means Gate 3 is no longer the ONLY path — but cannot be
-           lowered or bypassed without Oscar's explicit approval
+           lowered or bypassed without Oscar's explicit approval. Gate 3 is frozen until
+           geo_elo cutover decision enables signal-agent restart.
 
 Gate 4 — RQ1.1 + RQ3.2:
-  RQ1.1: BLOCKED — RQ-GEO-ELO-001 NOT STARTED (8 weeks, deadline Jul 1 MISSED)
-    ⚠⚠⚠ CRITICAL: Spawn quant-research-agent. Richest dataset ever (16,289 pool, 223K markets)
-  RQ3.2: INCONCLUSIVE (methodology reframe needed — extend RQ2.2 to outcome)
+  RQ1.1: BLOCKED — requires replacement metric (metric_v2f) cutover first
+    OOS point gap: +0.0316, CI [-0.0088, +0.0710] — cutover decision pending Oscar
+  RQ3.2: INCONCLUSIVE (methodology reframe needed)
 
-Signal accuracy (August 10):
-  STR-003 (gate-valid): 2/5 = 40% — FROZEN (signal-agent dark 21d; no new signals)
-  STR-003 legendary clean: 10 (down from 13 Jul 20; 4th consecutive weekly drop)
-  NEAR_LEGENDARY clean: 16 (down from 28 Jul 20 — accelerating decline)
-  STR-002 (all scored, n=162): 29.6% accuracy, avg edge -0.0152
+Signal accuracy (August 31):
+  STR-003 (gate-valid): 2/5 = 40% — FROZEN (signal-agent dark 14d; no new signals)
+  STR-003 legendary clean: 10 (stable 6 weeks at 10, bottomed and held)
+  NEAR_LEGENDARY clean: 27 (recovering — was 16 at trough Jul 20)
+  STR-002 (all scored, n=201): 32.3% accuracy, avg edge -0.0083
+  STR-002 thesis cell (CONTESTED+proven, n=29): 48.0% — no edge demonstrated
   STR-004: 0/1 founding case ambiguous. 9 more signals needed.
   LEGENDARY tier accuracy: 2/3 = 67% vs non-LEGENDARY 1/3 = 33% — tier signal validated
-  Pool C geo activity (7d): 2 traders, 2 trades — NEAR-ZERO, signal pipeline stalled
+  Pool C geo activity (7d): 25 traders, 65 trades (down from peak 84/242)
 ```
 
 ---

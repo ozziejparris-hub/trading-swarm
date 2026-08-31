@@ -5,6 +5,19 @@
       "to": "orchestrator",
       "type": "telegram_notification",
       "payload": {
+        "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-08-31*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier GEO (all 2026, n=415): 0.2204 \u2705 edge=+0.158 DirAcc=72.8%\nBrier ELEC (all 2026, n=340): 0.2856 \u2705 edge=+0.035 DirAcc=68.5%\nNEW: Elite Pool C shows positive edge in Elections (full Pool C does not)\n30d GEO (n=23): 0.3738 \u274c | 7d GEO: n=2 insufficient\n\n\ud83d\udea8 Flags: [3 CRITICAL] [3 HIGH] [2 MEDIUM]\nCRITICAL 1: geo_elo cutover STILL PENDING \u2014 4 weeks outstanding (Oscar)\nCRITICAL 2: B7 paper_trades not built \u2014 4th week, permanent n loss\nCRITICAL 3: Requeue gate drops 91% of sweep-resolved markets \u2014 fix needed\n\nLegendary clean: 10 (stable) | Near-legendary: 27 \u2191\nGate 3: 2/5 = 40% FROZEN (6th week) | STR-002 thesis cell: 48% (no edge)\nClean markets: 438,301 | DB: 18GB | 779K Unknown-category markets\n\nFull report: brain/agent-outputs/performance-analyst/2026-08-31-weekly.md",
+        "priority": "HIGH",
+        "run_id": "analyst-20260831",
+        "chat": "metrics"
+      },
+      "timestamp": "2026-08-31T06:30:00Z",
+      "status": "pending"
+    },
+    {
+      "from": "performance-analyst-agent",
+      "to": "orchestrator",
+      "type": "telegram_notification",
+      "payload": {
         "message": "\ud83d\udcca *Weekly Performance Report \u2014 2026-08-24*\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nBrier GEO (7d, n=84): 0.0895 \u2705 edge=+0.170 DirAcc=59.5%\nBrier GEO (30d, n=99): 0.3149 \u26a0 worse than naive\nBrier ELEC (30d, n=78): 0.3506 \u26a0 DirAcc=50% random\nn counts jumped: discovery-gap Segment 2 resolved 59,236 markets\n\n\ud83d\udea8 Flags: [1 CRITICAL] [2 HIGH] [2 MEDIUM]\nCRITICAL: geo_elo cutover decision STILL PENDING (3 weeks outstanding)\nHIGH: Phase 2 B7 not built \u2014 n loss permanent\nHIGH: Sweep 13% complete, Segment 3 ready\n\nClean markets: 295,492 \u2191\u2191\u2191 (was 224,614)\nGate 3: 2/5 = 40% FROZEN (5th week)\nLEGENDARY clean: 10 | Near-legendary: 25 \u2191\u2191\n\nFull report: brain/agent-outputs/performance-analyst/2026-08-24-weekly.md",
         "priority": "HIGH",
         "run_id": "analyst-20260824"
@@ -630,7 +643,7 @@
     {
       "type": "hygiene_complete",
       "from": "code-hygiene-agent",
-      "status": "pending",
+      "status": "processed",
       "timestamp": "2026-08-28T20:03:47.012039",
       "payload": {
         "message": "Weekly code hygiene complete \u2014 2026-08-28. 3 Elon DELETE candidates, 4 archive proposals, 2 duplicate consolidation proposals. No critical security issues. Contract freshness PASS. 26 logs archived.",
@@ -643,7 +656,8 @@
           "Archive scripts/market_filter.py, polymarket_changelog_monitor.py, write_integration_health.py, run_research_scout.py",
           "Approve shared_utils.py consolidation proposal (sqlite_connection x6, telegram_send x4)"
         ]
-      }
+      },
+      "processed_at": "2026-08-28T20:13:24.143356"
     }
   ],
   "pending": [
