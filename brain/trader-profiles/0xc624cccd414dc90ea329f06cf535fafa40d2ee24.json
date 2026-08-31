@@ -1,40 +1,38 @@
 {
   "address": "0xc624cccd414dc90ea329f06cf535fafa40d2ee24",
-  "profile_date": "2026-07-13",
-  "geo_elo_active": 2207.0,
+  "profile_date": "2026-08-31",
+  "geo_elo_active": 2411.4,
   "tier": "LEGENDARY",
   "archetype": "DOMAIN_SPECIALIST",
   "archetype_confidence": "MEDIUM",
-  "archetype_reasoning": "Initially profiled 2026-07-06. 744 resolved geo/elections trades across full history. Iran_ME is the dominant domain: 462 trades, 63% accuracy, 290 contested. Trump_US is a meaningful secondary: 140 trades, 75% accuracy, 73 contested. New trades since Jul 6 (2 additional): 'Will Graham Platner drop out by July 9?' YES @ 0.370 LOST; 'Will Graham Platner drop out by July 10?' YES @ 0.610 LOST. Both are US Elections/political markets (Trump_US adjacent). Two losses on Platner exit markets do not change the archetype — they confirm Trump_US contested-price activity but are thin data (2 trades, 1 candidate). Last 10 overall accuracy = 40% (4/10), triggering a performance deterioration flag (thin data — 2 new trades only). The underlying Iran_ME domain strength (63% on 462 trades) is unchanged by this thin delta. Archetype DOMAIN_SPECIALIST maintained at MEDIUM confidence. Still awaiting mandatory human review before STR-003 promotion.",
+  "archetype_reasoning": "Initially profiled 2026-07-06 as Iran_ME/Trump_US DOMAIN_SPECIALIST. Updated 2026-07-13: 2 Platner exit losses — archetype unchanged, deterioration flag raised. Updated 2026-08-31: 1 new trade since Jul 13 — Alaska primary YES@0.997 WON (near-certainty, Elections). Single near-cert win does not alter the archetype. Last-10 accuracy = 40% (below 45% threshold) — performance deterioration flag PERSISTS from prior cycle. geo_elo_active surged from 2207.0 to 2411.4 (+204 points) despite the thin delta — this surge likely reflects the daily ELO recalculation incorporating the near-cert win and time-passage adjustments, not a genuine forecast signal. PNL improved from $2,860 to $3,704 (+$844 — consistent with the near-cert win payoff). Iran_ME domain strength (63% on 462+ trades, 290+ contested) and Trump_US secondary (75% on 140+ trades) remain the archetype foundation. Archetype DOMAIN_SPECIALIST maintained. Previous archetypes: DOMAIN_SPECIALIST (set 2026-07-06, confirmed 2026-07-13, confirmed 2026-08-31).",
   "primary_domain": "Iran_ME",
   "domain_strengths": [
-    "Iran_ME",
-    "Trump_US"
+    "Iran_ME: 462+ resolved, 63% accuracy — primary signal domain, strong contested-price track record",
+    "Trump_US: 140+ resolved, 75% accuracy — unusually strong secondary domain at contested prices"
   ],
   "domain_blindspots": [
-    "Russia_UKR: 50 trades, 54% accuracy — barely above chance. Not a trusted domain.",
+    "Russia_UKR: 50 trades, 54% accuracy — barely above chance, not a trusted domain",
     "Other: 88 trades, 58% accuracy — modest, insufficient for trusted classification",
-    "Graham Platner exit markets: 2 contested losses in Jul 2026 — thin data, minor but noted"
+    "Alaska primary (near-cert, Elections): single near-cert win outside trusted domains — not informative"
   ],
-  "domain_summary": "Strong Iran_ME specialist with secondary Trump_US strength. Iran_ME at 63% accuracy over 462 trades with 290 contested entries is one of the strongest Iran_ME profiles in the pool. Trump_US at 75% on 140 trades is an unusually strong secondary domain. Two new July losses (Platner markets) are thin data and do not alter the domain assessment. Russia_UKR remains explicitly excluded. geo_resolved_trades_count discrepancy (173 stored vs 744 actual) persists — pipeline investigation still needed.",
+  "domain_summary": "Strong Iran_ME specialist with secondary Trump_US strength. The Alaska primary YES@0.997 win is a near-certainty outside trusted domains — not a meaningful signal. Domain picture unchanged from Jul 13. geo_resolved_trades_count discrepancy (183 stored vs 750+ actual estimated) persists — pipeline investigation still needed. The large Bardella 2027 France position (2,142 shares YES @ 0.240) remains as the most significant open position, outside current trusted domains.",
   "signal_weight": "MINIMAL",
-  "signal_weight_reasoning": "Accuracy and trade volume in Iran_ME and Trump_US support DOMAIN_ONLY weight on those domains. Signal weight remains MINIMAL pending mandatory human review: (1) geo_resolved_trades_count discrepancy (173 stored vs 744 actual), (2) performance deterioration flag (4/10 last 10 accuracy), (3) standard new-qualifier human review required. After human review clears these items, upgrade to DOMAIN_ONLY (Iran_ME, Trump_US) is recommended.",
+  "signal_weight_reasoning": "Iran_ME and Trump_US accuracy strongly support DOMAIN_ONLY weight. MINIMAL held pending: (1) human review of geo_resolved_trades_count discrepancy, (2) performance deterioration flag (40% last-10) reassessment, (3) mandatory new-qualifier human review protocol not yet cleared. After human review, upgrade to DOMAIN_ONLY (Iran_ME, Trump_US) is recommended.",
   "trusted_domains": [],
   "discounted_domains": [
     "Russia_UKR",
     "Other"
   ],
   "behavioural_flags": [
-    "geo_resolved_trades_count discrepancy: traders table shows 173, actual DB count is 744 — same pipeline issue pattern as Jun 29 data integrity alert. Still unresolved.",
-    "Last 10 overall accuracy = 40% (4/10 as of Jul 13): 2 new losses on Platner exit markets plus prior near-certainty mix. Performance deterioration flag raised.",
-    "Multiple averaging entries in same market on same day — conviction averaging pattern observed at initial profiling",
-    "Two contested losses on Platner exit markets (Jul 8, 0.370 and 0.610) — both on same candidate, same day, consecutive dates. Position scaling rather than independent forecasts."
+    "Performance deterioration flag PERSISTS: last-10 accuracy = 40% (below 45% threshold) for second consecutive cycle",
+    "geo_resolved_trades_count discrepancy: traders table shows 183, actual DB count is 750+ estimated — pipeline issue unresolved",
+    "geo_elo_active surged 2207 → 2411 this cycle with only 1 near-cert win — investigate whether ELO recalculation trigger (Sunday comprehensive ELO run) is the cause"
   ],
   "risk_patterns": [
-    "geo_elo_active marginally above LEGENDARY threshold (2207.0 vs 2175) — 32-point buffer. Two weeks of inactivity or losses could push below LEGENDARY.",
-    "geo_resolved_trades_count pipeline discrepancy needs investigation before treating as fully validated LEGENDARY",
-    "Performance deterioration flag (4/10 last 10) — thin data given this is a new profile, but warrants monitoring",
-    "Platner market losses suggest possible overconfidence in US political insider knowledge"
+    "Performance deterioration flag (40% last-10) persisting two cycles — weak signal but requires monitoring",
+    "geo_elo_active now 236 points above LEGENDARY floor (2411 vs 2175) — comfortably LEGENDARY",
+    "geo_resolved_trades_count pipeline discrepancy needs resolution before treating ELO tier as fully validated"
   ],
   "notable_calls": [
     {
@@ -42,39 +40,38 @@
       "side": "No",
       "entry_price": 0.62,
       "result": "WON",
-      "significance": "Contested entry (0.62) in Iran_ME domain that won — representative of the 63% Iran_ME contested accuracy that defines this trader's edge"
+      "significance": "Contested Iran_ME call that won — representative of the 63% Iran_ME contested accuracy"
     },
     {
       "market": "Will Spencer Pratt win the 2026 LA mayoral election",
       "side": "No",
       "entry_price": 0.23,
       "result": "WON",
-      "significance": "Contested Trump_US entry at 23 cents that won — demonstrates the contested-price Trump_US edge claimed by domain strength data"
+      "significance": "Contested Trump_US entry at 23 cents — demonstrates contested-price Trump_US edge"
     },
     {
       "market": "Will Graham Platner drop out by July 9?",
       "side": "Yes",
       "entry_price": 0.370,
       "result": "LOST",
-      "significance": "New Jul 2026 — contested loss on US politician exit market. 2 of 2 Platner markets lost (0.370 and 0.610). Thin data but consistent with overall 40% last-10 accuracy."
+      "significance": "Jul 2026 — contested loss on US politician exit market. 2 of 2 Platner markets lost."
     }
   ],
-  "open_positions_summary": "Active open positions as of July 2026 (from Section 4 intelligence): YES @ 0.795 on 'Will Peggy Flanagan be Democratic Senate nominee?' (308 shares, end Aug 2026); YES @ 0.633 on 'Will Mary Peltola win Alaska Senate 2026?' (233 shares, end Nov 2026); NO @ 0.276 on 'Will Republicans win Nebraska Senate 2026?' (131 shares, end Nov 2026); NO @ 0.778 on 'Will AOC announce Presidential run before 2027?' (109 shares, end Dec 2026); YES @ 0.240 on 'Will Jordan Bardella win 2027 French presidential election?' (2,142 shares, end Apr 2027) — largest open position, contested; NO @ 0.617 on 'Will JD Vance win 2028 Republican nomination?' (73 shares, end Nov 2028). Most significant position: Bardella 2027 YES at 0.240 — France domain (not a trusted domain per current profile, but broad political intelligence).",
+  "open_positions_summary": "23 open positions in Geopolitics/Elections. Most significant: (1) Jordan Bardella 2027 France YES@0.240 — 2,142 shares CONTESTED, largest position, outside trusted domains; (2) Marco Rubio 2028 President YES@0.138 — 217 shares CONTESTED; (3) Mary Peltola Alaska Senate 2026 YES@0.633 — 233 shares CONTESTED; (4) Democrats win Texas Senate 2026 YES@0.430 — 125 shares CONTESTED (no end_date, stale); (5) Republicans win Iowa Senate 2026 YES@0.610 — 48 shares CONTESTED (no end_date, stale); (6) Raman LA mayoral election YES@0.400 — 92 shares, end_date Jun 2 2026 — GHOST POSITION (market should have resolved 90 days ago, pipeline issue). Multiple 2028 presidential race positions at contested prices. Note: stale positions with null end_date may be in unresolved limbo — investigate.",
   "watch_items": [
-    "HUMAN REVIEW REQUIRED before any STR-003 inclusion. Priority items: (1) confirm geo_resolved_trades_count discrepancy (173 stored vs 744 actual) is data pipeline issue, (2) verify geo_elo basis, (3) assess whether 4/10 last-10 accuracy is noise or genuine deterioration",
-    "After human review: upgrade trusted_domains to ['Iran_ME', 'Trump_US'] and promote to DOMAIN_ONLY if anomalies clear",
-    "Performance deterioration flag: 4/10 last 10 accuracy. Monitor next 5 resolved trades across Iran_ME and Trump_US contested markets — if accuracy remains below 45%, reconsider MEDIUM confidence",
-    "Bardella 2027 France position (2,142 shares YES @ 0.240) — outside current trusted domains. Watch whether this reflects genuine Europe domain expansion or noise",
-    "geo_elo_active at 2207.0 — 32 points above LEGENDARY floor. Monitor for decay below 2175."
+    "HUMAN REVIEW REQUIRED: confirm geo_resolved_trades_count discrepancy (183 stored vs 750+ actual). If confirmed pipeline issue, upgrade trusted_domains to [Iran_ME, Trump_US] and promote to DOMAIN_ONLY.",
+    "PERFORMANCE DETERIORATION PERSISTS (2nd cycle, 40% last-10). Next 5 resolved trades in Iran_ME/Trump_US at contested prices will be decisive — if accuracy remains below 45%, reconsider MEDIUM confidence.",
+    "Nithya Raman LA mayoral election YES@0.400 (92 shares) — end_date Jun 2 2026, market should have resolved 90 days ago. GHOST POSITION flagged. Also: Swalwell CA Gov YES@0.380 (0 net shares) and NO@0.934 (0 net shares) — both have 0 net shares but still showing as open.",
+    "Bardella 2027 France YES@0.240 (2,142 shares) — 3-year duration bet in Europe domain. Monitor whether this represents France domain expansion or noise."
   ],
   "overall_signal_value": "MEDIUM",
-  "summary": "LEGENDARY DOMAIN_SPECIALIST (Iran_ME primary, Trump_US secondary) with 744 resolved geo trades and strong contested-price accuracy in trusted domains (Iran_ME 63%, Trump_US 75%). Two new July losses on Platner exit markets (contested: 0.370 and 0.610, both LOST) added to the profile — thin data, does not alter archetype. Performance deterioration flag raised (4/10 last 10). Still awaiting mandatory human review. Largest open position: Bardella 2027 France YES @ 0.240 (2,142 shares) — outside current trusted domains. geo_elo_active=2207.0, 32 points above LEGENDARY floor.",
+  "summary": "LEGENDARY DOMAIN_SPECIALIST (Iran_ME primary, Trump_US secondary) with 750+ resolved geo/elections trades and strong contested-price accuracy. One new near-cert trade (Alaska primary YES@0.997 WON) since Jul 13. Performance deterioration flag persists (40% last-10, now 2nd consecutive cycle). geo_elo_active surged to 2411.4 (comfortably LEGENDARY). Human review required to clear blocking items and upgrade to DOMAIN_ONLY. Signal value MEDIUM.",
   "data_snapshot": {
     "geo_elo": 2584.5,
-    "geo_elo_active": 2207.0,
-    "resolved_trades": 746,
+    "geo_elo_active": 2411.4,
+    "resolved_trades": 183,
     "distinct_markets": 0,
     "directionality": 0.951,
-    "pnl": 2860.2
+    "pnl": 3704.0
   }
 }

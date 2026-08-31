@@ -1,50 +1,64 @@
 {
   "address": "0x6b025355d035a679205ae23de33c7e9abe71e5fc",
-  "profile_date": "2026-06-29",
-  "geo_elo_active": 3105.8,
+  "profile_date": "2026-08-31",
+  "geo_elo_active": 2436.8,
   "tier": "LEGENDARY",
   "archetype": "DOMAIN_SPECIALIST",
   "archetype_confidence": "LOW",
-  "archetype_reasoning": "490 resolved geo trades concentrated in Iran_ME (368 trades, 53% accuracy) and Russia_UKR (122 trades, 53% accuracy). Directionality=1.00 (fully directional). Average price=0.201 is extremely low — most bets are below 0.25. At this price level, winning 53% of the time implies the market is pricing these outcomes at ~20% but they actually resolve at ~53%. This could represent genuine forecasting (correctly calling underdogs) or simply luck at scale. The ELO of 3105.8 suggests the system rates this trader very highly, but 53% accuracy at low prices is a weak edge — it's above chance but not compelling. Classified as DOMAIN_SPECIALIST at LOW confidence because the 2-domain pattern fits but the accuracy margin is thin. Not a YIELD_HARVESTER (0.201 avg price is not near-certainty).",
+  "archetype_reasoning": "Initial profile 2026-06-29: 490 resolved geo trades, Iran_ME+Russia_UKR, 53% accuracy at avg price 0.201. Updated 2026-08-31: 1 new resolved trade — 'Strait of Hormuz traffic returns to normal by August 15' YES@0.003 WON (Aug 11). A YES bet at 0.003 (implying 0.3% market probability) that resolved YES represents a high-conviction contrarian call at an extreme price — the opposite of yield-harvesting. However: this is 1 trade, thin data. Last-10 accuracy = 30% (3/10 — SEVERE performance deterioration, HIGH severity). The last-10 window includes FIFA World Cup bets (Germany, Spain, Norway, Portugal — mostly lost), Israel-Hezbollah peace deal, and Iran peace deal — a chaotic mixed portfolio. geo_elo_active has decayed sharply from 3105.8 (Jun 29) to 2436.8 (-669 points in ~63 days) reflecting extensive losses. PNL collapsed from +$2,683 (Jun 29) to -$1,635 (Aug 31) — a $4,318 decline. Archetype DOMAIN_SPECIALIST at LOW confidence maintained: the original Iran_ME/Russia_UKR dual-domain thesis has no new confirmation — the portfolio has expanded chaotically into sports (FIFA), peace deal bets outside the original scope. Previous archetypes: DOMAIN_SPECIALIST (set 2026-06-29, confirmed LOW confidence 2026-08-31).",
   "primary_domain": "Iran_ME",
-  "domain_strengths": [
-    "Iran_ME: 368 resolved, 53% accuracy at 0.206 avg price, 73% contested — marginal positive edge at scale"
-  ],
+  "domain_strengths": [],
   "domain_blindspots": [
-    "Russia_UKR: 122 trades, 53% accuracy — same thin margin as Iran_ME, insufficient to declare edge",
-    "No other domains sampled — extremely narrow portfolio (2 domains only)"
+    "FIFA World Cup 2026: multiple team-advance bets (Germany, Spain, Norway, Portugal) — 30% accuracy confirms no sports edge",
+    "Iran peace deal YES bets: repeated entries that lost — conviction-chasing in a market moving against the trader",
+    "Russia_UKR: 122 trades, 53% accuracy — marginal original edge may have deteriorated",
+    "Israel-Hezbollah: peace deal YES at 0.196 LOST (Jun 19) — outside-scope loss"
   ],
-  "domain_summary": "Narrow 2-domain portfolio entirely concentrated in Iran_ME and Russia_UKR, with 53% accuracy in both. The ELO is high (3105.8) which likely reflects the volume of trades and some timing advantages on specific events. The 0.201 avg price means these are mostly cheap outcome bets — calibration at this price range is hard to distinguish from volume effects.",
+  "domain_summary": "Portfolio has expanded chaotically from the original Iran_ME/Russia_UKR narrow focus into FIFA World Cup, Israel-Hezbollah, and extreme-price contrarian bets. The Hormuz YES@0.003 win is notable as a high-conviction contrarian call (0.3% implied probability resolved correctly) but is 1 trade against a background of 30% last-10 accuracy. The original 53% Iran_ME/Russia_UKR edge — already thin — appears to have degraded significantly given PNL and accuracy trajectory.",
   "trusted_domains": [],
   "discounted_domains": [
     "Trump_US",
-    "Other"
+    "Other",
+    "Sports"
   ],
   "signal_weight": "MINIMAL",
-  "signal_weight_reasoning": "53% accuracy across 490 resolved trades at low prices is above chance but does not meet the threshold for DOMAIN_ONLY weight — genuine edge requires consistent outperformance. MINIMAL weight as the most conservative defensible value. Do not include in STR-003 signals without human review confirming the edge is real and not a volume artifact.",
+  "signal_weight_reasoning": "MINIMAL maintained from initial profile. The severe performance deterioration (30% last-10), PNL collapse (-$4,318 since Jun 29), and portfolio expansion into sports markets all argue against any upgrade. The single Hormuz contrarian win is interesting but insufficient data to alter weight. Human review required.",
   "behavioural_flags": [
-    "Extremely narrow portfolio: 2 domains only (Iran_ME + Russia_UKR), entirely absent from US/Europe/China/LatAm markets",
-    "geo_resolved_trades_count stored=19 while actual resolved geo trades = 490 — data integrity discrepancy"
+    "PERFORMANCE_DETERIORATION SEVERE: last-10 accuracy = 30% (3/10). HIGH severity. Below 45% threshold for 2nd+ consecutive assessment.",
+    "PNL collapse: +$2,683 (Jun 29) → -$1,635 (Aug 31). $4,318 decline in 63 days.",
+    "geo_elo_active decay: 3105.8 (Jun 29) → 2436.8 (Aug 31). -669 points. Still LEGENDARY but declining ~10 points/day.",
+    "Portfolio chaos: FIFA World Cup betting (4+ teams), Israel-Hezbollah, Iran peace deal — diverged from original narrow Iran_ME/Russia_UKR focus.",
+    "Hormuz YES@0.003 WON (Aug 11): high-conviction contrarian call at extreme price — interesting but 1 trade, thin data."
   ],
   "risk_patterns": [
-    "Low average price (0.201) means position sizing and calibration risks if the ELO is inflated by volume",
-    "53% accuracy on 490 resolved is statistically significant but the margin is thin — may degrade in new market conditions"
+    "geo_elo_active decay rate (~10 points/day) will push below LEGENDARY (2175) within ~26 days if no strong wins occur. Monitor every cycle.",
+    "PNL negative and worsening: if losses continue at this rate, PNL will breach the STR-003 $-100K floor in months — but not yet at risk",
+    "Chaotic portfolio expansion suggests strategy drift, not disciplined domain specialization"
   ],
-  "notable_calls": [],
-  "open_positions_summary": "Open positions not assessed in initial profile.",
+  "notable_calls": [
+    {
+      "market": "Strait of Hormuz traffic returns to normal by August 15, 2026",
+      "side": "Yes",
+      "entry_price": 0.003,
+      "result": "WON",
+      "significance": "Aug 11 2026 — YES at 0.003 (0.3% market probability) resolved WON. Contrarian call at extreme price paying off. One of the rarest signal types: market was 99.7% confident NO, this trader held YES and was right. However: 1 trade, thin data."
+    }
+  ],
+  "open_positions_summary": "No eligible open positions (Geopolitics/Elections) detected in current scan. Trader appears to have exited or no pending geo/elections trades remain.",
   "watch_items": [
-    "Monitor whether the thin accuracy margin (53%) holds across June-July 2026 resolutions",
-    "Upgrade to DOMAIN_ONLY (Iran_ME) only if accuracy improves to 57%+ on 200+ new trades post-June 10",
-    "Human review required before any signal inclusion"
+    "PERFORMANCE_DETERIORATION HIGH SEVERITY: 30% last-10 accuracy. If next cycle shows another <45% last-10 window, recommend EXCLUDE review — the underlying domain edge may have deteriorated completely.",
+    "geo_elo_active decay: 2436.8 and declining. Projected to cross LEGENDARY floor (2175) in ~26 days at current rate if no wins. Will trigger tier change from LEGENDARY to NEAR_LEGENDARY in next cycle.",
+    "PNL watch: -$1,635 and worsening. STR-003 requires realized_pnl > -$100,000 — no immediate risk, but trajectory is concerning.",
+    "Hormuz YES@0.003 win merits follow-up: was this lucky or informed? Look for similar extreme-price contrarian calls in the next cycle — if a pattern emerges, it could reveal a new forecasting strategy."
   ],
-  "overall_signal_value": "MEDIUM",
-  "summary": "High-ELO Iran_ME/Russia_UKR trader with 490 resolved trades but thin accuracy edge (53% at avg price 0.201). The ELO of 3106 is impressive but the underlying accuracy is marginal. MINIMAL weight until human review confirms genuine edge beyond volume effects. Not a yield harvester, but not yet a confirmed forecaster either.",
+  "overall_signal_value": "LOW",
+  "summary": "LEGENDARY DOMAIN_SPECIALIST (LOW confidence) undergoing significant deterioration. 1 new trade since Jun 29: Hormuz YES@0.003 WON (high-conviction contrarian call). But last-10 accuracy is 30% (HIGH severity deterioration), PNL collapsed $4,318 to -$1,635, and geo_elo_active decayed 669 points from 3105 to 2437. Portfolio has expanded chaotically beyond original Iran_ME/Russia_UKR scope. Signal value LOW. No STR-003 eligibility. Monitor for LEGENDARY demotion within 4 weeks.",
   "data_snapshot": {
     "geo_elo": 3227.8,
-    "geo_elo_active": 3105.8,
-    "resolved_trades": 490,
-    "distinct_markets": 25,
-    "directionality": 1.0,
-    "pnl": 2683.0
+    "geo_elo_active": 2436.8,
+    "resolved_trades": 27,
+    "distinct_markets": 26,
+    "directionality": 0.999,
+    "pnl": -1635.0
   }
 }

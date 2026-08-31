@@ -1,0 +1,76 @@
+{
+  "address": "0xe5b1127e95ba936fa4cb81ce6b5b998fd950ca96",
+  "profile_date": "2026-08-31",
+  "geo_elo_active": 2361.1,
+  "tier": "LEGENDARY",
+  "archetype": "DOMAIN_SPECIALIST",
+  "archetype_confidence": "LOW",
+  "archetype_reasoning": "Initial profile 2026-08-31. CRITICAL LIMITATION: geo_resolved_trades_count=40 in traders table (the canonical geo ELO computation base), yet 253 Geopolitics-categorized trades exist via market JOIN — same pipeline discrepancy pattern as c624cccd, 6b025355, and 63c6169c. The geo_elo_active=2361.1 (LEGENDARY) is likely driven by a subset of 40 canonical geo trades, not the full 253. Full portfolio: 637 total resolved trades — 375 Unknown (entertainment/sports: Minecraft challenges, Strait of Hormuz ship transits, soccer), 253 Geopolitics, 9 Elections (11% accuracy — terrible). Geopolitics analysis (253 trades): 60% accuracy overall, 186 contested (74% contested rate — good ratio). PRIMARY CONCERN: massive conviction-averaging on US-Iran permanent peace deal YES at 0.75-0.76 — 9+ entries in same market, ALL LOST. This is not forecasting error once; it is repeated doubling down on a position going strongly against the trader. Despite this, the 60% Geopolitics accuracy reflects wins elsewhere in Iran_ME (Strait of Hormuz ship transits, other Iran markets). PNL=-$130 (near zero) despite 637 trades — suggests the peace deal losses roughly offset wins elsewhere. Classified as DOMAIN_SPECIALIST (Iran_ME) provisionally because: contested rate 74% in Geo (above YIELD_HARVESTER threshold), active in Iran_ME, and above-chance Geo accuracy at 60% despite the peace deal losses. LOW confidence because: thin canonical geo sample (40 official geo_resolved_trades), conviction-averaging behavioral flag, and Elections 11% accuracy (far below chance). HUMAN REVIEW REQUIRED before any STR-003 inclusion.",
+  "primary_domain": "Iran_ME",
+  "domain_strengths": [
+    "Iran_ME: primary Geopolitics domain based on contested entry content (Iran peace deal, Hormuz ship transits, uranium enrichment). 60% Geopolitics accuracy at 74% contested rate is above-chance despite the peace deal losses.",
+    "Strait of Hormuz ship transits: multiple contested wins (Hormuz transit counts at 0.450 LOST, ship frequency markets at 0.900 WON) — mixed but shows domain engagement"
+  ],
+  "domain_blindspots": [
+    "US-Iran permanent peace deal YES: 9+ entries at 0.75-0.76, ALL LOST — conviction-averaging on losing thesis. This is the defining behavioral risk for this trader.",
+    "Elections: 9 trades at 11% accuracy (far below 50% random). Strong Elections blind spot.",
+    "Minecraft/entertainment: 300+ Unknown trades in entertainment prediction markets — outside geo scope, no signal relevance",
+    "US-Iran blockade end YES@0.660 LOST — conviction-chasing on related Iran capitulation thesis"
+  ],
+  "domain_summary": "Iran_ME focused Geopolitics trader with 253 geo trades at 60% accuracy and 74% contested rate. The standout weakness is systematic conviction-averaging on the 'US-Iran permanent peace deal YES' thesis at 0.75-0.76 despite repeated losses — 9 entries in same market, all wrong. This is a structural behavioral risk: the trader builds large positions in a single market as it moves against them, rather than adjusting the thesis. Outside Iran_ME, they trade entertainment (Minecraft, sports) with no signal relevance. Elections accuracy of 11% is a confirmed blind spot.",
+  "trusted_domains": [
+    "Iran_ME"
+  ],
+  "discounted_domains": [
+    "Elections",
+    "Russia_UKR",
+    "Sports"
+  ],
+  "signal_weight": "MINIMAL",
+  "signal_weight_reasoning": "MINIMAL is the most conservative defensible weight for a new LEGENDARY qualifier. Iran_ME 60% accuracy at 186 contested trades is above-chance but the conviction-averaging behavioral flag and Elections 11% accuracy prevent DOMAIN_ONLY assignment without human review. NOT STR-003 eligible in this cycle — new qualifier protocol requires Oscar review first.",
+  "behavioural_flags": [
+    "CONVICTION_AVERAGING: US-Iran permanent peace deal YES at 0.75-0.76 — 9 entries in same market, all LOST. Behavioral red flag: trader repeatedly buys the same losing position rather than cutting.",
+    "US-Iran blockade end YES@0.660 LOST — related Iran capitulation thesis, same pattern.",
+    "PNL=-$130 on 637 trades — near zero suggests wins and losses roughly cancel. The peace deal losses are large; they are offset by wins elsewhere in Iran_ME.",
+    "geo_resolved_trades_count pipeline discrepancy: traders table shows 40, Geopolitics-categorized query shows 253 — investigate before treating geo_elo as fully validated.",
+    "Minecraft/entertainment trading: 300+ Unknown trades — suggests this is a diversified bettor, not a pure geopolitics specialist."
+  ],
+  "risk_patterns": [
+    "Conviction-averaging on losing positions is the primary structural risk. If this trader opens a YES position on a geo event and it goes against them, they are likely to add repeatedly rather than exit.",
+    "PNL near-zero on 637 trades means no demonstrated net edge — all realized gains have been consumed by conviction-averaging losses.",
+    "geo_elo_active=2361.1 may overstate skill if driven by 40-trade canonical subset with survivor bias toward early wins"
+  ],
+  "notable_calls": [
+    {
+      "market": "US x Iran permanent peace deal by June 15, 2026?",
+      "side": "Yes",
+      "entry_price": 0.250,
+      "result": "WON",
+      "significance": "Jun 13 2026 — YES at 0.250, WON. This is the one Iran peace deal directional call that worked, at a genuinely low price (0.25 — legitimate underdog call)."
+    },
+    {
+      "market": "US x Iran permanent peace deal by December 31, 2026?",
+      "side": "Yes",
+      "entry_price": 0.760,
+      "result": "LOST (x8+)",
+      "significance": "Jun 2026 — YES at 0.75-0.76, LOST repeatedly. 8+ entries in same market demonstrating conviction-averaging behavioral risk. The contrast with the 0.250 win above shows the trader correctly read the June market but then over-extended the same thesis at much worse prices on the December date."
+    }
+  ],
+  "open_positions_summary": "Open positions not assessed in initial profile — HUMAN REVIEW REQUIRED before inclusion in open position intelligence.",
+  "watch_items": [
+    "HUMAN REVIEW REQUIRED: New LEGENDARY qualifier. Oscar review needed before any STR-003 consideration.",
+    "DO NOT include in STR-003 signals this cycle or next without explicit human approval.",
+    "CONVICTION_AVERAGING WATCH: if this trader opens a new Iran_ME YES position, monitor closely for scaling-in behavior. Any position > 5 entries in the same market should be flagged immediately.",
+    "Iran_ME contested accuracy (60% on 186 trades) is genuine but modestly above-chance. If next cycle adds 20+ clean contested Iran_ME wins, consider DOMAIN_ONLY upgrade."
+  ],
+  "overall_signal_value": "LOW",
+  "summary": "New LEGENDARY qualifier (geo_elo_active=2361.1). 253 Geopolitics trades at 60% accuracy, 74% contested rate — above-chance Iran_ME data. PRIMARY CONCERN: systematic conviction-averaging on US-Iran peace deal YES at 0.75-0.76 (9 entries, all lost) reveals a behavioral risk pattern that directly threatens capital in live trading. PNL=-$130 (near zero) confirms wins and losses roughly cancel. MINIMAL weight, LOW confidence. NOT STR-003 eligible pending human review. Low signal value until conviction-averaging pattern is assessed and trading behavior shows more discipline.",
+  "data_snapshot": {
+    "geo_elo": 2444.4,
+    "geo_elo_active": 2361.1,
+    "resolved_trades": 40,
+    "distinct_markets": 253,
+    "directionality": 0.867,
+    "pnl": -130.0
+  }
+}

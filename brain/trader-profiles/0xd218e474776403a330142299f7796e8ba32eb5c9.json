@@ -1,58 +1,56 @@
 {
   "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
-  "profile_date": "2026-07-20",
-  "geo_elo_active": 2278.8,
+  "profile_date": "2026-08-31",
+  "geo_elo_active": 2509.1,
   "tier": "LEGENDARY",
   "archetype": "YIELD_HARVESTER",
   "archetype_confidence": "HIGH",
-  "archetype_reasoning": "Profiled 2026-06-29 as textbook YIELD_HARVESTER (83% near-certain entries at 0.885 avg, 89% accuracy, 264 resolved trades). Updated 2026-07-06: 2 sports losses (Mexico, DR Congo FIFA) — YIELD_HARVESTER confirmed, sports activity out of scope. Updated 2026-07-20: 2 new trades since Jul 6 profile: (1) Spain FIFA Semifinals YES @ 0.710 WON (Jul 6) — Sports, contested but out-of-scope; (2) Bank of Korea rate increase NO @ 0.041 LOST (Jul 15) — Economics/Asia, near-certainty LOSS. The Bank of Korea loss is the most significant new data point: a near-certainty NO position (buying what should be a ~96% likely outcome) that resolved YES (Bank of Korea DID raise rates). This is YIELD_HARVESTER tail-risk materializing in the wild — the exact risk pattern documented in the Jun 29 profile. Archetype YIELD_HARVESTER unchanged. EXCLUDE unchanged. Previous archetypes: YIELD_HARVESTER (set 2026-06-29, confirmed 2026-07-06, confirmed 2026-07-20). Previous performance_deterioration flag confirmed.",
-  "primary_domain": "Iran_ME",
+  "archetype_reasoning": "Profiled 2026-06-29 as textbook YIELD_HARVESTER (83% near-certain entries at 0.885 avg, 89% accuracy, 264 resolved trades). Updated 2026-07-06: 2 sports losses — YIELD_HARVESTER confirmed. Updated 2026-07-20: Bank of Korea NO@0.041 LOST (near-certainty tail risk materializing). Updated 2026-08-31: 92 new resolved trades (robust data), 73/92=79% win rate. New 'contested' entries (8 at 0.44-0.66) are ALL weather prediction markets (city temperature forecasts, categorized Unknown) — NOT geo/elections. Per standing watch_item, non-geo contested entries do not trigger yield-harvester-waking-up analysis. Near-cert entries (21 at 0.81-0.99) continue the standard yield-harvesting pattern. Performance deterioration flag CLEARS — last-10 accuracy improved from 20% (Jul 20) to 70% (robust). geo_elo_active surged from 2278.8 to 2509.1 driven by near-cert wins. PNL worsened from -$58 to -$3,195 (tail losses cumulating). YIELD_HARVESTER and EXCLUDE status unchanged. Previous archetypes: YIELD_HARVESTER (set 2026-06-29, confirmed 2026-07-06, confirmed 2026-07-20, confirmed 2026-08-31).",
+  "primary_domain": "Weather/Unknown",
   "domain_strengths": [],
   "domain_blindspots": [
-    "All geo/elections domains: 83% near-certain entries confirm yield harvesting not forecasting",
-    "Sports: making contested-price sports bets (0.39, 0.54, 0.71) during FIFA World Cup 2026 — losing record",
-    "Economics: Bank of Korea NO @ 0.041 LOST (Jul 15) — tail risk materialized in low-probability resolution"
+    "All geo/elections domains: yield-harvesting only, no genuine forecasting signal",
+    "Weather markets: now the primary arena for contested-price activity, losing record visible (5W/3L on weather contested)",
+    "Sports: FIFA World Cup 2026 contested bets — losing record (previously flagged)",
+    "Economics: Bank of Korea near-certainty LOST (Jul 15) — tail risk confirmed"
   ],
-  "domain_summary": "Classic yield harvester across Iran_ME and Trump_US in geo/elections. Active sports betting during FIFA World Cup 2026 at contested prices (losing record: 1W/3L on soccer bets). Demonstrated tail risk: Bank of Korea near-certainty LOST Jul 15. High ELO reflects near-certainty accuracy math, not predictive skill.",
+  "domain_summary": "Yield harvester now operating primarily in weather prediction markets (city temperatures) at contested prices with mixed results, plus ongoing near-certainty geo/elections collection. The 8 contested entries since Jul 20 are uniformly weather markets (Wellington, Munich, Madrid, Seoul, Mexico City temperatures) — not geopolitical. PNL cumulative negative ($-3,195) reflects the carry cost of tail events. ELO inflated by near-cert math.",
   "trusted_domains": [],
   "discounted_domains": [
     "Iran_ME",
     "Trump_US",
     "Other",
     "Sports",
-    "Economics"
+    "Economics",
+    "Weather"
   ],
   "signal_weight": "EXCLUDE",
-  "signal_weight_reasoning": "Yield harvester: 83% near-certain entries at 0.885 avg in geo/elections. New sports market bets at contested prices are outside agent scope and do not change the geo/elections archetype. Bank of Korea loss at 0.041 is yield-harvester tail risk, not a geo forecasting signal. EXCLUDE permanently.",
+  "signal_weight_reasoning": "Yield harvester permanently EXCLUDEd. The 92 new trades are 21 near-cert (standard pattern) + 8 weather-contested (not geo/elections) + 63 not shown in limited query. No geo/elections contested entries detected. EXCLUDE permanent.",
   "behavioural_flags": [
-    "83% near-certain entries at avg 0.885 in geo/elections — textbook yield harvesting",
-    "Trump_US at 100% accuracy avg 0.974 — pure near-certainty premium collection",
-    "geo_resolved_trades_count stored mismatch vs actual (data integrity issue flagged Jun 29)",
-    "FIFA World Cup 2026 sports betting: Mexico second half YES @ 0.390 LOST (Jun 30), DR Congo YES @ 0.540 LOST (Jul 1), Spain FIFA YES @ 0.710 WON (Jul 6). Sports out of scope.",
-    "Bank of Korea rate increase NO @ 0.041 LOST (Jul 15): near-certainty tail risk materializing in Economics domain. Yield harvester risk pattern confirmed.",
-    "PERFORMANCE_DETERIORATION SEVERE: last 10 overall = 2/10 = 20% accuracy (far below 45% threshold). Driven by 3 sports losses + 1 Economics loss + prior losses. HIGH severity."
+    "Textbook YIELD_HARVESTER: 83%+ near-certainty entries in geo/elections at 0.885+ avg",
+    "Weather market betting at contested prices (0.44-0.66) since Jul 20 — not geo/elections, not relevant to archetype change",
+    "PNL turning increasingly negative: $0 (Jun 29) → -$58 (Jul 20) → -$3,195 (Aug 31). Cumulative tail-event losses",
+    "geo_elo_active inflated by near-cert accuracy math: 2509 despite negative PNL"
   ],
   "risk_patterns": [
-    "Standard yield harvester tail risk: rare low-probability events resolving YES sweep near-certainty NO positions — Bank of Korea Jul 15 confirms this risk is live",
-    "Sports market engagement at contested prices suggests behavioral drift outside core strategy, with losing record (1W/3L)",
-    "20% last-10 accuracy is catastrophic — if this reflects bleeding into geo/elections positions, overall ELO will decay rapidly"
+    "Standard yield-harvester tail risk: near-certainty events resolving against the trader accumulate (Bank of Korea Jul 15 was the exemplar)",
+    "Weather market expansion at contested prices suggests behavioral drift into new prediction domains, with ambiguous win rate"
   ],
   "notable_calls": [],
   "open_positions_summary": "Not assessed — EXCLUDE archetype. No positions surfaced in eligible open position scan.",
   "watch_items": [
-    "Watch for contested entries (0.10-0.80) specifically in GEO/ELECTIONS markets (not sports) — sports bets do not trigger YIELD_HARVESTER waking-up analysis",
-    "Bank of Korea Economics tail risk materialized: monitor whether similar near-certainty failures appear in geo/elections domain — if 2+ geo near-cert LOSES in next 4 weeks, reconsider entire archetype from scratch",
-    "Last-10 accuracy (20%) is unsustainable if representative — watch for further geo_elo_active decay from 2278.8",
-    "geo_elo_active decayed: 2470.8 (Jun 29) → 2395.8 (Jul 6) → 2278.8 (Jul 20). Sustained decay trajectory. Still LEGENDARY but losing ground."
+    "Watch for contested entries specifically in GEO/ELECTIONS markets — weather and sports do not count toward yield-harvester-waking-up analysis",
+    "PNL decay trajectory: $0 → -$58 → -$3,195 over three cycles. If PNL reaches -$5,000, reconsider whether ELO is still meaningful",
+    "geo_elo_active=2509.1 is still solidly LEGENDARY — near-cert wins keeping ELO elevated despite PNL erosion"
   ],
   "overall_signal_value": "NOISE",
-  "summary": "Textbook yield harvester with EXCLUDE status. Two new losses since Jul 6: Spain FIFA WIN (sports, contested, irrelevant) and Bank of Korea NO LOST (Economics, near-certainty tail risk). The Bank of Korea loss is the week's most informative data point: a 0.041 near-certainty position resolving against this trader confirms the yield-harvesting tail risk described at first profiling. SEVERE performance deterioration: last 10 = 20% accuracy. EXCLUDE status permanent pending evidence of geo/elections contested-price forecasting activity. geo_elo_active decaying at ~56 points/week.",
+  "summary": "YIELD_HARVESTER confirmed across four profiling cycles. 92 new resolved trades since Jul 20 (robust): 73/92=79% wins via near-certainty collection + 8 contested-price weather market bets (5W/3L) — none of which are geo/elections. Performance deterioration flag CLEARS (last-10 accuracy 70%). PNL has worsened to -$3,195 from cumulative tail losses. EXCLUDE status permanent. geo_elo_active surged to 2509 but reflects near-certainty math, not forecasting skill. No signal value.",
   "data_snapshot": {
     "geo_elo": 2528.5,
-    "geo_elo_active": 2278.8,
-    "resolved_trades": 268,
+    "geo_elo_active": 2509.1,
+    "resolved_trades": 58,
     "distinct_markets": 59,
-    "directionality": 0.96,
-    "pnl": -58.3
+    "directionality": 0.958,
+    "pnl": -3195.0
   }
 }

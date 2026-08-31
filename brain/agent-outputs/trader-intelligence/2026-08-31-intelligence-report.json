@@ -1,0 +1,537 @@
+{
+  "report_date": "2026-08-31",
+  "profiles_updated": [
+    {
+      "address": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "new_resolved_trades": 92,
+      "data_depth": "robust",
+      "archetype_unchanged": true,
+      "what_changed": "92 new resolved trades (robust): 73/92=79% win rate via near-certainty collection (21 near-cert wins at 0.81-0.99) + 8 contested entries in WEATHER markets (city temperature forecasts, Wellington/Munich/Madrid/Seoul/Mexico City — all Unknown category, NOT geo/elections). Performance deterioration flag CLEARS: last-10 accuracy improved from 20% (Jul 20) to 70%. geo_elo_active surged 2278.8→2509.1 from near-cert wins. PNL worsened from -$58 to -$3,195 (cumulative tail losses). YIELD_HARVESTER/EXCLUDE confirmed — no geo/elections contested entries detected."
+    },
+    {
+      "address": "0x1104d937f3635fc20f42d56c2855e72f0ec5002a",
+      "new_resolved_trades": 10,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "what_changed": "10 new resolved trades: ALL in one market ('US-Iran 60 day negotiation period extended?'), ALL WON at contested prices 0.671-0.785. 10/10 Iran_ME domain wins confirms the domain thesis but single-market concentration (1 distinct market) does not meet the 30-trade/5-market reclassification bar. PNL surged $9,141→$17,557 (+$8,416 — removes prior PNL anomaly concern). CRITICAL: geo_elo_active decayed 2069.9→1808.9 — only 8.9 points above NEAR_LEGENDARY demotion floor. Open positions now in UK Elections (Rayner, Miliband, Cooper PM race) — outside Iran_ME trusted domain."
+    },
+    {
+      "address": "0xc624cccd414dc90ea329f06cf535fafa40d2ee24",
+      "new_resolved_trades": 1,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "what_changed": "One near-cert trade: Alaska primary YES@0.997 WON (Elections). Performance deterioration flag PERSISTS — last-10 accuracy = 40% for second consecutive cycle. geo_elo_active surged 2207.0→2411.4 (+204 points, likely from Sunday comprehensive ELO recalc, not a single win signal). PNL improved $2,860→$3,704. Iran_ME/Trump_US domain strengths unchanged."
+    },
+    {
+      "address": "0x6b025355d035a679205ae23de33c7e9abe71e5fc",
+      "new_resolved_trades": 1,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "what_changed": "One trade: 'Strait of Hormuz traffic returns to normal by August 15, 2026' YES@0.003 WON — a contrarian call at extreme price (0.3% implied probability) that resolved correctly. However: last-10 accuracy = 30% (SEVERE deterioration, HIGH severity). PNL collapsed from +$2,683 to -$1,635 (-$4,318). geo_elo_active decayed sharply from 3105.8 to 2436.8 (-669 points since Jun 29). Portfolio has expanded chaotically into FIFA World Cup betting and peace deal conviction-averaging. LEGENDARY tier maintained but deteriorating rapidly."
+    },
+    {
+      "address": "0x63c6169ce52343b2de939559cfc7cc42d66a3e53",
+      "new_resolved_trades": 1,
+      "data_depth": "thin",
+      "archetype_unchanged": true,
+      "what_changed": "One trade: Minecraft challenge No@0.830 LOST (Unknown/entertainment category — not archetype-relevant). Last-10 accuracy 9/10=90% (excellent). KEY: open position 'Iran charges Hormuz fees by August 31?' NO@0.570 resolves TODAY — first clean contested-price Iran_ME call under this profile. geo_elo_active decayed 2539.1→2350.9 (-188 points in 21 days). PNL declined $1,574→$782."
+    }
+  ],
+  "archetype_drift_flags": [
+    {
+      "pattern": "yield_harvester_contested_entries",
+      "trader": "0xd218e474776403a330142299f7796e8ba32eb5c9",
+      "severity": "MEDIUM",
+      "evidence": {
+        "contested_count": 8,
+        "markets": [
+          "Will the highest temperature in Wellington be 15°C on August [date]? No@0.440 LOST",
+          "Will the highest temperature in Munich be 30°C on August 12? No@0.560 LOST",
+          "Will the highest temperature in Madrid be 37°C on August 11? No@0.660 WON",
+          "Will the highest temperature in Seoul be 32°C on August [date]? No@0.560 LOST",
+          "Will the highest temperature in Mexico City be 25°C on August [date]? No@0.570-0.590 LOST (x2)",
+          "Will the highest temperature in Madrid be 36°C on August 11? No@0.460 LOST"
+        ],
+        "market_categories": "ALL Unknown (weather prediction markets)"
+      },
+      "data_depth": "robust (92 new resolved trades, 8 contested among them)",
+      "n_new_trades": 92,
+      "interpretation": "Pattern 1 (YIELD_HARVESTER contested entries) technically fires on 8 contested entries, but ALL 8 are city temperature weather prediction markets (Unknown category) — not geo/elections. Per standing watch_item protocol, non-geo contested entries do not trigger yield-harvester-waking-up analysis. MEDIUM severity flags the technical trigger; the STR-003 relevance is nil. YIELD_HARVESTER/EXCLUDE status unchanged. No reclassification. Note 5W/3L on weather contested entries — negative edge in this new domain.",
+      "reclassified": false
+    },
+    {
+      "pattern": "performance_deterioration",
+      "trader": "0x6b025355d035a679205ae23de33c7e9abe71e5fc",
+      "severity": "HIGH",
+      "evidence": {
+        "last_10_accuracy": 0.30,
+        "threshold": 0.45,
+        "detail": "Last 10: Hormuz YES@0.003 WON (Aug 11), Israel-Hezbollah peace YES@0.196 LOST (Jun 19), Iran peace deal NO@0.002 WON (Jun 17), Germany FIFA YES@0.063 LOST (Jun 15), Spain FIFA YES@0.161 LOST (Jun 15), Norway FIFA YES@0.024 WON (Jun 15), Germany FIFA YES@0.062 LOST (Jun 15), Iran US peace deal NO@0.143 WON (Jun 15), Iran US peace deal NO@0.136 WON (Jun 15), Germany FIFA YES@0.061 LOST. 3 wins, 7 losses."
+      },
+      "data_depth": "thin (1 new resolved trade; 10-trade window spans prior cycles)",
+      "n_new_trades": 1,
+      "interpretation": "30% last-10 accuracy indicates severe deterioration. Portfolio chaos: FIFA World Cup betting (Germany x3, Spain, Norway), Iran-Israel peace deals, and a 0.003 contrarian Hormuz win that stands out as anomalous. The DOMAIN_SPECIALIST thesis (Iran_ME/Russia_UKR 53% accuracy) appears to have degraded significantly as the trader diversified into sports. PNL collapse (-$4,318 since Jun 29) corroborates the accuracy data. Signal weight remains MINIMAL; if next cycle shows another <45% last-10 window, EXCLUDE review warranted.",
+      "reclassified": false
+    },
+    {
+      "pattern": "performance_deterioration",
+      "trader": "0xc624cccd414dc90ea329f06cf535fafa40d2ee24",
+      "severity": "MEDIUM",
+      "evidence": {
+        "last_10_accuracy": 0.40,
+        "threshold": 0.45,
+        "detail": "Second consecutive cycle with last-10 accuracy below 45% threshold. Driven by the two Platner exit losses (Jul 8) plus a mixed near-certainty/contested record.",
+        "cycles_below_threshold": 2
+      },
+      "data_depth": "thin (1 new trade; window spans prior cycles)",
+      "n_new_trades": 1,
+      "interpretation": "Performance deterioration flag persists for second consecutive cycle. The Iran_ME and Trump_US underlying domain strengths (63% and 75% on large samples) are not invalidated by this thin-window flag — the 40% last-10 reflects specific losses in prior cycles, not a collapse in domain accuracy. However, 2 consecutive cycles below threshold warrants monitoring. If the next cycle shows 5+ contested wins in Iran_ME/Trump_US, the flag will clear naturally.",
+      "reclassified": false
+    }
+  ],
+  "new_traders_qualified": [
+    {
+      "address": "0xe5b1127e95ba936fa4cb81ce6b5b998fd950ca96",
+      "tier": "LEGENDARY",
+      "geo_elo_active": 2361.1,
+      "geo_elo": 2444.4,
+      "geo_resolved_trades": 40,
+      "directionality": 0.867,
+      "pnl": -130,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "New LEGENDARY qualifier with concerning behavioral pattern. Iran_ME primary domain: 253 Geopolitics trades at 60% accuracy and 74% contested rate (good ratio). PRIMARY RED FLAG: systematic conviction-averaging on 'US-Iran permanent peace deal YES' at 0.75-0.76 — 9+ entries in same market, all lost. The trader correctly called the June 15 deadline (YES@0.250 WON) then over-extended the same thesis at much worse prices on the December date, losing repeatedly. PNL=-$130 (near zero on 637 trades) confirms wins and losses roughly cancel. Profile written this cycle. NOT STR-003 eligible until Oscar human review and conviction-averaging pattern assessment.",
+      "human_review_required": true,
+      "review_priority": "HIGH",
+      "profile_created": true
+    },
+    {
+      "address": "0xb6ce892dd3e01d4e30264f15fd9e61a4f62f895d",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 2154.7,
+      "geo_elo": 2196.6,
+      "geo_resolved_trades": 56,
+      "directionality": 0.829,
+      "pnl": 698,
+      "provisional_archetype": "DOMAIN_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "Geopolitics trader with 1016 resolved trades: 552 Geopolitics at 54% accuracy (261 contested) and 454 Unknown at 59% accuracy (266 contested). Iran_ME focus based on contested entries (peace deal, airspace closure). PNL=$698 is low for 1016 trades. geo_elo_active=2154.7 is 21 points below LEGENDARY threshold. LOW confidence — modest accuracy margin, thin PNL.",
+      "human_review_required": true,
+      "review_priority": "MEDIUM",
+      "profile_created": false
+    },
+    {
+      "address": "0x9690d9f51b618222c29567c3b39aac2935a5f2d5",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1972.5,
+      "geo_elo": 2089.8,
+      "geo_resolved_trades": 119,
+      "directionality": 0.948,
+      "pnl": 13804,
+      "provisional_archetype": "VOLUME_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "1484 resolved trades: 1148 Unknown (sports: FIFA World Cup, baseball, entertainment) + 270 Geopolitics (54% acc, 160 contested) + 66 Elections (53% acc). PNL=$13,804 is strong but appears driven by sports/Unknown trading rather than geo forecasting. Geopolitics accuracy of 54% on 160 contested is only marginally above-chance. Sports trader with incidental geo presence — geo ELO may be inflated by volume in border-line geo markets. Low geo signal relevance.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0xa82b0e89cf734e2fa70cbd52ca65c77d64595220",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1903.2,
+      "geo_elo": 2530.7,
+      "geo_resolved_trades": 70,
+      "directionality": 0.941,
+      "pnl": 35764,
+      "provisional_archetype": "VOLUME_SPECIALIST",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "EXCLUDE",
+      "first_read": "CAUTION — sports trader misidentified by geo ELO. 1446 total trades: 831 Geopolitics (44% accuracy, 734 contested — BELOW CHANCE in geo), 591 Unknown (sports: FIFA World Cup England bets, baseball, soccer). PNL=$35,764 despite below-chance Geopolitics accuracy — the PNL is from sports/Unknown trading, not geo forecasting. The Geopolitics trades represent a losing record. Recommending EXCLUDE for signal purposes despite high PNL. geo ELO likely inflated by volume in sports-adjacent markets tagged as Geopolitics. This is an important flag: a high-PNL, high-ELO trader who is actively harmful to STR-003 signal quality if included. Do NOT include in any geo/elections signal generation.",
+      "human_review_required": false,
+      "review_priority": "NONE",
+      "profile_created": false
+    },
+    {
+      "address": "0xfe2d0b7350141c8413da4ab3eb72b5d71026da35",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1927.0,
+      "geo_elo": 1927.0,
+      "geo_resolved_trades": 30,
+      "directionality": 1.000,
+      "pnl": 54,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "30 geo resolved trades, directionality=1.000 (fully directional), PNL=$54. Minimal profile data — insufficient for initial archetype assessment without deeper trade analysis. LOW confidence, MINIMAL weight. Thin sample.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0xeea75cd940a8abc193b04ca78be589af3d41d491",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1917.4,
+      "geo_elo": 2236.8,
+      "geo_resolved_trades": 56,
+      "directionality": 0.957,
+      "pnl": 269,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "56 geo trades, geo_elo decayed from 2236.8 to 1917.4 (recency decay active — reduced recent activity). PNL=$269 modest. directionality=0.957 (highly directional). Insufficient data without deeper trade analysis. LOW confidence.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0x5a218c7ad04135830a45c41aaed7294df7809318",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1866.7,
+      "geo_elo": 1866.7,
+      "geo_resolved_trades": 108,
+      "directionality": 0.994,
+      "pnl": 754,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "108 geo trades, no recency decay (geo_elo=geo_elo_active), directionality=0.994 (almost fully directional). PNL=$754 modest for 108 trades. Needs deeper trade analysis for archetype assessment.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0x7b64e09f384b07534dff21859a0d27b823ae8440",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 2065.0,
+      "geo_elo": 2121.5,
+      "geo_resolved_trades": 67,
+      "directionality": 0.847,
+      "pnl": -1376,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "PNL=-$1,376 is concerning. 67 geo trades with moderate recency decay. Needs deeper analysis.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0x1e13c83d9bbdf8247c0f9e0d3d1a5cee7bd92ac4",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 2024.8,
+      "geo_elo": 2272.7,
+      "geo_resolved_trades": 10,
+      "directionality": 0.737,
+      "pnl": -1194,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "Only 10 geo_resolved_trades but geo_elo_active=2024.8 — thin sample anomaly. PNL=-$1,194 negative. Requires deep investigation before any use.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0xf009b0e19d041a860a63af3350598db8b2bce274",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1983.0,
+      "geo_elo": 2469.8,
+      "geo_resolved_trades": 32,
+      "directionality": 0.789,
+      "pnl": -64,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "Large recency decay (geo_elo 2469.8 → geo_elo_active 1983.0) suggests extended dormancy. 32 geo trades, PNL=-$64. Needs deeper analysis.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0xe2eedd8c3b0668dc19757c314ea41dfaa5c760b8",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1820.1,
+      "geo_elo": 2019.6,
+      "geo_resolved_trades": 78,
+      "directionality": 0.979,
+      "pnl": 538,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "78 geo trades, geo_elo_active=1820.1 (barely above 1800 floor). directionality=0.979. PNL=$538 modest. geo_elo_active fragile — likely to oscillate around the 1800 threshold.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0x8ef7e4dda1c8819ebd82a98c50748f969eca2fed",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1806.8,
+      "geo_elo": 1870.5,
+      "geo_resolved_trades": 19,
+      "directionality": 1.000,
+      "pnl": -152,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "Only 19 geo_resolved_trades with directionality=1.000. geo_elo_active=1806.8, barely above 1800 floor. PNL=-$152 negative. Thin sample, high demotion risk.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    },
+    {
+      "address": "0x90be731b60be6948f1aba2138c68b852da83c800",
+      "tier": "NEAR_LEGENDARY",
+      "geo_elo_active": 1800.3,
+      "geo_elo": 1871.0,
+      "geo_resolved_trades": 71,
+      "directionality": 0.938,
+      "pnl": 961,
+      "provisional_archetype": "UNKNOWN",
+      "archetype_confidence": "LOW",
+      "initial_signal_weight": "MINIMAL",
+      "first_read": "geo_elo_active=1800.3 — essentially at the demotion floor. 71 geo trades, PNL=$961, directionality=0.938. Very likely to oscillate below 1800 within days without active geo trading. Priority LOW — may self-resolve out of the pool.",
+      "human_review_required": true,
+      "review_priority": "LOW",
+      "profile_created": false
+    }
+  ],
+  "emerging_consensus": [
+    {
+      "market": "Will the Democratic Party control the House after the 2026 Midterm elections?",
+      "market_id": "unknown",
+      "direction": "Yes",
+      "end_date": "2026-11-03",
+      "traders": [
+        {
+          "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "avg_price": 0.836,
+          "net_shares": 70,
+          "in_trusted_domain": false
+        },
+        {
+          "address": "0x63c6169ce52343b2de939559cfc7cc42d66a3e53",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "avg_price": 0.820,
+          "net_shares": 331,
+          "in_trusted_domain": false
+        }
+      ],
+      "interpretation": "Two MINIMAL-weight LEGENDARY traders aligned YES on Democrats controlling House at 0.820-0.836 (near-certainty, not contested). NOT STR-003 eligible: (1) both traders hold MINIMAL weight, (2) entry prices are near-certainty (>0.80), failing the STR-003 price filter (0.10-0.80). This is consistent with market consensus reflecting high Democrat House control probability, not a contrarian signal. Low intelligence value."
+    },
+    {
+      "market": "Will Kash Patel leave the Trump administration before 2027?",
+      "market_id": "unknown",
+      "direction": "Yes",
+      "end_date": "2026-12-31",
+      "traders": [
+        {
+          "address": "0x3d03c46d2e4594ea6fa03f7b571342d8ee249d52",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "avg_price": 0.620,
+          "net_shares": 10,
+          "in_trusted_domain": false
+        },
+        {
+          "address": "0xc624cccd414dc90ea329f06cf535fafa40d2ee24",
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "avg_price": 0.780,
+          "net_shares": 64,
+          "in_trusted_domain": false
+        }
+      ],
+      "interpretation": "Two MINIMAL-weight LEGENDARY traders aligned YES on Kash Patel departure. 0x3d03c46d entered at 0.620 (CONTESTED); 0xc624cc at 0.780 (borderline CONTESTED). The 0x3d03c46d entry at 0.620 is meaningful — this is within Iran_ME/Russia_UKR domain specialist territory for Trump_US signals. NOT currently STR-003 eligible: both MINIMAL weight required human review first. If c624cc is upgraded to DOMAIN_ONLY (Trump_US) and 3d03c46d to DOMAIN_ONLY (Trump_US), this could become a POTENTIAL STR-003. Track. Note: c624cc's Trump_US secondary strength (75% accuracy) is well-documented."
+    }
+  ],
+  "direction_reversals": [],
+  "approaching_resolutions": [
+    {
+      "market": "Iran charges Hormuz fees by August 31?",
+      "market_id": "unknown",
+      "end_date": "2026-08-31",
+      "days_remaining": 0,
+      "positions": [
+        {
+          "address": "0x63c6169ce52343b2de939559cfc7cc42d66a3e53",
+          "direction": "No",
+          "avg_price": 0.570,
+          "net_shares": 300,
+          "archetype": "DOMAIN_SPECIALIST",
+          "signal_weight": "MINIMAL",
+          "contested": true
+        }
+      ],
+      "pre_res_scan_status": "Not checked against Aug 30 pre-resolution scan — cross-reference pending.",
+      "note": "RESOLVES TODAY. 0x63c6169c (DOMAIN_SPECIALIST, MINIMAL, geo_elo_active=2350.9) holds NO@0.570 CONTESTED (300 shares). This is the first clean contested-price geo call to resolve under this trader's profile. Outcome is critical for determining whether their LEGENDARY geo_elo_active (2350.9) reflects genuine Iran_ME domain knowledge or ELO inflation from ambiguous geo-tagged markets. Note: end_date stored as '2026-08-31T00:00:00Z' — non-canonical format (SCL-010), but market correctly identified."
+    }
+  ],
+  "tier_demotion_reviews": [
+    {
+      "address": "0x9aa516edbff6688595987727b4edc530cff14010",
+      "stored_tier": "NEAR_LEGENDARY",
+      "stored_archetype": "YIELD_HARVESTER",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-07-13",
+      "note": "Dropped from Pool C (geo_elo_active < 1800 or geo_accuracy_pool=0). Profile retained."
+    },
+    {
+      "address": "0xfa323e40632edca701abc6c8cf1f82175909bd9a",
+      "stored_tier": "NEAR_LEGENDARY",
+      "stored_archetype": "GENUINE_FORECASTER",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-15",
+      "note": "ALERT: Stored archetype GENUINE_FORECASTER — the pool's most valuable archetype. Dropped from Pool C. Verify whether this is temporary (dormancy decay) or permanent. If dormancy decay, the geo_elo may recover if trading resumes."
+    },
+    {
+      "address": "0xbc54e69667ceb6ccec538e5a0ba1927fc1fe680f",
+      "stored_tier": "NEAR_LEGENDARY",
+      "stored_archetype": "GENUINE_FORECASTER",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "ALERT: Second GENUINE_FORECASTER archetype dropped from Pool C. Verify trading status."
+    },
+    {
+      "address": "0x4ecefb5b148a5ac4f414b277c54cd328ae3a3893",
+      "stored_tier": "NEAR_LEGENDARY",
+      "stored_archetype": "GENUINE_FORECASTER",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "ALERT: Third GENUINE_FORECASTER archetype dropped from Pool C. Three of the four classified GENUINE_FORECASTERs (0xfa323e, 0xbc54e6, 0x4ecefb) are now below the threshold. Only 0xecaa8806 (geo_elo_active=3980.1) remains clearly LEGENDARY and FULL weight."
+    },
+    {
+      "address": "0x0cb10c40b0776e9ee8cef970af85724654dda76c",
+      "stored_tier": "NEAR_LEGENDARY",
+      "stored_archetype": "GENUINE_FORECASTER",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-08-17",
+      "note": "ALERT: Introduced Aug 17 as GENUINE_FORECASTER candidate (1079 trades, 64% contested rate). Already dropped from Pool C in 14 days. Review whether this is dormancy decay (recoverable) or metric regression."
+    },
+    {
+      "address": "0x44a1159b925c145e70f746bb3f0f58380553bd21",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "YIELD_HARVESTER",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold. YIELD_HARVESTER — low signal value impact."
+    },
+    {
+      "address": "0x474ea661f6be8c9d49438353a42acedd229c938b",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x51d2063dc67f9de481223cb1cf329d0234f2eaa8",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x4f2365287b87b4437bee646b269656817151e0d3",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x4c34beb16ddedf02116413693b07a709e0a1dcce",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x40173a531f84e7fde7f806fd72c154886a02fb23",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0xca0acc6f272eb35229c2ca4be66049e7058193a4",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x9f162cab9822be4ce687a1a12d8114dc9d14884d",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x55055087699c7436fde338b7017c20378b9baa5a",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0xbbd22b1ace7f8933e2862a0827ad6a63dbad3c10",
+      "stored_tier": "LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-06-10",
+      "note": "LEGENDARY→below threshold."
+    },
+    {
+      "address": "0x9ca119b8cd7bdb890aecf1ff3b0f6e3a45cc13b5",
+      "stored_tier": "NEAR_LEGENDARY",
+      "stored_archetype": "DOMAIN_SPECIALIST",
+      "current_geo_elo_active": null,
+      "profile_date": "2026-08-17",
+      "note": "Introduced Aug 17 (Russia_UKR/Iran_ME HIGH confidence, 1724 trades). Already dropped from Pool C in 14 days. Investigate urgently — if dormancy decay from ELO recalculation, this is a significant false-negative."
+    },
+    {
+      "note": "FULL LIST: 38 profiled traders are now below geo_elo_active=1800 or outside Pool C, compared to 22 last cycle. The pool has continued to churn dramatically since the June 2026 baseline. The 14 LEGENDARY→demoted traders represent ~60% of the originally profiled LEGENDARY tier. remaining_in_demotion_list_count: 23 additional traders not listed individually above — all NEAR_LEGENDARY at initial profile, all now below 1800."
+    }
+  ],
+  "pool_health": {
+    "legendary_clean": 10,
+    "near_legendary_clean": 27,
+    "profiles_current": 66,
+    "profiles_stale": 0,
+    "total_profiles": 66,
+    "validation_query_results": {
+      "clean_pool": 37082,
+      "true_research_pool": 27245,
+      "clean_markets": 438301,
+      "pool_c": 3982,
+      "legendary_base": 84,
+      "legendary_active": 11,
+      "legendary_clean": 10,
+      "near_legendary_clean": 27,
+      "wal_mode": "wal"
+    },
+    "note": "Pool sizes have grown substantially since the June 2026 contract baseline. clean_pool=37,082 (was ~18,910), clean_markets=438,301 (was ~24,184), pool_c=3,982 (was ~2,185). No contract alert conditions triggered. profiles_current=66: 60 with no new resolved trades (no-delta) + 5 re-profiled this cycle + 1 new profile created (0xe5b1127e). profiles_stale=0."
+  },
+  "action_items": [
+    "RESOLVES TODAY — MONITOR: 0x63c6169c 'Iran charges Hormuz fees by August 31?' NO@0.570 CONTESTED (300 shares, end_date Aug 31 2026). This is the first clean contested-price Iran_ME call under this trader's profile. If NO resolves correctly, this provides the clearest evidence yet that 63c6169c has genuine geo domain knowledge beyond ELO inflation. Check DB tomorrow morning for result; update profile next cycle accordingly.",
+    "NEW LEGENDARY QUALIFIER — HUMAN REVIEW REQUIRED: 0xe5b1127e (geo_elo_active=2361.1, Iran_ME DOMAIN_SPECIALIST, LOW confidence). Profile created this cycle. PRIMARY CONCERN: systematic conviction-averaging — 9 identical 'US-Iran permanent peace deal YES' entries at 0.75-0.76, ALL LOST. Iran_ME 60% accuracy at 186 contested trades (Geopolitics category) is real but the conviction-averaging pattern is a structural capital risk. Oscar review required before any STR-003 consideration.",
+    "NEAR-DEMOTION ALERT — DOMAIN_ONLY UPGRADE CANDIDATE: 0x1104d937 (Iran_ME DOMAIN_SPECIALIST, MINIMAL). geo_elo_active=1808.9 — only 8.9 points above the 1800 NEAR_LEGENDARY floor. Simultaneously: 10/10 wins on 'US-Iran 60-day negotiation extended?' NO at 0.67-0.78 + PNL surged to $17,557 make this the strongest case for DOMAIN_ONLY upgrade in the current pool. Oscar review can lock in the upgrade before demotion risk materializes.",
+    "PERFORMANCE DETERIORATION HIGH SEVERITY — MONITOR FOR DEMOTION: 0x6b025355 (DOMAIN_SPECIALIST MINIMAL). Last-10 accuracy 30%, PNL collapsed +$2,683→-$1,635, geo_elo_active decaying at ~10 pts/day (currently 2436.8 — will cross LEGENDARY floor 2175 in ~26 days). If next cycle shows another <45% last-10 accuracy, EXCLUDE review warranted. Portfolio chaos (FIFA, peace deal conviction-averaging) suggests strategy breakdown.",
+    "13 NEW QUALIFIERS — BATCH HUMAN REVIEW: largest batch since the June 2026 baseline profiling (13 traders not previously profiled). CRITICAL FLAG: 0xa82b0e89 (PNL=$35,764, geo_elo_active=1903.2) appears to be a SPORTS TRADER — 831 Geopolitics trades at 44% accuracy (BELOW CHANCE) with PNL generated via sports/Unknown markets. Recommend EXCLUDE for geo signal purposes despite high PNL. The batch also includes 4 traders with GENUINE_FORECASTER archetype potential (0x0cb10c40 — already dropped from Pool C 14 days after introduction).",
+    "GENUINE_FORECASTER POOL COLLAPSE: 3 of 4 originally profiled GENUINE_FORECASTERs (0xfa323e, 0xbc54e6, 0x4ecefb) are now below the 1800 threshold or out of Pool C. Only 0xecaa8806 remains (geo_elo_active=3980.1, FULL weight, $195,739 PNL) — but has NO open eligible positions and NO activity since Aug 17. The FULL-weight signal layer is effectively dormant. Oscar should be aware: STR-003 currently has no FULL-weight input from genuine forecasters.",
+    "ECAA8806 DORMANCY ALERT: The pool's most valuable signal source (GENUINE_FORECASTER, FULL weight, geo_elo_active=3980.1, PNL=$195,739) has made no trades in the eligible geo/elections categories since at least Aug 17. This is the most important dormancy flag in the system — a 14-day+ absence from the trader who drove the most signal quality in prior cycles."
+  ]
+}
