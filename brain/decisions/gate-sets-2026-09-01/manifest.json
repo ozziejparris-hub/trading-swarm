@@ -1,0 +1,134 @@
+{
+  "task": "validation gate sets \u2014 2026-08-31-relevance-classifier-design.md (e601648) \u00a73.9/\u00a73.10",
+  "drawn_utc": "2026-09-01T21:09:01Z",
+  "seed": {
+    "name": "GATE_SEED",
+    "value": 20260901,
+    "procedure": "random.Random(20260901); frames sorted by market_id; rng.sample(range(len(frame)), len(frame)) gives a consumption order; walk it, skip contaminated picks, take first 350 clean EXCLUDE (sample[:200]=set_c, [200:350]=set_a) then first 150 clean RESIDUAL=set_b"
+  },
+  "keyword_filter_source": "scripts/backfill_market_categories.py::KEYWORD_FILTER (M9); substring (LOWER(title) LIKE '%kw%') semantics, as M9 uses it",
+  "keyword_filter": [
+    "election",
+    "president",
+    "congress",
+    "senate",
+    "war",
+    "russia",
+    "ukraine",
+    "china",
+    "iran",
+    "nato",
+    "trump",
+    "biden",
+    "government",
+    "shutdown",
+    "sanction",
+    "ceasefire",
+    "nuclear",
+    "military",
+    "parliament",
+    "minister",
+    "treaty",
+    "referendum",
+    "diplomatic",
+    "invasion",
+    "conflict",
+    "zelensky",
+    "putin",
+    "xi jinping",
+    "macron",
+    "scholz",
+    "mayor",
+    "governor",
+    "ballot",
+    "tariff",
+    "foreign policy",
+    "regime",
+    "coup",
+    "protest",
+    "revolution"
+  ],
+  "frames": {
+    "Unknown_total": 778982,
+    "EXCLUDE_pool": 634715,
+    "RESIDUAL_noKeyword_pool": 125208
+  },
+  "contamination_check": {
+    "corpus_files": [
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-relevance-classifier-design.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-30-category-classifier-investigation.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-geo-scoping-inventory.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-local-llm-consolidation-assessment.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-30-geo-backlog-and-category-reach.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-prefilter-implementation.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-why-unknown-investigation.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-ingest-category-defect.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-classifier-schema-migration.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-08-31-slug-fetch.md",
+      "/home/parison/trading-swarm/brain/decisions/2026-09-01-slug-fetch-unswept.md",
+      "/home/parison/projects/first-repo/monitoring/relevance_prefilter.py",
+      "/home/parison/projects/first-repo/tests/test_relevance_prefilter.py",
+      "/home/parison/projects/first-repo/scripts/measure_prefilter_coverage.py",
+      "/home/parison/projects/first-repo/scripts/detect_insider_activity.py"
+    ],
+    "corpus_missing": [],
+    "corpus_chars": 315475,
+    "corpus_0x_hexids": [
+      "0x2b1a5aa2f2bad83ac7efacfa77328930a010b3eb6208313767b591bb3757bea1"
+    ],
+    "method": "on each DRAWN row: market_id in corpus 0x-id set; OR title(>=20c) verbatim substring; OR staged market_slug/event_slug/event_title(>=15c) verbatim substring; case-insensitive. Contaminated pick dropped, replaced by next clean pick from the same stream.",
+    "exclusions": [
+      {
+        "set": "a/c(EXCLUDE)",
+        "market_id": "0x9f7aabd41014631ae45a9e924de140732beea70b25ed8b9d49f7dc23e4354da0",
+        "title": "Games Total: O/U 2.5",
+        "reason": "title verbatim in corpus"
+      },
+      {
+        "set": "a/c(EXCLUDE)",
+        "market_id": "0x3016b2f98b1899a42555f71bf92c26487470aad8f3d4970e6daa4675536f1bd0",
+        "title": "Games Total: O/U 2.5",
+        "reason": "title verbatim in corpus"
+      },
+      {
+        "set": "a/c(EXCLUDE)",
+        "market_id": "0x9476817a7185d677876b91868d66989e600db722bf33df67cfc8f319d8d8b5d1",
+        "title": "Games Total: O/U 2.5",
+        "reason": "title verbatim in corpus"
+      },
+      {
+        "set": "a/c(EXCLUDE)",
+        "market_id": "0x4a1933cbd30fbec859c6a7e706fa32abce34870355749cf4e77278b2dc605021",
+        "title": "Games Total: O/U 2.5",
+        "reason": "title verbatim in corpus"
+      }
+    ],
+    "n_excluded": 4
+  },
+  "sets": {
+    "a": {
+      "n": 150,
+      "file": "set_a.csv",
+      "frame": "Unknown & prefilter=EXCLUDE",
+      "measures": "\u00a73.9 classifier FP rate on template bucket (<=2%, <=3/150)"
+    },
+    "b": {
+      "n": 150,
+      "file": "set_b.csv",
+      "frame": "Unknown & prefilter=RESIDUAL & no M9 keyword",
+      "staged_slug_coverage": "62/150",
+      "measures": "\u00a73.9 classifier FP rate on residual (<=10%, <=15/150)"
+    },
+    "c": {
+      "n": 200,
+      "file": "set_c.csv",
+      "frame": "Unknown & prefilter=EXCLUDE",
+      "measures": "\u00a73.9 pre-filter false-exclusion rate (<=0.5%, <=1/200)"
+    }
+  },
+  "sha256_16": {
+    "set_a.csv": "105b9338715a1398",
+    "set_b.csv": "bede4f7ba2d4989f",
+    "set_c.csv": "d580b9a4aaa5d445"
+  }
+}
