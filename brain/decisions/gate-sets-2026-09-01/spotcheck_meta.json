@@ -1,0 +1,18 @@
+{
+  "spotcheck_seed": 90150,
+  "n": 50,
+  "drawn_from": "labels.csv (500 rows)",
+  "procedure": "random.Random(90150).sample(range(500), 50), then sorted",
+  "composition_by_set": {
+    "a": 15,
+    "c": 17,
+    "b": 18
+  },
+  "composition_by_label": {
+    "NotRelevant": 50
+  },
+  "borderline_in_sample": 2,
+  "sha256_16": {
+    "spotcheck_blind.csv": "b11a49101638b00e"
+  }
+}
