@@ -108,6 +108,13 @@ further, after any post-split figure exists.
 
 ## 3. Control / comparison design — fixed to account for 1B and the match_control() finding
 
+**AMENDED 2026-09-06 — see the dated amendment section at the end of
+this document for a stratified-reporting fix addressing an activity-level
+imbalance found between the persistence cohort and comparison group
+(median 28.5 vs. 22.0 post-split positions). The text below is the
+ORIGINAL, un-amended §3, preserved as written; the amendment adds
+stratified reporting on top of it, it does not replace anything below.**
+
 **The primary design does not use `match_control()` and does not build a
 matched-pair placebo. It conditions on post-split survival FIRST, then
 compares within that single survival-consistent population — eliminating
@@ -199,6 +206,12 @@ happens.
 ---
 
 ## 6. Success criterion — stated numerically
+
+**AMENDED 2026-09-06 — see the dated amendment section at the end of
+this document. The original combined (AND) criterion below is PRESERVED
+AS WRITTEN for the record, but is SUPERSEDED by the amendment's split
+primary/secondary criteria — use the amendment's outcome enumeration,
+not the one below, when this test is run.**
 
 Let **N** = size of the persistence cohort (pre-split BH-skilled traders
 within the twice-classifiable population, §3) — unknown until this test
@@ -356,7 +369,13 @@ computing decision-carrying numbers without an established null.
 
 1. What N (persistence cohort size) and what twice-classifiable
    population size actually result from §3's restriction — unknowable
-   without computing.
+   without computing. **RESOLVED 2026-09-06 (first-repo `1d34ced`,
+   counts only, no post-split classification): twice-classifiable
+   population = 753, N (persistence cohort) = 146, comparison group =
+   607. A post-split-activity imbalance was found between the two groups
+   (median 28.5 vs. 22.0 positions) — addressed by the stratified-
+   reporting amendment at the end of this document, not by any
+   adjustment to the population itself.**
 2. Whether §8's prerequisite synthetic-null step will itself produce
    adequate denominators on the twice-classifiable population, or repeat
    Step 1's small-denominator problem at a different scale.
@@ -368,6 +387,130 @@ computing decision-carrying numbers without an established null.
    all, and if so, whether `match_control()`'s nondeterminism will be
    fixed by the time it is — both left to a future decision, not decided
    here.
+
+---
+
+---
+
+## Amendment 2026-09-06 — split success criterion (§6) + activity-imbalance stratification (§3)
+
+Made in
+`2026-09-06-external-dataset-scoping-and-prereg-amendment.md`, alongside
+an unrelated read-only scoping question (external dataset — verdict: it
+cannot contribute to this test; see that document). **Both amendments
+below are BLIND: neither references, depends on, or was informed by any
+post-split classification, p-value, persistence rate, or other
+outcome-dependent quantity.** Both are justified entirely from counts
+already committed before this amendment — N=146 (first-repo `1d34ced`)
+and the post-split position-count *distribution* (a structural count, not
+an outcome) from the same commit. The original §3 and §6 text above is
+preserved, not deleted; this section is additive and, where it conflicts
+with the original §6 outcome enumeration, supersedes it as stated at each
+pointer above.
+
+### Amendment 1 — §6, success criterion split into primary + secondary
+
+**Why now, on the record before any result exists**: N=146 was unknown
+when this document was drafted — its own Open Question 1. Now that it is
+known, a standard closed-form approximation shows the original §6's
+combined AND-criterion (CI clears the in-house null *and* the point
+estimate is at/above Gómez-Cram's 44%) has a foreseeable failure mode at
+this specific N: for a persistence rate near 40%, `SE ≈ √(p(1-p)/N) ≈
+√(0.4·0.6/146) ≈ 0.0405`, giving a 95% CI half-width of
+`≈ 1.96 × 0.0405 ≈ 0.079` — **≈8 percentage points**, wide enough to
+straddle 44% routinely even when the point estimate clearly clears the
+in-house chance floor. Under the original wording, such a result would
+fall to old-Outcome-3 ("inconclusive") — understating a result that is
+actually decisive against this test's own null, merely ambiguous against
+a *different population's* external benchmark. This reasoning is fixed
+here, blind, precisely so a later result cannot be read as having
+motivated the split.
+
+**The two comparisons, reported separately, from here forward:**
+
+**(A) PRIMARY — persistence established against this test's own null**
+(§8's synthetic-null prerequisite). A CI-vs-CI relationship between the
+persistence-rate CI and the synthetic-null CI is exhaustively one of
+three mutually exclusive states — no fourth state is possible, so no
+"inconclusive" bucket is needed on this axis:
+- **A1 — established**: persistence-rate CI lies entirely above the
+  synthetic-null CI (disjoint, mirroring the 2026-09-05 test's own
+  separation criterion).
+- **A2 — no persistence**: the two CIs overlap. Directional
+  classification pre-split carries no out-of-sample information at this
+  test's resolution — a legitimate, valuable, reportable finding, not a
+  failure (unchanged from the original §6 Outcome 2).
+- **A3 — reversal**: persistence-rate CI lies entirely below the
+  synthetic-null CI. **Kept intact, unchanged in substance from the
+  original §6 Outcome 4** — reported as-is, not adjusted or hidden.
+
+**(B) SECONDARY — relative to the Gómez-Cram 44% external benchmark**
+(§8). Always computed and reported alongside (A), never in place of it;
+decision-relevant only when paired with A1, since a result that does not
+even clear its own in-house null gains nothing from comparing favourably
+to an unrelated population's benchmark:
+- **B1 — at or above benchmark**: persistence-rate CI's lower bound is
+  at or above 44%.
+- **B2 — UNRESOLVED**: the CI straddles 44%. **This is the amendment's
+  central fix — B2 is reported as unresolved relative to this specific
+  external comparison, NOT as "inconclusive" for the test as a whole,
+  and NOT as a failure.** The two populations and methodologies differ
+  regardless (Gómez-Cram's own population, their 10,000-permutation
+  count vs. this test's own construction) — B2 at N=146 is an expected,
+  named outcome, not a surprise to be explained away later.
+- **B3 — below benchmark**: the CI's upper bound is below 44%.
+
+**Six named combinations, each stated in advance:**
+
+| | A1 (established) | A2 (no persistence) | A3 (reversal) |
+|---|---|---|---|
+| **B1 (≥44%)** | Strongest form: persistence established, matches Gómez-Cram. | Reported for context only; B-axis is not decision-relevant without A1. | Reported for context only. |
+| **B2 (unresolved)** | Persistence established against this test's own null; external-benchmark comparison unresolved at this N — **not inconclusive**, a real finding with a flagged resolution limit. | Not decision-relevant. | Not decision-relevant. |
+| **B3 (<44%)** | Persistence established against this test's own null; below Gómez-Cram's population rate. Still a real, primary-criterion-clearing finding. | Not decision-relevant. | Not decision-relevant. |
+
+Per the original §6's own rule, retained unchanged: **re-running with
+different parameters after seeing a disappointing result on either axis
+is not an acceptable resolution.**
+
+### Amendment 2 — §3, stratified reporting for the post-split activity imbalance
+
+**Finding motivating this fix** (first-repo `1d34ced`, counts only): the
+persistence cohort (146 traders) trades more post-split than the
+comparison group (607 traders) — median 28.5 vs. 22.0 post-split
+positions, mean 45.4 vs. 36.1. More positions per trader means more
+power to clear the per-trader significance bar for the same underlying
+tendency, so a persistence-rate difference between the two groups could
+be manufactured by activity level alone rather than by any real
+difference in directional persistence.
+
+**Fixed now, before any computation:**
+- The persistence rate **WILL be reported stratified by post-split
+  position count**, using five pre-specified bins, for both the
+  persistence cohort and the comparison group:
+  **`[10,14)`, `[14,23)`, `[23,46)`, `[46,83)`, `[83,∞)`.**
+- **Bin justification**: boundaries are taken directly from the
+  already-committed, pooled twice-classifiable population's post-split
+  count distribution (`directional_skill_twice_classifiable_population_20260906T170928Z.json`:
+  median 23, p25 14, p75 46, p90 82.8, max 359; floor 10 by construction,
+  since `M_CHOSEN=10` is the population's own minimum) — a structural
+  count computed with no direction or outcome information, so choosing
+  bins from it is blind. Quartile-spaced from the floor through p75
+  (`[10,14)`, `[14,23)`, `[23,46)`, three roughly equal-population bins),
+  then finer through p90 (`[46,83)`) and a final open-ended tail bin
+  (`[83,∞)`, capturing up to the observed max of 359) — the tail is where
+  the activity-power effect would show up most sharply, so it is isolated
+  rather than folded into a single "high" bucket.
+- **The headline (pooled) persistence rate is reported alongside the
+  stratified breakdown, never instead of it** — both numbers appear in
+  the same result, neither substitutes for the other.
+- **If the stratified breakdown shows the cohort/comparison difference is
+  confined to the high-activity strata (`[46,83)`, `[83,∞)`), that is
+  reported as such and NOT resolved by picking the pooled figure.** No
+  weighting, re-balancing, or activity-adjustment is added to the
+  persistence-rate calculation itself — stratified reporting makes the
+  issue visible without pre-judging whether it matters, per the task's
+  explicit instruction that a correction would be a modelling choice made
+  without knowing whether one is needed.
 
 ---
 
