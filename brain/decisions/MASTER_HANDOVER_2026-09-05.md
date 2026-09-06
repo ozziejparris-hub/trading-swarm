@@ -356,6 +356,32 @@ the swarm's scheduled autonomous Claude footprint is now zero.
 - **~300 markets/day dropped at ingest by an unaudited keyword filter** —
   absent from the DB entirely, not merely miscategorised; figure
   extrapolated from a single 2-hour window, not independently confirmed.
+- **`match_control()` (`trader_skill_metric_v2f.py:279`) was not
+  determined by its `seed` argument — FIXED 2026-09-06 (first-repo
+  `42b14fc`).** `cohort_traders` and `elig_traders` are Python sets at
+  every call site; the function called `list()` on them directly, before
+  shuffling and before building the candidate pool. CPython's set
+  iteration order for strings depends on the per-process hash seed
+  (`PYTHONHASHSEED`, randomized fresh per process by default, confirmed
+  unset in this environment) — `seed` fixed the numpy RNG draws but not
+  the order they were applied to. Three fresh-process re-runs of the
+  pre-fix code produced six distinct placebo survivor counts (raw-placebo
+  point estimate ranging ~0.0099–0.0160, all CI-overlapping — no
+  qualitative flip observed, not rigorously tested). **This is a second
+  named mechanism, alongside background-backfill drift (§6a of
+  `MASTER_HANDOVER_2026-08-15.md`), behind the 2026-08-16 UNREPRODUCIBLE
+  verdict.** Fix: `sorted()` in place of `list()`/raw set iteration at
+  both order-dependent points — two lines, matching criteria/feature
+  vector/distance metric/greedy logic unchanged — proven by
+  `tests/test_match_control_determinism.py` (8 fresh-process runs across
+  varying `PYTHONHASHSEED`, including unset/random, asserted identical).
+  **Placebo construction is reproducible from its recorded seed only from
+  this commit forward.** Every placebo built before it — **explicitly
+  including the 2026-08-15 result-of-record placebo and the 2026-09-06
+  Step 3 exploratory placebo** — is NOT reconstructable from its recorded
+  seed and was **not** recomputed, overwritten, or otherwise touched by
+  this fix. Full write-up:
+  `2026-09-06-match-control-determinism-fix.md`.
 
 ---
 
@@ -484,3 +510,11 @@ session summaries exist for this range), directly on the decision docs
 those dates produced. Treat it as a snapshot — verify anything load-bearing
 against current repo state before relying on it if significant time has
 passed.*
+
+---
+
+*Amended 2026-09-06 (later pass): §6 gained a new item —
+`match_control()`'s `seed`-argument nondeterminism, found during
+directional-skill exploratory-result custody work, fixed same-day
+(first-repo `42b14fc`). Full detail:
+`2026-09-06-match-control-determinism-fix.md`.*
