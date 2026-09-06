@@ -290,6 +290,16 @@ test in §4, applied here to the persistence-rate statistic itself).
 
 ## 8. Gómez-Cram external benchmark, and the unestablished in-house null
 
+**AMENDED 2026-09-06(b) — see "Amendment 2026-09-06b" at the end of this
+document. The §8 gate AS ORIGINALLY SPECIFIED IN THIS SECTION WAS NOT
+MET (synthetic-cohort split-half denominator = 6, below the documented
+floor of 10 — first-repo `ea1140e`). The text below is the ORIGINAL,
+un-amended §8, preserved as written. The amendment establishes the same
+null §8 exists to establish, by a different, more thorough route, and
+fixes the null used for the A1/A2/A3 comparison numerically. Use the
+amendment's fixed null (0%) when this test is run, not a split-half
+result — none was obtained.**
+
 Gómez-Cram's own split-half persistence figure: **44%**, cited throughout
 this arc as the external reference (2026-09-05 result document: both
 populations there landed at 58.3%/60.0%, "somewhat above it," on
@@ -378,7 +388,13 @@ computing decision-carrying numbers without an established null.
    adjustment to the population itself.**
 2. Whether §8's prerequisite synthetic-null step will itself produce
    adequate denominators on the twice-classifiable population, or repeat
-   Step 1's small-denominator problem at a different scale.
+   Step 1's small-denominator problem at a different scale. **RESOLVED
+   2026-09-06(b): it repeated the problem (synthetic-cohort split-half
+   denominator = 6, below the floor of 10, first-repo `ea1140e`) — the
+   gate as originally specified was NOT met. The null was then
+   established by an alternative route (the REPS premise test, first-repo
+   `6dc0bf5`: BH=0 across all 36 tested cells) and fixed numerically at
+   0% — see "Amendment 2026-09-06b" at the end of this document.**
 3. Whether the harness's calibration (Step 1's ~5% finding) holds
    unchanged at `REPS=10,000` on this new population — not re-checked,
    only assumed continuous with Step 1's finding at the original
@@ -511,6 +527,137 @@ difference in directional persistence.
   issue visible without pre-judging whether it matters, per the task's
   explicit instruction that a correction would be a modelling choice made
   without knowing whether one is needed.
+
+---
+
+---
+
+## Amendment 2026-09-06b — §8: null established by an alternative route
+
+**Made BLIND: no real persistence rate, CI, or post-split classification
+of any real trader exists at the time of this amendment.** Only the
+already-committed, already-completed §8 gate attempt (first-repo
+`ea1140e`, trading-swarm
+[2026-09-06-directional-skill-persistence-test-run.md](2026-09-06-directional-skill-persistence-test-run.md))
+and the already-committed REPS premise test (first-repo `6dc0bf5`,
+trading-swarm
+[2026-09-06-reps-bh-effect-isolation.md](2026-09-06-reps-bh-effect-isolation.md))
+are referenced — both prior, both fixed, both blind to any real
+post-split figure themselves.
+
+### The gate as originally specified was NOT met
+
+Stated plainly, not softened: §8's own text fixed a split-half
+persistence method as the way to establish this test's in-house null,
+with an explicit sequencing rule ("if that prerequisite step also
+produces denominators too small to trust... this test does not proceed
+... until Oscar decides"). Run against the actual twice-classifiable
+population, that method's synthetic-cohort denominator came back at
+**6**, below the documented adequacy floor of **10**. **The gate as
+originally specified was not met. This amendment does not pretend
+otherwise or retroactively redefine "met."**
+
+### The purpose-vs-method distinction — the entire justification for amending rather than abandoning
+
+§8's **purpose** is to establish a null against which the real
+persistence rate can be judged. §8's **specified method** for doing so
+was a split-half persistence rate computed on an adequate denominator.
+**The purpose is now satisfied by a different and more thorough route;
+the specified method is not, and is not retried.** The alternative
+route:
+
+**The REPS premise test** (first-repo `6dc0bf5`) ran the identical
+zero-skill synthetic construction (same `SYNTH_SEED=20260906`
+reproducing the §8 gate's own figures exactly, plus two further
+independent seeds `31337` and `99991`) across `REPS ∈ {1500, 3000, 5000,
+10000}` and all three groups (synthetic-cohort n=146, synthetic-
+comparison n=607, synthetic-pooled n=753) — **36 independently computed
+cells in total.** Result: **BH-adjusted classification was exactly zero
+in every one of the 36 cells**, with **zero spread across the three
+independent synthetic draws** at every REPS value, and raw
+(pre-BH-correction) classification rates sitting throughout at the
+~5% chance floor Step 1 already established for this harness. This is
+not one lucky draw — it is three independent zero-skill populations,
+at four permutation counts spanning more than a 6x range, all agreeing
+to the same result: **under zero skill, this harness's BH-adjusted
+post-split classification rate is 0%.**
+
+**This is a more thorough basis for a null than the specified split-half
+method would have provided even had its denominator been adequate**: the
+split-half method would have produced a single point estimate (and, on
+inadequate data, an unstable one) from one synthetic draw; the REPS test
+provides the same underlying quantity — the chance-level BH-classification
+rate under zero skill — replicated 36 times across varying permutation
+counts and independent random draws, with **perfect agreement**. The
+purpose §8 exists to serve (a trustworthy null) is satisfied at least as
+well by this evidence as the originally specified method would have
+provided if it had succeeded.
+
+### The structural point — recorded as a shape problem, not a sample-size problem
+
+Split-half persistence requires a **non-empty** null population to
+compare against: it asks, of the traders classified skilled on
+synthetic half A, what fraction are *also* classified skilled on half
+B. But a **well-calibrated null on zero-skill data is nearly empty by
+construction** — at a ~5% raw rate and BH correction controlling false
+discovery to (as observed) essentially zero, almost no synthetic trader
+classifies as BH-skilled on the first half at all, leaving almost nobody
+to test persistence on. **The REPS test's own split-half figures made
+this visible directly**: the twice-classifiable population (753 traders,
+~6x Step 1's original 124-classifiable frozen population) grew the
+split-half-eligible denominator from Step 1's `1/2/5` to `6/16/15` —
+better, but the cohort-specific figure (6) stayed single-digit, because
+the underlying BH-skilled rate stayed at essentially zero throughout,
+not because the population was still too small in absolute terms.
+**Growing the population further would grow the number of split-half-
+eligible traders, but not the number of them that clear BH significance
+on half A in the first place — that count is tied to the null rate
+itself (near-zero, by construction of a well-calibrated test on
+zero-skill data), not to the population size.** This may be an
+**unfixable shape**, not a sample-size problem: a split-half denominator
+derived from a well-calibrated null's own (near-zero) positive rate will
+tend to stay small regardless of how large the underlying population
+grows, because a well-calibrated test's whole purpose is to keep that
+rate low. Recorded as such — not investigated further, not remediated
+here.
+
+### The null, fixed numerically now
+
+**BH-adjusted persistence rate under zero skill = 0%.** This is the
+null the real persistence rate is judged against for the primary
+(A-axis) comparison, fixed here, before any real post-split figure
+exists.
+
+### How A1/A2/A3 are evaluated against this null — stated precisely, not left to interpretation
+
+The original §6 (as already amended) defines the A-axis via a CI-vs-CI
+relationship: A1 (established) = real CI entirely above the null CI; A2
+(no persistence) = the two CIs overlap; A3 (reversal) = real CI entirely
+below the null CI. **With the null fixed at the single point 0% rather
+than a CI with width, this reduces to a CI-vs-point-value rule,
+fixed exactly as follows:**
+
+- **A1 — established**: the real persistence-rate CI's **lower bound is
+  strictly greater than 0** (`ci_lo > 0.0`). The real CI does not include
+  the null point.
+- **A2 — no persistence**: the real persistence-rate CI's lower bound is
+  **at or below 0** (`ci_lo ≤ 0.0`, i.e. the CI touches or includes the
+  null point — a CI cannot extend below 0 for a bounded proportion, so
+  this is equivalent to the CI simply including 0 within `[ci_lo, ci_hi]`
+  or having `ci_lo = 0` exactly).
+- **A3 — reversal**: **structurally unreachable under this null and
+  retained in the outcome table for completeness only, not as a live
+  possibility.** A persistence rate is a proportion, bounded below at
+  0%; nothing can be "significantly below" a null fixed at the very
+  floor of the statistic's own range. This is stated explicitly here so
+  it is not left ambiguous at result time: **if this test's real
+  persistence-rate CI is reported, A3 will never be the primary-axis
+  result, by construction of the null, not by any property of the real
+  data.**
+
+The secondary (B-axis, vs. Gómez-Cram's 44%) comparison, fixed in the
+2026-09-06 amendment, is unaffected by this amendment and is evaluated
+exactly as already specified there.
 
 ---
 
