@@ -287,10 +287,38 @@ RESULT: FAILURES DETECTED
   `cd.LEGENDARY_GATE_WHERE`.** That is a behaviour change (different column +
   three extra predicates → different result set) and a measurement-definition
   decision for Oscar. This task deliberately kept option (a).
-- **The check's own `load_dotenv()` gap** (from the Part 1 STOP doc §1.4) — still
-  unfixed; out of scope here (would modify `check_canonical_definitions.py`).
-  Until it is fixed, even the "alert once" above will not actually reach Telegram
-  when run under cron's unexported-env wrapper.
+- **The check's own `load_dotenv()` gap** (from the Part 1 STOP doc §1.4) —
+  ~~still unfixed; out of scope here~~ **[CORRECTED 2026-09-07 — see amendment
+  below: this was WRONG. The gap was fixed in `51e3b74`, the HEAD this document
+  cites as its own starting point. `send_telegram_alert()` has carried
+  `load_dotenv("/home/parison/.env_trading")` since that commit.]**
 - **Whether other DORMANT `characterize_*` / one-off scripts carry similar
   hardcoded thresholds not yet flagged** (e.g. strings without an uppercase SQL
   keyword, like this file's own `CANONICAL_LEGENDARY_WHERE`). Not audited.
+
+---
+
+*Amended 2026-09-07 (later same day, during the failure-age-tracking task —
+see `2026-09-07-failure-age-tracking.md` Part 5): the "what was not determined"
+bullet claiming `check_canonical_definitions.py`'s `load_dotenv()` credential
+gap was "still unfixed" is **wrong** and has been struck through in place above.*
+
+*What was wrong:* the bullet asserted the gap was open and out of scope.
+*What is actually true:* the gap was fixed **earlier the same day** in
+first-repo **`51e3b74`** — the exact commit this document's header cites as its
+starting HEAD. `git log -S load_dotenv -- scripts/check_canonical_definitions.py`
+returns only `51e3b74`; since that commit `send_telegram_alert()` opens with
+`from dotenv import load_dotenv; load_dotenv("/home/parison/.env_trading")`,
+matching `audit_invariants.py:1001`. The "alert once" described in this
+document's Part 4 therefore *does* reach Telegram under cron.
+
+*How it happened:* the premise "the gap is unfixed" came from the framing of
+the predecessor task (the Part 1 STOP doc, written before `51e3b74` landed) and
+was carried into this document's closing section without being re-checked
+against `51e3b74`'s actual diff. This is an instance of the project's own
+standing lesson — **"Chat-Claude's premises enter the record and must be
+verified, not inherited"** (MASTER_HANDOVER_2026-09-05 §8) — and is at least the
+fourth such instance recorded (§8 lists the 2026-09-04 lineage-prediction
+mix-up among the earlier ones). The two substantive parts of this document
+(the Part 1 LIVE/DORMANT classification and the Part 2 equivalence-preserving
+fix) are unaffected by this correction.*
