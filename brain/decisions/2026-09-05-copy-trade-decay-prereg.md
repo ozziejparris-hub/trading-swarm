@@ -25,6 +25,16 @@ amendment adds the explicit price *source* (the executed trade tape,
 `trades.price` — not `price_at()`/CLOB) and its known limits. Nothing
 below is deleted.**
 
+**AMENDED AGAIN 2026-09-10b — see "Amendment 2026-09-10b" at the end of
+this document. The "next trade in that market" rule below and in
+Amendment 2026-09-10 item E is silent on the substituted trade's
+*outcome*; the 2026-09-10 run substituted opposite-outcome trade prices
+(≈ 1 − p) unconverted for 37.6% of N=15min substitutions
+(trading-swarm `3c22b0c`). Amendment 2026-09-10b fixes the outcome rule:
+CONVERT opposite-outcome prices `q → 1 − q`, with an
+outcome-matched-only curve reported alongside as a robustness check. Use
+the 2026-09-10b rule when this is run.**
+
 For each position, hold the trader's actual **direction** and the market's
 actual **resolved outcome** fixed. Substitute, in place of the trader's own
 `entry_avg_price`, the price a copier would have paid entering at
@@ -627,6 +637,14 @@ result. Do not interpret, or even compute onward to, any `N>0` point.
 
 ### E. Price lookup — source and its limits, made explicit
 
+**AMENDED 2026-09-10b — see "Amendment 2026-09-10b" at the end of this
+document. This item fixed the price *source* (trade tape) but not the
+substituted trade's *outcome*; the run then substituted opposite-outcome
+prices unconverted. Amendment 2026-09-10b adds the outcome rule
+(CONVERT `q → 1 − q` for opposite-outcome trades) + an
+outcome-matched-only robustness curve. The source, "next trade", single
+trade, and own-trader-inclusion rules below are otherwise unchanged.**
+
 §1's rules are **reaffirmed**, not changed:
 
 - **The NEXT trade in that market at or after `entry_timestamp + N`** —
@@ -807,3 +825,241 @@ or collapsed result under these fixed parameters is reported as such.
   `021be40a87df48c1f37efb8265f223b005c9c50bca8e32ee1bcb134fe074cd4e`;
   price-lookup coverage at any rung too thin to compute it (report which
   rungs — do not silently drop).
+
+---
+
+## Amendment 2026-09-10b — the outcome rule for the price substitution
+
+Appended as a dated section at the end, per this document's convention
+(matching `2026-09-06-directional-skill-persistence-prereg.md`'s
+"Amendment 2026-09-06" / "Amendment 2026-09-06b" pattern). Pointers added
+at §1 and at Amendment 2026-09-10 item E; **no earlier text deleted or
+rewritten.** Commits **alone**, before any corrected curve exists.
+
+**This amendment is BLIND.** No corrected decay curve — at any `N`, on
+any population, under either construction below — exists at the time of
+writing. Nothing here was informed by a corrected figure.
+
+**The pre-existing result, recorded as what it is, NOT as a target.**
+The 2026-09-10 run (`data/characterizations/copy_trade_decay_20260910T191052Z.json`,
+first-repo `c9619a4`, doc `9732bc9`) published, on the broad PIT-legal
+pool: N=0 `+0.01208` (CI `[−0.00168, +0.02645]`); N=15min `+0.03434`
+(CI `[+0.01369, +0.05622]`); the point estimate rising from N=0 to a
+`+0.033–0.037` plateau across N=1min–60min and CI-positive through
+N=1440min. **That curve stands as computed.** The 2026-09-10
+verification (`3c22b0c`) then established the rise is a price-semantics
+artifact: the substitution took the next trade of *any outcome*, and
+**37.58%** of N=15min substitutions were on the opposite outcome, at
+price `≈ 1 − p` unconverted; outcome-matched-only gave N=15min `+0.01592`
+(CI `[−0.00130, +0.03317]`), within noise of N=0. This amendment is not
+about moving toward or away from either number — it fixes the rule that
+should have been specified in the first place.
+
+Tags: **[V]** verified against a cited file/query, **[I]** a fixed
+judgment call.
+
+---
+
+### Why the rule was underspecified
+
+§1 and Amendment 2026-09-10 item E both say "the **next trade in that
+market** at or after `entry_timestamp + N`, **from any trader**". Both
+address *trader*; **neither addresses outcome**. In a binary market a
+trade carries the price of *its own* outcome (`P(Yes) + P(No) ≈ 1.0`,
+established empirically — see item A), so "the next trade's price" is
+ambiguous between `P(held outcome)` and `P(¬held outcome)`. The
+implementation followed the written rule exactly and took whichever
+came first. Same shape as the `geo_elo` docstring embedding the same
+sign error as its code: the spec inferred a price field's meaning from
+context instead of pinning it.
+
+---
+
+### A. The outcome rule — CONVERSION is primary
+
+For each substituted trade, let `q` be its recorded `trades.price` and
+`O` the position's held outcome:
+
+- **Same-outcome substitution** (the substituted trade's `outcome == O`):
+  use `q` directly as the implied price of `O`.
+- **Opposite-outcome substitution** (`outcome != O`): use **`1 − q`** as
+  the implied price of `O`.
+
+`edge = won − implied_price_of_O` as before. This is the **primary
+construction** — the reported decay curve.
+
+**Justification, from the verification's own Part 1 evidence [V]**
+(`3c22b0c` §Part 1): paired opposite-outcome trades on the same resolved
+non-gap geo/elec market, matched within 10 s, have `price_Yes +
+price_No` with **median exactly 1.00000**, IQR **[0.999, 1.001]**,
+**97.9%** within [0.98, 1.02] (n = 45,984 pairs; 739,459 rows in the
+population). Complementarity is empirical and tight, so an
+opposite-outcome trade **is informative** about the held outcome's
+price — `1 − q` recovers it to within the pair-sum's deviation from 1.0.
+Discarding those trades instead throws away real information and, worse,
+a non-random 37.6% of the sample (item B).
+
+**The cost, stated honestly.** Complementarity is empirical, not exact,
+and loosens with the match window: **92.0%** within [0.98, 1.02] at
+300 s (vs 97.9% at 10 s). Conversion therefore imports a price error on
+each converted substitution equal to that instantaneous pair-sum's
+deviation `ε` from 1.0 (`implied = 1 − q = p_true − ε`).
+
+**Expected magnitude, from the Part 1 distribution, without a curve
+[V/I]:** the 10 s window is the best available proxy for "instantaneous"
+(no genuine drift between the two legs). There, `|ε|` is **≈ ±0.001 for
+the middle half** of converted substitutions and **≤ ±0.02 for ~98%** of
+them. `ε` is approximately symmetric about 0 (median deviation 0.00000),
+so the **expected aggregate bias** from applying conversion to ~37% of
+substitutions is a fraction of the mean `|ε|` (order **1–2 ×10⁻³**),
+far below any rung's bootstrap CI half-width (~0.02) and **an order of
+magnitude smaller than the +0.018 inflation that *un*converted
+opposite-outcome substitution produced at N=15min**. Conversion trades
+a large, one-signed artifact for a small, roughly mean-zero measurement
+error.
+
+---
+
+### B. The robustness check — outcome-matched-only, secondary, every rung
+
+**Outcome-matched-only** (discard every opposite-outcome substitution;
+keep only same-outcome, used directly) is computed and reported **at
+every rung, for every population and per category, alongside the primary
+— never instead of it.**
+
+**Why secondary, not primary.** Discarding 37.6% of substitutions is not
+a random thinning: *which* outcome trades next after a given entry
+correlates with market conditions at that entry (momentum, which side
+has flow, time-to-resolution), so the retained same-outcome subsample is
+a biased slice. Conversion keeps every substitution and imports only the
+small, licensed measurement error of item A. The matched-only curve is
+the check that conversion is not itself introducing a level shift; it is
+not the answer.
+
+**Both curves are required in the deliverable.** If they disagree
+materially (item C), **that disagreement is the finding** and neither is
+to be reported as "the" result.
+
+---
+
+### C. Material disagreement — the criterion, fixed now
+
+**Criterion: at the decisive rung (N=15min, broad PIT-legal pool), the
+primary (conversion) and secondary (outcome-matched-only) 95% bootstrap
+CIs do not overlap.**
+
+- If the two CIs **overlap**: the constructions agree within the
+  harness's own uncertainty. The **primary (conversion) curve is the
+  result**; the matched-only curve is reported as confirmation.
+- If the two CIs **do not overlap**: the choice of construction
+  dominates the measurement at the rung the viability judgment turns on.
+  No single number is defensible. Named outcome
+  **PRIMARY-AND-ROBUSTNESS-DISAGREE** (item G) — reported as such, with
+  both curves, and **not resolved by picking one.**
+
+**Why CI-overlap rather than a point-estimate threshold.** The bootstrap
+CI is the harness's own statement of what it can and cannot resolve;
+non-overlap is a construction-agnostic statement that the two rules
+produce answers the harness itself considers distinguishable. A raw
+point-estimate threshold (e.g. "> 0.01") would need separate
+justification per cost floor and would fire or not fire on noise at
+these sample sizes. Non-overlapping CIs is the stricter, cleaner test
+and maps directly onto "can the viability verdict even be stated."
+
+The criterion is evaluated **only at N=15min on the broad pool** — the
+decisive rung (item D). Overlap/agreement at other rungs is reported but
+does not change the named outcome.
+
+---
+
+### D. The decisive rung and the cost floors — restated, unchanged
+
+- **Decisive rung: N = 15 minutes**, the project's architectural
+  monitoring cadence (Amendment 2026-09-10 item B). The viability
+  judgment turns on the broad-pool `edge(N=15min)` — point estimate and
+  lower CI bound — under the primary construction.
+- **Per-category cost floors — UNCHANGED** (MASTER_HANDOVER_2026-08-15
+  §5): geopolitics **0.0005–0.010** (fee-free), elections
+  **0.0056–0.020** (4% fee), blended bar **0.02**. Per-category curves
+  reported against their own floors, for both constructions.
+
+---
+
+### E. The sub-15-minute region — a permanent limitation of this data
+
+The 2026-09-10 run found the **median realised delay at nominal
+N=1min is 12–22 minutes** across populations (broad pool 14.3 min;
+geopolitics 12.1; elections 22.2) — the trade tape simply has **no
+trades within ~12–22 minutes of a typical entry**. **[V]**
+
+This is recorded as a **permanent property of the trade-tape data, not a
+parameter**: the sub-cadence region (how the edge behaves in the first
+minutes after an informed entry) is **unmeasurable on the trade tape
+regardless of the substitution rule**, and **adding finer rungs cannot
+fix it** — a rung nominally at 1min still resolves to a ~15min realised
+sample. The 1/2/5/10min rungs are retained (they bound the realised-delay
+disclosure) but their nominal labels are not to be read as delays.
+
+---
+
+### F. The N=0 gate — unchanged, retained, re-run
+
+**Unchanged.** N=0 uses `positions.entry_avg_price` (no tape lookup, no
+substitution), which the verification confirmed is outcome-correct —
+**0.00% outcome mismatch on 4,000 sampled positions**, `entry_avg_price`
+= the share-weighted mean of the position's own entry-trade prices
+(median diff 0.00000) **[V]**. The gate passed bit-identically for all
+three populations in the 2026-09-10 run (`Δ = 0.0` on
+`point_gap`/`ci_lo`/`ci_hi`/`n`). It is re-run as-is: the harness's N=0
+computation must reproduce a direct `measure_oos` on the same positions
+to **|Δ| ≤ 1e-9** and exact `n`, per population. Failure ⇒ STOP.
+
+---
+
+### G. Outcomes — the 2026-09-10 set, plus one
+
+Retained verbatim from Amendment 2026-09-10 item H, evaluated on the
+**primary (conversion)** curve: **SURVIVES-ABOVE-FLOOR**,
+**SURVIVES-BELOW-FLOOR**, **COLLAPSES-BEFORE-CADENCE**,
+**TOO-THIN-AT-DECISIVE-N**, **N=0-GATE-FAILS**. The COLLAPSES outcome's
+consequence is unchanged: it moots the canonical design's execution
+components 2/3 as capturability questions and bears on Phase 2 as the
+primary experiment.
+
+**Added: PRIMARY-AND-ROBUSTNESS-DISAGREE** — per item C, the primary and
+outcome-matched-only 95% CIs at N=15min (broad pool) do not overlap.
+Reported with both curves in full; not resolved by picking one.
+
+**Standing rule, restated:** re-running with a *different substitution
+rule* after seeing a disappointing curve is **not** an acceptable
+resolution. **This amendment is the last word on the substitution
+rule.** An inconclusive, collapsed, or disagreeing result under the
+2026-09-10b rule is reported as such.
+
+---
+
+### Reproducibility (supplements §9 and Amendment 2026-09-10's own)
+
+- **Script:** `scripts/copy_trade_decay_diagnostic.py`, modified by Part
+  2 of this task to (i) load `p.outcome` and the substituted trade's
+  `outcome`; (ii) apply the item-A conversion as the primary curve;
+  (iii) compute the item-B outcome-matched-only curve at every rung;
+  (iv) record the opposite-outcome share per rung per population. The
+  N=0 gate, N ladder, cost floors, seeds, `cap5`, `T_SPLIT`, and the
+  cohort/placebo definitions are **not** changed. `--selfcheck`
+  additionally asserts, on a sample, that `1 − q` is applied iff the
+  substituted trade's outcome differs from the position's.
+- **Durable artifact:** a **new**
+  `data/characterizations/copy_trade_decay_<UTC-timestamp>.json` (the
+  2026-09-10 artifact is not touched). Records, for **both
+  constructions**, every rung's `point_gap` + CI,
+  `n_pairs`/`n_positions`/`n_traders`, THIN flag, realised-delay
+  distribution, §5b exclusion counts, **and the opposite-outcome share**;
+  per-category curves; the N=0 gate deltas; the item-C criterion
+  evaluation; `metric_v2f_oos_result` sha256 before/after.
+- **Stop conditions** (additional): the conversion cannot be applied
+  because `outcome` is unavailable for some substituted trade — report
+  the coverage, do not silently drop; `metric_v2f_oos_result` sha256
+  changes from
+  `021be40a87df48c1f37efb8265f223b005c9c50bca8e32ee1bcb134fe074cd4e`;
+  N=0 gate fails for any population.
