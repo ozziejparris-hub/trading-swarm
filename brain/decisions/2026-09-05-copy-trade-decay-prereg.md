@@ -18,6 +18,13 @@ inferred or a fixed judgment call, marked as such.
 
 ## 1. The measurement, precisely
 
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. The "next trade at or after `entry_timestamp + N`" rule and the
+inclusion of own-trader trades below are PRESERVED and reaffirmed; the
+amendment adds the explicit price *source* (the executed trade tape,
+`trades.price` — not `price_at()`/CLOB) and its known limits. Nothing
+below is deleted.**
+
 For each position, hold the trader's actual **direction** and the market's
 actual **resolved outcome** fixed. Substitute, in place of the trader's own
 `entry_avg_price`, the price a copier would have paid entering at
@@ -52,6 +59,15 @@ different, counterfactual-market question this measurement does not need.
 ---
 
 ## 2. Cohort, placebo, and the gap
+
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. The text below is PRESERVED AS WRITTEN for the record but is
+SUPERSEDED on two points: (i) the PRIMARY population is no longer the
+cohort — it is the broad PIT-legal classifiable pool; the frozen Track 2
+cohort and placebo lists are still used, but for SECONDARY curves
+reported for shape comparison only. (ii) The viability bar is no longer
+the cohort-minus-placebo GAP — see the §6 pointer. Use the amendment's
+population and bar, not the ones below, when this is run.**
 
 **What is computed at every `N`, for both populations, is the same
 pipeline already established and reused, not rebuilt**: `measure_oos`'s
@@ -91,6 +107,13 @@ as the gap's two components, never as a standalone cohort verdict.
 
 ## 3. The N ladder, fixed now
 
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. The twelve-point ladder below is PRESERVED; the amendment
+EXTENDS it with three sub-floor points (1min, 2min, 10min) — fifteen
+points total — because the decisive region is at and below the
+15-minute floor, not in the day-plus tail. Use the fifteen-point ladder
+when this is run.**
+
 **N ∈ {5min, 15min, 30min, 1h, 2h, 4h, 8h, 16h, 1d, 2d, 4d, 8d}** — twelve
 points, roughly log₂-spaced (each step ≈ double the last, in minutes: 5,
 15, 30, 60, 120, 240, 480, 960, 1440, 2880, 5760, 11520).
@@ -124,6 +147,16 @@ not a "delay" and does not belong on a decay curve.
 ---
 
 ## 4. The N=0 reproduction gate
+
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. This gate is REPLACED in full. The original gate below — agree
+with a frozen Track 2 figure within tolerance — tests substrate
+stability, not harness correctness, and the substrate has moved
+substantially (3,032 → 3,795 positions, and again after the 2026-09-09
+geo drain). The replacement is an INTERNAL consistency gate: at N=0 the
+decay harness must reproduce a direct `measure_oos`-style edge
+computation on the SAME positions in the SAME run, to |Δ| ≤ 1e-9. Do not
+apply the gate below.**
 
 **Reference baseline: Track 2's own reproduction, not the original 08-15
 result of record.** Track 2's diagnostic
@@ -159,6 +192,13 @@ than Track 2's own tolerance."
 ---
 
 ## 5. Missing and thin data
+
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. §5a/§5b's rules are PRESERVED and reaffirmed (carry forward to
+the next available trade; exclude per-rung when the market's `tape_end`
+precedes `entry+N`). The amendment adds a hard, fixed thin-rung flag
+threshold and a per-rung surviving-n reporting requirement for every
+population. Nothing below is deleted.**
 
 **5a. No trade at or after `entry_timestamp + N`, but the market's tape
 continues beyond that point.** Use the **next available trade whenever it
@@ -211,6 +251,15 @@ the computation it is barred from doing.
 
 ## 6. The viability bar — grounded, not invented
 
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. The bar is MOVED off the cohort-minus-placebo gap and onto the
+broad pool's curve shape and level against fixed, numeric per-category
+transaction-cost floors (geopolitics 0.0005–0.010; elections
+0.0056–0.020; blended 0.02, at the top of elections' range). The
+`cost_floor()` mechanism below is PRESERVED as a cross-check but the
+handover's fixed figures are the pre-registered bar, and the check is on
+the broad pool's `edge(N)`, not on a gap. Use the amendment's bar.**
+
 **Where on the curve it must be checked**: at and beyond the 15-minute
 architectural floor (§3) — not at `N=0` (trivially true by construction)
 and not only at the ladder's longest point (which would miss whether
@@ -246,6 +295,15 @@ different things (§7).
 
 ## 7. Outcomes, enumerated in advance
 
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. The four outcomes below are re-framed around the broad pool's
+`edge(N)` versus the per-category cost floor (not the gap), and each is
+given a name: SURVIVES-ABOVE-FLOOR, SURVIVES-BELOW-FLOOR,
+COLLAPSES-BEFORE-CADENCE, TOO-THIN-AT-DECISIVE-N. The standing rule that
+re-running with different parameters after a disappointing curve is not
+an acceptable resolution is PRESERVED and restated. Use the amendment's
+enumeration.**
+
 1. **Gap survives well beyond the 15-minute floor.** Phase 2 has a
    subject. The curve's own shape — where it starts to bend, where it
    flattens — becomes the latency budget for any Phase 2 design, not a
@@ -276,6 +334,13 @@ different things (§7).
 ---
 
 ## 8. Two limitations recorded, not resolved
+
+**AMENDED 2026-09-10 — see "Amendment 2026-09-10" at the end of this
+document. §8a (self-inflicted decay; best case for a size-one copier) and
+§8b (tape price ≠ achievable fill; necessary-not-sufficient asymmetry)
+are PRESERVED and reaffirmed — stated, NOT corrected for. The amendment
+adds an explicit "what this measurement cannot establish" list (item I).
+Nothing below is deleted.**
 
 **8a. Decay is partly self-inflicted, and this is a best case, not a
 size-independent one.** Some of the price movement between a trader's
@@ -355,3 +420,390 @@ collapsed gap is sufficient evidence against it.
    validation bars) are explicitly out of scope for this document, per
    the task's own constraint — they get their own, separate
    pre-registration.
+
+---
+
+## Amendment 2026-09-10 — re-pin from the cohort-minus-placebo gap to the copy-viability curve on the broad PIT-legal pool
+
+This amendment is appended as a dated section at the end of the document,
+per the convention used in `2026-09-06-directional-skill-persistence-prereg.md`
+and `MASTER_HANDOVER_2026-08-15.md`'s postscripts. Pointers were added at
+§§1–8; **no original text was deleted or rewritten.** It commits **alone**,
+with no decay result in the tree.
+
+**This amendment is BLIND.** No decay curve — at any `N`, on any
+population (broad, cohort, or placebo) — exists at the time of writing.
+Nothing below was informed by, references, or waited on any `N>0`
+figure. Every fixed number here is drawn from an already-committed
+source, cited inline.
+
+Tags: **[V]** verified against a cited file/query/doc this session,
+**[I]** a fixed judgment call, marked.
+
+---
+
+### Why this amendment is needed
+
+The pre-registration pinned its viability bar (its §2, §6) to the
+**cohort-minus-placebo GAP** — "what determines whether copying inherits
+anything is whether `cohort(N) − placebo(N)` survives delay". That bar
+was set when the live thesis was *"traders selected by presplit edge
+outperform a matched placebo."* Since it was written:
+
+- **The N=0 gap is not demonstrated.** `2026-09-05-n0-gap-check.md`
+  (`7aa3fe5`) computed the paired N=0 gap at **−0.0072**, paired 95% CI
+  **[−0.0570, +0.0435]** — straddling zero, point estimate now negative,
+  reversing the result of record's `+0.0189`. The gap "has not been
+  proven absent; it has stopped being demonstrated present." **[V]**
+- **The presplit-edge selector is falsified as a selection criterion.**
+  `2026-09-05-directional-skill-result.md`, Outcome 2 "in its strongest
+  form": the placebo shows *more* directional-skill-like signal than the
+  cohort on every measure — "nothing in this result rescues the thesis as
+  originally framed." **[V]**
+- **The directional selector shows no edge advantage over a matched
+  placebo** (2026-09-06 exploratory custody figures; the persistence
+  test's aggregate). **[V]**
+
+With no demonstrated gap, a gap-pinned bar makes this measurement
+**permanently unrunnable** — which is why it has never run, despite
+`2026-09-05-canonical-skill-metric-design.md` (`86a7b4e`) §2 naming it
+**THE DECISIVE QUESTION** and sequencing it first.
+
+The question the project now needs answered **does not require a selector
+at all**: **DOES ANY MEASURABLE EDGE SURVIVE BEING COPIED?** That is a
+property of how fast prices move after an informed trade — answerable on
+any population, selector or no selector.
+
+---
+
+### A. Population — primary becomes the broad PIT-legal classifiable pool
+
+**Primary population (new): the broad PIT-legal classifiable pool.**
+Every trader with **≥ `M_CHOSEN` (10)** pre-split resolved
+Geopolitics/Elections positions in the canonical pre-split market set —
+`backtest_window_sql(VERY_EARLY, "2026-04-01 00:00:00")`: `resolved = 1`,
+category ∈ {Geopolitics, Elections}, gap-clean, `tape_end < T_SPLIT`,
+`entry_avg_price IS NOT NULL`, `trade_result IN ('won','lost')` — exactly
+as `scripts/directional_skill_pit_legal_pool.py` derives it (**5,732
+traders as of 2026-09-06**, `directional_skill_pit_legal_pool_20260906T160303Z.json`,
+pre-drain). **[V]**
+
+- **Re-derived at run time** from the current (post-2026-09-09-drain) DB
+  by importing that script's pool logic unchanged — not frozen from the
+  09-06 artifact, which pre-dates the drain. The run-time count and its
+  delta from 5,732 are recorded in the artifact.
+- Decay is measured on **this pool's OOS positions** — post-split
+  (`entry_timestamp > T_SPLIT`), geo/elec, gap-clean, resolved won/lost —
+  via `measure_oos`'s own position query with `trader_address IN (pool)`
+  substituted for the cohort list. No other change to that query.
+
+**Justification.** (i) The question — "does any measurable edge survive
+being copied?" — is a property of post-entry price movement and needs no
+selector. (ii) The broad pool is selected **only on having enough
+pre-split history to be classifiable**, never on the outcome variable, so
+it is free of the canonical design's §9 selection circularity (which is a
+select-on-the-thing-you-measure problem). (iii) It is a large, already
+named, reproducible population.
+
+**Cohort and placebo curves are still computed and reported — as
+SECONDARY.** On the exact frozen Track 2 lists
+(`track2_ci_power_20260905T104945Z.json`: `cohort_trader_list` 169,
+`control_trader_list` 169), unchanged from §2. Their value is **on SHAPE,
+not LEVEL**: decay is relative — `edge at N` vs `edge at N=0` on the
+*same* positions — so the cohort's presplit-edge selection inflates the
+*level* of its curve but has far less purchase on its *shape* (the
+original document's own opening argument, §-preamble). The cohort curve's
+**level is contaminated** — by that selection, and by the N=0 gap having
+stopped being demonstrated (−0.0072, CI straddling zero). It is reported
+**for shape comparison only**, never as a standalone cohort-vs-placebo
+verdict.
+
+The **N=0 internal consistency gate (item D) applies to all three
+populations** independently.
+
+---
+
+### B. The viability bar — off the gap, onto the curve vs. fixed cost floors
+
+The bar moves off `cohort(N) − placebo(N)` and onto **the broad pool's
+`edge(N)` curve, its shape and its level, against transaction-cost
+floors fixed numerically here** from `MASTER_HANDOVER_2026-08-15.md` §5
+**[V]**:
+
+| category | fee | cost floor (per-side, at the cohort's own empirical entry prices) |
+|---|---|---|
+| **Geopolitics** | fee-free (spread only) | **0.0005 – 0.010** |
+| **Elections** | 4% `feeRate`; fee 0.0097 at the cohort median price 0.59 | **0.0056 – 0.020** |
+| blended effect-size bar | — | **0.02** — comfortable for geopolitics (up to 2× headroom), **at the top of elections' range** (the handover's own words: "defensible, not generous") |
+
+**At which N the edge must clear the floor for copying to be viable:**
+at **N = 15 minutes** (the project's architectural monitoring cadence,
+`CLAUDE.md` **[V]**) **and at every N beyond it up the ladder.** Not
+below 15 minutes — those rungs are sub-architectural and exist only to
+characterise the curve's near-zero shape.
+
+**What "clear" means:** the broad pool's `edge(N)` — **both the point
+estimate and the lower bound of its bootstrap CI** — remains **above the
+relevant per-category cost-floor lower bound** (`0.0005` geopolitics,
+`0.0056` elections). Remaining above the cost-floor *upper bound*
+(`0.010` / `0.020`) in addition is reported as the stronger statement.
+
+**Per-category curves are reported** (geopolitics, elections, each
+against its own floor), not only the blended curve — the blended `0.02`
+bar sits at the top of elections' range and would misrepresent both
+categories if used alone. `cost_floor()` (`trader_skill_metric_v2f.py`,
+unchanged) is **also** run against each population's own OOS entry-price
+distribution and reported as a cross-check, but **the fixed handover
+figures above are the pre-registered bar**, not whatever `cost_floor()`
+returns on this run's data.
+
+---
+
+### C. The N ladder — fixed, fifteen points
+
+**N ∈ {1min, 2min, 5min, 10min, 15min, 30min, 1h, 2h, 4h, 8h, 16h, 1d,
+2d, 4d, 8d}** — in minutes: **1, 2, 5, 10, 15, 30, 60, 120, 240, 480,
+960, 1440, 2880, 5760, 11520.**
+
+This **extends §3's twelve-point ladder** (5min … 8d, log₂-spaced) with
+**three sub-floor points: 1min, 2min, 10min.**
+
+**Spacing, justified:**
+
+- **Below the floor (1, 2, 5, 10 min):** denser than log₂ because the
+  interesting region is minutes, not days — price-discovery decay is
+  fastest immediately after an information event, and the copy-viability
+  question is decided at or just above the 15-minute floor, not in the
+  tail. Four points below 15 min resolve the initial slope; without them
+  the curve's steepest segment is a single 5min→15min chord.
+- **At the floor (15 min):** the realistic architectural operating point
+  — the rung the item-B bar is checked against first.
+- **Beyond (30 min … 8 d):** §3's log₂ spacing, unchanged — even
+  relative resolution across every order of magnitude. **8 days** is
+  retained as the top: it matches the order of magnitude of this
+  cohort's tape_end-anchored entry-to-resolution lag (median 8.92 days,
+  feasibility read), so the ladder reaches into the range where the
+  curve should have flattened to whatever floor value it converges to.
+
+`N=0` is not a ladder point — it is the internal consistency gate (item
+D).
+
+---
+
+### D. The N=0 gate — internal consistency, not agreement with a frozen figure
+
+§4's original gate (reproduce Track 2's frozen `0.02078654` / CI
+`[-0.01216, +0.05582]` within tolerance) is **replaced in full.** With
+the population having moved substantially — 3,032 → 3,795 positions, and
+again after the 2026-09-09 geo drain (`eee49ee`) — agreement with a
+frozen figure tests **substrate stability, not harness correctness.**
+That is the wrong thing to gate on.
+
+**Replacement — an INTERNAL consistency gate.** In the **same run**, at
+**N=0** (no price substitution — the position's own `entry_avg_price`
+used directly, no lookup), the decay harness's edge computation must
+reproduce a **direct `measure_oos`-style computation on the identical
+position set**, for **each of the three populations** (broad, cohort,
+placebo):
+
+- `point_gap`, `ci_lo`, `ci_hi`: **|Δ| ≤ 1e-9** (absolute).
+- `n_positions`, `n_pairs`, `n_traders`: **exactly equal.**
+
+**Tolerance rationale.** At N=0 with no substitution, the decay harness
+*is* `measure_oos`: same position query, same `cap5` `weighted_pair_table`,
+same `weighted_two_way_gap_bootstrap` (`seed=42`, `reps=1500`). The only
+admissible difference is floating-point non-associativity from
+independent summation order — bounded well under `1e-9` at these
+magnitudes. Anything larger means the harness's position assembly,
+pairing, weighting, or bootstrap has diverged from the canonical path, so
+**nothing it produces at any `N>0` can be trusted.**
+
+**If the gate fails for any population: STOP.** Report the diverging
+quantity and which population, as a harness-integrity failure — not a
+result. Do not interpret, or even compute onward to, any `N>0` point.
+(This is outcome **N=0-GATE-FAILS** in item H.)
+
+---
+
+### E. Price lookup — source and its limits, made explicit
+
+§1's rules are **reaffirmed**, not changed:
+
+- **The NEXT trade in that market at or after `entry_timestamp + N`** —
+  not the nearest. A copier cannot transact on a trade they have not yet
+  observed; only "next at or after" respects the direction time runs for
+  a copier.
+- **A single trade's price**, not a window average.
+- **Own-trader trades ARE included** in the lookup universe. A copier
+  observing the market at `entry_timestamp + N` faces *every* trade
+  that has printed by then, including any the original trader placed.
+  Excluding them would answer a different, counterfactual-market
+  question. (This is a deliberate departure from the feasibility read's
+  fair-price benchmark, which excluded own-trades for skill-attribution
+  reasons that do not apply to this purely mechanical "what would a
+  copier have paid" question.)
+
+**Price source — fixed: the executed trade tape, `trades.price`.** The
+substitution price is the `price` column of that next trade row in the
+`trades` table.
+
+**`price_at()` / CLOB (`monitoring/price_history.py`) is NOT used** as
+the substitution price, for three reasons: (i) it returns a CLOB
+last/mid quote, not an executable counterparty trade — a copier sending
+a market order transacts against the tape, not the quote; (ii) it
+requires one live HTTP call per `(position, N)` pair — infeasible and
+non-reproducible at this scale (fifteen rungs × the broad pool's OOS
+positions); (iii) it is itself characterised as **primary-with-fallback,
+age- and liquidity-dependent, 73.1% stratified cross-source agreement**
+— stacking that uncertainty on top of the decay signal.
+
+**The trade tape's own known limits**, carried not smoothed: thinness
+(the feasibility read: **20.4%** of positions have zero other-trader
+activity within ±1h) and **realised-delay drift** when the next trade is
+far past nominal `N`. Both are surfaced via item F's rules and §5a's
+per-rung realised-delay distribution — never averaged away.
+
+---
+
+### F. Thin and missing data — decided in advance
+
+§5a/§5b are **reaffirmed** and made fully explicit:
+
+- **Case 1 — no trade at/after `entry_timestamp + N`, but the market's
+  tape continues past that point (§5a):** the position is **carried
+  forward to the next available trade whenever it occurs.** NOT dropped,
+  NOT excluded from the ladder, NOT valued at any pre-`N` price. Its
+  realised delay (actual elapsed entry → substituted trade) is recorded;
+  the per-rung realised-delay distribution is reported.
+- **Case 2 — the market's own `tape_end` (the O-36-validated anchor, not
+  `resolution_date`) precedes `entry_timestamp + N` (§5b):** no legitimate
+  copier entry price exists at that horizon. The position is **excluded
+  from that rung only** — not from the whole ladder. The per-rung
+  exclusion count and fraction are reported (expected to rise with `N`,
+  sharply once `N` approaches the ~8.92-day median lag).
+
+**Hard reporting requirement.** At **every rung, for every population**,
+the artifact records surviving **n_pairs, n_positions, n_traders**. A
+rung whose surviving pair count is below **max(30, 5% of that
+population's N=0 pair count)** **[I]** is reported but explicitly flagged
+`THIN — not interpretable on par with denser rungs`; its point estimate
+and CI are still shown, never silently omitted. If price-lookup coverage
+at a rung is so thin the rung cannot be computed at all, that rung is
+**named and reported as uncomputable — never silently dropped** (a stop
+condition).
+
+Per §5c, whether the surviving subsample's **trader-volume composition**
+at large `N` drifts from the N=0 composition is reported as an open
+question, **not corrected for**.
+
+---
+
+### G. The self-inflicted-decay caveat — stated, not corrected
+
+Reaffirming §8a: when a copier enters at `+N`, **part of the price move
+they pay for was caused by the original trader's own entry.** That is
+realistic — it is what would actually happen — but it means:
+
+- The measured curve is a **BEST CASE for a single, size-one copier.**
+- It **worsens at larger copy sizes** (additional price impact this
+  measurement cannot capture at all).
+- **The curve is size-dependent. This measurement fixes copy size at
+  one and does NOT correct for self-inflicted decay.** No result from it
+  should be read as size-independent.
+
+---
+
+### H. Outcomes — enumerated and named in advance
+
+Re-framed around the **broad pool's `edge(N)` versus the per-category
+cost floor** (item B), not the gap:
+
+1. **SURVIVES-ABOVE-FLOOR.** The broad pool's `edge(N)` — point estimate
+   and lower CI bound — stays **above the relevant category cost-floor
+   lower bound** at `N = 15min` and every `N` beyond. Copy-trading has a
+   subject at size one. The curve's own shape — where it bends, where it
+   flattens — becomes the latency budget for any Phase 2 design.
+2. **SURVIVES-BELOW-FLOOR.** `edge(N)` stays distinguishable from zero
+   past `15min` but does **not** clear the cost floor. A **real but not
+   tradeable** edge at size one. Phase 2 has no viable subject on this
+   measurement; the canonical metric design's role becomes **diagnostic**
+   (explaining why `+0.0316` is not capturable), not a headline.
+3. **COLLAPSES-BEFORE-CADENCE.** `edge(N)` is indistinguishable from zero
+   — or from the cost floor — **by `N = 15min`.** **Copy-trading is
+   structurally non-viable on this 15-minute architecture.** Stated
+   plainly, as the task requires: **this moots the canonical metric
+   design's remaining execution-dimension components (2 and 3) as
+   capturability questions, and bears directly on Phase 2 as the primary
+   experiment** — there is nothing left to inherit by the time a real
+   copy could physically occur.
+4. **TOO-THIN-AT-DECISIVE-N.** Surviving `n` and/or CI width at `N = 15min`
+   and its immediate neighbours are too poor to separate outcomes 1–3.
+   Reported as **inconclusive under these fixed parameters.**
+
+Plus **N=0-GATE-FAILS** (item D): harness-integrity failure, **STOP**,
+not a thesis result.
+
+**Standing rule, restated (verbatim intent from §7 outcome 4 and Track 2
+§5):** re-running with a different `N` ladder, a different population, a
+different price rule, or any other parameter **after seeing a
+disappointing curve is not an acceptable resolution.** An inconclusive
+or collapsed result under these fixed parameters is reported as such.
+
+---
+
+### I. What this measurement cannot establish — explicitly
+
+- It measures **price movement after an informed entry.** It does **not**
+  establish that any selector — presplit-edge, directional, or otherwise
+  — identifies skilled traders. The presplit-edge selector is already
+  falsified as a selection criterion (2026-09-05 Outcome 2); the
+  directional selector shows no edge advantage over a matched placebo
+  (2026-09-06 exploratory). This measurement is deliberately
+  selector-free and **cannot revive either.**
+- It does **not** speak to the canonical design's **components 2
+  (absolute earliness) and 3 (relative earliness)** as skill measures —
+  only to whether the price has already moved by the time a copier could
+  act.
+- A **surviving curve is necessary but NOT sufficient** for viability:
+  no slippage beyond the recorded trade price, no fill-size guarantee,
+  no fill uncertainty, size fixed at one (item G). Per §8b — a collapsed
+  curve is sufficient *against* Phase 2; a surviving one is not
+  sufficient *for* it.
+- It says **nothing** about whether a slower-decaying, prospectively
+  selectable subpopulation exists — that is an observation-log
+  watch-point, not a test this pre-registration runs.
+
+---
+
+### Reproducibility (supplements §9, does not replace it)
+
+- **Script:** `scripts/copy_trade_decay_diagnostic.py` (first-repo,
+  created by Part 2 of this task, not by this amendment). Reuses
+  `measure_oos` / `weighted_pair_table` / `weighted_two_way_gap_bootstrap`
+  unmodified; imports the broad-pool logic from
+  `scripts/directional_skill_pit_legal_pool.py` unmodified; only the
+  entry-price substitution (item E), the fifteen-point N-loop (item C),
+  and the three-population wrapper are new logic.
+- **`--selfcheck`** consistent with `trader_skill_metric_v2*` — at
+  minimum re-derives `edge = won − substituted_price` for a sample and
+  asserts exact match, and asserts the N=0 internal consistency gate
+  (item D) as part of the check.
+- **Seed 42, reps 1500, `cap5`, `T_SPLIT = 2026-04-01 00:00:00`** —
+  hardcoded, unchanged from the whole `v2d`/`v2f`/Track 2 lineage.
+- **Durable artifact:**
+  `data/characterizations/copy_trade_decay_<UTC-timestamp>.json` —
+  records: the fifteen-point N ladder; the N=0 internal-consistency gate
+  result per population; for **each of the three populations** at every
+  `N` — `point_gap` + CI, `n_pairs`/`n_positions`/`n_traders`, the
+  realised-delay distribution (§5a), the §5b exclusion count/fraction,
+  the THIN flag; **per-category (geopolitics, elections) curves** with
+  the fixed cost floors from item B; the broad-pool run-time size and
+  its delta from 5,732; the git commit of the script and of
+  `trader_skill_metric_v2f.py` / `v2d.py` / `directional_skill_pit_legal_pool.py`;
+  every SQL predicate used.
+- **Stop conditions** (in addition to §-level ones): N=0 gate fails for
+  any population; any amended parameter cannot be applied as written;
+  `metric_v2f_oos_result` sha256 changes from
+  `021be40a87df48c1f37efb8265f223b005c9c50bca8e32ee1bcb134fe074cd4e`;
+  price-lookup coverage at any rung too thin to compute it (report which
+  rungs — do not silently drop).
