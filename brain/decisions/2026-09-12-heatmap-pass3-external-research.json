@@ -1,0 +1,368 @@
+{
+  "pass": 3,
+  "of": 5,
+  "title": "Heatmap Pass 3 — External Research",
+  "date": "2026-09-12",
+  "depends_on": {
+    "pass1_commit": "trading-swarm 1bb36e1",
+    "pass2_commit": "trading-swarm 5e94eef"
+  },
+  "headline_finding": {
+    "title": "Own-market calibration shape conflict",
+    "detail": "Project's instr_v8 (2026-09-10) found slope falling ~1.29->~1.14 with horizon; primary external source arXiv:2602.19520 finds slope rising 0.99->1.32 pooled, and a noisy but net-rising Politics-specific pattern (1.34->1.73). Both agree on direction (underconfidence) but disagree on shape. Not fully explained by population, weighting, or anchoring differences alone.",
+    "triggers_formal_stop_condition": false,
+    "reason": "Pass 2's register has no entry for this specific test (instr_v8 produced a live, non-closed finding, not a CLOSED-STRONG ruling) - flagged with equivalent seriousness per instruction regardless."
+  },
+  "search_scope": {
+    "job_a": {
+      "sources_reached_directly": ["arXiv:2605.02287", "arXiv:2605.00493", "arXiv:2605.00459", "arXiv:2605.02286", "arXiv:2412.14144", "arXiv:2604.24723", "arXiv:2604.27041 (partial)"],
+      "degraded_fetches": ["arXiv:2602.19520 PDF (compression-encoded, HTML fallback used)", "arXiv:2604.27041 (partial)"]
+    },
+    "job_b": {
+      "primary_confirmed": ["arXiv:2602.19520", "arXiv:2606.07811"],
+      "blocked_403": ["SSRN 6617059 abstract page", "SSRN 6191618 abstract page", "Medium CLOB V2 technical deep-dive"],
+      "note": "Figures for SSRN 6617059 and SSRN 6191618 come from search-result excerpts and secondary summaries (SSRN Blog, Yale Insights), flagged as secondary throughout, not primary-source-verified."
+    },
+    "job_c": {
+      "degraded_fetches": ["arXiv:2601.01706", "arXiv:2606.16852", "arXiv:2605.11640"],
+      "secondary_only_no_primary_found": ["Kalshi/Polymarket cross-platform arbitrage spreads (blogs only: predictionmarketspicks.com, PredTerminal, ClawArbs, launchpoly.com)", "UMA oracle vote-concentration figures (WSJ investigation, May 2026)"],
+      "blocked": ["SSRN 6567238 (Della Vedova follow-up)"]
+    },
+    "empty_searches_reported": [
+      "Quantified copyable-window edge magnitude for prediction-market copy-trading (Job B item 3)",
+      "Validated market-maker/LP-exclusion methodology specific to prediction-market aggregate-positioning strategies (Job C, STR-004-adjacent)",
+      "Independent replication of 'matched control matches/beats naively-selected skilled group' pattern outside this project (Job B item 4)",
+      "Trader-level (not market-level) correlated-position skill signal literature (Job A, RQ-CORRELATION-001)",
+      "Prediction-market-specific momentum/serial-correlation literature with a reportable effect size (Job C category 4)"
+    ]
+  },
+  "findings": [
+    {
+      "id": "jobA_1",
+      "job": "A",
+      "rq_or_topic": "RQ-VPIN-001",
+      "question": "Has VPIN (volume-synchronized probability of informed trading) been applied to prediction markets?",
+      "verdict": "PARTIALLY_ANSWERED",
+      "source": {"authors": "Nechepurenko", "title": "Per-Market Information Leakage and Order-Flow Skill", "venue": "arXiv", "id": "2605.02287", "year": 2026, "url": "https://arxiv.org/abs/2605.02287", "type": "primary"},
+      "effect_size": "Ground-truth VPIN positively predicts Brier scores (forecast accuracy); Gibbs spread negatively predicts them. Inferred VPIN diverges substantially from ground-truth VPIN; OFI estimates directionally biased.",
+      "additional_source": {"title": "classical VPIN critique", "authors": "Andersen & Bondarenko", "id": "SSRN 1881731", "note": "VPIN's predictive power for volatility is a mechanical artifact of trade-classification error under Bulk Volume Classification, not fundamentals-based - pre-existing methodological warning for inferred VPIN."},
+      "cheap_win": "partial - ground-truth-vs-inferred distinction is load-bearing, needs design work, not a drop-in replication",
+      "pass1_asset_ids": ["data_d1"],
+      "pass2_register_ids": ["D8"]
+    },
+    {
+      "id": "jobA_2",
+      "job": "A",
+      "rq_or_topic": "RQ-ILS-001",
+      "question": "Is there published work on detecting information leakage in prediction markets?",
+      "verdict": "ANSWERED",
+      "source": {"authors": "Nechepurenko", "title": "ForesightFlow: An Information Leakage Score Framework for Prediction Markets", "venue": "arXiv", "id": "2605.00493", "year": 2026, "url": "https://arxiv.org/abs/2605.00493", "type": "primary", "code": "github.com/ForesightFlow"},
+      "companion_sources": ["arXiv:2605.00459 (Information Leakage at Population Scale)", "arXiv:2605.02286 (Empirical Evaluation of Deadline-Resolved Information Leakage)"],
+      "effect_size": "Skilled accounts + market makers (<3.5% of accounts) capture >30% of platform gains (from companion paper 2605.02287)",
+      "cheap_win": "yes - unambiguously, a maintained framework with public code already exists under the same name/concept",
+      "pass1_asset_ids": ["data_d1", "instr_v3"],
+      "pass2_register_ids": ["D8"]
+    },
+    {
+      "id": "jobA_3",
+      "job": "A",
+      "rq_or_topic": "RQ-POSSIZE-001 / RQ4.1",
+      "question": "Is bet/position sizing established as predictive of trader skill anywhere?",
+      "verdict": "PARTIALLY_ANSWERED",
+      "source": {"authors": "Meister", "title": "Application of the Kelly Criterion to Prediction Markets", "venue": "arXiv", "id": "2412.14144", "year": 2024, "type": "primary"},
+      "effect_size": "Theoretical: misjudged position sizing degrades portfolio growth rate via KL-divergence between belief and true distribution - position size QUALITY not raw size is the signal.",
+      "consistency_with_project": "Consistent with project's own null finding on kelly_alignment_score (built_b5, found null/negligible under Stage 0b)",
+      "secondary_sources": ["Polyburg blog (flagged secondary): bet size is a wallet-relative, track-record-filtered confidence signal, not absolute-dollar", "Mitts & Ofir 2026 (SSRN 6426778): bet size used jointly with timing/profitability/concentration in a composite insider-detection score, 93000 markets/50000 wallets, ~$143M flagged - position size never used in isolation"],
+      "cheap_win": "no - position size alone is not established as an isolated predictive signal anywhere found",
+      "pass1_asset_ids": ["built_b5", "built_b4"],
+      "pass2_register_ids": ["D6"]
+    },
+    {
+      "id": "jobA_4",
+      "job": "A",
+      "rq_or_topic": "RQ-SECTOR-001",
+      "question": "Does published work find trader/forecaster skill is category-specific?",
+      "verdict": "PARTIALLY_ANSWERED",
+      "source": {"note": "General forecasting research (Tetlock, foundational): domain expertise is NOT a reliable predictor of forecasting skill - cognitive style dominates."},
+      "conflicting_source": {"title": "Decomposing Crowd Wisdom: Domain-Specific Calibration Dynamics in Prediction Markets", "authors": "Le", "venue": "arXiv", "id": "2602.19520", "year": 2026, "type": "primary", "note": "Directly studies domain-specific calibration dynamics but category-specific slope numbers not fully extractable this pass (PDF compression-encoded)."},
+      "secondary_sources": ["Prediction-market-specific trading blogs claim category specialization IS load-bearing with non-transferable skill profiles - not peer-reviewed"],
+      "verdict_detail": "Genuinely contested in the literature, not cleanly answered either way",
+      "pass1_asset_ids": [],
+      "pass2_register_ids": ["D7"],
+      "cross_reference": "jobB_1 (same source paper, arXiv:2602.19520)"
+    },
+    {
+      "id": "jobA_5",
+      "job": "A",
+      "rq_or_topic": "RQ-CORRELATION-001",
+      "question": "Correlated positions across markets as a skill/informedness signal",
+      "verdict": "OPEN",
+      "searched": "Trader-level cross-market position correlation as an informedness signal - specifically distinguished from market-level price-consistency arbitrage",
+      "adjacent_found": [{"title": "Executable Arbitrage and Market Efficiency in Prediction Markets", "id": "arXiv:2608.00666"}, {"title": "cross-market no-arbitrage relationships beyond neg_risk", "id": "arXiv:2605.11640"}],
+      "note": "These are about market-level price-consistency arbitrage, not trader-level correlated position-taking as a skill signal - different question, no paper found on the actual RQ.",
+      "pass1_asset_ids": ["data_d2"],
+      "pass2_register_ids": ["D7"]
+    },
+    {
+      "id": "jobA_6",
+      "job": "A",
+      "rq_or_topic": "RQ4-MULTI",
+      "question": "Multivariate Kelly criterion for correlated positions",
+      "verdict": "ANSWERED_ON_MATH_NOT_APPLICATION",
+      "source": {"authors": "Tepelyan & Lam", "title": "Efficient Multivariate Kelly Optimization Reveals Sigmoidal Scaling Laws", "venue": "arXiv", "id": "2604.24723", "year": 2026, "type": "primary"},
+      "effect_size": "Reduces naive O(2^N) multivariate Kelly optimization to O(N) via integral-transform method, tractable for hundreds of simultaneous correlated bets.",
+      "note": "General portfolio-optimization result, not validated as a prediction-market trader-SKILL-DETECTION tool - answers how an optimal bettor would size, not whether observed sizing reveals skill.",
+      "pass1_asset_ids": ["built_b5"],
+      "pass2_register_ids": ["D6"]
+    },
+    {
+      "id": "jobA_7",
+      "job": "A",
+      "rq_or_topic": "RQ3.2",
+      "question": "Does crowd vs elite/sophisticated-trader divergence predict outcomes?",
+      "verdict": "ANSWERED",
+      "source": {"authors": "Gomez-Cram, Guo, Jensen & Kung", "title": "Prediction Market Accuracy: Crowd Wisdom or Informed Minority?", "venue": "SSRN", "id": "6617059", "year": 2026, "type": "secondary_excerpt_primary_403"},
+      "effect_size": "~3.14% of accounts (sign-randomization test, 1.72M accounts, 210322 markets, $13.76B volume) are a persistently-skilled informed minority; crowd generates most volume, little information, its losses fund the minority's profits.",
+      "cheap_win": "YES - the single clearest case in Job A: project's own RQ3.2 sat ABANDONED-UNTESTED while the exact paper needed to answer it was already being used elsewhere in the project (for the directional-skill persistence benchmark) and nobody closed the loop back to RQ3.2 itself.",
+      "pass1_asset_ids": ["instr_v7"],
+      "pass2_register_ids": ["D3", "A2", "A3", "A4"]
+    },
+    {
+      "id": "jobA_8",
+      "job": "A",
+      "rq_or_topic": "RQ-SCI-001",
+      "question": "Signal credibility index validation",
+      "verdict": "ANSWERED",
+      "source": {"title": "The Signal Credibility Index for Prediction Markets: A Microstructure-Grounded Diagnostic with Weighted and Time-Varying Extensions", "authors": "Nechepurenko", "venue": "arXiv", "id": "2604.27041", "year": 2026, "type": "primary_partial"},
+      "effect_size": "Persistence-ratio component on logit prices, weighted Cobb-Douglas form with flow-concentration HHI, time-varying real-time spec, Monte Carlo validation incl. OOD stress tests and coordinated multi-wallet manipulation scenarios.",
+      "caveat": "Paper's own tau*=0.27 threshold calibrated to its own simulation universe - 'empirical applications should recalibrate by domain, platform, and response horizon' - not a universal drop-in.",
+      "cheap_win": "strong - project's own signal_credibility.py (built_b10-equivalent, live per pass-1 correction but annotation-only, never graduated past its 20-market gate) has less validation depth than this published version.",
+      "pass1_asset_ids": ["built_b10"],
+      "pass2_register_ids": ["D4"]
+    },
+    {
+      "id": "jobA_9",
+      "job": "A",
+      "rq_or_topic": "Discovery-gap-closure relevance classifier (general NLP benchmark)",
+      "question": "How does human-level relevance-classification recall compare across similar NLP tasks?",
+      "verdict": "PARTIALLY_ANSWERED",
+      "source": {"note": "Comparable relevance/frame-classification benchmarks report F1 0.94-0.98 (DeBERTa 0.98, Claude zero-shot 0.96, Llama3-70B 94.4% fake-news F1) - above project's 90.35% recall. But a media-bias benchmark reports F1 as low as 0.381 - task difficulty range is enormous and domain-dependent."},
+      "conclusion": "Does not contradict the project's own diagnosed conclusion (diffuse, 18-subtype failure) - no benchmark studied this exact task.",
+      "pass1_asset_ids": ["built_b8"],
+      "pass2_register_ids": ["C1"]
+    },
+    {
+      "id": "jobA_10",
+      "job": "A",
+      "rq_or_topic": "STR-004 archetype/market-maker filtering",
+      "question": "Is there a validated methodology for excluding LPs/market-makers from a capital-weighted aggregate skill signal?",
+      "verdict": "OPEN",
+      "searched": "Academic methodology for LP/market-maker exclusion in prediction-market aggregate positioning strategies",
+      "found": "Only generic 'smart money concept' trading-blog material (not academic) and general market-microstructure literature on LP/taker clustering by order-flow pattern (not skill).",
+      "pass2_register_ids": ["C7"]
+    },
+    {
+      "id": "jobB_1",
+      "job": "B",
+      "topic": "Own-market calibration shape",
+      "project_finding": {"description": "Logistic recalibration slope >1 at every lead time, FALLING ~1.29 (near resolution) -> ~1.14 (weeks out). Geo/Elections only, price-weighted, tape_end-anchored, 9739 markets.", "asset_id": "instr_v8", "date": "2026-09-10"},
+      "external_finding": {"authors": "Le", "title": "Decomposing Crowd Wisdom: Domain-Specific Calibration Dynamics in Prediction Markets", "venue": "arXiv", "id": "2602.19520", "year": 2026, "type": "primary", "population": "353M trades, 429000 binary contracts, Kalshi+Polymarket, all 6 categories", "pooled_result": "slope RISES 0.99 (0-1h) -> 1.32 (beyond 1 month)", "politics_specific_kalshi": "1.34(0-1h) -> 0.93(1-3h) -> 1.32(3-6h) -> 1.55(6-12h) -> 1.48(12-24h) -> 1.52(24-48h) -> 1.83(2d-1w) -> 1.83(1w-1mo) -> 1.73(1mo+) - net rise, non-monotonic", "polymarket_specific": "pattern visible across three comparable domains, blended mean slope 1.45 for political markets excluding two shortest horizons - full breakdown not extractable this pass", "weighting": "contract/position-size-weighted, differs from project's price-weighting", "anchor": "close_time - trade_time, conceptually similar to but not identical to tape_end"},
+      "verdict": "CONFLICT",
+      "explained_by": "Not fully explained. Two of three candidate explanations present but unconfirmed sufficient: (a) population breadth (narrow Geo/Elec vs broad Politics+Kalshi+Polymarket pooled), (b) weighting scheme (price vs position-size weighted - paper notes larger positions associate with prices further from truth, suggesting this could matter), (c) anchoring plausibly NOT the driver since both use trade/close-based anchors not raw resolution_date.",
+      "flagged_prominently": true,
+      "triggers_stop_condition": false,
+      "pass1_asset_ids": ["instr_v8", "instr_v3", "instr_v4"],
+      "pass2_register_ids": []
+    },
+    {
+      "id": "jobB_2",
+      "job": "B",
+      "topic": "Directional persistence rate comparison",
+      "project_finding": {"description": "37.0% BH-adjusted persistence, CI [0.2945,0.4521], 146-trader cohort vs 18.6% comparison; temporal split at T_split", "asset_id": "instr_v7", "register_ids": ["A2", "A3", "A4"]},
+      "external_finding": {"authors": "Gomez-Cram, Guo, Jensen & Kung", "title": "Prediction Market Accuracy: Crowd Wisdom or Informed Minority?", "venue": "SSRN", "id": "6617059", "year": 2026, "type": "secondary_excerpt_primary_403", "population": "All Polymarket, $13.76B volume, 1.72M accounts, 98906 events, 2023-2025", "method": "split-half by randomly dividing each trader's own events in half", "result": "44% of traders classified skilled on first half also classified skilled on second half; ~3% of accounts classified skilled overall"},
+      "verdict": "NOT_DIRECTLY_COMPARABLE",
+      "explanation": "Confirmed methodological difference: temporal split (project) vs random split-half (external). Population difference: narrow Geo/Elections PIT-legal vs all-category Polymarket. No numerical conflict - project's CI [29.45%,45.21%] contains 44% - but cannot be read as a replication given the split-methodology difference.",
+      "pass1_asset_ids": ["instr_v7"],
+      "pass2_register_ids": ["A2", "A3", "A4"]
+    },
+    {
+      "id": "jobB_3",
+      "job": "B",
+      "topic": "Copy-trade decay vs published price-discovery speed",
+      "project_finding": {"description": "COLLAPSES-BEFORE-CADENCE, no CI-excludes-zero edge at/beyond N=15min, +0.01233 CI[-0.00186,+0.02410] at N=15min", "register_id": "A6"},
+      "external_finding": {"authors": "Angelini & De Angelis", "title": "When Do Markets Fully Process Public Information? Evidence from Real-Time Prediction Markets", "venue": "arXiv", "id": "2606.07811", "year": 2026, "type": "primary", "result": "1-minute change in benchmark probability model associated with only 0.64-for-1 contemporaneous price change; missing 0.36 predicts drift over 'following several minutes', underreaction larger in low-liquidity markets"},
+      "verdict": "NOT_DIRECTLY_COMPARABLE_BUT_ROUGHLY_CONSISTENT",
+      "explanation": "External paper measures market-wide reaction to PUBLIC news signals; project's question is about copying an INDIVIDUAL informed trader's position - different mechanism. A 'several minutes' underreaction window is not inconsistent with nothing capturable remaining by 15 minutes. No paper found reporting a quantified copyable-window edge magnitude comparable to project's cost floors - search came back empty.",
+      "pass1_asset_ids": ["instr_v3"],
+      "pass2_register_ids": ["A6"]
+    },
+    {
+      "id": "jobB_4",
+      "job": "B",
+      "topic": "Falsified-selectors pattern (naive selection fails to beat matched control)",
+      "project_finding": {"description": "Repeated pattern: non-selected/placebo/comparison group matches or beats a selected skilled group", "register_ids": ["A4", "A8", "A9", "A10", "A11"]},
+      "external_finding": {"authors": "Della Vedova", "title": "Who Profits from Prediction Markets? Execution, not Information", "venue": "SSRN", "id": "6191618", "year": 2026, "type": "secondary_excerpt_primary_403", "population": "222M trades with observable terminal payoffs", "result": "Retail traders pick winners 51.3% of the time yet LOSE money; automated traders are coinflip-accurate (50%) yet earn $133M; directional and execution skill nearly orthogonal, shared variance <1% for humans (replicates in CBOE equity options, though the accuracy-profitability inversion does not replicate there)"},
+      "verdict": "INDEPENDENT_SUPPORT_FOR_MECHANISM_NOT_PATTERN",
+      "explanation": "Strong independent support for the project's working explanation (execution not information drives profit) of WHY naive skill-selection fails to beat matched controls. No other paper found reporting the specific empirical PATTERN itself in prediction markets or sports betting - two targeted searches came back empty.",
+      "pass1_asset_ids": ["instr_v6", "instr_v7"],
+      "pass2_register_ids": ["A4", "A8", "A9", "A10", "A11"]
+    },
+    {
+      "id": "jobB_5",
+      "job": "B",
+      "topic": "is_taker structural explanation (zero maker rows database-wide)",
+      "project_finding": {"description": "Hypothesis: CLOB taker's wallet sends the settling transaction; resting maker order may never generate its own transaction hash", "asset_id": "built_b7"},
+      "external_finding": {"type": "secondary_only_no_primary_reachable", "note": "Polymarket's matching is off-chain (operator), settlement on-chain via Polygon; relayer infrastructure batches and pays on-chain cost so users don't submit a transaction per fill."},
+      "verdict": "UNCONFIRMED_POSSIBLE_PARTIAL_COMPLICATION",
+      "explanation": "Relayer/gas-abstraction detail is not a clean confirmation of the project's specific hypothesis - if a relayer batches and submits on behalf of both sides, the simple taker-sends-it story is at least incomplete. The real explanation for zero-maker-detection may lie in transaction-hash attribution within relayer batches, not a maker/taker on-chain asymmetry per se. Flagged, not resolved - no primary source reachable (official docs silent on this point, Medium deep-dive 403'd).",
+      "pass1_asset_ids": ["built_b7"],
+      "pass2_register_ids": []
+    },
+    {
+      "id": "jobC_1",
+      "job": "C",
+      "category": "Resolution/oracle mechanics",
+      "finding": "UMA optimistic-oracle vote concentration: top 10 wallets cast >50% of dispute votes; ~60% of active UMA voters linkable to Polymarket trading accounts; ~1 in 5 disputes had a voter with an open position in the judged market; 1150+ disputed markets in 2026 already exceeding full-year 2025, ~$5B at stake across ~2000 contracts. Baseline dispute rate ~1.5% of proposals.",
+      "source": {"type": "secondary", "note": "WSJ investigation, May 2026 - no academic primary found"},
+      "related_source": {"title": "Prediction Laundering: The Illusion of Neutrality, Transparency, and Governance in Polymarket", "venue": "arXiv", "id": "2602.05181", "type": "primary_topic_confirmed", "note": "$750 dispute bonds gate participation to a narrow actor class"},
+      "measurable_with_current_assets": false,
+      "reason": "No UMA voter/wallet identity data in project's DB; infra_o2 covers only 3/13 migrated writers, no vote-level detail.",
+      "pass1_asset_ids": ["infra_o2"]
+    },
+    {
+      "id": "jobC_2",
+      "job": "C",
+      "category": "Participant composition",
+      "finding": "Wallet-level composite informed-trading screen using bet size + timing + profitability + directional concentration jointly, applied to 210000+ wallet-market pairs, 93000+ markets. 69.9% win rate on flagged trades, >60 SD above null under permutation test, ~$143M aggregate anomalous profit. Iran-strike case: 6 new wallets, Yes shares at $0.10, ~$1.2M profit within hours.",
+      "source": {"authors": "Mitts & Ofir", "venue": "Columbia Law (cited via search)", "id": "SSRN 6426778 (related)", "type": "cited_not_independently_fetched"},
+      "measurable_with_current_assets": true,
+      "reason": "Every input feature (bet size, profitability, pre-event timing, directional concentration) is derivable from data_d1 (trades) + data_d2 (positions) - a direct, larger-scale generalization of the project's own LH-001, currently stalled at n=2 events.",
+      "pass1_asset_ids": ["data_d1", "data_d2"],
+      "pass2_register_ids": ["C8"]
+    },
+    {
+      "id": "jobC_3",
+      "job": "C",
+      "category": "Resolution/oracle mechanics (settlement layer)",
+      "finding": "Off-chain matching engine confirms a fill that then reverts on-chain - a settlement-layer inefficiency.",
+      "source": {"title": "Ghosts of Polymarket", "venue": "arXiv", "id": "2606.16852", "type": "primary_topic_only", "note": "PDF compression-encoded, effect size not extractable"},
+      "measurable_with_current_assets": false,
+      "reason": "trades table (data_d1) presumably records only settled trades; no evidence of revert/failed-match data captured anywhere in pass-1's inventory.",
+      "pass1_asset_ids": ["data_d1"]
+    },
+    {
+      "id": "jobC_4",
+      "job": "C",
+      "category": "Market structure and fee effects",
+      "finding": "Stochastic-control framework for binary-settlement market making, distinct from classical continuous-asset market making.",
+      "source": {"title": "Optimal Market Making in Prediction Markets", "venue": "arXiv", "id": "2607.17991", "year": 2026, "type": "primary_abstract_level", "note": "No prediction-market-specific numerical edge reported in available summary"},
+      "measurable_with_current_assets": "partially",
+      "reason": "Would need data_d4 (order_book_snapshots, 3.57% coverage - already known-limited per pass-1); effectively not measurable at useful coverage.",
+      "pass1_asset_ids": ["data_d4"]
+    },
+    {
+      "id": "jobC_5",
+      "job": "C",
+      "category": "Market structure and fee effects",
+      "finding": "Polymarket CLOB v2 upgrade (April 28 2026) with $1M maker-rebate program funded by taker fees - a mid-project structural change the project's own corpus never mentions.",
+      "source": {"type": "secondary", "note": "Not independently pinned to a single primary source this pass, but the date and existence are corroborated across multiple secondary mentions"},
+      "measurable_with_current_assets": true,
+      "reason": "data_d1 (trades) has timestamps; a before/after split at 2026-04-28 against is_taker (built_b7, zero maker rows database-wide) would test whether the rebate program produced any maker-side rows post-upgrade - a cheap, concrete test the project's own assets can already run.",
+      "pass1_asset_ids": ["data_d1", "built_b7"],
+      "pass2_register_ids": [],
+      "cross_reference": "jobB_5 (is_taker structural explanation)"
+    },
+    {
+      "id": "jobC_6",
+      "job": "C",
+      "category": "Market structure and fee effects",
+      "finding": "Fee-figure discrepancy: external sources describe Polymarket fees generically as ~2% on winning positions and Kalshi ~3% taker, vs project's own cost floors (geopolitics fee-free spread-only 0.0005-0.010, elections 4% feeRate ~0.0097 at median 0.59, floor 0.0056-0.020).",
+      "source": {"type": "secondary_blog"},
+      "measurable_with_current_assets": "unresolved",
+      "reason": "Not obviously reconcilable from what this search surfaced - could be category-specific schedules, a fee change coincident with CLOB v2, or an imprecise external source. Flagged for whoever owns fee-structure accuracy next.",
+      "pass1_asset_ids": ["instr_v8"]
+    },
+    {
+      "id": "jobC_7",
+      "job": "C",
+      "category": "Cross-platform relationships",
+      "finding": "Kalshi/Polymarket price-gap arbitrage: ~13 cents gross, closing to ~7-8 cents net after Kalshi's ~2c/contract/side fee, persisting minutes to hours; execution window compressed from ~5 minutes (2024) to ~30 seconds (2026) as bot competition increased.",
+      "source": {"type": "secondary_blogs_only", "note": "predictionmarketspicks.com, PredTerminal, ClawArbs, launchpoly.com - explicitly flagged, no academic primary source located despite targeted search"},
+      "related_primary_source": {"title": "Semantic Non-Fungibility and Violations of the Law of One Price in Prediction Markets", "authors": "Gebele & Matthes", "venue": "arXiv", "id": "2601.01706", "type": "primary_topic_only", "note": "fetch returned unparseable compressed content, no effect size obtained"},
+      "measurable_with_current_assets": false,
+      "reason": "Project has zero cross-platform data - confirmed absent from pass-1's entire asset inventory; would require wholly new data acquisition from Kalshi/PredictIt/Manifold.",
+      "pass1_asset_ids": []
+    },
+    {
+      "id": "jobC_8",
+      "job": "C",
+      "category": "Time-series and momentum effects",
+      "finding": "Largely empty search - no prediction-market-specific momentum/serial-correlation/volume-precedes-price finding with a reportable effect size located.",
+      "source": {"type": "empty_search_reported"},
+      "measurable_with_current_assets": "would be, if a claim existed to test",
+      "reason": "data_d1 (trades, full tape) would support such a test but there is no external claim found to test against.",
+      "pass1_asset_ids": ["data_d1"]
+    },
+    {
+      "id": "jobC_9",
+      "job": "C",
+      "category": "Participant composition",
+      "finding": "Network-based wash-trading detection: ~25% of all Polymarket trades 2022-2025 estimated as wash trades; 14% of 1.26M wallets exhibit wash-trading-consistent behavior; wash-trading share peaked near 60% of weekly volume in December 2024 (43000-wallet coordinated network), largely incentive-farming-motivated not fee-evasion.",
+      "source": {"authors": "Sirolly, Ma, Kanoria, Sethi", "venue": "SSRN", "id": "5714122", "year": 2025, "type": "primary_via_search"},
+      "measurable_with_current_assets": true,
+      "reason": "data_d1 (trades) has the counterparty/wallet-pair structure needed for network-clustering detection; project's existing bot detection (Pattern A/B/C in daily_maintenance.py's ARB_BOT step) is a methodologically DISTINCT, non-network-based method - could in principle be benchmarked against this approach using data already held.",
+      "pass1_asset_ids": ["data_d1"]
+    },
+    {
+      "id": "jobC_10",
+      "job": "C",
+      "category": "Participant composition",
+      "finding": "Behavioral-tier classification of market-makers/arbitrageurs/non-retail liquidity providers via microstructure signatures, using external PMXT v2 archive (April 21-27 2026 window).",
+      "source": {"title": "Fill-Side Non-Retail Trading on Polymarket", "venue": "arXiv", "id": "2605.11640", "type": "primary_topic_only", "note": "full text not extractable, fetch failed, no effect size confirmed"},
+      "measurable_with_current_assets": "partially",
+      "reason": "Classification concept could in principle be attempted on data_d1/data_d2, but project has no existing instrument doing this (bot_type tagging is coarser/different) - new method-building, not applying an existing validated instrument.",
+      "pass1_asset_ids": ["data_d1", "data_d2"]
+    },
+    {
+      "id": "jobC_11",
+      "job": "C",
+      "category": "2026 publications",
+      "finding": "Information Leakage Score papers (cross-referenced from Job A) substantively answer the project's own never-run RQ-ILS-001, surfaced independently by this Job C sweep too.",
+      "source": {"venue": "arXiv", "ids": ["2605.02287", "2605.00493"], "type": "primary"},
+      "effect_size": "Skilled accounts + market makers (<3.5% of accounts) capture >30% of platform gains; lifecycle-and-conviction heuristic flags 1950 accounts, mean profit $15012.92",
+      "measurable_with_current_assets": true,
+      "reason": "data_d1 + instr_v3 (price_at()) sufficient to construct a per-market ILS on this project's own population.",
+      "pass1_asset_ids": ["data_d1", "instr_v3"],
+      "pass2_register_ids": ["D8"],
+      "cross_reference": "jobA_1, jobA_2"
+    },
+    {
+      "id": "jobC_12",
+      "job": "C",
+      "category": "2026 publications",
+      "finding": "Della Vedova follow-up work exists but could not be verified this pass.",
+      "source": {"title": "Detecting Informed Trading in Prediction Markets: One Event at a Time", "venue": "SSRN", "id": "6567238", "type": "blocked_403"},
+      "measurable_with_current_assets": "unknown - method/effect size unverified",
+      "pass1_asset_ids": []
+    }
+  ],
+  "contradictions_and_cross_references": [
+    {"topic": "Calibration shape", "finding_id": "jobB_1", "note": "Headline finding of this pass - see top of document/JSON."},
+    {"topic": "RQ-SECTOR-001 and calibration shape share a source", "finding_ids": ["jobA_4", "jobB_1"], "note": "Both derive from arXiv:2602.19520 - not independently verified twice."},
+    {"topic": "RQ-ILS-001/RQ-SCI-001/Job C convergence", "finding_ids": ["jobA_1", "jobA_2", "jobA_8", "jobC_11"], "note": "Three separate sweeps independently located the same Nechepurenko research program - strengthens confidence these are real external answers."},
+    {"topic": "Composite-signal success vs naive-selector failure", "finding_ids": ["jobB_4", "jobC_2", "jobC_9"], "note": "Where the project's naive-selection approach failed (pass-2 A8-A11), published work using composite/conditioned signals succeeds at finding informed trading - an observation connecting existing findings, not a proposal."}
+  ],
+  "not_covered": [
+    "Full-text extraction of arXiv:2602.19520's complete Polymarket-only horizon table (PDF compression-blocked, only partial HTML-rendered Politics/Kalshi figures recovered)",
+    "Independent primary-source verification of SSRN 6617059 and SSRN 6191618 (both 403'd) - all figures from secondary summaries",
+    "Full text of arXiv:2601.01706, arXiv:2606.16852, arXiv:2605.11640, and SSRN 6567238 - all fetch-blocked or compression-encoded",
+    "Confirmation of the Polymarket fee-schedule discrepancy (jobC_6)",
+    "Any search beyond arXiv/SSRN/exchange docs and a small number of secondary aggregators - no conference proceedings, other working-paper archives, or non-English literature surveyed"
+  ],
+  "not_done_by_design": [
+    "No ranking, scoring, or proposal of next steps.",
+    "No measurement was re-run against project data.",
+    "Nothing modified or written to any production table.",
+    "Project corpus not re-read beyond cross-referencing against passes 1 and 2."
+  ]
+}
