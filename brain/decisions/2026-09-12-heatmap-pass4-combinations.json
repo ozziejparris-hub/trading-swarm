@@ -1,0 +1,326 @@
+{
+  "pass": 4,
+  "of": 5,
+  "title": "Heatmap Pass 4 — Combinations",
+  "date": "2026-09-12",
+  "depends_on": {
+    "pass1_commit": "trading-swarm 1bb36e1",
+    "pass2_commit": "trading-swarm 5e94eef",
+    "pass3_commit": "trading-swarm 9efc118"
+  },
+  "correction_carried_forward": {
+    "issue": "passes 2 and 3 referred to signal_credibility.py as built_b10 in a few places",
+    "correction": "built_b10 is weighted_consensus_system.py per pass 1. signal_credibility.py was never assigned its own pass-1 asset ID. Treated as an uncatalogued asset in this pass, not built_b10."
+  },
+  "safety_check": {
+    "table": "metric_v2f_oos_result",
+    "expected_sha256": "021be40a87df48c1f37efb8265f223b005c9c50bca8e32ee1bcb134fe074cd4e",
+    "verified": true,
+    "no_writes_made": true
+  },
+  "candidates": [
+    {
+      "id": "S1-1",
+      "source": "Source 1 - externally answered questions never asked",
+      "question": "Does a per-market Information Leakage Score, computed on this project's own canonical Geo/Elections population, show excess pre-event price discovery, and does it correlate with the directional-skill harness's cohort?",
+      "pass1_assets": [
+        {"id": "data_d1", "adequacy": "adequate - full trade tape"},
+        {"id": "instr_v3", "adequacy": "PARTIAL - 73.1% cross-source agreement, primary-with-fallback; adequate for a first pass, real caveat since ILS timing precision depends on price accuracy"},
+        {"id": "data_d3", "adequacy": "adequate"},
+        {"id": "data_d6", "adequacy": "adequate - canonical population"},
+        {"id": "instr_v4", "adequacy": "PROVEN"}
+      ],
+      "what_would_make_it_false": "ILS computed on this population shows no differential pre-event price movement relative to a matched baseline, or ILS-high markets show no excess concentration of instr_v7-classified skilled traders.",
+      "why_not_closed": "Pass-2 D8 group has RQ-ILS-001 as ABANDONED-UNTESTED, never run on any population. Published paper validated ILS on a likely broader/all-category population; this project's Geo/Elections-only canonical population has never been checked. Cross-validating against instr_v7's cohort is a check the source paper had no reason to run.",
+      "pass2_register_entry": "D8",
+      "external_basis": {"pass3_finding_ids": ["jobA_2", "jobC_11"], "effect_size": "skilled accounts + market makers (<3.5% of accounts) capture >30% of platform gains"},
+      "cost_floor_problem": "Published effect size is a concentration statistic (share of gains captured), not a per-trade edge in price units - cannot be compared to cost floors (geo 0.0005-0.010, elections 0.0056-0.020) without fresh derivation. May turn out smaller once conditioned to this population and netted of fees. NOT assumed to clear.",
+      "placebo_objection_applies": false,
+      "placebo_objection_note": "Characterization question, not an action-on-positions proposal."
+    },
+    {
+      "id": "S1-2",
+      "source": "Source 1 - externally answered questions never asked",
+      "question": "Does adopting the published, Monte-Carlo-validated Signal Credibility Index specification improve on the project's own stalled, annotation-only signal_credibility.py?",
+      "pass1_assets": [
+        {"id": "uncatalogued: signal_credibility.py", "adequacy": "live (corrected in pass 1's scripts-fork), annotation-only, never graduated past its internal gate"},
+        {"id": "data_d10", "adequacy": "adequate"},
+        {"id": "instr_v3", "adequacy": "PARTIAL, see S1-1"}
+      ],
+      "what_would_make_it_false": "Credibility-weighted signal built on the published spec shows no accuracy improvement, or the paper's own tau*=0.27 threshold fails to transfer.",
+      "why_not_closed": "RQ-SCI-001 (pass-2 D4) is ABANDONED-UNTESTED for the validation study - internal gate (>=20 resolved markets) never reached. This candidate adopts an already-externally-validated specification instead of waiting on the internal gate.",
+      "pass2_register_entry": "D4",
+      "external_basis": {"pass3_finding_ids": ["jobA_8"], "source_id": "arXiv:2604.27041"},
+      "cost_floor_problem": "N/A - signal-quality question, not a raw-edge claim.",
+      "placebo_objection_applies": false
+    },
+    {
+      "id": "S1-3",
+      "source": "Source 1 - externally answered questions never asked",
+      "question": "Does a Gomez-Cram-style split-half skill classification, applied to this project's own Geo/Elections canonical population, find a comparable skilled minority, and does it overlap with instr_v7's persistence cohort?",
+      "pass1_assets": [
+        {"id": "instr_v7", "adequacy": "PROVEN"},
+        {"id": "instr_v4", "adequacy": "PROVEN"},
+        {"id": "data_d1", "adequacy": "adequate"},
+        {"id": "data_d2", "adequacy": "PROVEN"}
+      ],
+      "what_would_make_it_false": "No comparable skilled-minority fraction in Geo/Elections specifically, or zero overlap with instr_v7's 146-trader cohort.",
+      "why_not_closed": "RQ3.2 (pass-2 D3) was CONFOUNDED then ABANDONED-UNTESTED using the project's own two prior framings, neither of which used Gomez-Cram's actual split-half method. Pass-3's jobA_7 answers RQ3.2 for all-Polymarket only, not this project's canonical population, and not cross-validated against instr_v7.",
+      "pass2_register_entry": "D3",
+      "external_basis": {"pass3_finding_ids": ["jobA_7"], "source": "SSRN 6617059", "effect_size": "~3.14% persistently-skilled minority, 1.72M accounts, all-Polymarket"},
+      "cost_floor_problem": "N/A directly - population-characterization question. Any downstream trading application needs its own cost-floor test.",
+      "placebo_objection_applies": true,
+      "placebo_objection_note": "Characterizes a population; does not propose acting on it. If a later step proposed trading on the identified minority's positions, it would need to independently clear the same activity-matched-placebo test that killed A8-A11 - noted, not assumed away."
+    },
+    {
+      "id": "S2-1",
+      "source": "Source 2 - unexplained conflicts",
+      "question": "Does re-weighting own_market_calibration.py by position size instead of price reproduce the external paper's rising-with-horizon shape?",
+      "pass1_assets": [
+        {"id": "instr_v8", "adequacy": "PROVEN as instrument for existing weighting; re-weighting reuses the same validated machinery"}
+      ],
+      "what_would_make_it_false": "Re-weighted slope still falls with horizon - same shape as today - ruling out weighting as the explanation.",
+      "why_not_closed": "Pass 2 has no register entry for own-market calibration at all (live, non-ruled-on finding). Pass 3's jobB_1 only identified weighting as a candidate explanation, explicitly did not test it.",
+      "pass2_register_entry": null,
+      "external_basis": {"pass3_finding_ids": ["jobB_1"], "source_id": "arXiv:2602.19520", "note": "larger positions are associated with prices further from truth"},
+      "cost_floor_problem": "N/A - shape/methodology question. Outcome bears on whether the near-resolution slope (~1.29, largest deviation, concentrated at price extremes) is over/under-stated by price-weighting - project already characterized this deviation as cost-floor-scale (~1-2pp).",
+      "placebo_objection_applies": false
+    },
+    {
+      "id": "S2-2",
+      "source": "Source 2 - unexplained conflicts",
+      "question": "Did maker-labeled (is_taker=0) trades appear after Polymarket's CLOB v2 maker-rebate program (2026-04-28)?",
+      "pass1_assets": [
+        {"id": "data_d1", "adequacy": "adequate - has timestamps"},
+        {"id": "built_b7", "adequacy": "UNVALIDATED - zero maker rows as of last full audit; this candidate re-checks with a date split"}
+      ],
+      "what_would_make_it_false": "is_taker=0 count remains exactly zero after 2026-04-28 too.",
+      "what_true_would_mean": "Maker rows appearing only post-2026-04-28 would be strong evidence the pre-date absence was a real market-structure fact, not a permanent detection blindness - and would sharpen jobB_5's diagnosis (relayer-batching hypothesis predicts maker rows should still be zero/misattributed even post-rebate if the true cause is hash-attribution).",
+      "why_not_closed": "This exact date-split test appears nowhere in pass 1 or pass 2. is_taker was flagged dead with 'root cause not established'. Pass 3 raises the question but explicitly does not run it.",
+      "pass2_register_entry": null,
+      "external_basis": {"pass3_finding_ids": ["jobC_5", "jobB_5"]},
+      "cost_floor_problem": "N/A - data-integrity/instrument-diagnosis question. If repairable, unlocks a new execution-quality dimension currently unmeasurable.",
+      "placebo_objection_applies": false
+    },
+    {
+      "id": "S2-3",
+      "source": "Source 2 - unexplained conflicts",
+      "question": "Does inspecting matched maker/taker transaction hashes show single-hash settlement for both sides (relayer batching), independent of the CLOB v2 rebate program?",
+      "pass1_assets": [
+        {"id": "data_d1", "adequacy": "adequate - transaction_hash column"},
+        {"id": "data_d4", "adequacy": "PROVEN but 3.57% coverage - the only maker/taker-adjacent ground truth the project holds, thin"}
+      ],
+      "what_would_make_it_false": "Matched maker/taker pairs show genuinely distinct transaction hashes per side, ruling out relayer batching.",
+      "why_not_closed": "jobB_5 raises this from secondary sources only; pass 3 could not settle it empirically (barred from touching project data). This candidate settles it against the project's own data.",
+      "pass2_register_entry": null,
+      "external_basis": {"pass3_finding_ids": ["jobB_5"], "type": "secondary_source_only"},
+      "cost_floor_problem": "N/A - instrument-diagnosis.",
+      "feasibility_caveat": "order_book_snapshots' 3.57% coverage may make this infeasible to test with adequate n - a data-availability floor, a different kind of cost-floor problem.",
+      "placebo_objection_applies": false
+    },
+    {
+      "id": "S3-1",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "A1",
+      "question": "Would recomputing the presplit-edge cohort/selection rule as of today's data (with instr_v6 post-fix) narrow the CI to exclude zero?",
+      "reachability": "PARTIALLY REACHABLE via natural accumulation",
+      "pass1_assets": [
+        {"id": "data_d7", "adequacy": "PROVEN as pinned record - must NOT be overwritten"},
+        {"id": "instr_v4", "adequacy": "PROVEN"},
+        {"id": "instr_v5", "adequacy": "PROVEN"},
+        {"id": "instr_v6", "adequacy": "PARTIAL, but deterministic since 2026-09-06 fix - adequate for a NEW measurement, though pre-fix placebos remain non-reconstructable"}
+      ],
+      "what_would_make_it_false": "Recomputed CI still includes zero even with a larger effective sample.",
+      "cost_floor_problem": "Existing point estimate (+0.0316) already clears geopolitics' range comfortably and sits within elections' upper range - if narrowed to exclude zero, economically meaningful, not merely statistically distinguishable. The one NULL-UNDERPOWERED entry with an effect size already known to clear the floor.",
+      "placebo_objection_applies": true,
+      "placebo_objection_note": "Design already includes a matched placebo by construction (instr_v6 post-fix) - does not introduce a new naive-selector risk."
+    },
+    {
+      "id": "S3-2",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "A3",
+      "question": "N/A - reported as an honest negative, not a live candidate",
+      "reachability": "NOT CURRENTLY REACHABLE",
+      "reason": "Pre-split BH-skilled cohort (146 traders) is capped by definition - defined by trades before a fixed T_split=2026-04-01. Cannot grow by waiting, unlike A1's post-split cohort. Reopening requires either a materially different question (a later/rolling T_split, effectively a new test) or is simply not reachable with the current experimental design.",
+      "pass1_assets": [],
+      "candidate_generated": false
+    },
+    {
+      "id": "S3-3",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "A4",
+      "question": "Would recomputing the persistence cohort's aggregate two-way clustered edge test with positions accumulated since 2026-09-06 narrow the CI to exclude zero?",
+      "reachability": "Directionally reachable via accumulation (post-split positions CAN grow with time, unlike A3), magnitude NOT assessed - this pass does not run measurements.",
+      "pass1_assets": [
+        {"id": "instr_v7", "adequacy": "PROVEN"},
+        {"id": "instr_v5", "adequacy": "PROVEN"}
+      ],
+      "what_would_make_it_false": "CI [-0.0151,0.0362] still includes zero at whatever n_pairs has grown to.",
+      "cost_floor_problem": "Not restated here; see A4 in pass 2 for baseline figures."
+    },
+    {
+      "id": "S3-4",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "C6",
+      "question": "Would re-enabling signal-agent and accumulating toward the n=28 YES/n=19 NO target resolve STR-003?",
+      "reachability": "Reachable, but requires reversing an unrelated governance decision (infra_o6, reversible pause), not new data collection - data source is switched off, not exhausted.",
+      "pass1_assets": [{"id": "infra_o6", "adequacy": "PROVEN as executed, reversible pause"}, {"id": "data_d10", "adequacy": "adequate"}, {"id": "data_d4", "adequacy": "PROVEN"}],
+      "note": "A governance question, not a measurement design question - flagged for whoever weighs it next."
+    },
+    {
+      "id": "S3-5",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "C8",
+      "question": "Have 5 more independent qualifying geopolitics events occurred since 2026-05-02 that would let LH-001 reopen?",
+      "reachability": "Depends on an external-world fact (did qualifying events happen) this pass cannot assess.",
+      "pass1_assets": [{"id": "data_d10", "adequacy": "0 new events recorded since 2026-05-02"}],
+      "ambiguity_flagged": "Unclear whether zero new events reflects true event scarcity or that the detection pipeline simply wasn't run against candidate events already in the data - different reopening paths, should not be conflated."
+    },
+    {
+      "id": "S3-6",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "D1",
+      "question": "Would executing the already-coded June rerun of RQ1.1 (commit 77a10ad), against tape_end-anchored periods with O-45 contamination checked first, resolve it?",
+      "reachability": "MOST IMMEDIATELY REACHABLE of all 8 - code already exists, only execution needed.",
+      "pass1_assets": [{"id": "data_d2", "adequacy": "PROVEN"}, {"id": "data_d3", "adequacy": "adequate"}, {"id": "instr_v4", "adequacy": "PROVEN - tape_end anchor to use instead of resolution_date"}],
+      "what_would_make_it_false": "r remains near-zero or wrong-signed at n>=20-per-period."
+    },
+    {
+      "id": "S3-7",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "D2",
+      "question": "Would building and running the pre-registered 14d/30d extended-window rerun of RQ2.2 resolve it?",
+      "reachability": "Reachable but requires a build step first - unlike D1, no evidence found it was ever coded. Implementation status should be confirmed before assuming it's merely an execution gap.",
+      "pass1_assets": [{"id": "instr_v3", "adequacy": "PARTIAL"}]
+    },
+    {
+      "id": "S3-8",
+      "source": "Source 3 - NULL-UNDERPOWERED revisit",
+      "pass2_register_entry": "D5",
+      "question": "Does execution timing (absolute or relative) correlate with directional accuracy or realized edge within instr_v7's validated persistence cohort?",
+      "reachability": "Reachable now - instr_v7 exists and is validated (post-dates the original n=4 test).",
+      "pass1_assets": [
+        {"id": "instr_v7", "adequacy": "PROVEN - did not exist in current form when RQ-EXEC-001 was last touched (2026-06-07)"},
+        {"id": "data_d1", "adequacy": "adequate"},
+        {"id": "data_d2", "adequacy": "PROVEN"},
+        {"id": "instr_v3", "adequacy": "PARTIAL"}
+      ],
+      "what_would_make_it_false": "No significant relationship (or a reversed one, replicating the n=4 finding of later entry) between timing and accuracy/edge within the cohort.",
+      "why_not_closed": "Pass-2's D5 'what would reopen it' just says the deferred validation was never resumed. This candidate is materially re-specified: original test used n=4 external data and predates instr_v7's validated form.",
+      "why_highest_leverage": "Project's working theory (Della Vedova-style decomposition, independently supported by jobB_4) holds directional skill doesn't convert into capturable copy-trade edge (A6) or mispricing-marking power (A8-A11). If timing correlates with skill/edge within the validated cohort, that's the first evidence pointing toward WHICH execution dimension might matter, rather than reconfirming naive presence-based signals don't work.",
+      "external_basis": {"pass3_finding_ids": ["jobB_4"], "note": "No new external citation specific to RQ-EXEC-001 from pass 3; draws on D5's own n=4 finding (pass 2) and jobB_4's general Della Vedova support."},
+      "cost_floor_problem": "Indirect - within-cohort skill-marker characterization, not itself a raw-edge claim. Any downstream signal needs its own cost-floor test.",
+      "placebo_objection_applies": true,
+      "placebo_objection_note": "Tests a property (timing) OF an already-validated skilled group - does not propose a new selection criterion tested against a placebo, so partially escapes the A8-A11 objection. BUT if turned into a new presence-based mispricing marker for others to use, that would need to independently clear the same matched-placebo test A8 already ran (and which already found the presence-based version fails at 4/6 horizons). Does NOT inherit validity from instr_v7's classification for that downstream use - objection would need to be re-run, not assumed satisfied."
+    },
+    {
+      "id": "S4-1",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b1",
+      "candidate_generated": false,
+      "rejection_reason": "Explicitly retired by design decision (2026-09-05-canonical-skill-metric-design.md SS5): 'flagged, explicitly out of scope - not reused, not repaired.' Reviving would re-collapse distinguishable dimensions into one scalar - the exact mistake the replacement design avoided ('the exact pattern the M6 precedent warned about')."
+    },
+    {
+      "id": "S4-2",
+      "source": "Source 4 - unexercised assets",
+      "question": "Does Pool C membership churn (entries/exits across the 70 recorded dates) show a stable core population versus a high-turnover fringe, and does that split correlate with instr_v7's classification?",
+      "pass1_assets": [
+        {"id": "built_b2", "adequacy": "232536 rows, 70 dates, uses only geo_accuracy_pool membership flag, not the condemned score"},
+        {"id": "instr_v7", "adequacy": "PROVEN, cross-reference"}
+      ],
+      "what_would_make_it_false": "Near-total turnover every snapshot (no stable core), or a stable-core/fringe split showing no relationship to instr_v7's classification.",
+      "why_not_closed": "Does not require geo_elo's score to be valid - uses only the broader, less-condemned pool-membership filter. Pool C's base-rate confound (A11) is about market-level absence, a different axis. Nothing in pass 2 addresses trader-level membership stability.",
+      "pass2_register_entry": null,
+      "cost_floor_problem": "N/A - population-dynamics/diagnostic question.",
+      "is_task_example_question": true,
+      "note": "This is the task's own example question ('what does a rating time series answer that a cross-section does not'), answered directly: a stability question, independent of rating validity."
+    },
+    {
+      "id": "S4-3",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b3",
+      "candidate_generated": false,
+      "cross_reference": "S3-8",
+      "note": "Capturability framing moot (A6). Remaining open use (within-cohort skill-marker, not copy-trade mechanism) is exactly S3-8's proposal - not duplicated."
+    },
+    {
+      "id": "S4-4",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b4",
+      "candidate_generated": false,
+      "rejection_reason": "Once its three inputs are separately accounted for (kelly/patience null via Stage 0b = built_b5; timing repurposed = built_b3), the +/-100pt blend mechanism has nothing left to ask."
+    },
+    {
+      "id": "S4-5",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b5",
+      "confidence": "LOW",
+      "question": "Does re-specifying kelly_alignment_score using Meister's KL-divergence-between-belief-and-true-distribution formulation, rather than the project's original formulation, produce a signal Stage 0b's null didn't already rule out?",
+      "why_flagged_low_confidence": "This pass does not have the project's exact original kelly_alignment_score formula documented in passes 1-3 to confirm whether it already matches or differs from Meister's framing. The premise (that they differ) is UNCONFIRMED.",
+      "external_basis": {"pass3_finding_ids": ["jobA_3"], "source_id": "arXiv:2412.14144", "note": "Kelly-quality literature theoretically consistent with the project's own null - strengthens rather than opens"},
+      "pass2_register_entry": null,
+      "cost_floor_problem": "N/A - signal-construction question."
+    },
+    {
+      "id": "S4-6",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b6",
+      "candidate_generated": false,
+      "rejection_reason": "No internal evidence (never individually validated or invalidated) and no external literature (pass 3) touches this specific composite. Genuinely unconsidered, left as residual rather than padded."
+    },
+    {
+      "id": "S4-7",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b7",
+      "candidate_generated": false,
+      "cross_reference": ["S2-2", "S2-3"]
+    },
+    {
+      "id": "S4-8",
+      "source": "Source 4 - unexercised assets",
+      "pass1_asset": "built_b8",
+      "candidate_generated": false,
+      "note": "Resolved by pass 2 (C1) - it was run 2026-09-03. Pass 1's 'unclear if ever run' flag no longer applies."
+    },
+    {
+      "id": "S4-9",
+      "source": "Source 4 - unexercised assets",
+      "question": "Does running measure_prefilter_coverage.py isolate how much of the classifier cascade's recall shortfall originates in the deterministic pre-filter stage versus the downstream LLM stage?",
+      "pass1_assets": [{"id": "built_b9", "adequacy": "zero callers, never run, purpose-built for exactly this"}],
+      "why_not_closed": "Pass-2 C1's diagnosis characterizes the LLM stage's miss patterns but never attributes how much loss is pre-filter-stage vs LLM-stage.",
+      "pass2_register_entry": "C1",
+      "what_would_make_it_uninteresting": "If pre-filter-stage coverage is ~100%, this only confirms what C1 already found by other means - a plausible null, stated honestly.",
+      "cost_floor_problem": "N/A - diagnostic.",
+      "tension_flagged": "Somewhat moot given C1's pending institutional status (Oscar's abandon-vs-retry call outstanding) - if abandon is the eventual call, this diagnostic wouldn't change that decision."
+    },
+    {
+      "id": "S4-10",
+      "source": "Source 4 - unexercised assets",
+      "question": "Does tracing weighted_consensus_system.py's actual role inside unified_elo_system.py's live comprehensive_elo computation reveal what comprehensive_elo's sign-error-analog defect actually is?",
+      "pass1_assets": [{"id": "built_b10", "adequacy": "deprecated by its own docstring yet has 5 live callers - contradiction flagged by pass 1, unresolved by passes 2/3"}],
+      "why_not_closed": "Pass-2 B3 states comprehensive_elo's defect is 'not root-caused...in anything read across both passes.' This candidate proposes exactly the missing investigation.",
+      "pass2_register_entry": "B3",
+      "candidate_type_note": "Code-archaeology/diagnostic question, not a data-measurement one - no CI, no n, no cost floor applies. Different kind of candidate than the others, stated explicitly.",
+      "cost_floor_problem": "N/A - not a data measurement."
+    }
+  ],
+  "rejected_considered": [
+    {"topic": "Reviving composite_skill_score.py", "candidate_id": "S4-1", "reason": "Explicitly superseded by design decision; would repeat a named mistake."},
+    {"topic": "Reviving the ELO behavioral bonus blend as its own entity", "candidate_id": "S4-4", "reason": "No residual content once its three inputs are separately accounted for."},
+    {"topic": "behavioral_modifier", "candidate_id": "S4-6", "reason": "No internal or external basis found; genuinely unconsidered, not forced."},
+    {"topic": "Re-testing LEGENDARY/NEAR_LEGENDARY tier conditioning with a rebuilt tier ladder", "reason": "Redundant - pass-2 B2 already concludes the generalized question is answered CLOSED-STRONG by A8."},
+    {"topic": "Re-running the original gap-pinned copy-trade-decay framing", "pass2_register_entry": "A7", "reason": "SUPERSEDED, own successor doc calls it permanently unrunnable - needs fundamentally new sub-12-minute data, not new analysis."},
+    {"topic": "RQ-CORRELATION-001 as a generated candidate", "reason": "No basis - pass 3 (jobA_5) found nothing in the literature framing this as a trader-level skill signal. Would be 'investigate X' with no specific question."},
+    {"topic": "Cross-platform (Kalshi/Polymarket) arbitrage or lead-lag candidates", "pass3_finding_id": "jobC_7", "reason": "Not generatable under this pass's own candidate definition - zero cross-platform data exists, no pass-1 asset answers it. New data acquisition is pass-5 territory."},
+    {"topic": "UMA oracle vote-concentration analysis", "pass3_finding_id": "jobC_1", "reason": "No voter-identity data exists anywhere in project assets. Not generatable."},
+    {"topic": "VPIN applied naively (inferred, not ground-truth)", "pass3_finding_id": "jobA_1", "reason": "No ground-truth order-flow classification exists (order book coverage 3.57%). Any VPIN candidate would use the inferred version, which diverges substantially from ground-truth and carries a known mechanical-artifact critique. Noted as data-quality-blocked, not generated."},
+    {"topic": "RQ-POSSIZE-001 as an isolated position-size signal", "pass3_finding_id": "jobA_3", "reason": "Position size is never used as an isolated signal anywhere in the literature found - always conditioned on trader history. An isolated-signal candidate would misrepresent the external evidence."},
+    {"topic": "Mitts & Ofir wallet-level informed-trading screen and network-based wash-trading detection", "pass3_finding_ids": ["jobC_2", "jobC_9"], "reason": "Both found measurable with data_d1/data_d2 in pass 3, but neither is named under any of this pass's four explicit generation sources. Noted for pass 5's awareness, not expanded into full candidates, respecting the task's explicit scope."}
+  ],
+  "not_done_by_design": [
+    "No ranking, scoring, or recommendation of any candidate - that is pass 5.",
+    "No measurement was run against project data.",
+    "No new external research - pass 3 is the external record.",
+    "Nothing modified or written to any production table."
+  ]
+}
