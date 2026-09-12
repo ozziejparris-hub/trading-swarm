@@ -1,0 +1,175 @@
+{
+  "pass": 5,
+  "of": 5,
+  "title": "Heatmap Pass 5 — Scoring and Shortlist",
+  "date": "2026-09-12",
+  "depends_on": {
+    "pass1_commit": "trading-swarm 1bb36e1",
+    "pass2_commit": "trading-swarm 5e94eef",
+    "pass3_commit": "trading-swarm 9efc118",
+    "pass4_commit": "trading-swarm 8a6c4ea"
+  },
+  "safety_check": {
+    "table": "metric_v2f_oos_result",
+    "expected_sha256": "021be40a87df48c1f37efb8265f223b005c9c50bca8e32ee1bcb134fe074cd4e",
+    "verified": true,
+    "no_writes_made": true
+  },
+  "new_candidates_developed": [
+    {
+      "id": "S5-1",
+      "source": "pass3 jobC_2, developed to full candidate standard per pass5 instruction",
+      "question": "Does a composite informed-trading screen (bet size + timing + profitability + concentration, jointly) flag an anomalous subpopulation in this project's own Geo/Elections trade data?",
+      "pass1_assets": [
+        {"id": "data_d1", "adequacy": "adequate"},
+        {"id": "data_d2", "adequacy": "PROVEN"}
+      ],
+      "what_would_make_it_false": "No flagged subpopulation shows anomalous performance above a matched, activity-controlled comparison group.",
+      "why_not_closed": "Direct generalization of LH-001 (pass-2 C8, NULL-UNDERPOWERED, stalled at n=2 events). Mitts & Ofir's composite doesn't require waiting for named events - runnable today against the full existing trade tape at n=210000+ wallet-market pairs vs LH-001's n=59.",
+      "pass2_register_entry": "C8",
+      "external_basis": {"pass3_finding_id": "jobC_2", "effect_size": "69.9% win rate on flagged trades, >60 SD above null (permutation test), ~$143M aggregate anomalous profit"},
+      "cost_floor_problem": "69.9% is a directional-accuracy figure, not a price-unit edge - needs translation before comparison to cost floors (geo 0.0005-0.010, elections 0.0056-0.020). NOT assumed to clear.",
+      "placebo_objection_applies": true,
+      "placebo_objection_note": "Does NOT escape by default. Same shape of selector that failed 4 times (A8-A11). External paper has no activity-matched placebo baked in. Would need instr_v6's matched-control machinery applied to the flagged subpopulation from the start."
+    },
+    {
+      "id": "S5-2",
+      "source": "pass3 jobC_9, developed to full candidate standard per pass5 instruction",
+      "question": "Does network-based wash-trading detection find a materially different population than the project's existing ARB_BOT pattern detection?",
+      "pass1_assets": [
+        {"id": "data_d1", "adequacy": "adequate - has counterparty/wallet-pair structure"}
+      ],
+      "what_would_make_it_false": "Network-based detection finds substantially the same population as existing detection, or finds a different population but removing it doesn't materially move any canonical definition or result.",
+      "why_not_closed": "Pass 1/2 never benchmarked the project's own bot detection against any external methodology. Genuinely new, methodologically-distinct cross-check.",
+      "pass2_register_entry": null,
+      "external_basis": {"pass3_finding_id": "jobC_9", "source": "SSRN 5714122", "effect_size": "~25% of all Polymarket trades 2022-2025 estimated wash trades, 14% of 1.26M wallets, peaking near 60% of weekly volume Dec 2024"},
+      "cost_floor_problem": "N/A - data-integrity question, not a trading-edge claim. Foundational stakes: if canonical population is contaminated undetected, bears on confidence in every downstream result.",
+      "placebo_objection_applies": false,
+      "placebo_objection_note": "Data-cleaning/noise-removal question, structurally opposite of selecting-skilled-traders-and-acting - immune by construction."
+    }
+  ],
+  "scoring_criteria_order": ["decidability", "consequence", "cost", "placebo_survival", "cost_floor_realism"],
+  "scores": [
+    {"id": "S1-1", "decidability": "MEDIUM-HIGH", "consequence": "MEDIUM", "cost": "DAYS", "placebo": "SURVIVES (market-level question)", "cost_floor": "UNKNOWN - needs re-derivation, effect size not in comparable units", "on_shortlist": false},
+    {"id": "S1-2", "decidability": "MEDIUM", "consequence": "LOW-MEDIUM", "cost": "DAYS", "placebo": "N/A", "cost_floor": "N/A", "on_shortlist": false},
+    {"id": "S1-3", "decidability": "MEDIUM-HIGH", "consequence": "MEDIUM", "cost": "DAYS", "placebo": "SURVIVES AS SCOPED (characterization only)", "cost_floor": "N/A directly", "on_shortlist": false},
+    {"id": "S2-1", "decidability": "HIGH", "consequence": "MEDIUM-HIGH", "cost": "HOURS-DAYS", "placebo": "SURVIVES (not trader-selection)", "cost_floor": "N/A (shape question)", "on_shortlist": true, "shortlist_rank": 2},
+    {"id": "S2-2", "decidability": "HIGH", "consequence": "MEDIUM", "cost": "HOURS", "placebo": "SURVIVES (not trader-selection)", "cost_floor": "N/A", "on_shortlist": true, "shortlist_rank": 3},
+    {"id": "S2-3", "decidability": "LOW-MEDIUM", "consequence": "MEDIUM", "cost": "DAYS", "placebo": "SURVIVES", "cost_floor": "N/A", "on_shortlist": false, "note": "feasibility caveat (data_d4 3.57% coverage) already flagged in pass 4 - sequence after S2-2 if at all"},
+    {"id": "S3-1", "decidability": "HIGH", "consequence": "HIGH (asymmetric - upside if positive, still informative if null)", "cost": "DAYS", "placebo": "SURVIVES (matched by design via instr_v6)", "cost_floor": "CLEARS - +0.0316 point estimate within/above both floors", "on_shortlist": true, "shortlist_rank": 4},
+    {"id": "S3-3", "decidability": "MEDIUM-HIGH", "consequence": "MEDIUM", "cost": "DAYS", "placebo": "SURVIVES", "cost_floor": "plausibly within range (0.0115 falls inside both floor ranges) but secondary/exploratory result, never fed data_d7", "on_shortlist": false, "note": "dominated by S3-1"},
+    {"id": "S3-4", "decidability": "LOW-MEDIUM", "consequence": "LOW-MEDIUM", "cost": "WEEKS-MONTHS (accumulation-gated) plus a governance reversal", "placebo": "UNTESTED - this signal type has never itself been placebo-tested", "cost_floor": "N/A - direction-accuracy based, not directly comparable", "on_shortlist": false},
+    {"id": "S3-5", "decidability": "LOW", "consequence": "LOW-MEDIUM", "cost": "uncontrollable - depends on external world events, OR hours if only an audit of whether the detector was run against existing data", "placebo": "UNTESTED", "cost_floor": "N/A", "on_shortlist": false},
+    {"id": "S3-6", "decidability": "HIGH", "consequence": "LOW", "cost": "HOURS-DAYS", "placebo": "N/A - not action-on-positions", "cost_floor": "N/A", "on_shortlist": false, "note": "Cheap and decidable but LOW consequence: tests persistence of a condemned, already-superseded instrument (geo_elo/comprehensive_elo). instr_v7 already answered the analogous question with a sound instrument. Textbook example of a candidate that fails on consequence despite being cheap."},
+    {"id": "S3-7", "decidability": "MEDIUM", "consequence": "LOW-MEDIUM", "cost": "DAYS-plus (build step required, status of prior coding unconfirmed)", "placebo": "N/A", "cost_floor": "N/A", "on_shortlist": false, "note": "dominated by S3-8 on a better-validated population"},
+    {"id": "S3-8", "decidability": "HIGH", "consequence": "HIGH", "cost": "DAYS", "placebo": "SURVIVES AS SCOPED (tests a property of an already-validated cohort, not a new selection criterion; downstream mispricing-marker use would need its own placebo test)", "cost_floor": "indirect - not itself an edge claim", "on_shortlist": true, "shortlist_rank": 1},
+    {"id": "S4-2", "decidability": "HIGH", "consequence": "MEDIUM", "cost": "HOURS-DAYS", "placebo": "SURVIVES (population-dynamics/diagnostic, no action-on-positions)", "cost_floor": "N/A", "on_shortlist": false, "note": "came close to the cut; displaced by higher-consequence items"},
+    {"id": "S4-5", "decidability": "LOW - premise unconfirmed", "consequence": "LOW - feeds a dead blend (built_b4, W_BEH=0)", "cost": "unknown/blocked pending precondition check", "placebo": "N/A", "cost_floor": "N/A", "on_shortlist": false},
+    {"id": "S4-9", "decidability": "HIGH", "consequence": "LOW", "cost": "HOURS", "placebo": "N/A", "cost_floor": "N/A", "on_shortlist": false, "note": "Moot against C1's pending abandon-vs-retry adjudication either way - pass 4's own flagged tension."},
+    {"id": "S4-10", "decidability": "MEDIUM - code archaeology, not guaranteed to reveal the defect", "consequence": "LOW", "cost": "DAYS", "placebo": "N/A", "cost_floor": "N/A", "on_shortlist": false, "note": "Matches the task's own explicit example almost exactly: knowing comprehensive_elo's defect changes nothing about direction, since the project has already moved past it to instr_v7."},
+    {"id": "S5-1", "decidability": "MEDIUM-HIGH", "consequence": "HIGH if positive", "cost": "DAYS-WEEKS", "placebo": "DOES NOT ESCAPE - same shape as 4 already-failed selectors, no stated escape", "cost_floor": "UNKNOWN - needs re-derivation", "on_shortlist": false, "note": "Excluded specifically for the unescaped placebo objection, not for low value. Closest available vehicle to test the structural observation, if redesigned with a matched-placebo comparison from the start."},
+    {"id": "S5-2", "decidability": "HIGH", "consequence": "HIGH - foundational, wide blast radius", "cost": "DAYS-WEEKS", "placebo": "SURVIVES (data-cleaning question, immune by construction)", "cost_floor": "N/A directly, foundational stakes noted", "on_shortlist": true, "shortlist_rank": 5}
+  ],
+  "not_rescored_carried_forward": [
+    {"id": "S3-2", "reason": "Genuinely not reachable - pre-split cohort capped by fixed T_split, not a data-volume problem. See pass 4."},
+    {"id": "S4-1", "reason": "Not a candidate per pass 4 - explicitly superseded by design decision."},
+    {"id": "S4-3", "reason": "Not a candidate per pass 4 - cross-referenced to S3-8, not duplicated."},
+    {"id": "S4-4", "reason": "Not a candidate per pass 4 - no residual content once inputs separately accounted for."},
+    {"id": "S4-6", "reason": "Not a candidate per pass 4 - no internal or external basis, genuinely unconsidered."},
+    {"id": "S4-7", "reason": "Not a candidate per pass 4 - cross-referenced to S2-2/S2-3, not duplicated."},
+    {"id": "S4-8", "reason": "Not a candidate per pass 4 - already resolved by pass 2 C1, it was run."}
+  ],
+  "structural_observation": {
+    "claim": "Where single-dimension presence-based selectors failed 5 times, published work that succeeds uses composite, conditioned signals jointly.",
+    "assessment": "GENUINELY UNCERTAIN - both a selection-effect explanation (published papers don't report composite-failures against a matched placebo the way this project's own selectors failed) and a genuine-mechanism explanation (presence-marks-the-market-for-others is a different question from a specific-trader's-own-multi-factor-profile-predicts-their-own-outcome) are plausible. Not resolved by this pass.",
+    "does_any_shortlisted_candidate_test_it": false,
+    "explanation": "S3-8 tests a property of an already-validated cohort, not a new composite selector. S2-1/S2-2/S3-1/S5-2 are calibration, diagnostic, and data-integrity questions, not selector tests.",
+    "closest_candidate": "S5-1",
+    "why_excluded_not_invented": "S5-1 is the direct empirical test of the structural question but has not escaped the placebo objection as currently specified - excluded per the discipline this pass is required to apply, not because it lacks conceptual value. Stated plainly rather than inventing a substitute candidate to fill the gap."
+  },
+  "shortlist": [
+    {
+      "rank": 1,
+      "id": "S3-8",
+      "question": "Does execution timing correlate with directional accuracy or realized edge within the directional-skill harness's already-validated cohort?",
+      "why_on_list": "HIGH decidability, HIGH consequence both directions. Original n=4 finding untrustworthy at that size; instr_v7's validated cohort didn't exist when RQ-EXEC-001 was last touched. The one remaining open execution-adjacent door after copy-trade capture and presence-based mispricing both closed.",
+      "cost": "days",
+      "negative_result_meaning": "If timing does not correlate (or reverses again, this time at real power), that cleanly closes the 'entry timing is the execution dimension' hypothesis - a well-powered narrowing, not a wasted test.",
+      "first_concrete_step": "Pull instr_v7's cohort membership, compute each trader's entry-time percentile (absolute via instr_v3/tape_end, relative via built_b3/timing_score) against realized directional accuracy and edge, using instr_v5's clustered bootstrap for the CI."
+    },
+    {
+      "rank": 2,
+      "id": "S2-1",
+      "question": "Does re-weighting own_market_calibration.py by position size, not price, reproduce the external paper's rising-with-horizon shape?",
+      "why_on_list": "Resolves this pass's own headline external conflict (jobB_1) at very low cost with an already-validated instrument.",
+      "cost": "hours to days",
+      "negative_result_meaning": "If the re-weighted slope still falls with horizon, weighting is ruled out, narrowing remaining candidates to population breadth or a genuine unexplained conflict - cheap enough that a null result costs almost nothing.",
+      "first_concrete_step": "Re-run own_market_calibration.py with position-size weighting substituted for price-weighting, same population and lead-time bins, compare slope-by-horizon shape directly."
+    },
+    {
+      "rank": 3,
+      "id": "S2-2",
+      "question": "Did maker-labeled trades appear after Polymarket's CLOB v2 maker-rebate program (2026-04-28)?",
+      "why_on_list": "Cheapest test in the entire register (hours) with a real, two-way-informative payoff.",
+      "cost": "hours",
+      "negative_result_meaning": "If is_taker=0 remains exactly zero post-date too, sharpens the diagnosis toward relayer-hash-attribution over a pure market-behavior explanation, and determines whether the far more expensive S2-3 is worth attempting.",
+      "first_concrete_step": "Date-split count query on data_d1: is_taker=0 count before vs after 2026-04-28."
+    },
+    {
+      "rank": 4,
+      "id": "S3-1",
+      "question": "Does recomputing the result-of-record's cohort/selection rule on today's data, with the now-deterministic match_control(), narrow the CI to exclude zero?",
+      "why_on_list": "The only candidate with an effect size already known to clear the cost floor if it resolves.",
+      "cost": "days",
+      "negative_result_meaning": "CI still includes zero is the expected, base-rate outcome given ~4 weeks elapsed against a substantially larger estimated sample need - confirms underpowered-not-negative persists, worth confirming rather than assuming.",
+      "first_concrete_step": "Define a new, explicitly-labeled table (never overwrite data_d7) and re-run the v2f-style pipeline end to end on current data using instr_v6 post-fix throughout."
+    },
+    {
+      "rank": 5,
+      "id": "S5-2",
+      "question": "Does network-based wash-trading detection find a materially different, uncaught population in this project's own trade data?",
+      "why_on_list": "Highest-stakes candidate by blast radius - bears on confidence in every downstream result if the canonical population is contaminated undetected. Structurally immune to the placebo objection.",
+      "cost": "days to weeks - highest cost on the shortlist",
+      "negative_result_meaning": "If network detection finds substantially the same population existing ARB_BOT patterns already catch, that's reassuring, not wasted - rules out a foundational concern the project has never actually checked.",
+      "first_concrete_step": "Construct the wallet-pair trade graph for a bounded time window first (not the full 13.7M-row history) to establish feasibility and rough contamination-rate order of magnitude before committing to a full-history build."
+    }
+  ],
+  "not_worth_doing": [
+    {"id": "S1-1", "reason": "Reasonable, not top-5: effect size not cost-floor-comparable without re-derivation, overlaps S5-1/S5-2 territory at higher build cost for less foundational payoff."},
+    {"id": "S1-2", "reason": "LOW-MEDIUM consequence - refines an internal tool not feeding a headline decision."},
+    {"id": "S1-3", "reason": "Largely redundant with what instr_v7 already established; positive result mostly reassures, negative raises questions without a clear next step."},
+    {"id": "S2-3", "reason": "LOW-MEDIUM decidability - pass 4 flagged data_d4's 3.57% coverage may make this infeasible at adequate n. Sequence after S2-2, not independently."},
+    {"id": "S3-3", "reason": "Dominated by S3-1; secondary/exploratory by its own original design, never fed data_d7."},
+    {"id": "S3-4", "reason": "LOW-MEDIUM decidability on a weeks-to-months timescale; requires reversing a deliberate cost-driven governance decision; this signal type has never itself been placebo-tested."},
+    {"id": "S3-5", "reason": "LOW decidability - depends on an external, uncontrollable fact; narrow watchlist-only consequence even if reopened; never placebo-tested."},
+    {"id": "S3-6", "reason": "Cheap and decidable but LOW consequence - tests persistence of condemned instruments (geo_elo/comprehensive_elo) the project has already moved past; instr_v7 already answered the analogous question with a sound instrument."},
+    {"id": "S3-7", "reason": "Dominated by S3-8 on a far better-validated population; needs a build step first, status unconfirmed."},
+    {"id": "S4-2", "reason": "Came close to the cut - consequence capped at MEDIUM, displaced by higher-consequence items."},
+    {"id": "S4-5", "reason": "Premise unconfirmed per pass 4's own flag; even resolved, feeds a dead blend (built_b4, W_BEH=0)."},
+    {"id": "S4-9", "reason": "Cheap but LOW consequence - moot against C1's pending abandon-vs-retry adjudication either way."},
+    {"id": "S4-10", "reason": "Matches the task's own explicit example: knowing comprehensive_elo's defect changes nothing about direction, since the project has already moved past it."},
+    {"id": "S5-1", "reason": "Excluded specifically for failing the placebo criterion as currently specified - not low-value, unresolved-risk. See structural_observation."}
+  ],
+  "synthesis": {
+    "where_the_project_stands": "A genuinely validated instrument stack now exists (PIT reconstruction, price_at, canonical backtest population, bootstrap/cap5/EB-shrinkage, match_control, directional-skill harness, own-market calibration), built specifically in response to a thoroughly condemned predecessor (geo_elo/comprehensive_elo/LEGENDARY). The pivot was real, not cosmetic. Headline finding surviving all five passes: directional skill is real and statistically persistent (37.0% vs 18.6%) but has not converted into a capturable, tradeable signal via any selector tried so far - 5 falsified selectors, 4 via the same activity-matched-placebo mechanism, a convergent pattern across independently-designed tests. The project's own working explanation (execution not information drives profit, Della Vedova-style) has independent external mechanism support (jobB_4) though no external replication of the specific pattern was found.",
+    "most_decision_relevant_unresolved_fact": "The result of record itself (metric_v2f_oos_result, data_d7) remains NULL-UNDERPOWERED after ~5 weeks and several related analyses - not negative. This is the honest center of gravity: the thesis has not yet been tested at adequate power, and the obvious ways to act on a positive belief in it have independently failed for a different, well-understood reason (execution, not selection).",
+    "administrative_drift_alongside_research_findings": "25 of 35 named research questions never run, dropped for cost/attention-shift not evidence. Strategy registry silently stale 3 months. Tier-3 agent pause (cost-driven) also happened to starve at least one underpowered result (STR-003) of the data that would resolve it. Relevance-classifier adjudication institutionally outstanding. Not a research failure - the ordinary cost of a fast-moving ~10-month project outrunning its own bookkeeping - but real, and pass 2's register is the first place it was all counted in one place.",
+    "genuinely_closed_vs_merely_stopped": {
+      "closed_well_powered": ["A6 copy-trade decay", "A8 skilled-presence mispricing", "A9 LEGENDARY conditioning", "A10 NEAR_LEGENDARY conditioning", "C3 STR-001", "C1 relevance classifier recall (evidentially - institutional disposition separately open)"],
+      "closed_instrument_but_world_question_reopened": ["B1 geo_elo - question now answered by instr_v7"],
+      "merely_stopped_no_evidence": ["25 of 35 RQs", "discovery-gap sweep's motivating question (C2)", "STR-001b (C4)", "STR-004 (C7)", "strategy registry maintenance", "Tier-3 signal-generation agents"],
+      "genuinely_unresolved_still_live": ["A1 result of record", "jobB_1 calibration-shape conflict", "B3 comprehensive_elo's specific defect", "jobB_5 is_taker structural question"]
+    },
+    "coverage_gap": {
+      "unread_decision_docs": "~190 of 244",
+      "docs_read_across_passes": "~48-54 (pass 1: 24 in depth; pass 2: ~24 more primary pre-registration/result documents, some overlap; passes 3-4 did not add new project-corpus reading by design)",
+      "what_this_leaves_uncertain": "Any RQ, arc, or finding mentioned only in the unread ~190 is invisible to this entire shortlist. Three large primary pre-registrations never read in full (discovery-gap-closure's founding prereg at 1883 lines, copy-trade-decay prereg's middle sections, price-substitution-verification doc) could contain additional stop-conditions or caveats affecting how confidently any candidate's 'why isn't this already closed' field should be trusted. The shortlist is built on a genuinely rigorous but incomplete base - strongest set of candidates given what five passes actually found, not proof nothing better exists in the unread remainder. The not-worth-doing list is provisional against this gap, not a closed verdict."
+    }
+  },
+  "not_done_by_design": [
+    "No measurement was run.",
+    "No new external research was done.",
+    "Nothing was modified or written to any production table.",
+    "No decision was recommended - the choice is Oscar's."
+  ]
+}
