@@ -307,3 +307,114 @@ backfilled. The flagged-trader filter, category filter, and
 `check_interval` were not changed — `check_for_new_trades()`'s filtering
 logic downstream of the fetch is byte-for-byte the same code, only its
 input (now paginated, at a higher per-page limit) changed.
+
+---
+
+## PART 6 — RESTART AND MEASUREMENT (2026-09-18)
+
+All three fixes (first-repo `01525d7` + `42d241a`) went live via a
+`systemctl restart polymarket-monitoring` on 2026-09-18 16:22:21 UTC — the
+restart this doc's Part 4/5 explicitly deferred, executed as its own task
+roughly 21 hours after the fetch-ceiling commit landed. Observer was not
+touched, per that task's scope.
+
+### Baseline (immediately pre-restart)
+
+- **PID 55865**, confirmed still running pre-fix code, active since
+  `2026-09-17 06:14:08 UTC` (unchanged since the previous day — the restart
+  genuinely had not happened yet). CPU time 1d4h58m31s, RSS 155,020 KB
+  (~151 MB), VSZ 1,723,332 KB.
+- `trades` count: **14,897,859** @ 2026-09-18 16:18:54 UTC.
+- Trades in the prior 24h by `data_source`: **background_backfill 926,
+  polymarket_api 48** — live ingestion still a small fraction of backfill
+  volume, consistent with the pre-fix single-500-row-snapshot ceiling.
+- `monitor_state.last_trade_timestamp`: `2026-09-18T15:40:37`.
+- Cycle number reached: **#28**. Gaps between the last five cycle starts
+  (#24→#28): 4048s, 4078s, 4023s, 4059s — a tight **67-68 minute band**,
+  worse than the 900s target but *not* as bad as the 75-85 minute figure
+  this doc's Part 5 and the restart task both flagged as the possible
+  negative outcome. Still clearly the starved pattern the fix targets.
+- `notified = 0` count: **0** — already fully drained pre-restart (the
+  queue had emptied out through the old per-row mechanism at whatever pace
+  it was running; this doesn't change the batch-drain fix's correctness,
+  just means the "before" state for that specific metric was already
+  clean).
+- Box: last boot 2026-09-12 13:07 UTC, uptime 6d3h+ at check time — **no
+  reboots since**, box stayed up through the full unattended window.
+- 2026-09-18 06:00 UTC `daily_maintenance` run: completed, **33/34 steps
+  OK**, 1 failed (`Canonical definitions drift`), runtime 15,564.2s
+  (~4h19m), finished 10:19:25 UTC.
+- Observer: PID 55866, active since `2026-09-17 06:14:08 UTC` (bounced
+  together with the monitor by the 09-17 unattended-upgrade, as expected).
+  RSS **212,040 KB (~207 MB)** against the ~246 MB it started at after the
+  09-13 pruning fix — **down, not up**, after ~35h live. First real
+  post-fix data point on that leak, and it's bounded.
+
+### Restart
+
+Clean stop — `systemd[1]: Stopping... / Deactivated successfully. /
+Stopped...`, no SIGKILL needed, consumed 1d5h1m49.825s CPU / 9.9G memory
+peak over its run. New process: **PID 67130**, started 16:22:21 UTC.
+Startup log confirmed a normal boot (singleton lock acquired, category map
+loaded — 2,100 markets/events, watchdog/pnl_worker/backfill_worker all
+started cleanly).
+
+### Three-cycle measurement
+
+| Cycle | Start (UTC) | Body duration | Gap from prev. start | Gap from prev. complete | Pages | Fetched | Found-from-flagged | New / Seen / Excluded | Processing N |
+|---|---|---|---|---|---|---|---|---|---|
+| #1 | 16:23:41 | 138s | — (first post-restart) | — | 3 | 20,000 | 464 | 65 / 5 / 394 | 65 |
+| #2 | 16:41:03 | 136s | 1042s | **904s** | 3 | 20,000 | 389 | 64 / 10 / 315 | 64 |
+| #3 | 16:58:26 | 90s | 1043s | **907s** | 2 | 20,000 | 533 | 86 / 3 / 444 | 86 |
+
+No 429s, 408s, or "database is locked" observed across any of the three
+cycles or the startup phase.
+
+Checks against the stated expectations:
+- **Cycle gaps near 900s**: confirmed, measured complete-to-start (904s,
+  907s) — essentially exact. Start-to-start gaps read ~1042-1043s because
+  they include each cycle's own ~90-140s body on top of the 900s sleep;
+  that's the expected shape (body + fixed sleep), not a miss.
+- **Processing N == that cycle's own new_trades, no carryover**: confirmed
+  all three cycles (65/64/86, exact match each time).
+- **1-2 API pages per cycle once cadence recovers**: partially — cycle #3
+  hit 2, cycles #1-#2 hit 3 (20,000 trades each, ending on a short/empty
+  page). Real platform velocity in this window ran a bit above the
+  10-28 trades/sec estimate this doc's Part 2 used, or the first two
+  post-restart cycles were still draining residual gap from the final
+  pre-restart cursor position — plausible given cycle #1 immediately
+  followed a 67-minute-gap cycle. Not a concern: still 2-3 calls, not the
+  7-8 the 75-85 minute pathology would have produced, and well inside the
+  30-page defensive cap.
+- **Flagged-trader trades captured rising sharply**: confirmed — 464, 389,
+  533 per cycle, all far above the old single-snapshot baseline (49 on a
+  comparable ~13.7-minute window, per Part 4 above).
+- **Excluded and already-seen counts rising proportionally, not just new**:
+  confirmed — excluded ran 394/315/444 and already-seen 5/10/3, both
+  moving with the fetch volume rather than staying flat.
+
+**Verdict: cadence recovered, ingestion is rising. This is not the
+75-85-minute negative-result scenario** — gaps landed at 904-907s
+complete-to-start, a clean recovery to the 900s design target, with no
+sign of pnl_worker or the backfill worker starving the single await in
+`_wait_for_next_cycle()`.
+
+### Ingestion, after the window
+
+- `trades` count: **14,898,074** vs the 14,897,859 baseline — **+215**, all
+  215 attributed to `data_source = polymarket_api` (query windowed on
+  `timestamp >= '2026-09-18 15:40:37'`, the pre-restart cursor, to also
+  catch any catch-up trades with older on-chain timestamps than the
+  restart wall-clock; the +215 total matches the sum of the three cycles'
+  own "New trades" counts exactly: 65+64+86=215).
+- Rate: 215 trades over the ~37.6-minute measurement window (16:22:21 →
+  16:59:56) ≈ **~343 trades/hour**, against the **~1.3/hour** baseline of
+  the preceding five days — roughly **260x**.
+- `notified = 0` count: **0**, unchanged from the pre-restart baseline —
+  the batch drain is holding at zero.
+
+### Scope adherence for this task
+
+Only `polymarket-monitoring` was restarted; the observer was not touched.
+No config, limit, or interval was changed. The 09-12-to-now historical gap
+was not backfilled. No profiler was attached to the running process.
