@@ -1,0 +1,274 @@
+{
+  "title": "Methodology Extraction — the Three Foundational Papers, Read Properly",
+  "date": "2026-09-18",
+  "depends_on": {
+    "pass1_asset_inventory": "1bb36e1",
+    "pass3_external_research": "9efc118",
+    "pass5_shortlist": "2026-09-12 heatmap pass 5"
+  },
+  "scope_note": "Implementation requirements, not a literature review. No measurement against project data, nothing implemented, shortlist not reordered, nothing written to any production table.",
+  "headline_contradiction": {
+    "paper": "P2_gomez_cram",
+    "summary": "Primary-text access (first time) shows three project-cited figures are wrong or superseded against the current (2026-06-25) PDF revision.",
+    "deltas": [
+      {"figure": "simulation count", "project_cited": "10,000", "primary_text": "1,000 (B=1,000)", "note": "\"10,000\" does not occur anywhere in the paper's full text"},
+      {"figure": "split-half persistence", "project_cited": "44%", "primary_text": "46%", "note": "likely version drift: secondary sources summarized the original 2026-04-20 SSRN posting; PDF obtained here is a 2026-06-25 revision"},
+      {"figure": "skilled population share", "project_cited": "3.14%", "primary_text": "3.16%", "note": "small, plausibly version drift or press rounding"}
+    ]
+  },
+  "access_summary": [
+    {
+      "paper_id": "P1_mitts_ofir",
+      "title": "From Iran to Taylor Swift",
+      "authors": ["Joshua Mitts (Columbia Law School)", "Moran Ofir (University of Haifa)"],
+      "ssrn_id": "6426778",
+      "access_status": "SECONDARY_ONLY",
+      "intermediaries": [
+        "arXiv 2605.02286 (Nechepurenko, deadline-resolved leakage)",
+        "arXiv 2605.02287 (Nechepurenko, Per-Market Information Leakage and Order-Flow Skill)",
+        "arXiv 2605.00459 (Information Leakage at Population Scale)",
+        "arXiv 2605.00493 (ForesightFlow)",
+        "Harvard Law School Forum on Corporate Governance repost (2026-03-25)",
+        "Columbia Law School news article"
+      ],
+      "primary_pdf_reached": false,
+      "routes_tried_and_failed": [
+        "papers.ssrn.com/sol3/papers.cfm?abstract_id=6426778 (403, Cloudflare challenge, confirmed via curl too)",
+        "ssrn.com/abstract=6426778 (redirects into same Cloudflare wall)",
+        "guessed Delivery.cfm direct-PDF pattern (403)",
+        "comments.cftc.gov PDF handler citing the study (403, Cloudflare)",
+        "ResearchGate publication page (403)",
+        "law.columbia.edu faculty page (reachable, no self-hosted PDF for this paper)",
+        "Google Scholar (only citing-paper snippets, no full-text link)",
+        "web.archive.org (tool cannot fetch this domain at all)"
+      ]
+    },
+    {
+      "paper_id": "P2_gomez_cram",
+      "title": "Prediction Market Accuracy: Crowd Wisdom or Informed Minority?",
+      "authors": ["Roberto Gómez-Cram (London Business School)", "Y. Guo (London Business School)", "Theis Jensen (Yale University)", "Howard Kung (London Business School)"],
+      "ssrn_id": "6617059",
+      "access_status": "PRIMARY",
+      "route": "Co-author Howard Kung's personal working-papers page → Google Drive-hosted PDF (not Cloudflare-blocked, unlike SSRN)",
+      "document_version": "2026-06-25 revision (later than the 2026-04-20 SSRN posting date press coverage was written against)",
+      "primary_pdf_reached": true,
+      "routes_tried_and_failed": [
+        "ssrn.com/abstract=6617059 (403)",
+        "papers.ssrn.com/sol3/papers.cfm?abstract_id=6617059 (403)",
+        "Rgómez-cram.com and tijensen.com/research (list the paper, only link to blocked SSRN page)",
+        "NBER author page (loaded, no papers listed)"
+      ]
+    },
+    {
+      "paper_id": "P3_della_vedova",
+      "title": "Who Profits from Prediction Markets? Execution, not Information",
+      "authors": ["Joshua Della Vedova (University of San Diego, Knauss School of Business)"],
+      "ssrn_id": "6191618",
+      "followup_ssrn_id": "6567238",
+      "access_status": "SECONDARY_ONLY",
+      "access_quality_note": "quality gradient preserved in the doc: SECONDARY-BUT-AUTHORITATIVE for method mechanics (author's own code + companion methodology.tex), ordinary SECONDHAND for magnitude figures (press/blog aggregators)",
+      "intermediaries": [
+        "github.com/jdellavedova/polymarket-index (author's own public reproduction repo: build_fair_prices.py, rebuild_history.py, methodology.tex — explicitly mirrors and cites the paper's own private analysis script by line number)",
+        "jdellavedova.com (author's live dashboard, different attribution convention than the paper)",
+        "Marginal Revolution blog (AI-summarized fetch, one unreliable figure flagged)",
+        "QuantPedia / CXO Advisory / aggregator press coverage for the earliness finding"
+      ],
+      "primary_pdf_reached": false,
+      "routes_tried_and_failed": [
+        "papers.ssrn.com/sol3/papers.cfm?abstract_id=6191618 (403)",
+        "papers.ssrn.com/sol3/Delivery.cfm variants (403)",
+        "author page AbsByAuth.cfm (403)",
+        "follow-up paper SSRN 6567238, both URL forms (403)",
+        "web.archive.org (tool cannot fetch this domain at all)",
+        "ResearchGate (403)",
+        "no AFA/WFA/FMA/NFA/EFA conference posting found",
+        "no university repository/SocArXiv copy found"
+      ]
+    }
+  ],
+  "papers": [
+    {
+      "paper_id": "P1_mitts_ofir",
+      "checklist": {
+        "permutation_test": {
+          "status": "UNRESOLVED",
+          "finding": "No source reached (including 4 independent academic papers that quote the working paper's methods) specifies what is permuted, what is held fixed, or the permutation count. Only confirmed: a permutation null exists and combines the five features into a single statistic/score.",
+          "activity_matched_determination": "CANNOT_DETERMINE",
+          "disambiguation": "Not the same design as Gomez-Cram's confirmed activity-matched event-level sign-flip null — different paper, do not assume equivalence."
+        },
+        "composite_construction": {
+          "status": "NAMED_NOT_SPECIFIED",
+          "finding": "Combines 5 inputs into a single statistic/score; aggregation method (weighted sum / rank / fitted model) and weight source (estimated vs assigned) not found anywhere reached.",
+          "flagged_unreliable_figure": "A 25%/20% weight split surfaced during search with no corresponding source snippet across the entire result set — treated as unsourced/likely fabricated, not carried forward."
+        },
+        "component_definitions": {
+          "bet_size_cross_sectional": "named only, not mathematically defined",
+          "bet_size_within_trader": "named only, not mathematically defined",
+          "directional_concentration": "named only; HHI-style measures found in citing papers are those papers' OWN features, not confirmed as Mitts & Ofir's definition",
+          "pre_event_timing": "named only, no window length or anchor point found",
+          "profitability": {
+            "status": "CHARACTERIZED_BY_3_INDEPENDENT_SOURCES",
+            "finding": "computed retrospectively on resolved markets, using the actual realized outcome — NOT out-of-sample. Structurally adjacent to (not confirmed identical to) this project's own selection-circularity concern."
+          }
+        },
+        "within_vs_cross_trader": {
+          "answer": "WITHIN_TRADER / WALLET_FLAGGING",
+          "finding": "Flags specific (wallet, market) pairs as anomalous based on that wallet's own multi-factor profile; explicitly contrasted against market-level tools (ILS family) in the same sources. Not positioned as a real-time \"copy this trader\" tool by any source — explicitly described as unsuited to real-time use given profitability's resolution-dependence."
+        },
+        "sample_period_population": {
+          "wallet_market_pairs": "210,000+ (one source: 210,718 exact)",
+          "markets": "93,000+",
+          "wallets": "~50,000",
+          "period_start_discrepancy": "Feb 2024 (2 sources) vs 2023 (implied by 1 source) — unresolved"
+        },
+        "controls_and_limitations": {
+          "finding": "\"cannot observe the full portfolio of any given trader\"; \"cannot rule out... unlikely coincidental patterns rather than genuine exploitation of material nonpublic information\" (Harvard blog); profitability's resolution-dependence independently characterized as a real-time-deployment limitation by 2 academic sources."
+        }
+      },
+      "implementation_requirements": {
+        "needed": ["exact permutation mechanics (UNKNOWN)", "exact composite weighting/aggregation rule (UNKNOWN)", "precise pre-event-timing window/anchor (UNKNOWN)", "precise directional-concentration formula (UNKNOWN)"],
+        "pass1_assets": ["data_d1", "data_d2", "instr_v6", "instr_v5"],
+        "missing": "the actual scoring algorithm — not reconstructable from any source reached; a project version would be independently designed, not a replication",
+        "implementable_status": "PARTIALLY_IMPLEMENTABLE",
+        "rationale": "input features fully constructable from data_d1/data_d2 (confirmed by pass 3 already); the selection algorithm itself is not reconstructable and would have to be built from scratch"
+      },
+      "contradictions_with_project_citations": "NONE — all previously-cited headline figures (69.9% win rate, >60 SD, ~$143M, 210,000+ pairs, Iran case study) independently corroborated by 4 additional academic sources in this pass."
+    },
+    {
+      "paper_id": "P2_gomez_cram",
+      "checklist": {
+        "randomized_direction_null": {
+          "unit": "EVENT level (all of a trader's trades within one event get one shared Rademacher ±1 sign flip)",
+          "held_fixed": ["trade sizes", "prices paid", "market outcomes"],
+          "explicit_rationale_for_event_level": "trade-level randomization would overstate independent bets by splitting one position into many trades; market-level would incorrectly split correlated same-event positions into separate bets",
+          "statistic": "mid-p estimator (Lancaster 1961; Routledge 1994) of realized PnL vs simulated-PnL distribution, chosen to handle discreteness/ties",
+          "B_simulations": 1000,
+          "contradicts_project_citation": "project cited 10,000; primary text says B=1,000 throughout, '10,000' does not occur in the paper",
+          "pinning_floor_handling": {
+            "project_own_problem": "0.00067 p-value floor at 1,500 reps, 12.5% of traders pinned",
+            "paper_approach": "truncates p-values at the combinatorial bound [2^-(E+1), 1-2^-(E+1)] given E events; chose E>=10 specifically so 2^10=1024 > B=1000, making event count (not simulation count) the binding resolution constraint",
+            "paper_reports_pinning_incidence": false,
+            "note": "no analogue in the source paper to compare this project's 12.5%-pinned diagnostic against"
+          }
+        },
+        "minimum_event_counts": {
+          "threshold": ">=10 EVENTS (not positions or trades)",
+          "unit_mismatch_note": "project's M>=10 threshold is in POSITIONS, a different unit; not confirmed equivalent",
+          "robustness": "E>=4 or no filter gives an IDENTICAL classified set to E>=10 (only denominator changes, combinatorial bound makes <4-event accounts unable to reach p<0.05 regardless)"
+        },
+        "split_half_method": {
+          "split_type": "RANDOM draw of each trader's EVENTS into training/test — explicitly NOT calendar-time",
+          "explicit_paper_rationale": "market conditions (user base, event types, liquidity) vary substantially over the sample period; random split ensures both sets span the full period and share a comparable user base",
+          "persistence_figure_definition": "P(classified skilled in test | classified skilled in training) — a CONDITIONAL TRANSITION PROBABILITY, not a population share",
+          "persistence_figure_value": "46% (not 44%, see headline_contradiction)",
+          "full_transition_matrix_from_training_skilled": {"skilled_to_skilled": "46%", "skilled_to_lucky": "22%", "skilled_to_unlucky": "30%", "skilled_to_market_maker_or_anti_skilled": "1%"},
+          "anti_skilled_persistence": "48%",
+          "secondary_statistic": "PnL rank correlation train->test: 0.11 overall, -0.12 among training-set winners (profit partially reverses); p-value rank correlation: 0.35 overall",
+          "mutual_fund_comparison": {"skilled_funds_persist": "10% (matches project's cited baseline exactly)", "anti_skilled_funds_persist": "6% (new detail)"},
+          "bearing_on_project_own_test": "instr_v7 uses a TEMPORAL split (not random-event) and reports a two-group comparison (not a train->test transition probability) — two independent axes of difference, both now precisely characterized. Pass 3's 'NOT DIRECTLY COMPARABLE' verdict confirmed and sharpened, not overturned."
+        },
+        "population_3pct_figure": {
+          "population": "all Polymarket, markets created after 2023-01-01, resolved by 2025-12-31",
+          "population_stats": {"events": 98906, "markets": 210322, "volume_usd": "13.76B", "accounts": "1.72M"},
+          "population_stats_match_project_citation": true,
+          "filters": [
+            "market-maker exclusion by behavior (>=100 markets traded, >=70% volume from limit orders, both sides of an outcome in >=70% of markets) -- 0.10%/1,660 accounts excluded before classification",
+            ">=10 events",
+            "p<0.05 two-tailed, NO multiple-testing correction in headline spec"
+          ],
+          "exact_result": "54,325 accounts = 3.16% of all 1.72M accounts (contradicts project's cited 3.14%, see headline_contradiction)",
+          "full_reported_range_across_all_specifications": "1.9% to 4.8% of full population",
+          "gap_vs_project_26.1pct": "project's own pool classified 26.1% skilled, an order of magnitude above even the paper's most permissive reported specification (4.8%) -- unlikely explained by filter strictness; most likely a population/denominator difference. Flagged as an open item for the project's own population definition, not resolved by this pass."
+        },
+        "multiple_comparisons": {
+          "headline_spec": "NO correction, explicitly acknowledged (~5% false-positive rate expected under the null by construction)",
+          "robustness_check": "Benjamini-Hochberg FDR, applied separately per tail (skilled tail, anti-skilled tail)",
+          "bh_corrected_result": "skilled share drops from 3.16% to 1.95% of all accounts at the >=10-event filter",
+          "bonferroni_used": false,
+          "robustness_of_substantive_results": "price-discovery/persistence results shown robust across both corrected and uncorrected classifications (Appendix Table B.1)"
+        }
+      },
+      "implementation_requirements": {
+        "needed": ["confirm instr_v7's randomization unit (currently per-position; paper's design is per-event, a materially different granularity)", "consider adopting mid-p + truncation-bound floor handling in place of the current pinning-diagnostic approach"],
+        "pass1_assets": ["instr_v7", "instr_v1", "instr_v2", "instr_v5"],
+        "missing": "nothing structural -- the project already has a working, validated instrument implementing the core design",
+        "implementable_status": "IMPLEMENTABLE_HERE",
+        "rationale": "already implemented via instr_v7; open items are refinements (randomization unit, floor-handling method), not missing capability"
+      },
+      "contradictions_with_project_citations": [
+        {"figure": "simulation count", "project_cited": "10,000", "primary": "1,000"},
+        {"figure": "split-half persistence", "project_cited": "44%", "primary": "46%"},
+        {"figure": "skilled population share", "project_cited": "3.14%", "primary": "3.16%"}
+      ]
+    },
+    {
+      "paper_id": "P3_della_vedova",
+      "checklist": {
+        "decomposition_computation": {
+          "type": "exact per-trade algebraic identity, NOT a regression or fitted residual",
+          "formula": {
+            "directional_pnl": "sign * (W - F) * Q",
+            "execution_pnl": "sign * (F - P) * Q",
+            "total_pnl": "sign * (W - P) * Q = directional + execution, by construction",
+            "terms": {"sign": "+1 if maker side is BUY else -1", "W": "binary realized terminal payoff (0/1), the actual settlement", "P": "execution price", "Q": "quantity", "F": "fair-value benchmark, see execution_measure"}
+          },
+          "separate_descriptive_accuracy_stat": "quantity-weighted win rate (won_tokens/total_tokens) reported alongside, source of the 51.3%/49.9% figures",
+          "scope_note": "paper's academic analysis is MAKER-ONLY; only the maker-side leg of each fill is scored. The public dashboard's taker-side mirroring is a departure specific to the dashboard, not in the paper."
+        },
+        "independence_claim": {
+          "unit_of_analysis": "population-level, ACROSS wallets (not within-trader-over-time)",
+          "likely_statistic": "R-squared / rho-squared (implied by 'shared variance' language)",
+          "refinement_found": "<1% for humans, <4% for bots (secondhand, refines project's existing human-only framing)",
+          "unreliable_figure_flagged": "rho~=0.13 (implying ~1.7% shared variance) surfaced via one AI-summarized blog fetch, inconsistent with the <1% claim, not corroborated elsewhere -- not incorporated"
+        },
+        "execution_measure": {
+          "benchmark_F_definition": "per-(market,token) volume-weighted average price (VWAP), BUY-side trades only, computed from the full resolved trade tape",
+          "benchmark_source_type": "trade-tape-derived, NOT order-book/quote/model-based",
+          "circularity_finding": "CONFIRMED STRUCTURALLY SIMILAR to this project's own 'partial and endogenous' fair-price benchmark problem. Paper's own intro argues prediction markets 'solve' the shared-benchmark artifact problem (citing Fama 1972, Anand et al. 2012) but this only holds for the directional leg (W is benchmark-free); the execution leg's F is itself trade-tape-endogenous, the same category of problem the paper's intro criticizes elsewhere.",
+          "analytical_note_flagged_as_inference": "F enters both components with opposite sign (W-F and F-P), so measurement noise in F would mechanically induce a negative correlation between the two measured components -- not sourced from the paper, this pass's own derivation, unresolved without the paper's actual robustness section"
+        },
+        "earliness_finding": {
+          "figures": "bots enter >8 days before resolution; retail ~3 days; ~70% of bots' advantage attributed to this gap",
+          "access": "ordinary secondhand only, not found in author's own repo",
+          "operational_definition": "UNRESOLVED -- not found anywhere reached: unclear if 'entering' means first trade, largest trade, or size-weighted average; unclear anchor (market close vs resolution vs underlying event date)"
+        },
+        "data_requirements": {
+          "order_book_required": false,
+          "maker_taker_required": true,
+          "maker_taker_availability": "native field of every Polymarket on-chain OrderFilled event (maker_address, taker_address, maker_side, token IDs, amount, block number) -- NOT an exotic requirement",
+          "project_data_state": "is_taker has ZERO maker-side rows across 621,350 labeled trades",
+          "plain_statement": "the decomposition cannot be computed on this project's data TODAY",
+          "new_finding_vs_built_b7": "very likely an extraction/labeling bug in whatever process populated is_taker, NOT a structural absence -- a CLOB necessarily has makers on essentially every matched trade. Supplies the specific raw-event fields (OrderFilled's maker/taker addresses) that built_b7's open root-cause question (Pass 1) named only vaguely as 'would require inspecting live Polygon receipts'."
+        }
+      },
+      "implementation_requirements": {
+        "needed": ["maker/taker identity re-derived from raw on-chain OrderFilled events (not usable from is_taker today)", "a new buy-side-only VWAP fair-price benchmark instrument per (market, token)", "terminal payoff / resolution outcome labels"],
+        "pass1_assets": ["data_d1", "data_d3", "instr_v3 (related but NOT a direct substitute -- different instrument, a time-indexed lookup not a VWAP aggregate)"],
+        "missing": ["usable maker/taker identity (recoverable in principle, not present in current extraction)", "the buy-side VWAP benchmark instrument itself, does not exist in any form yet"],
+        "implementable_status": "NOT_IMPLEMENTABLE_TODAY_PARTIALLY_IMPLEMENTABLE_IF_MAKER_TAKER_REDERIVED",
+        "rationale": "blocked on a specific, named, previously-uninvestigated data-extraction gap, not an inherent data absence -- materially different conclusion than assumed going into this pass"
+      },
+      "contradictions_with_project_citations": "NONE on headline figures (CBOE replication detail corroborated as-cited). Dollar-figure ambiguity flagged: $133M (project's cited figure, closest to original paper snapshot) vs $135.9M / $140M appearing in other secondary sources reflect a longer sample window and a different maker+taker mirrored-attribution convention used by the author's live dashboard, not a correction to the same number -- do not treat as interchangeable."
+    }
+  ],
+  "settling_questions": {
+    "A_permutation_test_equivalent_to_placebo": {
+      "answer": "CANNOT_DETERMINE_FROM_AVAILABLE_ACCESS",
+      "rationale": "No source reached specifies Mitts & Ofir's permutation mechanics closely enough to determine whether it controls for wallet activity level. Must not be assumed equivalent to Gomez-Cram's confirmed activity-matched design -- different paper, independently designed null.",
+      "what_a_future_project_version_must_do": "construct its own activity-matched placebo from scratch (instr_v6/match_control()) rather than inherit any protection from Mitts & Ofir's design, per Pass 5's original defensive assumption -- now confirmed necessary rather than merely cautious."
+    },
+    "B_shortlist_reorder": {
+      "answer": "NO_CHANGE",
+      "rationale": "Reviewed against S5-1 (remains correctly excluded, no basis found to lift the placebo objection), S1-3 (easier to execute if chosen, but decidability/consequence unchanged, still dominated by instr_v7), S2-2 (unchanged rank; interpretation of a negative result sharpened -- a persistent is_taker=0 more likely indicates an extraction bug in on-chain field parsing than the relayer-hash-attribution story Pass 3 speculated), and S3-8/S2-1/S3-1/S5-2 (no bearing found).",
+      "most_consequential_new_fact": "maker/taker identity is a recoverable, native on-chain field, not structurally absent -- bears on built_b7 (Pass 1) and on whether Della Vedova's decomposition is someday buildable, neither of which is a current shortlist item.",
+      "explicit_statement": "nothing extracted in this pass argues for adding, removing, or reordering anything on the 2026-09-12 shortlist"
+    }
+  },
+  "not_done_by_design": [
+    "No measurement run against project data",
+    "Nothing implemented",
+    "2026-09-12 shortlist not reordered, no shortlist item started",
+    "Nothing modified or written to any production table",
+    "metric_v2f_oos_result not touched -- database not opened at all this pass"
+  ]
+}
