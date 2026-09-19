@@ -1,0 +1,4018 @@
+[
+  {
+    "path": "brain/decisions/2026-03-19-intelligence-sources.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-03-19-model-routing-decisions.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/model-routing.md",
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-04-19-intelligence-sources-nous-research.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-03-19-intelligence-sources.md",
+      "signals.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-01-deferred-shared-utils-refactor.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-05-elo-calibration-drift-investigation.md",
+    "missed_ids_now_caught": [
+      "STR-001b"
+    ],
+    "missed_paths_now_caught": [
+      "findings.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-13-agent-pipeline-stall-and-brier-interpretation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "integration-health.json",
+      "scripts/spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-13-ollama-tool-calling-debt.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-18-research-pool-collapse-and-elo-cluster.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs/research-scout",
+      "brain/research-scout/pending-review",
+      "orchestrator/task_templates",
+      "scripts/update_research_exclusions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "first-repo/scripts/update_research_exclusions.py",
+      "update_research_exclusions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-05-19-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-LH-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/decisions",
+      "brain/strategy-notes/rq-lifecycle-heuristic-preregistration-2026-05-19.md",
+      "findings.json",
+      "integration-health.json",
+      "orchestrator.py",
+      "recalculate_trader_stats.py",
+      "research-directions.md",
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-20-handover.md",
+    "missed_ids_now_caught": [
+      "RQ-LH-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/decisions/YYYY-MM-DD-session-summary.md",
+      "brain/strategy-notes/rq-lifecycle-heuristic-preregistration-2026-05-19.md",
+      "feedback.json",
+      "findings.json",
+      "signals.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-20-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs/quant-research/LH-001",
+      "brain/agent-outputs/telegram-audit-2026-05-20.md",
+      "integration-contract.md",
+      "research-standards.md",
+      "system_observer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-21-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "signals.json",
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-22-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "backtest-agent.md",
+      "brain/agent-outputs/backtest-agent/LH-001-validation-v2.md",
+      "model-routing.md",
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-24-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "background_backfill_worker.py",
+      "brain/agent-outputs/freeze-diagnosis-2026-05-24.md",
+      "database.py",
+      "monitor.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-25-performance-analyst-weekly.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "feedback.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-25-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-GEO-ELO-003"
+    ],
+    "missed_paths_now_caught": [
+      "background_pnl_worker.py",
+      "monitor.py",
+      "orchestrator/permissions",
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-26-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-GEO-ELO-003"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-27-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-GEO-ELO-001"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-28-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-05-30-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "scripts/polygon_maker_taker.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "polygon_maker_taker.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-05-31-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-01-performance-analyst-weekly.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-01-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs/performance-analyst"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-01-str003-002-retired.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "signals.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-02-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "feedback.json",
+      "logs/category_backfill.log",
+      "update_geo_elo.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-03-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/strategy-notes",
+      "feedback.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-04-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "polygon_maker_taker.py",
+      "update_geo_elo.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-05-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "STR-001b"
+    ],
+    "missed_paths_now_caught": [
+      "brain/strategy-notes",
+      "fast_resolution_check.py",
+      "scripts/archive"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "detect_arb_bots.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-06-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-EXT-001",
+      "RQ-EXT-001a",
+      "RQ-ILS-001"
+    ],
+    "missed_paths_now_caught": [
+      "backup_database.sh",
+      "feedback-loop-agent.md",
+      "integration-test-agent.md",
+      "market-builder.md",
+      "market-intelligence-agent.md",
+      "performance-analyst-agent.md",
+      "pre_resolution_intelligence.py",
+      "signal-agent.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-07-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONVICTION-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001a"
+    ],
+    "missed_paths_now_caught": [
+      "data/external",
+      "docs/archive",
+      "ollama_agent_loop.py",
+      "run_research_scout.sh",
+      "scripts/__init__.py",
+      "system_observer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-08-phase5-gate2-complete.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "findings.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-08-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-EXT-001a",
+      "RQ-PNLGATE-001"
+    ],
+    "missed_paths_now_caught": [
+      "calculate_geo_elo.py",
+      "daily_maintenance.py",
+      "evaluate_new_trader_results.py",
+      "fast_resolution_check.py",
+      "hydrate_stub_markets.py",
+      "integration-contract.md",
+      "ollama_agent_loop.py",
+      "run_research_scout.sh",
+      "scripts/verify_market_titles.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-09-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CORRELATION-001",
+      "RQ-POSSIZE-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs/positions-scan"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-10-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001a",
+      "RQ-LH-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "_index.json",
+      "brain/decisions/2026-06-10-str003-scoring.md",
+      "brain/strategy-notes/RQ-POOL-QUALITY-001.md",
+      "brain/trader-profiles",
+      "daily_maintenance.py",
+      "hydrate_stub_markets.py",
+      "orchestrator/task_templates/trader-intelligence-agent.md",
+      "scripts/run_trader_profiling.py",
+      "sync_trade_categories.py",
+      "system_observer.py",
+      "update_geo_elo.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-10-str003-scoring.md",
+    "missed_ids_now_caught": [
+      "RQ-SCI-001"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-11-session-summary-pm.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "brain/agent-outputs/trader-intelligence",
+      "brain/strategic-roadmap-2026-06-11.md",
+      "run_research_scout.py",
+      "system_observer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-11-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001",
+      "RQ-LH-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "daily_maintenance.py",
+      "evaluate_new_trader_results.py",
+      "quant-research.md",
+      "update_research_exclusions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-12-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CONTESTED-ARCHETYPE-001",
+      "RQ-CORRELATION-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001a",
+      "RQ-PNLGATE-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "score_str003_signals.py",
+      "scripts/backfill_clob_token_ids.py",
+      "scripts/backup_offsite.sh",
+      "scripts/snapshot_order_books.py",
+      "strategy-registry.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-13-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CONTESTED-ARCHETYPE-001",
+      "RQ-CORRELATION-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001",
+      "RQ-PNLGATE-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "brain/trader-profiles/_index.json",
+      "logs/backup_offsite.log",
+      "register_signal.py",
+      "score_str002_signals.py",
+      "score_str003_signals.py",
+      "signal_credibility.py",
+      "signals.json",
+      "snapshot_order_books.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-14-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CONTESTED-ARCHETYPE-001",
+      "RQ-CORRELATION-001",
+      "RQ-EXEC-001",
+      "RQ-ILS-001",
+      "RQ-PNLGATE-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "2026-06-12-weekly.md",
+      "agent_registry.json",
+      "brain/agent-outputs/str002-scoring",
+      "brain/research-scout/reviewed",
+      "competitive-moat.md",
+      "consensus_divergence_detector.py",
+      "fast_resolution_check.py",
+      "market_confidence_meter.py",
+      "register_str002_signals.py",
+      "requirements.txt",
+      "score_str002_signals.py",
+      "unified_elo_system.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-15-gate3-risk-and-research-urgency.md",
+    "missed_ids_now_caught": [
+      "RQ-GEO-ELO-001"
+    ],
+    "missed_paths_now_caught": [
+      "register_signal.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-15-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "daily_maintenance.py",
+      "detect_counter_signals.py",
+      "logs/weekly_resolution_sweep.log",
+      "normalize_market_dates.py",
+      "register_signal.py",
+      "score_str002_signals.py",
+      "weekly_resolution_sweep.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-16-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/strategy-notes/research-synthesis-2026-06-16.md",
+      "calibration-metric-decision-2026-06-16.md",
+      "pre_resolution_intelligence.py",
+      "register_str002_signals.py",
+      "system_observer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-17-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-06-15-intelligence-report.json",
+      "backfill_synthetic_closes.py",
+      "backfill_trade_results_geo.py",
+      "database.py",
+      "evaluate_new_trader_results.py",
+      "fix_expired_unresolved.py",
+      "requeue_resolved_market_traders.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-18-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [
+      "analysis_scheduler.py",
+      "backfill_trade_results_geo.py",
+      "brain/agent-outputs/data-audit",
+      "calculate_elo_simple.py",
+      "daily_maintenance.py",
+      "database.py",
+      "evaluate_new_trader_results.py",
+      "monitoring/column_definitions.py",
+      "scripts/audit_invariants.py",
+      "scripts/reconcile_geo_resolved_counts.py",
+      "scripts/reconcile_trader_aggregates.py",
+      "trader_analyzer.py",
+      "trader_statistics.py",
+      "update_geo_elo.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-22-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [
+      "audit_invariants.py",
+      "backfill_trade_results_geo.py",
+      "data/.last_requeue_run",
+      "monitoring/column_definitions.py",
+      "reconcile_geo_resolved_counts.py",
+      "reconcile_trader_aggregates.py",
+      "score_str003_signals.py",
+      "sync_trade_categories.py",
+      "update_geo_elo.py",
+      "update_research_exclusions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-24-contamination-forensic-map.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "backfill_synthetic_closes.py",
+      "calculate_elo_simple.py",
+      "config_production.json",
+      "data/external/user_features.parquet",
+      "data/polymarket_tracker.db",
+      "data/simulation_test.db",
+      "discover_market_participants.py",
+      "monitoring/database.py",
+      "monitoring/monitor.py",
+      "scripts/archive/migrate_",
+      "scripts/archive/update_database_from_csvs.py",
+      "scripts/simulation",
+      "update_research_exclusions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-24-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [
+      "findings.json",
+      "monitoring/column_definitions.py",
+      "reconcile_geo_resolved_counts.py",
+      "register_signal.py",
+      "score_str003_signals.py",
+      "scripts/check_canonical_definitions.py",
+      "signals.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-25-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "data/simulation_test.db",
+      "database.py",
+      "file.py",
+      "scripts/simulation",
+      "tests/test_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "_sim_db_guard.py",
+      "audit_invariants.py",
+      "migrate_add_data_source.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-26-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "elo_bridge.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-29-comprehensive-elo-writer-map.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "analysis/unified_elo_system.py",
+      "monitoring/trader_analyzer.py",
+      "scripts/cron_wrappers/run_daily_maintenance.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "/home/parison/trading-swarm/scripts/cron_wrappers/run_daily_maintenance.py",
+      "apply_full_elo_modifiers.py",
+      "daily_maintenance.py",
+      "integrate_behavioral_elo.py",
+      "run_sunday_elo.sh",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-29-pool-c-decline-investigation.md",
+    "missed_ids_now_caught": [
+      "RQ-EXEC-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-29-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [
+      "system_observer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "LATEST_TEST_RESULTS.md"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-30-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-06-30-str002-thesis-cell-analysis.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs/str002-scoring",
+      "data/polymarket_tracker.db"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "enrich_str002_metadata.py",
+      "pre_resolution_intelligence.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-01-o13-monitoring-blocking-stall-design.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/monitoring.log",
+      "monitoring/database.py",
+      "monitoring/monitor.py",
+      "monitoring/polymarket_client.py",
+      "monitoring/trader_analyzer.py",
+      "scripts/daily_maintenance.py",
+      "scripts/requeue_resolved_market_traders.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py",
+      "evaluate_new_trader_results.py",
+      "fast_resolution_check.py",
+      "monitor.py",
+      "requeue_resolved_market_traders.py",
+      "trader_analyzer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-01-o16-resolution-collection-gap-quantified.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "data/polymarket_tracker.db",
+      "monitoring/database.py",
+      "monitoring/monitor.py",
+      "scripts/daily_maintenance.py",
+      "scripts/fast_resolution_check.py",
+      "scripts/requeue_resolved_market_traders.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py",
+      "database.py",
+      "fast_resolution_check.py",
+      "legendary_positions_scan.py",
+      "monitor.py",
+      "resolve_legendary_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-01-o17-resolution-date-cowrite-gap-design.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "scripts/fetch_market_resolutions.py",
+      "scripts/fix_expired_unresolved.py",
+      "scripts/hydrate_stub_markets.py",
+      "scripts/requeue_resolved_market_traders.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "database.py",
+      "fast_resolution_check.py",
+      "fetch_market_resolutions.py",
+      "fix_expired_unresolved.py",
+      "hydrate_stub_markets.py",
+      "legendary_positions_scan.py",
+      "requeue_resolved_market_traders.py",
+      "resolve_legendary_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-01-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "background_pnl_worker.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-02-o18-pre-bug-null-resolution-dates.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-07-02-o18-market-ids.txt"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-02-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "LATEST_TEST_RESULTS.md",
+      "logs/o16_tier1_backfill.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-06-brier-target-crossed.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-06-elo-arc-design-FABLE.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "evaluate_new_trader_results.py",
+      "recalculate_trader_stats.py",
+      "scripts/archive"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "comprehensive_elo_formula.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-06-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "logs/arb_bot_exclusions.log",
+      "logs/o16_tier2_backfill.log",
+      "position_tracker.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-07-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/arb_bot_exclusions.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-07-silent-failure-audit-FABLE.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "2.py",
+      "CLAUDE.md",
+      "audit_invariants.py",
+      "backfill_trade_results_geo.py",
+      "daily_maintenance.py",
+      "database.py",
+      "fix_expired_unresolved.py",
+      "legendary_positions_scan.py",
+      "monitor.py",
+      "monitoring//analysis",
+      "requeue_resolved_market_traders.py",
+      "resolve_legendary_markets.py",
+      "resync_position_counts.py",
+      "sync_trade_categories.py",
+      "verify_market_titles.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_o16_tier1/2.py",
+      "column_definitions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-09-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "audit_invariants.py",
+      "data/.last_requeue_run",
+      "logs/arb_bot_exclusions.log",
+      "logs/daily_maintenance.log",
+      "sync_trade_categories.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-10-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "lint.sh",
+      "run_trader_profiling.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "ci/lint.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-10-trading-swarm-deep-audit-FABLE.md",
+    "missed_ids_now_caught": [
+      "RQ-GEO-ELO-001"
+    ],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "Signals.json",
+      "backtest-agent.json",
+      "brain/agent-outputs",
+      "brain/agent-outputs/quant-research/GEO-ELO-001",
+      "brain/reference-library/test.txt",
+      "brain/research-scout",
+      "brain/test.txt",
+      "brain/trader-profiles",
+      "logs/agent_logs",
+      "quant-research.json",
+      "scripts/anything.py",
+      "scripts/cron_wrappers",
+      "update_research_exclusions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "/home/parison/trading-swarm/../projects/first-repo/scripts/anything.py",
+      "_seen.json",
+      "calculate_geo_elo.py",
+      "findings.json",
+      "integration-health.json",
+      "permissions/backtest-agent.json",
+      "permissions/quant-research.json",
+      "run_feedback_loop_agent.py",
+      "signals.json"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-10-trading-swarm-structural-survey.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "TIER_COLLABORATION.md",
+      "_check.md",
+      "brain/agent-outputs",
+      "brain/agent-outputs/backtest-agent",
+      "brain/agent-outputs/code-hygiene",
+      "brain/agent-outputs/feedback-loop",
+      "brain/agent-outputs/integration-test",
+      "brain/agent-outputs/niche-app-agent",
+      "brain/agent-outputs/performance-analyst",
+      "brain/agent-outputs/positions-scan",
+      "brain/agent-outputs/quant-research",
+      "brain/agent-outputs/research",
+      "brain/agent-outputs/trader-intelligence",
+      "brain/agent-outputs/training-librarian",
+      "brain/reference-library",
+      "brain/reference-library/test.txt",
+      "brain/research-scout",
+      "brain/research-scout/pending-review",
+      "brain/test.txt",
+      "brain/trader-profiles",
+      "data/polymarket_tracker.db",
+      "feedback-loop-agent.json",
+      "lint.sh",
+      "logs/backup.log",
+      "logs/code_hygiene.log",
+      "logs/orchestrator.log",
+      "orchestrator/agents/metrics",
+      "orchestrator/permissions",
+      "orchestrator/task_templates",
+      "requirements.txt",
+      "rq2_2_entry_timing.py",
+      "rq3_2_crowd_vs_elite.py",
+      "run_ci.sh",
+      "run_tests.sh",
+      "scripts/backup_database.sh",
+      "scripts/cron_wrappers",
+      "scripts/daily_maintenance.py",
+      "validate_backtest.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "GEO-ELO-003/geo_elo_oos_validation.py",
+      "RQ2.2/rq2_2_entry_timing.py",
+      "RQ3.2/rq3_2_crowd_vs_elite.py",
+      "agent_registry.json",
+      "calculate_geo_elo.py",
+      "daily_maintenance.py",
+      "first-repo/scripts/daily_maintenance.py",
+      "integration-contract.md",
+      "integration-health.json",
+      "mythos_profiling_input.json",
+      "ollama_agent_loop.py",
+      "orchestrator.py",
+      "permissions/feedback-loop-agent.json",
+      "signals.json",
+      "spawn_agent.sh",
+      "write_integration_health.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-12-behavioral-validation-study-STAGE-0B.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-12-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-13-elections-calibration-break.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-13-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "signals.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-14-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "audit_invariants.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-15-tier3-pause-token-bleed.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "backup_offsite.sh",
+      "brain/research-scout/approved",
+      "brain/research-scout/pending-review",
+      "legendary_positions_scan.py",
+      "orchestrator/__init__.py",
+      "run_integration_test.sh",
+      "run_research_scout.sh",
+      "weekly_resolution_sweep.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-16-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-17-b2-price-history-probe-result.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-17-edge-proof-experiment-design-FABLE.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions",
+      "scripts/update_geo_elo.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-17-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-18-MASTER-HANDOVER.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "-session-summary.md",
+      "brain/decisions",
+      "brain/decisions/2026-07",
+      "data/execution",
+      "data/polymarket_tracker.db",
+      "monitoring/audit"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-07-15-tier3-pause-token-bleed.md",
+      "2026-07-17-b2-price-history-probe-result.md",
+      "2026-07-17-edge-proof-experiment-design-FABLE.md"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-18-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "data/DB",
+      "data/polymarket_tracker.db",
+      "logs/order_book_capture.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-19-o37-synthetic-market-quarantine.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "update_geo_elo.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-19-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "logs/backup.log",
+      "logs/backup_offsite.log",
+      "logs/orchestrator.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-21-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-22-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/pit_positions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "b2_price_history_probe.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-23-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "column_definitions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-24-shutdown-safety.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "data/backups/polymarket_tracker_2026-07-24.db",
+      "data/polymarket_tracker.db",
+      "scripts/backup_database.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-07-24-shutdown-state-of-play.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-07-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-09-phase2-primary-and-paper-trading-preparation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-09-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "run_daily_maintenance.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "cron_wrappers/run_daily_maintenance.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-10-elections-negative-edge.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/kpis.md",
+      "brain/strategy-notes/us-market-signal-quality-watch.md",
+      "data/polymarket_tracker.db",
+      "integration-contract.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-12-rung-a-retraction.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/pit_positions.reconstruct_positions_at",
+      "monitoring/price_history.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-12-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-14-dilution-guard-verification.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "pit_positions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-14-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-15-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-15-skill-metric-rebuild.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-16-canonical-infrastructure-recon.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-08-16-comprehensive-elo-dependency-trace.md",
+      "canonical_markets.txt",
+      "monitoring/database.py",
+      "monitoring/price_history.py",
+      "orchestrator/json_safety.py",
+      "scripts/json_safety.py",
+      "scripts/simulation",
+      "scripts/trader_skill_metric_v2f.py",
+      "tests/test_",
+      "tests/test_comprehensive_elo_formula_",
+      "tests/test_cross_repo_lock.py",
+      "v2f_implicit_markets.txt"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "_sim_db_guard.py",
+      "check_canonical_definitions.py",
+      "daily_maintenance.py",
+      "first-repo/scripts/json_safety.py",
+      "json_safety.py",
+      "layer0_forward_accuracy.py",
+      "pit_geo_elo.py",
+      "pit_positions.py",
+      "snapshot_backtest_population.py",
+      "test_backtest_window_population.py",
+      "test_cross_repo_lock.py",
+      "trader_skill_metric_v2b.py",
+      "trading-swarm/orchestrator/json_safety.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-16-comprehensive-elo-dependency-trace.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "analysis/analysis_scheduler.py",
+      "analysis/comprehensive_elo_formula.py",
+      "brain/agent-outputs/quant-research/RQ2.2/rq2_2_entry_timing.py",
+      "brain/agent-outputs/quant-research/RQ3.2/rq3_2_crowd_vs_elite.py",
+      "brain/signals.json",
+      "data/polymarket_tracker.db",
+      "monitoring/alerting/tiering",
+      "monitoring/background_backfill_worker.py",
+      "monitoring/monitor.py",
+      "scripts/add_watched_trader.py",
+      "scripts/audit_invariants.py",
+      "scripts/compute_elo_shadow.py",
+      "scripts/dry_run_stage3.py",
+      "scripts/legendary_positions_scan.py",
+      "scripts/recalculate_comprehensive_elo.py",
+      "scripts/resolve_legendary_markets.py",
+      "scripts/run_feedback_loop_agent.py",
+      "scripts/simulation/analyze_predictions.py",
+      "scripts/simulation/analyze_simulation_correlation.py",
+      "scripts/simulation/backtest_strategy.py",
+      "scripts/simulation/calculate_elo_simple.py",
+      "scripts/simulation/verify_elo_rankings.py",
+      "scripts/simulation/view_markets.py",
+      "scripts/trader_skill_metric_v2",
+      "scripts/trader_skill_metric_v2.py",
+      "scripts/trader_skill_metric_v2b.py",
+      "scripts/trader_skill_metric_v2c.py",
+      "scripts/trader_skill_metric_v2d.py",
+      "scripts/trader_skill_metric_v2e.py",
+      "scripts/trader_skill_metric_v2f.py",
+      "scripts/update_geo_elo.py",
+      "scripts/validate_stage1_equivalence.py",
+      "scripts/verify_elo_correctness.py",
+      "scripts/verify_elo_recalculation.py",
+      "scripts/writer_a_dry_run.py",
+      "signal_generator.py",
+      "test_trend_analysis.py",
+      "tests/_writer_b_reference.py",
+      "tests/test_behavioral_integration.py",
+      "tests/test_comprehensive_elo_formula_equivalence.py",
+      "tests/test_comprehensive_elo_formula_golden.py",
+      "tests/test_comprehensive_elo_formula_properties.py",
+      "tests/test_data_source_write_paths.py",
+      "tests/test_manual_research_exclusion_override.py",
+      "tests/test_write_allowlist_exact_match.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "apply_full_elo_modifiers.py",
+      "calibration_analysis.py",
+      "column_definitions.py",
+      "layer0c_corrected_metric.py",
+      "paper_trading/signal_generator.py",
+      "run_feedback_loop_agent.py",
+      "signals.json",
+      "trader_skill_metric_v2f.py",
+      "trading-swarm/brain/signals.json",
+      "update_research_exclusions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-16-result-of-record-reproducibility-audit.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "focus_ratio_review.json",
+      "logs/daily_maintenance.log",
+      "monitoring/signal",
+      "scripts/simulation"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-16-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "monitoring/alerting"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-17-backtest-snapshot-drift-investigation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/category_backfill.log",
+      "logs/daily_maintenance.log",
+      "monitoring/database.py",
+      "monitoring/monitor.py",
+      "scripts/backfill_market_dates.py",
+      "scripts/backfill_o16_tier1.py",
+      "scripts/fast_resolution_check.py",
+      "scripts/hydrate_stub_markets.py",
+      "tier2.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "column_definitions.py",
+      "hydrate_stub_markets.py",
+      "test_backtest_window_population.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-17-legendary-gate-drift-probe.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "trader_skill_metric_v2b.py",
+      "trader_skill_metric_v2c.py",
+      "trader_skill_metric_v2d.py",
+      "trader_skill_metric_v2e.py",
+      "trader_skill_metric_v2f.py",
+      "v2.py",
+      "v2b.py",
+      "v2c.py",
+      "v2d.py",
+      "v2e.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-17-maintenance-outage-scope.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "07-pre-res-scan.json",
+      "24-pre-res-scan.json",
+      "audit_invariants.py",
+      "backfill_transaction_hashes.py",
+      "brain/agent-outputs/pre-resolution",
+      "check_canonical_definitions.py",
+      "data/.last_requeue_run",
+      "data/time-dependent",
+      "logs/daily_maintenance.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "...07-24-pre-res-scan.json",
+      "...08-07-pre-res-scan.json",
+      "daily_maintenance.py",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-17-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "monitoring/alerting"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-18-legendary-overlap-recompute.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations",
+      "monitoring/column_definitions.py",
+      "scripts/trader_skill_metric_v2",
+      "v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "column_definitions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-18-no-fifo-close-markets.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations",
+      "monitoring/column_definitions.py",
+      "monitoring/trade_evaluator.py",
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-18-orphan-sell-scope.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-08-07-session-summary.md",
+      "data/characterizations",
+      "scripts/characterize_no_fifo_close_markets.py",
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-18-outage-scope.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions/2026-08-18-system-state-census.md",
+      "data/polymarket_tracker.db",
+      "logs/daily_maintenance.log",
+      "monitoring/monitor.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-08-17-maintenance-outage-scope.md",
+      "background_backfill_worker.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-18-pending-resolution-inconsistency.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-08-15-skill-metric-rebuild.md",
+      "2026-08-16-canonical-infrastructure-recon.md",
+      "canonical_markets.txt",
+      "monitoring/column_definitions.py",
+      "monitoring/database.py",
+      "monitoring/trade_evaluator.py",
+      "scripts/backfill_o16_tier1.py",
+      "scripts/backfill_o16_tier2.py",
+      "scripts/backfill_trade_results.py",
+      "scripts/evaluate_new_trader_results.py",
+      "scripts/fast_resolution_check.py",
+      "scripts/fetch_market_resolutions.py",
+      "scripts/fix_expired_unresolved.py",
+      "scripts/trader_skill_metric_v2f.py",
+      "v2f_implicit_markets.txt"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results.py",
+      "evaluate_new_trader_results.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-18-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "position_tracker.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-18-system-state-census.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "analysis/pit_geo_elo.py",
+      "analysis/pit_positions.py",
+      "brain/decisions",
+      "brain/decisions/2026-07-21-session-summary.md",
+      "brain/integration-contract.md",
+      "data/.last_requeue_run",
+      "feedback_loop_state.json",
+      "findings.json",
+      "integration-health.json",
+      "polymarket_changelog_state.json",
+      "scripts/monitoring",
+      "signals.json",
+      "spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-07-21-session-summary.md",
+      "calibration_analysis.py",
+      "first-repo/brain/integration-contract.md",
+      "integration-contract.md",
+      "pit_geo_elo.py",
+      "pit_positions.py",
+      "trading-swarm/brain/integration-contract.md"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-18-v2f-verdict-field.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "scripts/characterize_orphan_sell_scope.py",
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-19-canonical-design-open-questions.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "monitor.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-canonical-resolution-write-design.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log",
+      "orchestrator/ollama_agent_loop.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "ollama_agent_loop.py",
+      "scan_write_paths.py",
+      "trading-swarm/orchestrator/ollama_agent_loop.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-elo-write-architecture-recon.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "data/polymarket_tracker.db",
+      "logs/daily_maintenance.log",
+      "logs/sunday_elo.log",
+      "scripts/archive"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "apply_full_elo_modifiers.py",
+      "audit_invariants.py",
+      "daily_maintenance.py",
+      "elo_bridge.py",
+      "position_tracker.py",
+      "recalculate_comprehensive_elo.py",
+      "trader_analyzer.py",
+      "update_geo_elo.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-geo-backfill-wiring-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "data/polymarket_tracker.db",
+      "logs/daily_maintenance.log",
+      "logs/geo_backfill_first_run.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results.py",
+      "backfill_trade_results_geo.py",
+      "characterize_pending_invariant_regression.py",
+      "characterize_pending_resolution_inconsistency.py",
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-market-resolution-write-cluster.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "Monitor.py",
+      "logs/positions_scan.log",
+      "monitoring/trader_analyzer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_o16_tier2.py",
+      "fast_resolution_check.py",
+      "fetch_market_resolutions.py",
+      "fix_expired_unresolved.py",
+      "hydrate_stub_markets.py",
+      "legendary_positions_scan.py",
+      "monitor.py",
+      "resolve_legendary_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-pending-invariant-regression.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-08-19-audit.json",
+      "audit_invariants.py",
+      "backfill_trade_results_geo.py",
+      "characterize_pending_invariant_regression.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-placebo-pending-exposure.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "characterize_placebo_pending_exposure.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-resolution-date-clobber-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "test_backtest_window_population.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "fast_resolution_check.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-19-stage0-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "scripts/backup_database.py",
+      "tests/test_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "test_mark_market_resolved.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-trade-evaluator-convergence.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations",
+      "scripts/backfill_trade_results.py",
+      "scripts/evaluate_new_trader_results.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results.py",
+      "backfill_trade_results_geo.py",
+      "evaluate_new_trader_results.py",
+      "position_tracker.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-trade-evaluator-repoint.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "test_backtest_window_population.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results.py",
+      "backfill_trade_results_geo.py",
+      "compare_trade_evaluators.py",
+      "evaluate_new_trader_results.py",
+      "verify_geo_backfill_repoint.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-19-write-path-census.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/analysis_scheduler.py",
+      "brain/agent-outputs/quant-research/GEO-ELO-003/geo_elo_oos_validation.py",
+      "data/polymarket_tracker.db",
+      "enrich_str002_metadata.py",
+      "monitoring/background_backfill_worker.py",
+      "monitoring/background_pnl_worker.py",
+      "monitoring/monitor.py",
+      "orchestrator/ollama_agent_loop.py",
+      "register_str002_signals.py",
+      "score_str002_signals.py",
+      "scripts/backfill_market_categories.py",
+      "scripts/backfill_market_dates.py",
+      "scripts/backfill_transaction_hashes.py",
+      "scripts/detect_arb_bots.py",
+      "scripts/evaluate_new_trader_results.py",
+      "scripts/hydrate_stub_markets.py",
+      "scripts/legendary_positions_scan.py",
+      "scripts/polygon_event_scanner.py",
+      "scripts/polygon_maker_taker.py",
+      "scripts/promote_high_pnl_traders.py",
+      "scripts/reconcile_geo_resolved_counts.py",
+      "scripts/requeue_resolved_market_traders.py",
+      "scripts/resolution_sweep.py",
+      "scripts/resolve_legendary_markets.py",
+      "scripts/resync_position_counts.py",
+      "scripts/snapshot_elo_scores.py",
+      "scripts/snapshot_order_books.py",
+      "scripts/sync_trade_categories.py",
+      "scripts/update_geo_elo.py",
+      "scripts/verify_market_titles.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "..._v2b.py",
+      "add_watched_trader.py",
+      "audit_invariants.py",
+      "backfill_clob_token_ids.py",
+      "backfill_market_categories.py",
+      "backfill_market_ids.py",
+      "backfill_missing_markets.py",
+      "backfill_o16_tier1.py",
+      "backfill_o16_tier2.py",
+      "backfill_synthetic_closes.py",
+      "backfill_trade_results_geo.py",
+      "background_pnl_worker.py",
+      "daily_maintenance.py",
+      "detect_arb_bots.py",
+      "discover_market_participants.py",
+      "elo_bridge.py",
+      "evaluate_new_trader_results.py",
+      "fast_resolution_check.py",
+      "fetch_market_resolutions.py",
+      "fix_expired_unresolved.py",
+      "geo_elo_oos_validation.py",
+      "hydrate_stub_markets.py",
+      "legendary_positions_scan.py",
+      "monitor.py",
+      "normalize_market_dates.py",
+      "polygon_event_scanner.py",
+      "position_tracker.py",
+      "promote_high_pnl_traders.py",
+      "quarantine_o37_synthetic_markets.py",
+      "reconcile_geo_resolved_counts.py",
+      "reconcile_trader_aggregates.py",
+      "requeue_resolved_market_traders.py",
+      "resolution_sweep.py",
+      "resolve_legendary_markets.py",
+      "set_manual_research_exclusion.py",
+      "sync_trade_categories.py",
+      "system_observer.py",
+      "trader_statistics.py",
+      "trading-swarm/brain/agent-outputs/quant-research/GEO-ELO-003/geo_elo_oos_validation.py",
+      "trading-swarm/orchestrator/ollama_agent_loop.py",
+      "update_geo_elo.py",
+      "update_research_exclusions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-20-discovery-gap-sizing-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "scripts/fast_resolution_check.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-20-discovery-gap-sizing-result.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-20-discovery-gap-thesis-intersection.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "monitoring/column_definitions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-20-open-smells-register.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/comprehensive_elo_formula.py",
+      "data/.last_requeue_run",
+      "data/characterizations",
+      "docs/archive",
+      "logs/arb_bot_exclusions.log",
+      "monitor.py",
+      "scripts/docs"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py",
+      "elo_bridge.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-20-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-20-stage1-hydrate-stub-migration.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "hydrate_stub_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-20-stage1-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "live_write_output.txt",
+      "post_dryrun_output.txt",
+      "pre_dryrun_output.txt",
+      "scripts/audit_invariants.py",
+      "scripts/backup_database.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backup_database.py",
+      "hydrate_stub_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-20-stage2-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "live_output.txt",
+      "post_output.txt",
+      "pre_output.txt",
+      "scripts/audit_invariants.py",
+      "scripts/backup_database.py",
+      "test_backtest_window_population.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-20-stage2-stop.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "logs/daily_maintenance.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-discovery-fix-assessment.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "monitoring/monitor.py",
+      "tier2.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "backfill_o16_tier1/tier2.py",
+      "background_backfill_worker.py",
+      "daily_maintenance.py",
+      "fast_resolution_check.py",
+      "hydrate_stub_markets.py",
+      "monitor.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-discovery-gap-closure-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_checkpoint.json",
+      "_write.py",
+      "audit_invariants.py",
+      "brain/agent-outputs",
+      "data/checkpoints/segment",
+      "logs/discovery_gap_sweep_",
+      "monitoring/column_definitions.py",
+      "scripts/cron_wrappers"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "fast_resolution_check.py",
+      "trader_skill_metric_v2f.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-resolution-sweep-predicate-fix-stop.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "daily_maintenance.py",
+      "fast_resolution_check.py",
+      "hydrate_stub_markets.py",
+      "resolution_sweep.py",
+      "weekly_resolution_sweep.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-resolution-sweep-predicate-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/resolution_sweep_predicate_fix"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "resolution_sweep.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-21-step1-implementation-v2.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/step1_verification_v2",
+      "run_tests_step1_v2_output.txt"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-21-step1-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/step1_verification",
+      "data/characterizations/step1_verification/attempted_change.diff",
+      "post_dryrun_geoonly.txt",
+      "pre_dryrun_geoonly.txt",
+      "run_tests_step1_output.txt"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "backfill_market_dates_baseline_446bcde.py",
+      "hydrate_stub_markets.py",
+      "q2_census_precheck.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-step2-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "data/characterizations/step2_verification"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-step2-stop.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log",
+      "scripts/daily_maintenance.py",
+      "scripts/log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-step3-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/step3_verification"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "regret_analysis.py",
+      "requeue_resolved_market_traders.py",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-21-step3-stop.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "monitoring/elo_bridge.py",
+      "scripts/fast_resolution_check.py",
+      "weekly_resolution_sweep.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "elo_bridge.py",
+      "fast_resolution_check.py",
+      "requeue_resolved_market_traders.py",
+      "resolution_sweep.py",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-daily-limit-hold.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "run_tests.py",
+      "scripts/cron_wrappers/run_daily_maintenance.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-incident-report-correction.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-22-overnight-incident.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "backfill_market_dates.py",
+      "brain/decisions/2026-08-21",
+      "data/.last_requeue_run",
+      "data/characterizations/step",
+      "data/checkpoints",
+      "data/polymarket_tracker.db",
+      "logs/arb_bot_exclusions.log",
+      "logs/daily_maintenance.log",
+      "scripts/cron_wrappers/run_daily_maintenance.sh",
+      "scripts/daily_maintenance.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py",
+      "run_daily_maintenance.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-sweep-execution-model.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-sweep-segment1.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-22-tranche1-completion.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-tranche1-execution.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "audit_invariants.py",
+      "monitoring/position-tracking"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "step1_verification_v2/q2_census_precheck.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-tranche2-completion.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-22-tranche2-driver-fixes.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "logs/arb_bot_exclusions.log",
+      "scripts/backfill_market_dates.py",
+      "scripts/daily_maintenance.py",
+      "scripts/fast_resolution_check.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "daily_maintenance.py",
+      "fast_resolution_check.py",
+      "resolution_writer.py",
+      "tranche2_write.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-22-tranche2-execution.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/tranche2_execution/tranche2_write.py",
+      "data/checkpoints",
+      "logs/discovery_gap_sweep_tranche2_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "resolution_writer.py",
+      "tranche2_write.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-23-post-segment2-status.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-08-22-daily-limit-hold.md",
+      "logs/DB/git",
+      "logs/discovery_gap_sweep_segment2_20260822T205932Z.log",
+      "monitoring/resolution_writer.py",
+      "scripts/daily_maintenance.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-23-sweep-inhibitor-survey.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_checkpoint.json",
+      "backfill_market_dates.py",
+      "data/characterizations",
+      "data/checkpoints/segment",
+      "logs/DB",
+      "monitoring/database.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "resolution_sweep.py",
+      "telegram_bot.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-23-sweep-safety-fixes.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "_checkpoint.json",
+      "data/characterizations/sweep_common",
+      "data/checkpoints/segment",
+      "data/polymarket_tracker.db",
+      "logs/monitoring.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py",
+      "segment2_write.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-24-session-summary-0822-0824.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_checkpoint.json",
+      "data/checkpoints/segment",
+      "logs/discovery_gap_sweep_segment3_20260824T171601Z.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-24-sweep-segment3.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/sweep_segment2",
+      "data/characterizations/sweep_segment3",
+      "data/characterizations/sweep_segment3/segment3_write.py",
+      "data/checkpoints",
+      "data/checkpoints/segment",
+      "logs/daily_maintenance.log",
+      "logs/discovery_gap_sweep_segment3_20260824T171601Z.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py",
+      "segment3_checkpoint.json",
+      "segment3_write.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-25-post-segment3-status.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "logs/arb_bot_exclusions.log",
+      "logs/discovery_gap_sweep_segment3_20260824T171601Z.log",
+      "segment3_materialize.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-25-sweep-segment4.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_checkpoint.json",
+      "data/.last_requeue_run",
+      "data/characterizations/sweep_segment4/segment4_write.py",
+      "data/checkpoints/segment",
+      "data/polymarket_tracker.db",
+      "logs/arb_bot_exclusions.log",
+      "logs/discovery_gap_sweep_segment4_20260825T202428Z.log",
+      "scripts/backup_database.py",
+      "tests/test_backtest_window_population.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "segment4_checkpoint.json",
+      "segment4_write.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-26-backup-guard-and-scheduling.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_write.py",
+      "data/.locks",
+      "scripts/cron_wrappers/run_database_backup.sh.lock"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backup_database.sh",
+      "run_database_backup.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-26-backup-overlap-investigation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.locks",
+      "data/backups",
+      "data/backups/polymarket_tracker_2026-08-25.db",
+      "logs/backup.log",
+      "logs/discovery_gap_sweep_",
+      "scripts/backup_database.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backup_database.sh",
+      "first-repo/scripts/backup_database.py",
+      "trading-swarm/scripts/backup_database.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-26-post-segment4-status.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "logs/arb_bot_exclusions.log",
+      "logs/daily_maintenance.log",
+      "logs/discovery_gap_sweep_segment4_20260825T202428Z.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "segment4_terminal_marker.json"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-26-segment4-pacing-diagnostic.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/backup.log",
+      "logs/discovery_gap_sweep_segment2_",
+      "logs/discovery_gap_sweep_segment3_",
+      "logs/discovery_gap_sweep_segment4_20260825T202428Z.log",
+      "resp.json",
+      "run_database_backup.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-27-session-summary-0825-0827.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-30-canonical-writer-column-gap.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2.py",
+      "_write.py",
+      "characterize_orphan_sell_scope.py",
+      "data/characterizations",
+      "monitoring/resolution_writer.py",
+      "scheduling.md",
+      "scripts/audit_invariants.py",
+      "scripts/backfill_o16_tier1.py",
+      "scripts/backfill_o16_tier2.py",
+      "scripts/characterize_placebo_pending_exposure.py",
+      "scripts/elo_formula_audit.py",
+      "scripts/fetch_market_resolutions.py",
+      "scripts/fix_expired_unresolved.py",
+      "scripts/geo_elo_derivation_audit.py",
+      "scripts/legendary_positions_scan.py",
+      "scripts/requeue_resolved_market_traders.py",
+      "scripts/resolve_legendary_markets.py",
+      "scripts/verify_dilution_guard.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "backfill_market_categories.py",
+      "backfill_o16_tier1.py",
+      "backfill_o16_tier1/2.py",
+      "backfill_o16_tier2.py",
+      "database.py",
+      "fast_resolution_check.py",
+      "fetch_market_resolutions.py",
+      "hydrate_stub_markets.py",
+      "legendary_positions_scan.py",
+      "requeue_resolved_market_traders.py",
+      "resolve_legendary_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-30-category-classifier-investigation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "logs/category_backfill.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-30-end-to-end-verification.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "characterize_legendary_overlap_recompute.py",
+      "tests/archive/characterizations/simulation",
+      "trader_skill_metric_v2.py",
+      "v2b.py",
+      "v2c.py",
+      "v2d.py",
+      "v2e.py",
+      "v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_o16_tier1.py",
+      "backfill_o16_tier2.py",
+      "fast_resolution_check.py",
+      "fetch_market_resolutions.py",
+      "fix_expired_unresolved.py",
+      "legendary_positions_scan.py",
+      "resolve_legendary_markets.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-30-geo-backlog-and-category-reach.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/agent-outputs",
+      "brain/agent-outputs/data-audit",
+      "data/characterizations",
+      "logs/category_backfill.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_categories.py",
+      "column_definitions.py",
+      "trader_skill_metric_v2f.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-classifier-schema-migration.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "logs/backup.log",
+      "migration.sql",
+      "reconcile_geo_resolved_counts.py",
+      "resolution_sweep.py",
+      "resolve_legendary_markets.py",
+      "scripts/audit_invariants.py",
+      "scripts/backup_database.py",
+      "scripts/migrate_add_category_source.py",
+      "scripts/migrate_stage0_resolution_columns.py",
+      "sync_trade_categories.py",
+      "verify_market_titles.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "daily_maintenance.py",
+      "first-repo/scripts/migrate_add_category_source.py",
+      "first-repo/scripts/migrate_stage0_resolution_columns.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-geo-scoping-inventory.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "daily_maintenance.py",
+      "data/polymarket_tracker.db",
+      "run_feedback_loop_agent.py",
+      "scripts/backfill_market_categories.py",
+      "scripts/backfill_market_dates.py",
+      "scripts/backfill_missing_markets.py",
+      "scripts/build_event_cluster_labels.py",
+      "scripts/detect_insider_activity.py",
+      "scripts/legendary_positions_scan.py",
+      "scripts/market_filter.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_categories.py",
+      "backfill_missing_markets.py",
+      "build_event_cluster_labels.py",
+      "column_definitions.py",
+      "detect_insider_activity.py",
+      "legendary_positions_scan.py",
+      "market_filter.py",
+      "swarm/scripts/market_filter.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-ingest-category-defect.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "monitoring/resolution_writer.py",
+      "scripts/simulation/seed_production_data.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-31-local-llm-consolidation-assessment.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/consensus_divergence_detector.py.classify_market_by_disagreement",
+      "analysis/trader_specialization_analysis.py.categorize_market",
+      "analysis/unified_elo_system.py.categorize_market",
+      "backfill_missing_markets.py",
+      "consensus_divergence_detector.py",
+      "detect_insider_activity.py",
+      "monitor.py",
+      "scripts/detect_insider_activity.py._is_geopolitics",
+      "scripts/market_filter.py.should_include_market",
+      "scripts/start_monitoring.py",
+      "trader_specialization_analysis.py",
+      "unified_elo_system.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "relevance_classifier.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-prefilter-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "test_behavioral_integration.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "test_relevance_prefilter.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-relevance-classifier-design.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/consensus_divergence_detector.py.classify_market_by_disagreement",
+      "analysis/trader_specialization_analysis.py.categorize_market",
+      "analysis/unified_elo_system.py.categorize_market",
+      "backfill_missing_markets.py",
+      "consensus_divergence_detector.py",
+      "detect_insider_activity.py",
+      "market_filter.py",
+      "monitoring/resolution_writer.py",
+      "scripts/detect_insider_activity.py._is_geopolitics",
+      "scripts/market_filter.py.should_include_market",
+      "scripts/start_monitoring.py",
+      "trader_specialization_analysis.py",
+      "unified_elo_system.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "column_definitions.py",
+      "relevance_classifier.py",
+      "swarm/market_filter.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-slug-fetch.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "prefilter-implementation.md",
+      "scripts/audit_invariants.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-08-31-tier3-credit-shutdown.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "08-31T123016Z.txt",
+      "brain/agent-outputs",
+      "brain/trader-profiles",
+      "logs/crontab.backup.2026-08-31T123016Z.txt",
+      "logs/crontab.new.2026-08-31T123016Z.txt",
+      "orchestrator/orchestrator.py",
+      "scripts/cron_wrappers/run_code_hygiene.sh",
+      "scripts/cron_wrappers/run_performance_analyst.sh",
+      "scripts/cron_wrappers/run_signal_agent.sh",
+      "scripts/cron_wrappers/run_trader_intelligence.sh",
+      "scripts/cron_wrappers/run_training_librarian.sh",
+      "scripts/spawn_agent.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "cron_wrappers/run_trader_intelligence.sh",
+      "orchestrator.py",
+      "spawn_agent.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-08-31-why-unknown-investigation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_o16_tier1/2.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-01-gate-sets.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions/gate-sets-2026-09-01",
+      "labels.csv",
+      "set_a.csv",
+      "set_b.csv",
+      "set_c.csv",
+      "spotcheck_blind.csv"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "gate-sets-2026-09-01/manifest.json"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-01-session-summary-0831-0901.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "backfill_market_dates.py",
+      "labels.csv",
+      "spotcheck_blind.csv",
+      "start_monitoring.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-01-slug-fetch-unswept.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "data/backups/polymarket_tracker_2026-09-01.db",
+      "logs/arb_bot_exclusions.log",
+      "logs/slug_fetch_unswept.log",
+      "population.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "category_backfill_state.json",
+      "fetch_relevance_slugs.py",
+      "monitor.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-03-classifier-llm-stage.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions/gate-sets-2026-09-01",
+      "labels.csv",
+      "set_a.csv",
+      "set_b.csv",
+      "set_c.csv",
+      "spotcheck_blind.csv"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-03-gate-result.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/relevance_gate_2026-09-03",
+      "data/characterizations/relevance_gate_2026-09-03/precision_results.jsonl",
+      "data/characterizations/relevance_gate_2026-09-03/recall_results.jsonl",
+      "labels.csv"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-09-04-gate-recall-diagnosis.md"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-04-gate-recall-diagnosis.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/relevance_gate_2026-09-03/notrelevant_diagnostic_sample_100.csv",
+      "data/characterizations/relevance_gate_2026-09-03/recall_results.jsonl",
+      "logs/category_backfill.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-04-limit-restore-and-sweep-closure.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_checkpoint.json",
+      "brain/decisions",
+      "data/checkpoints/segment",
+      "data/checkpoints/slug_fetch_",
+      "monitoring/resolution_writer.py",
+      "scripts/backfill_market_dates.py",
+      "scripts/cron_wrappers/run_database_backup.sh"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "daily_maintenance.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-04-thesis-population-lineage.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions",
+      "logs/category_backfill.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "column_definitions.py",
+      "daily_maintenance.py",
+      "trader_skill_metric_v2f.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-04-track2-ci-power-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-01-session-summary-0831-0901.md",
+      "2026-09-04-thesis-population-lineage.md",
+      "data/characterizations/track2_ci_power_",
+      "data/polymarket_tracker.db"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-05-canonical-skill-metric-design.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/unified_elo_system.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "composite_skill_score.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-05-copy-trade-decay-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/copy_trade_decay_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "directional_skill_pit_legal_pool.py",
+      "track2_ci_power_20260905T104945Z.json",
+      "trader_skill_metric_v2f.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-05-directional-skill-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/directional_skill_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-05-directional-skill-result.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-05-execution-signal-feasibility.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/trading_behavior_analysis.py",
+      "data/polymarket_tracker.db",
+      "scripts/polygon_event_scanner.py",
+      "scripts/polygon_maker_taker.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "polygon_event_scanner.py",
+      "polygon_maker_taker.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-05-n0-gap-check.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-05-timing-execution-inventory.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "analysis/comprehensive_elo_formula.py",
+      "analysis/unified_elo_system.py",
+      "analysis_scheduler.py",
+      "brain/decisions/2026-07-24-shutdown-state-of-play.md",
+      "monitoring/elo_bridge.py",
+      "monitoring/monitor.py",
+      "monitoring/system_observer.py._insider_detection_loop",
+      "scripts/apply_full_elo_modifiers.py",
+      "scripts/archive/bot_detection.py",
+      "scripts/discovery_gap_sizing.py",
+      "scripts/polygon_event_scanner.py",
+      "scripts/polygon_maker_taker.py",
+      "scripts/trader_skill_metric_v2d.py",
+      "start_monitoring.py",
+      "system_observer.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "bot_detection.py",
+      "polygon_event_scanner.py",
+      "polygon_maker_taker.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-05-track2-result.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-cross-arc-selection-reversal-pattern.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-directional-skill-discrepancy-pit-pool-power.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-06-directional-skill-null-calibration.md",
+      "trader_skill_metric_v2d.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "directional_skill_pit_legal_pool.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-06-directional-skill-exploratory-custody.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "MASTER_HANDOVER_2026-08-15.md",
+      "trader_skill_metric_v2d.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "directional_skill_pit_legal_pool.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-06-directional-skill-null-calibration.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions/2026-09-05-directional-skill",
+      "prereg.md",
+      "result.md",
+      "scripts/layer0b_deconfound.py",
+      "scripts/layer0c_corrected_metric.py",
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "directional_skill_diagnostic.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-06-directional-skill-persistence-prereg.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-06-directional-skill-discrepancy-pit-pool-power.md",
+      "2026-09-06-directional-skill-exploratory-custody.md",
+      "2026-09-06-directional-skill-null-calibration.md",
+      "2026-09-06-directional-skill-persistence-test-run.md",
+      "2026-09-06-reps-bh-effect-isolation.md",
+      "data/characterizations/directional_skill_persistence_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-directional-skill-persistence-test-run-2.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-06-directional-skill-persistence-prereg.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-directional-skill-persistence-test-run.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-06-directional-skill-persistence-prereg.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-external-dataset-scoping-and-prereg-amendment.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/external"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-match-control-determinism-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-06-directional-skill-exploratory-custody.md",
+      "2026-09-06-directional-skill-persistence-prereg.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "directional_skill_twice_classifiable_population.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-06-reps-bh-effect-isolation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-06-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-07-backtest-window-population-test-chronic-failure-diagnosis.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "test_backtest_window_population.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-canonical-enforcement-part1-stop.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions",
+      "logs/daily_maintenance.log",
+      "scripts/characterize_legendary_overlap_recompute.py",
+      "scripts/cron_wrappers/run_daily_maintenance.sh",
+      "scripts/trader_skill_metric_v2.py",
+      "scripts/trader_skill_metric_v2b.py",
+      "scripts/trader_skill_metric_v2c.py",
+      "scripts/trader_skill_metric_v2d.py",
+      "scripts/trader_skill_metric_v2e.py",
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "characterize_legendary_overlap_recompute.py",
+      "check_canonical_definitions.py",
+      "trading-swarm/scripts/cron_wrappers/run_daily_maintenance.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-canonical-violations-part2-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-07-canonical-enforcement-part1-stop.md",
+      "audit_invariants.py",
+      "data/characterizations",
+      "data/characterizations/directional_skill_persistence_",
+      "data/polymarket_tracker.db",
+      "scripts/characterize_legendary_overlap_recompute.py",
+      "scripts/check_canonical_definitions.py",
+      "scripts/trader_skill_metric_v2.py",
+      "scripts/trader_skill_metric_v2b.py",
+      "scripts/trader_skill_metric_v2c.py",
+      "scripts/trader_skill_metric_v2d.py",
+      "scripts/trader_skill_metric_v2e.py",
+      "scripts/trader_skill_metric_v2f.py",
+      "test_behavioral_integration.py",
+      "tests/test_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "characterize_legendary_overlap_recompute.py",
+      "check_canonical_definitions.py",
+      "daily_maintenance.py",
+      "test_match_control_determinism.py",
+      "test_telegram_alert_gating.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-failure-age-tracking.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "scripts/characterize_legendary_overlap_recompute.py",
+      "scripts/fresh.py",
+      "scripts/legacy_a.py",
+      "scripts/new_report.py",
+      "test_behavioral_integration.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "check_canonical_definitions.py",
+      "test_failure_age_tracking.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "scripts/characterize_legendary_overlap_recompute.py",
+      "scripts/check_canonical_definitions.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "characterize_legendary_overlap_recompute.py",
+      "check_canonical_definitions.py",
+      "failure_age.py",
+      "test_failure_age_tracking.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-stranded-markets-figure-reconciliation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "run_tests.py",
+      "scripts/requeue_resolved_market_traders.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      ".json/.sql",
+      "last_checked_stranded_markets_20260907T170143Z.json",
+      "requeue_resolved_market_traders.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-telegram-alert-audit.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "MASTER_HANDOVER_2026-09-05.md",
+      "logs/daily_maintenance.log",
+      "monitoring/diagnostics.py",
+      "orchestrator/orchestrator.py",
+      "scripts/polymarket_changelog_monitor.py",
+      "scripts/run_feedback_loop_agent.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "background_pnl_worker.py",
+      "check_canonical_definitions.py",
+      "detect_counter_signals.py",
+      "diagnostics.py",
+      "integrate_behavioral_elo.py",
+      "monitor.py",
+      "polymarket_changelog_monitor.py",
+      "register_signal.py",
+      "run_feedback_loop_agent.py",
+      "system_observer.py",
+      "trading-swarm/orchestrator/orchestrator.py",
+      "trading-swarm/scripts/polymarket_changelog_monitor.py",
+      "trading-swarm/scripts/run_feedback_loop_agent.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-07-telegram-remediation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/.last_requeue_run",
+      "logs/daily_maintenance.log",
+      "orchestrator/orchestrator.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "check_canonical_definitions.py",
+      "diagnostics.py",
+      "orchestrator.py",
+      "system_observer.py",
+      "trading-swarm/orchestrator/orchestrator.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-background-backfill-ingest-evaluation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "monitoring/trade_evaluator.py",
+      "test_behavioral_integration.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results_geo.py",
+      "background_backfill_worker.py",
+      "test_data_source_write_paths.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-compare-trade-evaluators-retire.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations",
+      "monitoring/trade_evaluator.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results_geo.py",
+      "compare_trade_evaluators.py",
+      "verify_geo_backfill_repoint.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-final-telegram-cut.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-09-09-telegram-senders-audit-db-audit-and-legendary.md",
+      "audit_invariants.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-geo-backfill-wiring-decision.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db",
+      "logs/geo_backfill_first_run.log",
+      "monitoring/background_backfill_worker.py",
+      "monitoring/column_definitions.py",
+      "run_tests.py",
+      "scripts/audit_invariants.py",
+      "scripts/compare_trade_evaluators.py",
+      "scripts/evaluate_new_trader_results.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "accepted_failures.json",
+      "audit_invariants.py",
+      "backfill_trade_results_geo.py",
+      "background_backfill_worker.py",
+      "daily_maintenance.py",
+      "evaluate_new_trader_results.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-geo-drain-blast-radius.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "brain/agent-outputs",
+      "data/characterizations",
+      "data/polymarket_tracker.db",
+      "scripts/compare_trade_evaluators.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "compare_trade_evaluators.py",
+      "daily_maintenance.py",
+      "directional_skill_pit_legal_pool.py",
+      "pit_geo_elo.py",
+      "run_sunday_elo.sh",
+      "trader_skill_metric_v2f.py",
+      "update_geo_elo.py",
+      "update_research_exclusions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-geo-drain-execution.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations/crontab.pre_drain_20260909T202800Z.bak",
+      "data/characterizations/geo_drain_execution_20260909T203310Z",
+      "run_daily_maintenance.sh",
+      "scripts/backfill_trade_results_geo.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_trade_results_geo.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-predrain-baseline-capture.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "T200951Z.json",
+      "data/characterizations",
+      "data/characterizations/predrain_table_snapshots_20260909T201245Z",
+      "data/characterizations/predrain_trader_state_20260909T201256Z.csv",
+      "no_fifo_close_markets_20260909T201444Z.json",
+      "pending_resolution_inconsistency_20260909T201350Z.json",
+      "predrain_directional_skill_pit_legal_pool_20260909T201031Z.json",
+      "predrain_persistence_test_frozen0906inputs_20260909T201536Z.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "characterize_no_fifo_close_markets.py",
+      "characterize_pending_resolution_inconsistency.py",
+      "directional_skill_persistence_test.py",
+      "directional_skill_pit_legal_pool.py",
+      "directional_skill_twice_classifiable_population.py",
+      "predrain_geo_drain_manifest_20260909T200756Z.json",
+      "trader_skill_metric_v2f.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-09-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      ".out.txt",
+      "data/characterizations/geo_drain_execution_20260909T203310Z",
+      "trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-09-telegram-senders-audit-db-audit-and-legendary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "-audit.json",
+      "backfill_synthetic_closes.py",
+      "background_backfill_worker.py",
+      "brain/agent-outputs/data-audit",
+      "data/polymarket_tracker.db",
+      "monitor.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_market_dates.py",
+      "check_canonical_definitions.py",
+      "column_definitions.py",
+      "daily_maintenance.py",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-10-copy-trade-decay-outcome-rule-rerun.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-10-copy-trade-decay-price-substitution-verification.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/polymarket_tracker.db-wal"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "copy_trade_decay_20260910T191052Z.json",
+      "copy_trade_decay_diagnostic.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-10-copy-trade-decay-result.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-10-geo-backfill-wiring-implementation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/backups/polymarket_tracker_2026-09-10.db",
+      "data/polymarket_tracker.db",
+      "scripts/audit_invariants.py",
+      "tests/test_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "backfill_trade_results_geo.py",
+      "predrain_geo_drain_manifest_20260909T200756Z.json",
+      "test_geo_backfill_step_registered.py",
+      "test_weekly_full_sync_gate.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-10-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-11-elo-tier-causal-test-and-elo-snapshots-inventory.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "snapshot_elo_scores.py",
+      "validate_pit_geo_elo.py",
+      "verify_dilution_guard.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-11-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "brain/agent-outputs",
+      "data/characterizations",
+      "data/checkpoints",
+      "logs/daily_maintenance.log",
+      "logs/monitoring.log",
+      "test_failure_age_tracking.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-11-skilled-presence-causal-vs-compositional.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-11-telegram-token-log-leak.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "_client.py",
+      "_httpxrequest.py",
+      "_trace.py",
+      "analysis/calibration_analysis.py",
+      "analysis/regret_analysis.py",
+      "analysis/risk_adjusted_returns.py",
+      "analysis_scheduler.py",
+      "data/characterizations",
+      "data/checkpoints",
+      "data/external",
+      "logs/daily_maintenance.log",
+      "logs/monitoring.log",
+      "monitor.py",
+      "orchestrator/orchestrator.py",
+      "scripts/archive",
+      "scripts/polymarket_changelog_monitor.py",
+      "scripts/run_feedback_loop_agent.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "/tmp/.../scratchpad/verify_telegram_fix.py",
+      "audit_invariants.py",
+      "calibration_analysis.py",
+      "check_canonical_definitions.py",
+      "httpx/_client.py",
+      "orchestrator.py",
+      "system_observer.py",
+      "telegram/request/_httpxrequest.py",
+      "telegram_bot.py",
+      "telegram_health_bot.py",
+      "trading-swarm/orchestrator/orchestrator.py",
+      "trading-swarm/scripts/polymarket_changelog_monitor.py",
+      "trading-swarm/scripts/run_feedback_loop_agent.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-12-heatmap-pass1-asset-inventory.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001"
+    ],
+    "missed_paths_now_caught": [
+      "brain/decisions",
+      "c.csv",
+      "data/polymarket_tracker.db",
+      "labels.csv",
+      "orchestrator/permissions",
+      "orchestrator/task_templates",
+      "scripts/archive",
+      "scripts/quick_fixes",
+      "scripts/simulation",
+      "scripts/trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "column_definitions.py",
+      "composite_skill_score.py",
+      "copy_trade_decay_diagnostic.py",
+      "own_market_calibration.py",
+      "skilled_presence_causal_test.py",
+      "unified_elo_system.py",
+      "update_geo_elo.py",
+      "validate_pit_geo_elo.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CONVICTION-001",
+      "RQ-CORRELATION-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001",
+      "RQ-GEO-ELO-001",
+      "RQ-ILS-001",
+      "RQ-LH-001",
+      "RQ-PNLGATE-001",
+      "RQ-POOL-QUALITY-001",
+      "RQ-POSSIZE-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001",
+      "STR-001b"
+    ],
+    "missed_paths_now_caught": [
+      "_checkpoint.json",
+      "brain/agent-outputs",
+      "calibration_analysis.py",
+      "data/checkpoints/segment",
+      "rq1_1_rerun_june2026.json"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "calculate_geo_elo.py",
+      "research-directions.md",
+      "strategy-registry.md"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+    "missed_ids_now_caught": [
+      "RQ-CORRELATION-001",
+      "RQ-ILS-001",
+      "RQ-POSSIZE-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001",
+      "RQ-VPIN-001"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-12-heatmap-pass4-combinations.md",
+    "missed_ids_now_caught": [
+      "RQ-CORRELATION-001",
+      "RQ-EXEC-001",
+      "RQ-ILS-001",
+      "RQ-POSSIZE-001",
+      "RQ-SCI-001"
+    ],
+    "missed_paths_now_caught": [
+      "run_relevance_gate.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-12-heatmap-pass5-shortlist.md",
+    "missed_ids_now_caught": [
+      "RQ-EXEC-001",
+      "STR-001b"
+    ],
+    "missed_paths_now_caught": [
+      "brain/decisions"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-12-session-summary.md",
+    "missed_ids_now_caught": [
+      "RQ-EXEC-001",
+      "RQ-ILS-001",
+      "RQ-SCI-001"
+    ],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "audit_invariants.py",
+      "check_canonical_definitions.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-backfill-market-categories-pagination-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "test_behavioral_integration.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "test_backfill_market_categories_pagination.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-built-never-connected-sweep.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/comprehensive_elo_formula.py",
+      "analysis/copy_trade_detector.py",
+      "analysis/correlation_matrix.py",
+      "analysis/pit_positions.py",
+      "analysis/trader_specialization_analysis.py",
+      "analysis/trader_statistics.py",
+      "analysis/unified_elo_system.py",
+      "brain/decisions",
+      "composite_scores_YYYYMMDD.csv",
+      "config/docs",
+      "database.py",
+      "monitoring/elo_bridge.py",
+      "monitoring/error_classifier.py",
+      "monitoring/monitor.py",
+      "monitoring/telegram_bot.py",
+      "monitoring/telegram_elo_bot.py",
+      "monitoring/telegram_scheduler.py",
+      "orchestrator/permissions",
+      "orchestrator/task_templates",
+      "scripts/archive",
+      "scripts/quick_fixes",
+      "scripts/run_analysis.py",
+      "scripts/simulation",
+      "scripts/validate_pnl_data.py",
+      "scripts/validate_roi_rebalancing.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "ai_analyzer.py",
+      "analysis_scheduler.py",
+      "check_canonical_definitions.py",
+      "composite_skill_score.py",
+      "main.py",
+      "monitor.py",
+      "ollama_client.py",
+      "run_analysis.py",
+      "system_observer.py",
+      "trader_statistics.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-claude-md-correction.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/comprehensive_elo_formula.py",
+      "logs/monitoring.log",
+      "scripts/archive",
+      "scripts/backup_database.py",
+      "scripts/view_pnl_performance.py",
+      "scripts/view_trader_rankings.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "check_monitoring.py",
+      "check_processes.py",
+      "daily_maintenance.py",
+      "integrate_behavioral_elo.py",
+      "main.py",
+      "recalculate_comprehensive_elo.py",
+      "run_sunday_elo.sh",
+      "telegram_bot.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-daily-maintenance-audit.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "logs/daily_maintenance.log",
+      "scripts/backfill_transaction_hashes.py",
+      "scripts/cron_wrappers/run_daily_maintenance.sh",
+      "scripts/daily_maintenance.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "backfill_transaction_hashes.py",
+      "daily_maintenance.py",
+      "run_daily_maintenance.sh"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-observer-burst-loop-and-memory-diagnosis.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log",
+      "logs/monitoring.log",
+      "monitoring/health_checker.py",
+      "monitoring/log_monitor.py",
+      "monitoring/system_observer.py",
+      "telegram_health_bot.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "health_checker.py",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-observer-error-parser-pruning-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions/2026-09-13-observer-burst-loop-and-memory-diagnosis.md",
+      "monitoring/error_parser.py",
+      "tests/test_"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-09-13-observer-burst-loop-and-memory-diagnosis.md",
+      "system_observer.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-13-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "logs/daily_maintenance.log",
+      "logs/monitoring.log"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "main.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-16-monitoring-ingestion-stall-diagnosis.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "2026-09-09-predrain-baseline-capture.md",
+      "CLAUDE.md",
+      "_state.json",
+      "backfill_market_categories.py",
+      "brain/agent-outputs",
+      "characterize_legendary_overlap_recompute.py",
+      "monitoring/monitor.py",
+      "polymarket_client.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-17-ingestion-fetch-ceiling-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "monitor.py",
+      "test_fetch_ceiling_pagination.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-17-notify-queue-and-cycle-wait-fix.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "background_backfill_worker.py",
+      "database.py",
+      "test_notify_queue_batch_drain.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-17-oos-hash-methodology-and-cycle-compounding.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "data/characterizations",
+      "database.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-09-13-backfill-market-categories-pagination-fix.md",
+      "copy_trade_decay_diagnostic.py",
+      "elo_tier_causal_test.py",
+      "own_market_calibration.py",
+      "skilled_presence_causal_test.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-18-component-validation.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "analysis/trading_behavior_analysis.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "directional_skill_persistence_test.py",
+      "polygon_event_scanner.py",
+      "polygon_maker_taker.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-09-18-methodology-extraction.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "05_return_decomposition.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-18-session-summary.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/2026-09-19-tier25-supervisory-agent-scoping.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "08-31T123016Z.txt",
+      "brain/agent-outputs",
+      "brain/agent-outputs/data-audit",
+      "brain/agent-outputs/handoffs",
+      "brain/agent-outputs/quant-research",
+      "brain/decisions",
+      "logs/code_hygiene.log",
+      "logs/crontab.backup.2026-08-31T123016Z.txt",
+      "logs/daily_maintenance.log",
+      "logs/feedback_loop.log",
+      "logs/orchestrator.log",
+      "logs/performance_analyst.log",
+      "logs/signal_agent.log",
+      "logs/sunday_elo.log",
+      "logs/trader_intelligence.log",
+      "logs/training_librarian.log",
+      "orchestrator/task_templates"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-09-13-observer-burst-loop-and-memory-diagnosis.md",
+      "accepted_failures.json",
+      "ai_analyzer.py",
+      "audit_invariants.py",
+      "backfill_market_categories.py",
+      "failure_age.py",
+      "main.py",
+      "model-routing.md",
+      "ollama_agent_loop.py",
+      "orchestrator.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/MASTER_HANDOVER_2026-05-31.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "backfill_market_dates.py",
+      "brain/decisions",
+      "data/polymarket_tracker.db",
+      "resolution_sweep.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+    "missed_ids_now_caught": [
+      "RQ-CONTESTED-001",
+      "RQ-CONVICTION-001",
+      "RQ-EXEC-001",
+      "RQ-EXT-001",
+      "RQ-EXT-001a",
+      "RQ-ILS-001",
+      "RQ-LH-001",
+      "RQ-PNLGATE-001",
+      "RQ-POSSIZE-001",
+      "RQ-SCI-001",
+      "RQ-SECTOR-001"
+    ],
+    "missed_paths_now_caught": [
+      "CLAUDE.md",
+      "apply_full_elo_modifiers.py",
+      "backfill_market_dates.py",
+      "backfill_transaction_hashes.py",
+      "brain/agent-outputs/positions-scan",
+      "brain/agent-outputs/positions-scan/latest.json",
+      "brain/decisions",
+      "data/external",
+      "data/polymarket_tracker.db",
+      "fast_resolution_check.py",
+      "polygon_maker_taker.py",
+      "promote_high_pnl_traders.py",
+      "requeue_resolved_market_traders.py",
+      "resolution_sweep.py",
+      "resync_position_counts.py",
+      "score_insider_signals.py",
+      "score_str003_signals.py",
+      "scripts/evaluate_new_trader_results.py",
+      "strategy-registry.md",
+      "verify_market_titles.py",
+      "write_integration_health.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "hydrate_stub_markets.py",
+      "legendary_positions_scan.py"
+    ]
+  },
+  {
+    "path": "brain/decisions/MASTER_HANDOVER_2026-08-15.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "-session-summary.md",
+      "brain/decisions",
+      "brain/decisions/2026-08",
+      "data/execution",
+      "docs/intent",
+      "monitoring/position_tracker.py",
+      "recompute.md"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": [
+      "2026-08-15-skill-metric-rebuild.md"
+    ]
+  },
+  {
+    "path": "brain/decisions/MASTER_HANDOVER_2026-09-05.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions",
+      "fast_resolution_check.py",
+      "logs/category_backfill.log",
+      "trader_skill_metric_v2f.py"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  },
+  {
+    "path": "brain/decisions/MASTER_HANDOVER_2026-09-06.md",
+    "missed_ids_now_caught": [],
+    "missed_paths_now_caught": [
+      "brain/decisions"
+    ],
+    "regressed_ids_lost": [],
+    "regressed_paths_lost": []
+  }
+]
