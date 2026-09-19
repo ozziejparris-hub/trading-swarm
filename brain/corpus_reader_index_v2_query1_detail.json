@@ -1,0 +1,1027 @@
+{
+  "corpus_identifier_count": 46,
+  "pass2_listed_count": 37,
+  "pass2_abandoned_untested": [
+    "RQ-CORRELATION-001",
+    "RQ-EXT-001",
+    "RQ-ILS-001",
+    "RQ-PNLGATE-001",
+    "RQ-POOL-QUALITY-001",
+    "RQ-POSSIZE-001",
+    "RQ-SCI-001",
+    "RQ-SECTOR-001",
+    "RQ-VPIN-001",
+    "RQ1.2",
+    "RQ1.3",
+    "RQ2.1",
+    "RQ2.3",
+    "RQ3.1",
+    "RQ3.2",
+    "RQ3.3",
+    "RQ4-MULTI",
+    "RQ4.1",
+    "RQ4.2",
+    "RQ4.3",
+    "RQ5.1",
+    "RQ5.2",
+    "RQ6.1",
+    "RQ6.2",
+    "RQ7.1"
+  ],
+  "pass2_abandoned_untested_count": 25,
+  "per_identifier": {
+    "RQ-CORRELATION-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-09-session-summary.md",
+          "date": "2026-06-09",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-12-session-summary.md",
+          "date": "2026-06-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-13-session-summary.md",
+          "date": "2026-06-13",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-15-session-summary.md",
+          "date": "2026-06-15",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-16-session-summary.md",
+          "date": "2026-06-16",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Two immediate decisions made: \u2705 Log-likelihood over Brier for Phase 6 calibration layer. \u2705 ELITE confirmed retained in research pool."
+        },
+        {
+          "path": "brain/decisions/2026-06-18-session-summary.md",
+          "date": "2026-06-18",
+          "document_type": "session-summary",
+          "self_stated_verdict": "CONFIRMED \u2014 already correctly excluded by >=10 gate (9 distinct markets, 85% of trades in one market = the single-market-concentration v2.7 flagged). No action; the principled gate now does what the manual flag used to."
+        },
+        {
+          "path": "brain/decisions/2026-06-22-session-summary.md",
+          "date": "2026-06-22",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Harness: 0 CRITICAL. REGRESSIONs (all known/deferred)"
+        },
+        {
+          "path": "brain/decisions/2026-06-24-session-summary.md",
+          "date": "2026-06-24",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The definitions-migration arc (Tier 1 + Tier 2) is COMPLETE."
+        },
+        {
+          "path": "brain/decisions/2026-06-25-session-summary.md",
+          "date": "2026-06-25",
+          "document_type": "session-summary",
+          "self_stated_verdict": "ELO recalc FROZEN. Harness 0 CRITICAL. Drift guard 0 violations."
+        },
+        {
+          "path": "brain/decisions/2026-06-26-session-summary.md",
+          "date": "2026-06-26",
+          "document_type": "session-summary",
+          "self_stated_verdict": "All 8 behavioral-integration tests pass on real data. No xfail markers; no lowered bars."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-session-summary.md",
+          "date": "2026-06-29",
+          "document_type": "session-summary",
+          "self_stated_verdict": "No code change was the correct outcome of the biggest investigation of the day."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass4-combinations.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "No measurement was run. Nothing was modified or written to any production table."
+        }
+      ]
+    },
+    "RQ-EXT-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-06-session-summary.md",
+          "date": "2026-06-06",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-11-session-summary.md",
+          "date": "2026-06-11",
+          "document_type": "session-summary",
+          "self_stated_verdict": "RQ-EXT-001 Assessment: INCONCLUSIVE (too early)"
+        },
+        {
+          "path": "brain/decisions/2026-06-13-session-summary.md",
+          "date": "2026-06-13",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ-ILS-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-06-session-summary.md",
+          "date": "2026-06-06",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-15-session-summary.md",
+          "date": "2026-06-15",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-16-session-summary.md",
+          "date": "2026-06-16",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Two immediate decisions made: \u2705 Log-likelihood over Brier for Phase 6 calibration layer. \u2705 ELITE confirmed retained in research pool."
+        },
+        {
+          "path": "brain/decisions/2026-06-18-session-summary.md",
+          "date": "2026-06-18",
+          "document_type": "session-summary",
+          "self_stated_verdict": "CONFIRMED \u2014 already correctly excluded by >=10 gate (9 distinct markets, 85% of trades in one market = the single-market-concentration v2.7 flagged). No action; the principled gate now does what the manual flag used to."
+        },
+        {
+          "path": "brain/decisions/2026-06-22-session-summary.md",
+          "date": "2026-06-22",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Harness: 0 CRITICAL. REGRESSIONs (all known/deferred)"
+        },
+        {
+          "path": "brain/decisions/2026-06-24-session-summary.md",
+          "date": "2026-06-24",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The definitions-migration arc (Tier 1 + Tier 2) is COMPLETE."
+        },
+        {
+          "path": "brain/decisions/2026-06-25-session-summary.md",
+          "date": "2026-06-25",
+          "document_type": "session-summary",
+          "self_stated_verdict": "ELO recalc FROZEN. Harness 0 CRITICAL. Drift guard 0 violations."
+        },
+        {
+          "path": "brain/decisions/2026-06-26-session-summary.md",
+          "date": "2026-06-26",
+          "document_type": "session-summary",
+          "self_stated_verdict": "All 8 behavioral-integration tests pass on real data. No xfail markers; no lowered bars."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-session-summary.md",
+          "date": "2026-06-29",
+          "document_type": "session-summary",
+          "self_stated_verdict": "No code change was the correct outcome of the biggest investigation of the day."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass4-combinations.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "No measurement was run. Nothing was modified or written to any production table."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-session-summary.md",
+          "date": "2026-09-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The shortlist is five candidates; the more consequential finding may be the administrative one underneath it: 25 of 35 named research questions were simply never run"
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ-PNLGATE-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-08-session-summary.md",
+          "date": "2026-06-08",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-12-session-summary.md",
+          "date": "2026-06-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-13-session-summary.md",
+          "date": "2026-06-13",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ-POOL-QUALITY-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-10-session-summary.md",
+          "date": "2026-06-10",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-11-session-summary.md",
+          "date": "2026-06-11",
+          "document_type": "session-summary",
+          "self_stated_verdict": "RQ-EXT-001 Assessment: INCONCLUSIVE (too early)"
+        },
+        {
+          "path": "brain/decisions/2026-06-12-session-summary.md",
+          "date": "2026-06-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-13-session-summary.md",
+          "date": "2026-06-13",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-15-session-summary.md",
+          "date": "2026-06-15",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-16-session-summary.md",
+          "date": "2026-06-16",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Two immediate decisions made: \u2705 Log-likelihood over Brier for Phase 6 calibration layer. \u2705 ELITE confirmed retained in research pool."
+        },
+        {
+          "path": "brain/decisions/2026-06-18-session-summary.md",
+          "date": "2026-06-18",
+          "document_type": "session-summary",
+          "self_stated_verdict": "CONFIRMED \u2014 already correctly excluded by >=10 gate (9 distinct markets, 85% of trades in one market = the single-market-concentration v2.7 flagged). No action; the principled gate now does what the manual flag used to."
+        },
+        {
+          "path": "brain/decisions/2026-06-22-session-summary.md",
+          "date": "2026-06-22",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Harness: 0 CRITICAL. REGRESSIONs (all known/deferred)"
+        },
+        {
+          "path": "brain/decisions/2026-06-24-session-summary.md",
+          "date": "2026-06-24",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The definitions-migration arc (Tier 1 + Tier 2) is COMPLETE."
+        },
+        {
+          "path": "brain/decisions/2026-06-25-session-summary.md",
+          "date": "2026-06-25",
+          "document_type": "session-summary",
+          "self_stated_verdict": "ELO recalc FROZEN. Harness 0 CRITICAL. Drift guard 0 violations."
+        },
+        {
+          "path": "brain/decisions/2026-06-26-session-summary.md",
+          "date": "2026-06-26",
+          "document_type": "session-summary",
+          "self_stated_verdict": "All 8 behavioral-integration tests pass on real data. No xfail markers; no lowered bars."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-pool-c-decline-investigation.md",
+          "date": "2026-06-29",
+          "document_type": "decision",
+          "self_stated_verdict": "ARTIFACT \u2014 no pool bug."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-session-summary.md",
+          "date": "2026-06-29",
+          "document_type": "session-summary",
+          "self_stated_verdict": "No code change was the correct outcome of the biggest investigation of the day."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        }
+      ]
+    },
+    "RQ-POSSIZE-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-09-session-summary.md",
+          "date": "2026-06-09",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass4-combinations.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "No measurement was run. Nothing was modified or written to any production table."
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ-SCI-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-09-session-summary.md",
+          "date": "2026-06-09",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-10-str003-scoring.md",
+          "date": "2026-06-10",
+          "document_type": "decision",
+          "self_stated_verdict": "First confirmed WRONG STR-003 signal. Mutual exclusivity flaw"
+        },
+        {
+          "path": "brain/decisions/2026-06-13-session-summary.md",
+          "date": "2026-06-13",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-15-session-summary.md",
+          "date": "2026-06-15",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass4-combinations.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "No measurement was run. Nothing was modified or written to any production table."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-session-summary.md",
+          "date": "2026-09-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The shortlist is five candidates; the more consequential finding may be the administrative one underneath it: 25 of 35 named research questions were simply never run"
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ-SECTOR-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-09-session-summary.md",
+          "date": "2026-06-09",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-10-session-summary.md",
+          "date": "2026-06-10",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-11-session-summary.md",
+          "date": "2026-06-11",
+          "document_type": "session-summary",
+          "self_stated_verdict": "RQ-EXT-001 Assessment: INCONCLUSIVE (too early)"
+        },
+        {
+          "path": "brain/decisions/2026-06-12-session-summary.md",
+          "date": "2026-06-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-13-session-summary.md",
+          "date": "2026-06-13",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-15-session-summary.md",
+          "date": "2026-06-15",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-16-session-summary.md",
+          "date": "2026-06-16",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Two immediate decisions made: \u2705 Log-likelihood over Brier for Phase 6 calibration layer. \u2705 ELITE confirmed retained in research pool."
+        },
+        {
+          "path": "brain/decisions/2026-06-18-session-summary.md",
+          "date": "2026-06-18",
+          "document_type": "session-summary",
+          "self_stated_verdict": "CONFIRMED \u2014 already correctly excluded by >=10 gate (9 distinct markets, 85% of trades in one market = the single-market-concentration v2.7 flagged). No action; the principled gate now does what the manual flag used to."
+        },
+        {
+          "path": "brain/decisions/2026-06-22-session-summary.md",
+          "date": "2026-06-22",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Harness: 0 CRITICAL. REGRESSIONs (all known/deferred)"
+        },
+        {
+          "path": "brain/decisions/2026-06-24-session-summary.md",
+          "date": "2026-06-24",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The definitions-migration arc (Tier 1 + Tier 2) is COMPLETE."
+        },
+        {
+          "path": "brain/decisions/2026-06-25-session-summary.md",
+          "date": "2026-06-25",
+          "document_type": "session-summary",
+          "self_stated_verdict": "ELO recalc FROZEN. Harness 0 CRITICAL. Drift guard 0 violations."
+        },
+        {
+          "path": "brain/decisions/2026-06-26-session-summary.md",
+          "date": "2026-06-26",
+          "document_type": "session-summary",
+          "self_stated_verdict": "All 8 behavioral-integration tests pass on real data. No xfail markers; no lowered bars."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-pool-c-decline-investigation.md",
+          "date": "2026-06-29",
+          "document_type": "decision",
+          "self_stated_verdict": "ARTIFACT \u2014 no pool bug."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-session-summary.md",
+          "date": "2026-06-29",
+          "document_type": "session-summary",
+          "self_stated_verdict": "No code change was the correct outcome of the biggest investigation of the day."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ-VPIN-001": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-06-16-session-summary.md",
+          "date": "2026-06-16",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Two immediate decisions made: \u2705 Log-likelihood over Brier for Phase 6 calibration layer. \u2705 ELITE confirmed retained in research pool."
+        },
+        {
+          "path": "brain/decisions/2026-06-18-session-summary.md",
+          "date": "2026-06-18",
+          "document_type": "session-summary",
+          "self_stated_verdict": "CONFIRMED \u2014 already correctly excluded by >=10 gate (9 distinct markets, 85% of trades in one market = the single-market-concentration v2.7 flagged). No action; the principled gate now does what the manual flag used to."
+        },
+        {
+          "path": "brain/decisions/2026-06-22-session-summary.md",
+          "date": "2026-06-22",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Harness: 0 CRITICAL. REGRESSIONs (all known/deferred)"
+        },
+        {
+          "path": "brain/decisions/2026-06-24-session-summary.md",
+          "date": "2026-06-24",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The definitions-migration arc (Tier 1 + Tier 2) is COMPLETE."
+        },
+        {
+          "path": "brain/decisions/2026-06-25-session-summary.md",
+          "date": "2026-06-25",
+          "document_type": "session-summary",
+          "self_stated_verdict": "ELO recalc FROZEN. Harness 0 CRITICAL. Drift guard 0 violations."
+        },
+        {
+          "path": "brain/decisions/2026-06-26-session-summary.md",
+          "date": "2026-06-26",
+          "document_type": "session-summary",
+          "self_stated_verdict": "All 8 behavioral-integration tests pass on real data. No xfail markers; no lowered bars."
+        },
+        {
+          "path": "brain/decisions/2026-06-29-session-summary.md",
+          "date": "2026-06-29",
+          "document_type": "session-summary",
+          "self_stated_verdict": "No code change was the correct outcome of the biggest investigation of the day."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        }
+      ]
+    },
+    "RQ1.2": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ1.3": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ2.1": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ2.3": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ3.1": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ3.2": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-05-01-deferred-shared-utils-refactor.md",
+          "date": "2026-05-01",
+          "document_type": "decision",
+          "self_stated_verdict": "Status: Deferred"
+        },
+        {
+          "path": "brain/decisions/2026-05-05-elo-calibration-drift-investigation.md",
+          "date": "2026-05-05",
+          "document_type": "decision",
+          "self_stated_verdict": "OPEN \u2014 requires quant-research-agent investigation before June 1 RQ1.1 rerun"
+        },
+        {
+          "path": "brain/decisions/2026-05-20-handover.md",
+          "date": "2026-05-20",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-05-session-summary.md",
+          "date": "2026-06-05",
+          "document_type": "session-summary",
+          "self_stated_verdict": "Daily maintenance now completes cleanly in ~2.4 hours (was OOM-killing mid-run)"
+        },
+        {
+          "path": "brain/decisions/2026-06-08-phase5-gate2-complete.md",
+          "date": "2026-06-08",
+          "document_type": "decision",
+          "self_stated_verdict": "Phase 5 Gate 2 is confirmed COMPLETE as of 2026-06-05."
+        },
+        {
+          "path": "brain/decisions/2026-06-14-session-summary.md",
+          "date": "2026-06-14",
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/2026-06-15-gate3-risk-and-research-urgency.md",
+          "date": "2026-06-15",
+          "document_type": "decision",
+          "self_stated_verdict": "ASSESSMENT \u2014 requires Oscar review"
+        },
+        {
+          "path": "brain/decisions/2026-07-10-trading-swarm-structural-survey.md",
+          "date": "2026-07-10",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "This is a map, not a verdict \u2014 flags below are things to check, not confirmed defects unless stated as verified."
+        },
+        {
+          "path": "brain/decisions/2026-08-16-comprehensive-elo-dependency-trace.md",
+          "date": "2026-08-16",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "VERDICT: **NO CONTACT**"
+        },
+        {
+          "path": "brain/decisions/2026-08-31-geo-scoping-inventory.md",
+          "date": "2026-08-31",
+          "document_type": "inventory",
+          "self_stated_verdict": "A relevance filter for the remaining sweep does not exist today in reusable form."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass4-combinations.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "No measurement was run. Nothing was modified or written to any production table."
+        },
+        {
+          "path": "brain/decisions/2026-09-12-session-summary.md",
+          "date": "2026-09-12",
+          "document_type": "session-summary",
+          "self_stated_verdict": "The shortlist is five candidates; the more consequential finding may be the administrative one underneath it: 25 of 35 named research questions were simply never run"
+        },
+        {
+          "path": "brain/decisions/2026-09-19-tier25-supervisory-agent-scoping.md",
+          "date": "2026-09-19",
+          "document_type": "decision",
+          "self_stated_verdict": "The definition is establishable, and it is stale in exactly one place \u2014 `CLAUDE.md`, which has been wrong about Tier 2.5's model since before its own last edit"
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-05-31.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": "Status: EXPERIMENTAL \u2014 0 qualifying signals under new geo_elo criteria"
+        },
+        {
+          "path": "brain/decisions/MASTER_HANDOVER_2026-06-10.md",
+          "date": null,
+          "document_type": "session-summary",
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_2026-05-20.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ3.3": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        }
+      ]
+    },
+    "RQ4-MULTI": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": []
+    },
+    "RQ4.1": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass3-external-research.md",
+          "date": "2026-09-12",
+          "document_type": "diagnosis",
+          "self_stated_verdict": "The project's own-market calibration result (`instr_v8`, 2026-09-10) and the closest external primary source (arXiv:2602.19520) genuinely conflict on calibration SHAPE, and the conflict is only partially explained."
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ4.2": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ4.3": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        }
+      ]
+    },
+    "RQ5.1": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        }
+      ]
+    },
+    "RQ5.2": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ6.1": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        }
+      ]
+    },
+    "RQ6.2": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        },
+        {
+          "path": "brain/decisions/archive/MASTER_HANDOVER_server-pre-setup-1.md",
+          "date": null,
+          "document_type": null,
+          "self_stated_verdict": null
+        }
+      ]
+    },
+    "RQ7.1": {
+      "grade": "ABANDONED-UNTESTED",
+      "mentions": [
+        {
+          "path": "brain/decisions/2026-09-12-heatmap-pass2-ruled-out-register.md",
+          "date": "2026-09-12",
+          "document_type": "decision",
+          "self_stated_verdict": "CONFIRMED"
+        }
+      ]
+    }
+  },
+  "needs_hand_check": [],
+  "only_in_heatmap": [
+    "RQ3.3",
+    "RQ4.3",
+    "RQ5.1",
+    "RQ6.1",
+    "RQ7.1"
+  ],
+  "not_mentioned_anywhere": [
+    "RQ4-MULTI"
+  ],
+  "not_listed_by_pass2": [
+    "LH-001",
+    "RQ-CONTESTED-ARCHETYPE-001",
+    "RQ-EXT-001a",
+    "RQ-GEO-ELO-003",
+    "STR-001",
+    "STR-001b",
+    "STR-002",
+    "STR-003",
+    "STR-004",
+    "STR-005"
+  ]
+}

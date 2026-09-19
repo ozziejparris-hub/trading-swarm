@@ -1,0 +1,197 @@
+[
+  {
+    "path": "brain/decisions/2026-03-19-intelligence-sources.md",
+    "date": "2026-03-19",
+    "document_type": "decision",
+    "numeric_findings": [
+      {
+        "value": "440K",
+        "context": "440K Twitter followers, decade-long curation track record"
+      },
+      {
+        "value": "200K+",
+        "context": "200K+ subscribers, top 10 US tech podcast"
+      },
+      {
+        "value": "168K",
+        "context": "168K subscribers, LLM research engineer"
+      },
+      {
+        "value": "4 weeks",
+        "context": "show repeated low approval rate from Oscar over 4 weeks"
+      },
+      {
+        "value": "7 cycles",
+        "context": "research-scout-agent's self-assessment protocol (every 7 cycles)"
+      },
+      {
+        "value": "60%",
+        "context": "expect >60% of surfaced items approved"
+      },
+      {
+        "value": "30-60%",
+        "context": "expect 30-60% approved"
+      },
+      {
+        "value": "20%",
+        "context": "consistently produces <20% approval after 4 weeks"
+      }
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-01-performance-analyst-weekly.md",
+    "date": "2026-06-01",
+    "document_type": "decision",
+    "numeric_findings": [
+      {
+        "value": "35.92%",
+        "context": "30-day directional accuracy for Legendary tier (comprehensive_elo > 2175) in the explicit clean pool has fallen to 35.92% (n=119 market-trader pairs)"
+      },
+      {
+        "value": "119",
+        "context": "30-day directional accuracy for Legendary tier (comprehensive_elo > 2175) in the explicit clean pool has fallen to 35.92% (n=119 market-trader pairs)"
+      },
+      {
+        "value": "46%",
+        "context": "Previous week was 46% (May 25 feedback-loop run)"
+      },
+      {
+        "value": "3325",
+        "context": "0x2aacd459 at ELO 3325 with only 20 resolved trades"
+      },
+      {
+        "value": "20",
+        "context": "0x2aacd459 at ELO 3325 with only 20 resolved trades"
+      },
+      {
+        "value": "86.36%",
+        "context": "geo_elo Pool C shows 86.36% accuracy / Brier 0.1222 on geopolitics/elections markets (n=22, 30d)"
+      },
+      {
+        "value": "22",
+        "context": "geo_elo Pool C shows 86.36% accuracy / Brier 0.1222 on geopolitics/elections markets (n=22, 30d)"
+      },
+      {
+        "value": "0.2354",
+        "context": "comprehensive_elo is performing near-random (Brier 0.2354 on all binary markets, 35.92% accuracy for the Legendary tier)"
+      }
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-06-10-str003-scoring.md",
+    "date": "2026-06-10",
+    "document_type": "decision",
+    "numeric_findings": [
+      {
+        "value": "0",
+        "context": "outcome_correct: 0"
+      },
+      {
+        "value": "4,628",
+        "context": "geo_elo_active 4,628 at scoring"
+      },
+      {
+        "value": "~$0.245",
+        "context": "Entry: ~$0.245 avg, 20,231 shares, ~$4,957 at risk"
+      },
+      {
+        "value": "20,231",
+        "context": "Entry: ~$0.245 avg, 20,231 shares, ~$4,957 at risk"
+      },
+      {
+        "value": "~$4,957",
+        "context": "Entry: ~$0.245 avg, 20,231 shares, ~$4,957 at risk"
+      },
+      {
+        "value": "17.17%",
+        "context": "L\u00f3pez Aliaga finished 3rd in R1 (17.17% Keiko, 12% S\u00e1nchez, Aliaga 3rd)"
+      },
+      {
+        "value": "12%",
+        "context": "L\u00f3pez Aliaga finished 3rd in R1 (17.17% Keiko, 12% S\u00e1nchez, Aliaga 3rd)"
+      },
+      {
+        "value": "50.055%",
+        "context": "S\u00e1nchez leading 50.055% vs 49.945% at 96.87% counted"
+      }
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-06-brier-target-crossed.md",
+    "date": "2026-07-06",
+    "document_type": "decision",
+    "numeric_findings": [
+      {
+        "value": "0.20",
+        "context": "the system's minimum prediction accuracy target (0.20)"
+      },
+      {
+        "value": "0.1798",
+        "context": "Geopolitics: 0.1798 (n=89, directional acc 82.0%)"
+      },
+      {
+        "value": "0.1912",
+        "context": "Elections: 0.1912 (n=68, directional acc 80.9%)"
+      },
+      {
+        "value": "0.185",
+        "context": "Combined: ~0.185 (n=157)"
+      },
+      {
+        "value": "0.2400",
+        "context": "0.2400 (Jun 8) \u2192 0.2213 (Jun 15) \u2192 0.2168 (Jun 29) \u2192 0.1798 (Jul 6)"
+      },
+      {
+        "value": "0.2982",
+        "context": "0.2982 (Jun 8) \u2192 0.2714 (Jun 15) \u2192 0.2234 (Jun 29) \u2192 0.1912 (Jul 6)"
+      },
+      {
+        "value": "2,500",
+        "context": "pool_c <2,500 (training-librarian Jun 27, Jul 4)"
+      },
+      {
+        "value": "1,700",
+        "context": "The current integration contract Section 9 alert threshold is **<1,700**"
+      }
+    ]
+  },
+  {
+    "path": "brain/decisions/2026-07-13-elections-calibration-break.md",
+    "date": "2026-07-13",
+    "document_type": "decision",
+    "numeric_findings": [
+      {
+        "value": "0.2552",
+        "context": "Geopolitics (contested): Brier 0.2552, dir_acc 70.8%, n=48."
+      },
+      {
+        "value": "70.8%",
+        "context": "Geopolitics (contested): Brier 0.2552, dir_acc 70.8%, n=48."
+      },
+      {
+        "value": "48",
+        "context": "Geopolitics (contested): Brier 0.2552, dir_acc 70.8%, n=48."
+      },
+      {
+        "value": "0.3855",
+        "context": "Elections (contested only): Brier 0.3855, dir_acc 59.1%, n=22."
+      },
+      {
+        "value": "59.1%",
+        "context": "Elections (contested only): Brier 0.3855, dir_acc 59.1%, n=22."
+      },
+      {
+        "value": "22",
+        "context": "Elections (contested only): Brier 0.3855, dir_acc 59.1%, n=22."
+      },
+      {
+        "value": "0.4838",
+        "context": "Elections (ALL markets): Brier 0.4838 vs naive 0.4492 \u2014 WORSE THAN NAIVE."
+      },
+      {
+        "value": "50.0%",
+        "context": "Elections (ALL markets): Brier 0.4838 vs naive 0.4492 \u2014 WORSE THAN NAIVE. Dir_acc = 50.0%. n=32."
+      }
+    ]
+  }
+]
