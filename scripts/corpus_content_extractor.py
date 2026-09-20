@@ -1,0 +1,729 @@
+#!/usr/bin/env python3
+"""
+Corpus content extractor: what each brain/decisions/ document CONCLUDED, not
+just its shape.
+
+Companion to scripts/corpus_reader_index.py (the structural pass,
+brain/corpus_reader_index_v2.jsonl) -- deliberately a SEPARATE artifact, not
+a modification of it. The structural index captures type/verdict-line/
+commits/identifiers; it says nothing about what a document found, left open,
+proposed, decided, or corrected. Heatmap pass 5's stated limitation is that
+its shortlist rests on ~190 documents no pass ever read in depth.
+
+Design principle (the whole point of this script): every extracted claim
+carries a verbatim quote AND a line number, and the line number is NEVER
+asked of the model -- it is computed here, deterministically, by searching
+for the model's quote in the actual source text. An LLM asked to count
+lines in a 1,800-line document will get it wrong; an LLM asked to copy a
+short span of text it just read, verified afterward by exact string search,
+is the same anchored-extraction bet that already proved reliable for
+corpus_reader_index.py's title/self_stated_verdict/numeric-findings fields
+(15/15, 15/15, ~120/120 traced correct) and unreliable for its free-recall
+fields (rq_str_lh_ids, artifact_paths_cited -- both under- and over-capture,
+including outright fabrication). This script never asks the model to recall
+an identifier or path from memory; it only ever asks for a copy of text it
+was just given, checked against that same text afterward. See
+brain/decisions/2026-09-20-corpus-content-extraction-pilot.md for the full
+schema rationale and pilot results.
+
+Infrastructure matches corpus_reader_index.py deliberately (same box, same
+proven pattern): stateless per document, qwen3-coder:30b-a3b-q4_K_M via
+localhost:11434/api/generate, strict JSON contract, fence stripping,
+hard-fail on parse error (flag and move on, no retry-until-parses), a
+path-based keyset cursor (not OFFSET -- see that script's own comment on
+the 2026-09-13 backfill_market_categories.py incident for why), kill
+conditions on wall clock / own RSS / consecutive failures, and per-run
+telemetry (wall time, CPU seconds, RSS start/peak/end, call count, per-call
+duration).
+
+Differs from it in scope: RECURSES into brain/decisions/archive/ -- the
+structural pass did not, and missed archive/MASTER_HANDOVER_2026-05-20.md
+and archive/MASTER_HANDOVER_server-pre-setup-1.md entirely (confirmed in
+brain/decisions/2026-09-19-corpus-reader-schema-and-verification.md, section
+1: "never attempted... the script's file discovery does not recurse into
+archive/").
+
+Re-pilot (2026-09-20, second pass): the first pilot found 6 of 12 documents
+returned every field as a flat list of bare strings instead of the required
+{claim, quote} objects -- not length-correlated, content accurate, just the
+wrong shape roughly half the time. Fix: one worked example added to the
+prompt (see EXTRACTION_PROMPT), isolated deliberately -- nothing else about
+the instructions changed, so this run tests that one change. Separately,
+verify_record_quotes() gained a third "structural" tier (markdown-decoration-
+aware: strips **, backticks, |, heading/list markers, then compares) between
+"normalized" and "unverified", reported as its own distinct category --
+never folded into "exact". See
+brain/decisions/2026-09-20-corpus-content-extraction-repilot.md.
+
+STATELESS PER DOCUMENT. Does not synthesise, rank, or draw conclusions
+across documents -- that is a separate, later task by design.
+"""
+
+import argparse
+import json
+import logging
+import os
+import re
+import sys
+import time
+import urllib.error
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+
+import psutil
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DECISIONS_DIR = REPO_ROOT / "brain" / "decisions"
+INDEX_FILE = REPO_ROOT / "brain" / "corpus_content_index.jsonl"
+STATE_FILE = REPO_ROOT / "brain" / "corpus_content_state.json"
+FAILURES_FILE = REPO_ROOT / "brain" / "corpus_content_failures.jsonl"
+TELEMETRY_FILE = REPO_ROOT / "logs" / "corpus_content_telemetry.jsonl"
+LOG_FILE = REPO_ROOT / "logs" / "corpus_content_extractor.log"
+
+OLLAMA_ENDPOINT = "http://localhost:11434/api/generate"
+OLLAMA_MODEL = "qwen3-coder:30b-a3b-q4_K_M"
+
+# Same fixed-for-the-whole-run rationale as corpus_reader_index.py: a
+# different num_ctx per call forces an Ollama runner reload (~13s, full
+# 17GB+ model), not just a bigger per-call allocation. One value, sized to
+# the corpus's largest document with headroom, paid once.
+OLLAMA_NUM_CTX = 131072
+NUM_CTX_SAFETY_FRACTION = 0.85
+
+# Per-call wall-clock ceiling. 1200s, set from THIS script's own 2026-09-20
+# pilot: 12 documents (96-1,884 lines), observed call_seconds_max=814.2s
+# (the corpus's largest document), mean=252.2s. 1200s is ~1.5x the observed
+# maximum -- headroom for a colder cache without inheriting
+# corpus_reader_index.py's untested 1800s figure, which was set from a
+# lighter, differently-shaped extraction (one flat object vs. up to 7
+# categories x 10 claim+quote pairs here).
+OLLAMA_TIMEOUT_SECONDS = int(os.environ.get("CORPUS_CONTENT_TIMEOUT_SECONDS", "1200"))
+
+DEFAULT_SLEEP_BETWEEN_CALLS = 1.0
+
+MAX_RUN_WALL_SECONDS = 6 * 3600
+MAX_OWN_RSS_MB = 500
+MAX_CONSECUTIVE_FAILURES = 5
+
+# Per-field caps -- same rationale as corpus_reader_index.py's
+# MAX_NUMERIC_FINDINGS=8: these are traceable pointers back into the source,
+# not an exhaustive re-statement, and an uncapped list would make the
+# mechanical quote verification and the human spot-check both intractable.
+MAX_QUESTION_ITEMS = 3
+MAX_LIST_ITEMS = 10
+MAX_CONTRADICTION_ITEMS = 5
+
+LIST_FIELDS = (
+    "findings",
+    "explicitly_open",
+    "proposed_not_done",
+    "decisions_recorded",
+    "failures_and_causes",
+    "contradicts_or_corrects",
+)
+ALL_CLAIM_FIELDS = ("question_addressed",) + LIST_FIELDS
+
+
+# --- prompt -------------------------------------------------------------
+
+EXTRACTION_PROMPT = """\
+You are extracting what a project decision document CONCLUDED -- not its \
+shape, its opinions about itself, or your judgment of it. Extract ONLY what \
+the document explicitly states. Do not judge correctness, importance, or \
+quality. Do not infer anything not written in the text.
+
+Output ONLY a JSON object (no markdown fence, no prose before or after) with \
+exactly these fields. Each is a list of items; each item is EXACTLY:
+{{"claim": "<your own short sentence stating what this item says, max ~25 words>", \
+"quote": "<a VERBATIM copy-paste of the exact text from the document that \
+supports this claim -- must be an exact substring of the document text \
+below, character for character, not paraphrased, not corrected for typos, \
+not shortened with ellipses>"}}
+
+Do NOT include a line number -- it will be computed separately from your quote.
+
+Fields (each capped at the stated maximum; use fewer or an empty list if the \
+document doesn't have that many, or any):
+
+question_addressed (max {max_q}): what the document states it set out to \
+  answer, investigate, or decide. Usually near the top.
+findings (max {max_list}): what the document states it found, discovered, \
+  measured, or concluded.
+explicitly_open (max {max_list}): what the document explicitly states was \
+  NOT determined, left open, deferred, or unresolved. This corpus commonly \
+  uses a "What was not determined" heading or a stated stop condition --\
+  look for those, but also any other explicit statement of what remains \
+  unknown or undecided.
+proposed_not_done (max {max_list}): what the document proposes, \
+  recommends, or schedules for later -- work that has NOT yet been done, \
+  as of this document.
+decisions_recorded (max {max_list}): decisions the document records as \
+  having been taken (a choice made, a policy set, a thing paused/enabled/ \
+  changed). If the document names who made the decision, that name should \
+  appear inside the quote itself -- do not add a separate field for it.
+failures_and_causes (max {max_list}): things the document states were \
+  tried and did not work, together with the stated reason -- the reason, \
+  if given, should be part of the same quote (pick a quote span that \
+  includes both the failure and its stated cause where they appear near \
+  each other).
+contradicts_or_corrects (max {max_contra}): places the document explicitly \
+  states it corrects, contradicts, retracts, or amends an earlier finding, \
+  document, or claim.
+
+If a field has nothing to report, use an empty list []. Do not invent an \
+item to fill a field. A quote that is not an exact substring of the \
+document text is worse than an empty list -- it will be mechanically \
+checked and flagged as unverified.
+
+Example of the exact shape required for EVERY item in EVERY field below \
+(this is a generic illustration, not from the document you are about to \
+read -- do not copy its content):
+"findings": [
+  {{"claim": "The retry loop was removed because it caused duplicate charges.", \
+"quote": "We removed the retry loop entirely once we confirmed it was \
+double-charging customers on transient network failures."}}
+]
+
+DOCUMENT (path: {path}):
+{text}
+
+Respond with ONLY the JSON object.
+"""
+
+
+def strip_fence(raw: str) -> str:
+    raw = raw.strip()
+    if raw.startswith("```"):
+        lines = raw.splitlines()
+        raw = "\n".join(line for line in lines if not line.startswith("```")).strip()
+    return raw
+
+
+def estimate_prompt_tokens(text: str) -> int:
+    return len(text) // 3 + 700
+
+
+# --- quote verification (mechanical, no model involvement) ---------------
+#
+# Three tiers, reported separately, never merged: "exact" (byte-for-byte
+# substring), "normalized" (whitespace-only collapsing -- a wrapped line's
+# internal newline/indentation folded to one space), and "structural" (also
+# strips markdown decoration: **bold**, `backticks`, table `|` pipes,
+# leading heading/list markers). The 2026-09-20 pilot manually traced 80
+# "unverified" quotes across 6 documents and found zero fabrications --
+# every one was genuine content the model had reformatted out of markdown
+# table/heading syntax when it copied it. "structural" exists to stop that
+# from being miscounted as inaccuracy, WITHOUT silently loosening what
+# "exact" or "normalized" mean, and without becoming loose enough to match
+# anything (see the deliberate limit below: a colon the model inserts
+# between a table label and its value, which the source never had, is a
+# real character difference and is correctly left unverified).
+
+def _normalize_ws(s: str) -> str:
+    return re.sub(r"\s+", " ", s).strip()
+
+
+_HEADING_MARKER_RE = re.compile(r"#{1,6}[ \t]+")
+_NUMBERED_LIST_MARKER_RE = re.compile(r"\d+\.[ \t]+")
+_BULLET_MARKER_RE = re.compile(r"[-*][ \t]+")
+
+
+def _structural_strip_with_map(text: str) -> tuple[str, list[int]]:
+    """
+    Returns (stripped_text, offset_map) where offset_map[i] is the index in
+    `text` that stripped_text[i] came from. Strips, character-exactly:
+    '**', backticks, replaces '|' with a single space, drops a leading
+    heading/numbered-list/bullet marker at the start of each line, and
+    collapses whitespace runs (including newlines) to a single space.
+    Applied identically to both the document and the quote before
+    comparison -- this is a shared lens, not test-only leniency.
+    """
+    out_chars: list[str] = []
+    out_map: list[int] = []
+
+    def emit_space(pos: int) -> None:
+        # Never emit two consecutive spaces -- a '|' and an adjacent real
+        # whitespace run must collapse to exactly one separator, or a
+        # table cell's stripped form ends up with doubled spaces the
+        # (single-space-normalized) quote can never match.
+        if out_chars and out_chars[-1] == " ":
+            return
+        out_chars.append(" ")
+        out_map.append(pos)
+
+    i = 0
+    n = len(text)
+    at_line_start = True
+    while i < n:
+        if at_line_start:
+            m = (_HEADING_MARKER_RE.match(text, i)
+                 or _NUMBERED_LIST_MARKER_RE.match(text, i)
+                 or _BULLET_MARKER_RE.match(text, i))
+            if m:
+                i = m.end()
+                at_line_start = False
+                continue
+            at_line_start = False
+
+        if text[i:i + 2] == "**":
+            i += 2
+            continue
+        ch = text[i]
+        if ch == "`":
+            i += 1
+            continue
+        if ch == "|":
+            emit_space(i)
+            i += 1
+            continue
+        if ch.isspace():
+            start = i
+            while i < n and text[i].isspace():
+                i += 1
+            hard_wrapped_hyphen = (
+                out_chars and out_chars[-1] == "-" and "\n" in text[start:i]
+            )
+            if hard_wrapped_hyphen:
+                # "majority-\ngenuine" is one hyphenated word broken by a
+                # markdown hard wrap, not "majority-" then a new word --
+                # join with no separator rather than inserting a space a
+                # human reader (and the model, copying it as one word)
+                # would never perceive as there. Found via a genuine
+                # verification false-negative in the 2026-09-20 re-pilot;
+                # not a leniency added to raise the pass rate.
+                pass
+            else:
+                emit_space(start)
+            if "\n" in text[start:i]:
+                at_line_start = True
+            continue
+        out_chars.append(ch)
+        out_map.append(i)
+        i += 1
+    return "".join(out_chars), out_map
+
+
+def locate_quote(document_text: str, quote: str,
+                  doc_structural_cache: dict | None = None) -> dict:
+    """
+    Deterministic. Returns {"status": "exact"|"normalized"|"structural"|
+    "unverified", "line": int|None, "occurrences": int}. "line" is
+    1-indexed, first match. Never trusts anything the model said about
+    location -- only the quote string itself, searched against the actual
+    source. `doc_structural_cache` (optional, a dict this function may
+    populate) avoids recomputing the structural strip of the same document
+    for every one of its quotes.
+    """
+    if not isinstance(quote, str) or not quote.strip():
+        return {"status": "unverified", "line": None, "occurrences": 0}
+
+    idx = document_text.find(quote)
+    if idx != -1:
+        line = document_text.count("\n", 0, idx) + 1
+        occurrences = document_text.count(quote)
+        return {"status": "exact", "line": line, "occurrences": occurrences}
+
+    # Tier 2: whitespace-only normalization.
+    norm_doc = _normalize_ws(document_text)
+    norm_quote = _normalize_ws(quote)
+    if norm_quote:
+        norm_idx = norm_doc.find(norm_quote)
+        if norm_idx != -1:
+            orig_pos = 0
+            norm_pos = 0
+            prev_ws = False
+            for ch in document_text:
+                if norm_pos >= norm_idx:
+                    break
+                if ch.isspace():
+                    if not prev_ws:
+                        norm_pos += 1
+                    prev_ws = True
+                else:
+                    norm_pos += 1
+                    prev_ws = False
+                orig_pos += 1
+            line = document_text.count("\n", 0, orig_pos) + 1
+            occurrences = norm_doc.count(norm_quote)
+            return {"status": "normalized", "line": line, "occurrences": occurrences}
+
+    # Tier 3: structural (markdown-decoration-aware) normalization.
+    if doc_structural_cache is not None and "stripped" in doc_structural_cache:
+        struct_doc, struct_map = doc_structural_cache["stripped"], doc_structural_cache["map"]
+    else:
+        struct_doc, struct_map = _structural_strip_with_map(document_text)
+        if doc_structural_cache is not None:
+            doc_structural_cache["stripped"] = struct_doc
+            doc_structural_cache["map"] = struct_map
+
+    struct_quote, _ = _structural_strip_with_map(quote)
+    struct_quote = _normalize_ws(struct_quote)
+    if struct_quote:
+        struct_idx = struct_doc.find(struct_quote)
+        if struct_idx != -1:
+            orig_offset = struct_map[struct_idx] if struct_idx < len(struct_map) else len(document_text) - 1
+            line = document_text.count("\n", 0, orig_offset) + 1
+            occurrences = struct_doc.count(struct_quote)
+            return {"status": "structural", "line": line, "occurrences": occurrences}
+
+    return {"status": "unverified", "line": None, "occurrences": 0}
+
+
+def verify_record_quotes(record: dict, document_text: str) -> dict:
+    """Walks every claim item in every field, verifies its quote against
+    document_text, and returns a summary + per-item detail. Mutates nothing
+    in `record` -- callers attach the result under a separate key."""
+    total = 0
+    exact = 0
+    normalized = 0
+    structural = 0
+    unverified = 0
+    unverified_detail = []
+    doc_structural_cache: dict = {}
+
+    for field in ALL_CLAIM_FIELDS:
+        items = record.get(field) or []
+        if not isinstance(items, list):
+            continue
+        for i, item in enumerate(items):
+            if not isinstance(item, dict):
+                continue
+            quote = item.get("quote")
+            total += 1
+            result = locate_quote(document_text, quote, doc_structural_cache)
+            item["line"] = result["line"]
+            item["_verification"] = result["status"]
+            if result["status"] == "exact":
+                exact += 1
+            elif result["status"] == "normalized":
+                normalized += 1
+            elif result["status"] == "structural":
+                structural += 1
+            else:
+                unverified += 1
+                unverified_detail.append({
+                    "field": field, "index": i,
+                    "quote": quote if isinstance(quote, str) else repr(quote),
+                })
+
+    return {
+        "total_quotes": total,
+        "verified_exact": exact,
+        "verified_normalized": normalized,
+        "verified_structural": structural,
+        "unverified": unverified,
+        "unverified_detail": unverified_detail,
+    }
+
+
+# --- schema validation (structure only, not truth) ------------------------
+
+def validate_schema(llm_record: dict) -> list[str]:
+    problems = []
+    caps = {
+        "question_addressed": MAX_QUESTION_ITEMS,
+        **{f: MAX_LIST_ITEMS for f in LIST_FIELDS if f != "contradicts_or_corrects"},
+        "contradicts_or_corrects": MAX_CONTRADICTION_ITEMS,
+    }
+    for field, cap in caps.items():
+        val = llm_record.get(field)
+        if not isinstance(val, list):
+            problems.append(f"{field} is not a list: {type(val)}")
+            continue
+        if len(val) > cap:
+            problems.append(f"{field} has {len(val)} items, exceeds cap {cap}")
+        for i, item in enumerate(val):
+            if not isinstance(item, dict) or "claim" not in item or "quote" not in item:
+                problems.append(f"{field}[{i}] malformed: {item!r}")
+            elif not isinstance(item.get("claim"), str) or not isinstance(item.get("quote"), str):
+                problems.append(f"{field}[{i}] claim/quote not strings")
+    return problems
+
+
+# --- ollama call -----------------------------------------------------------
+
+def call_ollama(path_rel: str, text: str, logger: logging.Logger) -> tuple[dict | None, dict]:
+    prompt = EXTRACTION_PROMPT.format(
+        max_q=MAX_QUESTION_ITEMS, max_list=MAX_LIST_ITEMS,
+        max_contra=MAX_CONTRADICTION_ITEMS, path=path_rel, text=text,
+    )
+    est_tokens = estimate_prompt_tokens(prompt)
+    over_safety_margin = est_tokens > OLLAMA_NUM_CTX * NUM_CTX_SAFETY_FRACTION
+
+    payload = json.dumps({
+        "model": OLLAMA_MODEL,
+        "prompt": prompt,
+        "stream": False,
+        "options": {"temperature": 0.1, "num_ctx": OLLAMA_NUM_CTX},
+    }).encode()
+
+    req = urllib.request.Request(
+        OLLAMA_ENDPOINT, data=payload,
+        headers={"Content-Type": "application/json"}, method="POST",
+    )
+
+    t0 = time.monotonic()
+    meta = {
+        "path": path_rel, "num_ctx": OLLAMA_NUM_CTX, "prompt_chars": len(prompt),
+        "est_prompt_tokens": est_tokens, "over_safety_margin": over_safety_margin,
+    }
+    if over_safety_margin:
+        logger.warning(f"[{path_rel}] estimated prompt tokens ({est_tokens}) exceeds "
+                        f"{NUM_CTX_SAFETY_FRACTION:.0%} of num_ctx ({OLLAMA_NUM_CTX}) -- "
+                        f"sending anyway; flagged in telemetry.")
+    try:
+        with urllib.request.urlopen(req, timeout=OLLAMA_TIMEOUT_SECONDS) as resp:
+            result = json.loads(resp.read().decode())
+            raw_text = result.get("response", "").strip()
+        meta["call_seconds"] = time.monotonic() - t0
+        meta["eval_count"] = result.get("eval_count")
+        meta["prompt_eval_count"] = result.get("prompt_eval_count")
+    except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError) as e:
+        meta["call_seconds"] = time.monotonic() - t0
+        meta["error"] = f"request_failed: {e}"
+        logger.error(f"[{path_rel}] Ollama request failed: {e}")
+        return None, meta
+
+    cleaned = strip_fence(raw_text)
+    try:
+        parsed = json.loads(cleaned)
+        if not isinstance(parsed, dict):
+            raise ValueError("expected a JSON object")
+    except (json.JSONDecodeError, ValueError) as e:
+        meta["error"] = f"parse_failed: {e}"
+        meta["raw_response"] = raw_text[:4000]
+        logger.error(f"[{path_rel}] Failed to parse response as JSON object: {e}")
+        return None, meta
+
+    return parsed, meta
+
+
+# --- discovery (RECURSES into archive/, unlike corpus_reader_index.py) ----
+
+def discover_paths() -> list[str]:
+    return sorted(p.relative_to(REPO_ROOT).as_posix()
+                  for p in DECISIONS_DIR.rglob("*.md"))
+
+
+# --- checkpointing (path-based keyset cursor, same shape/rationale as
+# corpus_reader_index.py -- see that script for the 2026-09-13 incident this
+# guards against) --------------------------------------------------------
+
+def load_state() -> dict:
+    if STATE_FILE.exists():
+        try:
+            return json.loads(STATE_FILE.read_text())
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {"last_seen_path": None, "processed": 0, "failed": 0}
+
+
+def save_state(state: dict) -> None:
+    STATE_FILE.write_text(json.dumps(state, indent=2))
+
+
+def already_indexed_paths(index_file: Path) -> set[str]:
+    if not index_file.exists():
+        return set()
+    seen = set()
+    with open(index_file) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                seen.add(json.loads(line)["path"])
+            except (json.JSONDecodeError, KeyError):
+                continue
+    return seen
+
+
+def setup_logging(log_file: Path) -> logging.Logger:
+    logger = logging.getLogger("corpus_content_extractor")
+    logger.setLevel(logging.DEBUG)
+    logger.handlers.clear()
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+    fh = logging.FileHandler(log_file, mode="a")
+    fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    logger.addHandler(fh)
+    ch = logging.StreamHandler()
+    ch.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    logger.addHandler(ch)
+    return logger
+
+
+def write_telemetry(telemetry_file: Path, record: dict) -> None:
+    telemetry_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(telemetry_file, "a") as f:
+        f.write(json.dumps(record) + "\n")
+
+
+def process_one(path_rel: str, logger: logging.Logger) -> tuple[dict | None, dict, dict | None]:
+    """Returns (record_or_None, call_meta, failure_detail_or_None). Never raises."""
+    abs_path = REPO_ROOT / path_rel
+    try:
+        text = abs_path.read_text(encoding="utf-8", errors="replace")
+    except OSError as e:
+        return None, {"path": path_rel, "call_seconds": 0}, {"path": path_rel, "error": f"read_failed: {e}"}
+
+    llm_record, call_meta = call_ollama(path_rel, text, logger)
+    if llm_record is None:
+        return None, call_meta, {
+            "path": path_rel,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "error": call_meta.get("error"),
+            "raw_response": call_meta.get("raw_response"),
+        }
+
+    problems = validate_schema(llm_record)
+    record = {
+        "path": path_rel,
+        "indexed_at": datetime.now(timezone.utc).isoformat(),
+        "line_count": text.count("\n") + 1,
+        "question_addressed": llm_record.get("question_addressed", []),
+        "findings": llm_record.get("findings", []),
+        "explicitly_open": llm_record.get("explicitly_open", []),
+        "proposed_not_done": llm_record.get("proposed_not_done", []),
+        "decisions_recorded": llm_record.get("decisions_recorded", []),
+        "failures_and_causes": llm_record.get("failures_and_causes", []),
+        "contradicts_or_corrects": llm_record.get("contradicts_or_corrects", []),
+        "schema_valid": len(problems) == 0,
+        "schema_problems": problems,
+        "over_safety_margin": call_meta.get("over_safety_margin", False),
+    }
+    record["quote_verification"] = verify_record_quotes(record, text)
+
+    return record, call_meta, None
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Extract content claims from brain/decisions/*.md, quote-anchored.")
+    parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--sleep", type=float, default=DEFAULT_SLEEP_BETWEEN_CALLS)
+    parser.add_argument("--paths-file", type=str, default=None,
+                         help="Newline-delimited list of repo-relative paths to process, "
+                              "in that order, ignoring the normal cursor/discovery. Pilot mode.")
+    parser.add_argument("--out", type=str, default=None,
+                         help="Override output index path (pilot mode uses a separate file).")
+    parser.add_argument("--state-file", type=str, default=None)
+    parser.add_argument("--failures-file", type=str, default=None)
+    parser.add_argument("--telemetry-file", type=str, default=None)
+    parser.add_argument("--log-file", type=str, default=None)
+    args = parser.parse_args()
+
+    index_file = Path(args.out) if args.out else INDEX_FILE
+    state_file = Path(args.state_file) if args.state_file else STATE_FILE
+    failures_file = Path(args.failures_file) if args.failures_file else FAILURES_FILE
+    telemetry_file = Path(args.telemetry_file) if args.telemetry_file else TELEMETRY_FILE
+    log_file = Path(args.log_file) if args.log_file else LOG_FILE
+
+    logger = setup_logging(log_file)
+    proc = psutil.Process(os.getpid())
+    run_start = time.monotonic()
+    run_start_iso = datetime.now(timezone.utc).isoformat()
+    rss_start_mb = proc.memory_info().rss / 1e6
+    rss_peak_mb = rss_start_mb
+    cpu_start = proc.cpu_times()
+
+    logger.info(f"=== corpus_content_extractor starting === rss_start_mb={rss_start_mb:.1f} "
+                f"timeout={OLLAMA_TIMEOUT_SECONDS}s out={index_file}")
+
+    if args.paths_file:
+        pending = [line.strip() for line in Path(args.paths_file).read_text().splitlines() if line.strip()]
+        logger.info(f"pilot mode: {len(pending)} explicit paths from {args.paths_file}")
+    else:
+        state = load_state()
+        done_paths = already_indexed_paths(index_file)
+        all_paths = discover_paths()
+        cursor = state["last_seen_path"]
+        pending = [p for p in all_paths if (cursor is None or p > cursor) and p not in done_paths]
+        logger.info(f"resuming: last_seen_path={state['last_seen_path']!r} "
+                    f"already_indexed={len(done_paths)} discovered_total={len(all_paths)} "
+                    f"pending={len(pending)}")
+
+    run_processed = 0
+    run_failed = 0
+    consecutive_failures = 0
+    call_durations = []
+
+    for path_rel in pending:
+        if args.limit is not None and run_processed + run_failed >= args.limit:
+            logger.info(f"Reached --limit {args.limit} for this run, stopping.")
+            break
+        if time.monotonic() - run_start > MAX_RUN_WALL_SECONDS:
+            logger.error(f"KILL CONDITION: run wall time exceeded {MAX_RUN_WALL_SECONDS}s. Aborting.")
+            break
+        current_rss_mb = proc.memory_info().rss / 1e6
+        rss_peak_mb = max(rss_peak_mb, current_rss_mb)
+        if current_rss_mb > MAX_OWN_RSS_MB:
+            logger.error(f"KILL CONDITION: own RSS {current_rss_mb:.1f}MB exceeded ceiling {MAX_OWN_RSS_MB}MB. Aborting.")
+            break
+        if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
+            logger.error(f"KILL CONDITION: {consecutive_failures} consecutive failures. Aborting.")
+            break
+
+        record, call_meta, failure_detail = process_one(path_rel, logger)
+        call_durations.append(call_meta.get("call_seconds", 0))
+
+        if record is None:
+            failures_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(failures_file, "a") as f:
+                f.write(json.dumps(failure_detail) + "\n")
+            run_failed += 1
+            consecutive_failures += 1
+            if not args.paths_file:
+                state["last_seen_path"] = path_rel
+                state["failed"] += 1
+                save_state(state)
+            write_telemetry(telemetry_file, {**call_meta, "outcome": "failed",
+                                              "timestamp": datetime.now(timezone.utc).isoformat()})
+            logger.warning(f"[{path_rel}] extraction failed, flagged, moving on "
+                            f"({call_meta.get('call_seconds', 0):.1f}s)")
+            time.sleep(args.sleep)
+            continue
+
+        index_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(index_file, "a") as f:
+            f.write(json.dumps(record) + "\n")
+
+        run_processed += 1
+        consecutive_failures = 0
+        if not args.paths_file:
+            state["last_seen_path"] = path_rel
+            state["processed"] += 1
+            save_state(state)
+        qv = record["quote_verification"]
+        write_telemetry(telemetry_file, {
+            **call_meta, "outcome": "ok", "schema_valid": record["schema_valid"],
+            "quote_verification": qv,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        })
+        logger.info(f"[{path_rel}] extracted in {call_meta.get('call_seconds', 0):.1f}s "
+                    f"valid={record['schema_valid']} quotes={qv['total_quotes']} "
+                    f"exact={qv['verified_exact']} normalized={qv['verified_normalized']} "
+                    f"structural={qv['verified_structural']} unverified={qv['unverified']}")
+        time.sleep(args.sleep)
+
+    cpu_end = proc.cpu_times()
+    cpu_seconds = (cpu_end.user - cpu_start.user) + (cpu_end.system - cpu_start.system)
+    rss_end_mb = proc.memory_info().rss / 1e6
+    wall_seconds = time.monotonic() - run_start
+
+    summary = {
+        "run_start": run_start_iso, "run_end": datetime.now(timezone.utc).isoformat(),
+        "wall_seconds": wall_seconds, "cpu_seconds_self": cpu_seconds,
+        "rss_start_mb": rss_start_mb, "rss_peak_mb": rss_peak_mb, "rss_end_mb": rss_end_mb,
+        "documents_processed": run_processed, "documents_failed": run_failed,
+        "call_count": len(call_durations),
+        "call_seconds_min": min(call_durations) if call_durations else None,
+        "call_seconds_max": max(call_durations) if call_durations else None,
+        "call_seconds_mean": (sum(call_durations) / len(call_durations)) if call_durations else None,
+    }
+    write_telemetry(telemetry_file, {"outcome": "run_summary", **summary})
+    logger.info(f"=== corpus_content_extractor finished === {json.dumps(summary)}")
+    print(json.dumps(summary, indent=2))
+
+
+if __name__ == "__main__":
+    main()
