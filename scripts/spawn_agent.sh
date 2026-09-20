@@ -300,26 +300,54 @@ echo "=== Agent Output ===" >> "$LOG_FILE"
 # Write to temp file to avoid tmux character limit when passing prompt inline
 printf '%s' "$AGENT_PROMPT" > "$PROMPT_FILE"
 
-# Write registry cleanup script — runs inside tmux after agent exits
+# Write registry cleanup script — runs inside tmux after agent exits.
+#
+# Tiers 1/2/2.5 (local Ollama, not Claude-backed, cannot hit a session/rate
+# limit) call this with just $TASK_ID, exactly as before: unconditional
+# "completed" + removal from active_tasks — behaviour unchanged.
+#
+# Tiers 3/4 (Claude CLI) call this with two extra args — the pipeline's real
+# exit code and the log file — and it delegates to
+# orchestrator/agent_failure_notifier.py, which classifies the run from its
+# actual captured output (not just the exit code) before deciding whether
+# this was a genuine completion or something a human needs to see. See
+# brain/decisions/2026-09-20-spawn-agent-silent-failure-fix.md.
 cat > "$CLEANUP_FILE" << 'CLEANUP_EOF'
 import json, sys
 registry_path = '/home/parison/trading-swarm/orchestrator/agent_registry.json'
 task_id = sys.argv[1]
-try:
-    with open(registry_path) as f:
-        registry = json.load(f)
-    for t in registry['active_tasks']:
-        if t['id'] == task_id:
-            t['status'] = 'completed'
-            break
-    with open(registry_path, 'w') as f:
-        json.dump(registry, f, indent=2)
-    registry['active_tasks'] = [t for t in registry['active_tasks'] if t['id'] != task_id]
-    with open(registry_path, 'w') as f:
-        json.dump(registry, f, indent=2)
-    print(f'[REGISTRY] Cleaned up task {task_id}')
-except Exception as e:
-    print(f'[REGISTRY] Cleanup failed: {e}')
+
+if len(sys.argv) == 2:
+    # Legacy path — tiers 1/2/2.5, or any other caller that still only
+    # passes task_id. Exact prior behaviour: unconditional completed+removed.
+    try:
+        with open(registry_path) as f:
+            registry = json.load(f)
+        for t in registry['active_tasks']:
+            if t['id'] == task_id:
+                t['status'] = 'completed'
+                break
+        with open(registry_path, 'w') as f:
+            json.dump(registry, f, indent=2)
+        registry['active_tasks'] = [t for t in registry['active_tasks'] if t['id'] != task_id]
+        with open(registry_path, 'w') as f:
+            json.dump(registry, f, indent=2)
+        print(f'[REGISTRY] Cleaned up task {task_id}')
+    except Exception as e:
+        print(f'[REGISTRY] Cleanup failed: {e}')
+elif len(sys.argv) == 4:
+    # Claude-backed path (tiers 3/4) — classify before recording anything.
+    sys.path.insert(0, '/home/parison/trading-swarm')
+    try:
+        from orchestrator.agent_failure_notifier import handle_agent_run
+        claude_exit_code = int(sys.argv[2])
+        log_file = sys.argv[3]
+        outcome = handle_agent_run(task_id, claude_exit_code, log_file)
+        print(f'[REGISTRY] {task_id}: {outcome}')
+    except Exception as e:
+        print(f'[REGISTRY] agent_failure_notifier failed for {task_id}: {e}')
+else:
+    print(f'[REGISTRY] Cleanup called with unexpected args for {task_id}: {sys.argv[1:]}')
 CLEANUP_EOF
 
 # ── Create git worktree for paid tiers ────────
@@ -352,8 +380,14 @@ if [ "$NEEDS_WORKTREE" = true ]; then
     # Tiers 3/4 — paid Claude CLI, one-shot -p mode
     # unset ANTHROPIC_API_KEY so the CLI falls back to OAuth Pro subscription
     # instead of trying to charge the API key (which has zero credit balance)
+    #
+    # ${PIPESTATUS[0]} captures the Claude CLI's own exit code, not tee's —
+    # a plain "cmd | tee ...; ..." chain silently discards the pipeline's
+    # real exit status, which is exactly how a session-limit / rate-limit /
+    # network / auth failure used to reach cleanup indistinguishable from a
+    # genuine success. See brain/decisions/2026-09-20-spawn-agent-silent-failure-fix.md.
     tmux send-keys -t "$SESSION_NAME" \
-        "unset ANTHROPIC_API_KEY && $MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID >> $LOG_FILE 2>&1; ( git -C $BASE_DIR checkout master && git -C $BASE_DIR merge --no-ff \"$BRANCH_NAME\" -m \"merge: $AGENT_TYPE $TASK_ID output to master\"; _merge_rc=\$?; if [ \$_merge_rc -eq 0 ]; then git -C $BASE_DIR push origin master; else echo \"MERGE FAILED for $BRANCH_NAME — branch preserved, manual merge required\"; git -C $BASE_DIR merge --abort 2>/dev/null || true; fi; git -C $BASE_DIR worktree remove --force \"$WORKTREE_PATH\" 2>/dev/null; git -C $BASE_DIR worktree prune ) >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
+        "unset ANTHROPIC_API_KEY && $MODEL_CMD \"\$(cat $PROMPT_FILE)\" 2>&1 | tee -a $LOG_FILE; _claude_exit=\${PIPESTATUS[0]}; rm -f $PROMPT_FILE; python3 $CLEANUP_FILE $TASK_ID \$_claude_exit $LOG_FILE >> $LOG_FILE 2>&1; ( git -C $BASE_DIR checkout master && git -C $BASE_DIR merge --no-ff \"$BRANCH_NAME\" -m \"merge: $AGENT_TYPE $TASK_ID output to master\"; _merge_rc=\$?; if [ \$_merge_rc -eq 0 ]; then git -C $BASE_DIR push origin master; else echo \"MERGE FAILED for $BRANCH_NAME — branch preserved, manual merge required\"; git -C $BASE_DIR merge --abort 2>/dev/null || true; fi; git -C $BASE_DIR worktree remove --force \"$WORKTREE_PATH\" 2>/dev/null; git -C $BASE_DIR worktree prune ) >> $LOG_FILE 2>&1; rm -f $CLEANUP_FILE; tmux kill-session -t $SESSION_NAME" \
         Enter
 elif [ "$TIER" = "1" ]; then
     # Tier 1 — stdin pipe; health checks / log watching are text classification only
