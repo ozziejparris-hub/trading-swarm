@@ -193,6 +193,31 @@ def current_layout() -> list[Job]:
     ]
 
 
+def elo_disabled_layout() -> list[Job]:
+    """
+    The actual state as of 2026-09-21 (brain/decisions/2026-09-21-disable-sunday-elo-recalc.md):
+    polymarket-sunday-elo.timer stopped and disabled, nothing else changed --
+    no chain, no wait-lock, no moved start times. Tests whether removing just
+    the ELO job (without any of the CHAIN/WAIT redesign in Part 5 of
+    2026-09-21-sunday-schedule-design.md, which was never approved or
+    deployed) is sufficient on its own.
+
+    run_database_backup.sh (Sun) reverts to the WEEKDAY runtime model here,
+    not the flat 201.5min starved figure current_layout() uses -- that
+    figure was modeling exactly the concurrent-ELO starvation mechanism
+    this removes. Using the starved figure after removing its cause would
+    misrepresent the very thing being tested.
+    """
+    jobs = current_layout()
+    return [
+        Job("run_database_backup.sh (Sun)", "Sun", time(3, 0), backup_weekday_runtime_minutes, True, True,
+            "ELO removed -- reverts to unstarved weekday-typical runtime, not the starved 201.5min figure")
+        if j.name == "run_database_backup.sh (Sun)" else j
+        for j in jobs
+        if j.name != "polymarket-sunday-elo.timer"
+    ]
+
+
 CHAIN_START = time(2, 20)     # sunday_db_chain.sh: sweep -> ELO -> backup (after backup_offsite.sh's 02:00 file-level copy, which typically finishes ~02:09-02:12 and is a different, lower-contention mechanism than the Online Backup API -- given a clean gap anyway rather than relying on that distinction)
 MAINT_SUNDAY_START = time(9, 0)  # run_daily_maintenance.sh, Sunday only
 
@@ -320,7 +345,7 @@ def first_overlap_date(results: list[dict], job_a: str, job_b: str) -> Optional[
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--layout", choices=["current", "chain_fixed_time", "recommended"], default="current")
+    parser.add_argument("--layout", choices=["current", "chain_fixed_time", "recommended", "elo_disabled"], default="current")
     parser.add_argument("--weeks", type=int, default=13)
     parser.add_argument("--first-sunday", type=str, default="2026-09-27")
     parser.add_argument("--json", action="store_true")
@@ -332,7 +357,12 @@ def main() -> None:
         results = simulate_recommended(first_sunday, args.weeks)
         n_jobs = len(results[0]["windows"]) if results else 0
     else:
-        jobs = current_layout() if args.layout == "current" else chain_fixed_time_layout()
+        layout_fns = {
+            "current": current_layout,
+            "chain_fixed_time": chain_fixed_time_layout,
+            "elo_disabled": elo_disabled_layout,
+        }
+        jobs = layout_fns[args.layout]()
         results = simulate(jobs, first_sunday, args.weeks)
         n_jobs = len(jobs)
 
