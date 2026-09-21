@@ -93,6 +93,45 @@ worked example, targeting the two costs above separately:
   Both are necessary; neither alone was sufficient in testing. See
   brain/decisions/2026-09-20-corpus-content-extraction-fourth-pilot.md.
 
+Fourth pilot's own follow-up found two remaining mechanical problems, both
+fixed here (2026-09-21) WITHOUT another model experiment -- neither needed
+one:
+
+  DEDUP: on the two longest documents, capped fields came back with real,
+  verified quotes repeated to reach maxItems -- the same "reach for the
+  cap" drive as the fabrication Change B fixed, displaced into repetition
+  once outright invention was blocked. dedup_record() removes it
+  deterministically post-hoc: two items in the same field of the same
+  record are duplicates if their `quote` strings are identical after
+  _normalize_ws() -- the SAME whitespace-collapse transform already used
+  and tested for the "normalized" verification tier, reused rather than
+  reinvented. This transform only ever collapses whitespace; it cannot
+  turn two different passages into the same string, which is what makes it
+  safe to remove on -- a looser comparison (e.g. the "structural" tier,
+  which also strips markdown decoration) was deliberately NOT used here,
+  because it does more than the safety property requires. First occurrence
+  is kept; the raw (pre-dedup) list is never modified or discarded --
+  every record carries both `record[field]` (raw, as extracted) and
+  `record["deduped"][field]` (post-dedup), plus `record["padding_removed"]`
+  (count per field) and `record["padding_removed_items"]` (the actual
+  removed items, for audit). See
+  brain/decisions/2026-09-21-dedup-and-length-scaled-timeout.md for the
+  offline verification against all three prior pilots' artifacts,
+  including manual inspection of every single removal.
+
+  LENGTH-SCALED TIMEOUT: the flat 1200s ceiling was set from one
+  12-document sample and had already been breached twice (differently) by
+  the second and fourth pilots. Replaced with a timeout derived from a
+  through-origin linear fit of call_seconds against document line_count
+  across all 24 successful/returned calls in the pilot + re-pilot + fourth
+  pilot artifacts (k=0.539 s/line), scaled by a safety multiplier (2.7x)
+  set from the worst observed ratio of actual-to-predicted time in that
+  same dataset (2.55x, on the smallest, noisiest document), with a 300s
+  floor for small documents and a 3600s hard ceiling so no single document
+  can run indefinitely regardless of length. See the decision doc for the
+  fit, residuals, and full coverage check against every returned call in
+  the historical data.
+
 STATELESS PER DOCUMENT. Does not synthesise, rank, or draw conclusions
 across documents -- that is a separate, later task by design.
 """
@@ -129,14 +168,101 @@ OLLAMA_MODEL = "qwen3-coder:30b-a3b-q4_K_M"
 OLLAMA_NUM_CTX = 131072
 NUM_CTX_SAFETY_FRACTION = 0.85
 
-# Per-call wall-clock ceiling. 1200s, set from THIS script's own 2026-09-20
-# pilot: 12 documents (96-1,884 lines), observed call_seconds_max=814.2s
-# (the corpus's largest document), mean=252.2s. 1200s is ~1.5x the observed
-# maximum -- headroom for a colder cache without inheriting
-# corpus_reader_index.py's untested 1800s figure, which was set from a
-# lighter, differently-shaped extraction (one flat object vs. up to 7
-# categories x 10 claim+quote pairs here).
-OLLAMA_TIMEOUT_SECONDS = int(os.environ.get("CORPUS_CONTENT_TIMEOUT_SECONDS", "1200"))
+# Per-call wall-clock ceiling -- LENGTH-SCALED (2026-09-21), replacing the
+# flat 1200s figure the fourth pilot breached (the 1,884-line document
+# needed 2,400s). Derived from all 24 successful/returned calls across the
+# pilot, re-pilot, and fourth pilot artifacts: a through-origin linear fit
+# of call_seconds against document line_count gives k=0.539 s/line. Applied
+# with a 2.7x safety multiplier -- set from the worst observed ratio of
+# actual-to-predicted time in that same 24-point dataset (2.55x, smallest/
+# noisiest document, where per-call fixed overhead dominates and a
+# through-origin fit under-predicts most) plus a small margin -- so the
+# formula covers every historical returned call, not just the mean case.
+# See brain/decisions/2026-09-21-dedup-and-length-scaled-timeout.md for the
+# fit, residuals, and the full per-point coverage check.
+TIMEOUT_SECONDS_PER_LINE = 0.539
+TIMEOUT_SAFETY_MULTIPLIER = 2.7
+MIN_TIMEOUT_SECONDS = 300
+# Hard absolute ceiling -- the kill condition length-scaling itself doesn't
+# have: no single document, however long, can make one call run past this.
+MAX_TIMEOUT_SECONDS = int(os.environ.get("CORPUS_CONTENT_MAX_TIMEOUT_SECONDS", "3600"))
+
+
+def timeout_for_lines(line_count: int) -> int:
+    """
+    Per-call Ollama request timeout for a document of `line_count` lines.
+    max(MIN_TIMEOUT_SECONDS, k * lines * SAFETY_MULTIPLIER), capped at
+    MAX_TIMEOUT_SECONDS. See the constants above and the decision doc for
+    where k and the multiplier come from -- fit to observed data, not
+    guessed.
+    """
+    scaled = TIMEOUT_SECONDS_PER_LINE * line_count * TIMEOUT_SAFETY_MULTIPLIER
+    return int(min(MAX_TIMEOUT_SECONDS, max(MIN_TIMEOUT_SECONDS, scaled)))
+
+
+# --- daily_maintenance overlap guard (2026-09-21) --------------------------
+#
+# This job only reads brain/decisions/*.md and writes jsonl -- it never
+# touches the SQLite database -- so DB lock contention with
+# daily_maintenance.py is not expected. But daily_maintenance caused a lock
+# storm on its own on 2026-09-20, and GPU/CPU contention between an Ollama
+# inference run and a ~4-16 hour maintenance run is unmeasured, so a
+# long-running corpus job launched in the evening is made to wait out any
+# daily_maintenance run it crosses paths with rather than run alongside it.
+#
+# daily_maintenance.py deliberately has no PID/lock/sentinel file or DB flag
+# of its own -- see scripts/daily_maintenance.py's own comment (and
+# brain/decisions/2026-09-10-geo-backfill-wiring-implementation.md, which
+# rejected a lock/sentinel file, a DB flag, and running-process detection in
+# favor of checkpoint-recency for the same kind of concurrency question
+# elsewhere in this codebase). Its wrapper script does write a plain,
+# append-only log with bracketed-ISO8601 "Starting"/"Finished" lines --
+# that is the one signal that already exists, so this reads it rather than
+# inventing a second mechanism.
+MAINTENANCE_LOG_FILE = Path("/home/parison/projects/first-repo/logs/daily_maintenance.log")
+MAINTENANCE_START_MARKER = "Starting daily-maintenance"
+MAINTENANCE_FINISH_MARKER = "Finished daily-maintenance"
+MAINTENANCE_POLL_SECONDS = 120
+
+
+def maintenance_in_progress() -> bool:
+    """
+    True if daily_maintenance.log's most recent "Starting" line has no
+    "Finished" line after it. Reads only the log's tail (up to 64KB, grown
+    if needed) rather than the whole multi-hundred-thousand-line file --
+    this job may check before every document, so cost matters. The file is
+    append-only in time order, so comparing the two markers' BYTE
+    POSITIONS within the tail (not parsing their embedded timestamps) is
+    enough to tell which is more recent -- deliberately not parsing the
+    bracketed ISO8601 timestamp, since byte order already gives temporal
+    order for free on an append-only log. Fails safe: any read or parse
+    problem (missing file, unexpected format) returns False (not blocking)
+    rather than stalling the run on a log-format surprise this job doesn't
+    own.
+    """
+    if not MAINTENANCE_LOG_FILE.exists():
+        return False
+    try:
+        size = MAINTENANCE_LOG_FILE.stat().st_size
+        chunk = 65536
+        with open(MAINTENANCE_LOG_FILE, "rb") as f:
+            while True:
+                read_size = min(chunk, size)
+                f.seek(size - read_size)
+                tail = f.read(read_size).decode("utf-8", errors="replace")
+                last_start = tail.rfind(MAINTENANCE_START_MARKER)
+                last_finish = tail.rfind(MAINTENANCE_FINISH_MARKER)
+                if last_start != -1 or chunk >= size:
+                    break
+                chunk *= 4  # neither marker in this tail yet -- widen and retry
+        if last_start == -1:
+            return False  # no Starting line seen in the available tail
+        if last_finish == -1 or last_finish < last_start:
+            return True  # a Starting line with no Finished line after it
+        return False
+    except (OSError, UnicodeDecodeError):
+        return False
+
 
 DEFAULT_SLEEP_BETWEEN_CALLS = 1.0
 
@@ -516,6 +642,96 @@ def verify_record_quotes(record: dict, document_text: str) -> dict:
     }
 
 
+# --- deterministic dedup (2026-09-21, no model involvement) ---------------
+#
+# Definition: two items within the SAME field of the SAME record are
+# duplicates if their `quote` strings are identical after _normalize_ws()
+# -- the exact whitespace-collapse transform already used, and tested, for
+# the "normalized" verification tier above. Comparison is scoped per
+# (record, field); quotes are never compared across fields or across
+# documents.
+#
+# Why this transform and not a looser one: _normalize_ws() only collapses
+# whitespace runs and trims. It cannot merge two different passages into
+# the same string -- every non-whitespace character must already match,
+# character for character, for two quotes to compare equal under it. That
+# is what makes "identical after this transform" a safe, conservative
+# definition: a false-positive removal (collapsing two genuinely distinct
+# claims) is impossible unless the two quotes were already the same text
+# modulo line-wrap whitespace. The "structural" tier (also strips **,
+# backticks, |, heading/list markers) was deliberately NOT used here even
+# though it's available and tested -- it does more transformation than the
+# safety property requires, and every duplicate actually observed in the
+# fourth pilot's artifacts was already identical under plain whitespace
+# normalization, so the looser tier buys no additional recall at the cost
+# of a weaker safety argument. If a future run produced duplicates that
+# differed only in markdown decoration, they would NOT be caught here --
+# that is the intended, conservative failure direction (miss a duplicate
+# rather than risk removing a distinct item).
+#
+# First occurrence is kept; order is otherwise preserved. Nothing is ever
+# removed from the raw record -- `record[field]` is untouched by this pass.
+# Results are attached under new keys so the raw extraction stays fully
+# intact and auditable alongside the deduplicated view.
+
+def _dedup_key(item: dict) -> str | None:
+    quote = item.get("quote") if isinstance(item, dict) else None
+    if not isinstance(quote, str) or not quote.strip():
+        return None
+    return _normalize_ws(quote)
+
+
+def dedup_field(items: list) -> tuple[list, list]:
+    """
+    Returns (kept, removed). `kept` preserves original order, first
+    occurrence of each normalized quote wins. Items whose quote isn't a
+    non-empty string (malformed model output) are never treated as
+    duplicates of anything and are always kept.
+    """
+    if not isinstance(items, list):
+        return items, []
+    seen: set[str] = set()
+    kept: list = []
+    removed: list = []
+    for item in items:
+        key = _dedup_key(item) if isinstance(item, dict) else None
+        if key is None:
+            kept.append(item)
+            continue
+        if key in seen:
+            removed.append(item)
+        else:
+            seen.add(key)
+            kept.append(item)
+    return kept, removed
+
+
+def dedup_record(record: dict) -> dict:
+    """
+    Mutates nothing in `record`'s existing top-level claim fields (the raw
+    extraction, already annotated by verify_record_quotes with line/
+    _verification, stays exactly as extracted). Adds three new keys:
+      record["deduped"][field]              -> deduplicated item list
+      record["padding_removed"][field]      -> int, duplicates removed
+      record["padding_removed_items"][field]-> the removed item dicts
+    A padding_removed count > 0 means the document had fewer genuinely
+    distinct items of that type than its cap -- information the cap itself
+    was obscuring, not discarded here.
+    """
+    deduped = {}
+    padding_removed = {}
+    padding_removed_items = {}
+    for field in ALL_CLAIM_FIELDS:
+        kept, removed = dedup_field(record.get(field) or [])
+        deduped[field] = kept
+        padding_removed[field] = len(removed)
+        padding_removed_items[field] = removed
+    record["deduped"] = deduped
+    record["padding_removed"] = padding_removed
+    record["padding_removed_items"] = padding_removed_items
+    return record
+
+
 # --- schema validation (structure only, not truth) ------------------------
 
 def validate_schema(llm_record: dict) -> list[str]:
@@ -542,13 +758,15 @@ def validate_schema(llm_record: dict) -> list[str]:
 
 # --- ollama call -----------------------------------------------------------
 
-def call_ollama(path_rel: str, text: str, logger: logging.Logger) -> tuple[dict | None, dict]:
+def call_ollama(path_rel: str, text: str, logger: logging.Logger,
+                 line_count: int) -> tuple[dict | None, dict]:
     prompt = EXTRACTION_PROMPT.format(
         max_q=MAX_QUESTION_ITEMS, max_list=MAX_LIST_ITEMS,
         max_contra=MAX_CONTRADICTION_ITEMS, path=path_rel, text=text,
     )
     est_tokens = estimate_prompt_tokens(prompt)
     over_safety_margin = est_tokens > OLLAMA_NUM_CTX * NUM_CTX_SAFETY_FRACTION
+    call_timeout = timeout_for_lines(line_count)
 
     payload = json.dumps({
         "model": OLLAMA_MODEL,
@@ -567,13 +785,14 @@ def call_ollama(path_rel: str, text: str, logger: logging.Logger) -> tuple[dict 
     meta = {
         "path": path_rel, "num_ctx": OLLAMA_NUM_CTX, "prompt_chars": len(prompt),
         "est_prompt_tokens": est_tokens, "over_safety_margin": over_safety_margin,
+        "call_timeout_assigned": call_timeout,
     }
     if over_safety_margin:
         logger.warning(f"[{path_rel}] estimated prompt tokens ({est_tokens}) exceeds "
                         f"{NUM_CTX_SAFETY_FRACTION:.0%} of num_ctx ({OLLAMA_NUM_CTX}) -- "
                         f"sending anyway; flagged in telemetry.")
     try:
-        with urllib.request.urlopen(req, timeout=OLLAMA_TIMEOUT_SECONDS) as resp:
+        with urllib.request.urlopen(req, timeout=call_timeout) as resp:
             result = json.loads(resp.read().decode())
             raw_text = result.get("response", "").strip()
         meta["call_seconds"] = time.monotonic() - t0
@@ -671,7 +890,8 @@ def process_one(path_rel: str, logger: logging.Logger) -> tuple[dict | None, dic
     except OSError as e:
         return None, {"path": path_rel, "call_seconds": 0}, {"path": path_rel, "error": f"read_failed: {e}"}
 
-    llm_record, call_meta = call_ollama(path_rel, text, logger)
+    line_count = text.count("\n") + 1
+    llm_record, call_meta = call_ollama(path_rel, text, logger, line_count)
     if llm_record is None:
         return None, call_meta, {
             "path": path_rel,
@@ -684,7 +904,7 @@ def process_one(path_rel: str, logger: logging.Logger) -> tuple[dict | None, dic
     record = {
         "path": path_rel,
         "indexed_at": datetime.now(timezone.utc).isoformat(),
-        "line_count": text.count("\n") + 1,
+        "line_count": line_count,
         "question_addressed": llm_record.get("question_addressed", []),
         "findings": llm_record.get("findings", []),
         "explicitly_open": llm_record.get("explicitly_open", []),
@@ -695,8 +915,10 @@ def process_one(path_rel: str, logger: logging.Logger) -> tuple[dict | None, dic
         "schema_valid": len(problems) == 0,
         "schema_problems": problems,
         "over_safety_margin": call_meta.get("over_safety_margin", False),
+        "call_timeout_assigned": call_meta.get("call_timeout_assigned"),
     }
     record["quote_verification"] = verify_record_quotes(record, text)
+    record = dedup_record(record)
 
     return record, call_meta, None
 
@@ -731,7 +953,8 @@ def main() -> None:
     cpu_start = proc.cpu_times()
 
     logger.info(f"=== corpus_content_extractor starting === rss_start_mb={rss_start_mb:.1f} "
-                f"timeout={OLLAMA_TIMEOUT_SECONDS}s out={index_file}")
+                f"timeout=length-scaled(k={TIMEOUT_SECONDS_PER_LINE}*lines*{TIMEOUT_SAFETY_MULTIPLIER}, "
+                f"floor={MIN_TIMEOUT_SECONDS}s, ceiling={MAX_TIMEOUT_SECONDS}s) out={index_file}")
 
     if args.paths_file:
         pending = [line.strip() for line in Path(args.paths_file).read_text().splitlines() if line.strip()]
@@ -766,6 +989,17 @@ def main() -> None:
         if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
             logger.error(f"KILL CONDITION: {consecutive_failures} consecutive failures. Aborting.")
             break
+
+        if maintenance_in_progress():
+            logger.info(f"daily_maintenance in progress -- pausing before [{path_rel}], "
+                        f"polling every {MAINTENANCE_POLL_SECONDS}s")
+            waited = 0
+            while maintenance_in_progress():
+                time.sleep(MAINTENANCE_POLL_SECONDS)
+                waited += MAINTENANCE_POLL_SECONDS
+                if waited % 600 == 0:
+                    logger.info(f"still waiting on daily_maintenance ({waited}s so far)")
+            logger.info(f"daily_maintenance cleared after {waited}s -- resuming with [{path_rel}]")
 
         record, call_meta, failure_detail = process_one(path_rel, logger)
         call_durations.append(call_meta.get("call_seconds", 0))
