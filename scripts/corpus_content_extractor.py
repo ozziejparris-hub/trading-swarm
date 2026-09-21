@@ -46,14 +46,52 @@ archive/").
 Re-pilot (2026-09-20, second pass): the first pilot found 6 of 12 documents
 returned every field as a flat list of bare strings instead of the required
 {claim, quote} objects -- not length-correlated, content accurate, just the
-wrong shape roughly half the time. Fix: one worked example added to the
-prompt (see EXTRACTION_PROMPT), isolated deliberately -- nothing else about
-the instructions changed, so this run tests that one change. Separately,
-verify_record_quotes() gained a third "structural" tier (markdown-decoration-
-aware: strips **, backticks, |, heading/list markers, then compares) between
-"normalized" and "unverified", reported as its own distinct category --
-never folded into "exact". See
+wrong shape roughly half the time. Fix tested: one worked example added to
+the prompt, isolated deliberately. It raised the schema pass rate (0/6 ->
+5/6) but cost ~2x projected runtime, ~11-36% extraction breadth on controls,
+a new timeout failure, and produced two confirmed fabrications in
+`explicitly_open` on the largest document -- the model generalized the
+pattern of that field's genuine items into two plausible-but-unsupported
+ones, apparently reaching for the field's cap (8 requested, 8 produced, 6
+real). Separately, verify_record_quotes() gained a third "structural" tier
+(markdown-decoration-aware: strips **, backticks, |, heading/list markers,
+then compares) between "normalized" and "unverified", reported as its own
+distinct category -- never folded into "exact". See
 brain/decisions/2026-09-20-corpus-content-extraction-repilot.md.
+
+Fourth pilot (2026-09-20, third pass) -- two isolated changes replacing the
+worked example, targeting the two costs above separately:
+
+  CHANGE A: constrained decoding via Ollama's /api/generate `format`
+  parameter (a JSON schema; supported since Ollama 0.3.0, confirmed on this
+  box's 0.22.1 with a minimal proof call before this run -- see the decision
+  doc). This makes a schema-shape violation impossible to generate, not
+  merely discouraged, and testing reports it also speeds generation (no
+  tokens spent on formatting decisions). The worked example was REMOVED when
+  this was added -- testing both together would make the result
+  unattributable. temperature set to 0 (was "low").
+
+  CHANGE B: every array field's cap is enforced structurally via the JSON
+  schema's `maxItems` -- not just described in prose as before. CRITICALLY,
+  no field sets `minItems`: confirmed by inspection of GENERATION_SCHEMA
+  below (every array has type+items+maxItems, no minItems key anywhere) and
+  by a pre-flight proof call that an empty array is genuinely produced when
+  nothing qualifies. A `minItems` constraint would force the model to emit
+  N items even when fewer exist, making the exact fabrication mechanism
+  that produced the two confirmed fabrications structurally mandatory
+  instead of merely likely -- the opposite of what this change is for.
+  Prose in EXTRACTION_PROMPT was also reworded from "(max N)" to a ceiling
+  framing: extract every genuinely-present item, returning fewer -- including
+  zero -- is correct.
+
+  A pre-flight proof also found the schema constraint ALONE does not
+  prevent fabrication -- a naive prompt without the real anti-fabrication
+  instruction still invented content under an empty-array-permitting
+  schema. Shape and truthfulness are enforced by different mechanisms here:
+  the schema (`format`) governs shape, the prompt's explicit "do not
+  invent" instruction plus permitted empty lists governs content honesty.
+  Both are necessary; neither alone was sufficient in testing. See
+  brain/decisions/2026-09-20-corpus-content-extraction-fourth-pilot.md.
 
 STATELESS PER DOCUMENT. Does not synthesise, rank, or draw conclusions
 across documents -- that is a separate, later task by design.
@@ -125,16 +163,80 @@ LIST_FIELDS = (
 ALL_CLAIM_FIELDS = ("question_addressed",) + LIST_FIELDS
 
 
+def _claim_quote_array(max_items: int) -> dict:
+    """
+    One array field's schema. `maxItems` enforces the cap structurally (the
+    model cannot emit more than this many items -- constrained decoding
+    makes it impossible, not just discouraged). `minItems` is DELIBERATELY
+    ABSENT -- see GENERATION_SCHEMA's own docstring-comment for why this is
+    checked, not assumed.
+    """
+    return {
+        "type": "array",
+        "maxItems": max_items,
+        "items": {
+            "type": "object",
+            "properties": {
+                "claim": {"type": "string"},
+                "quote": {"type": "string"},
+            },
+            "required": ["claim", "quote"],
+        },
+    }
+
+
+# Constrained-decoding schema for Ollama's /api/generate `format` parameter
+# (supported since Ollama 0.3.0; confirmed working -- shape enforced even
+# under an adversarial prompt with no formatting instructions at all -- on
+# this box's installed 0.22.1 before the fourth pilot was run; see the
+# decision doc for the proof transcript).
+#
+# CHECKED, NOT ASSUMED: no key named "minItems" appears anywhere below. Every
+# array's only length constraint is its maxItems ceiling; the JSON Schema
+# default minItems is 0, so every array here permits an empty list. A
+# minItems constraint would force the model to emit that many items even
+# when fewer genuinely exist in the document -- structurally mandatory
+# fabrication, which is the opposite of what CHANGE B is for. Grep this
+# file for "minItems" before ever adding a field here; if it appears more
+# than once (the one time in this comment), something has gone wrong.
+GENERATION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "question_addressed": _claim_quote_array(MAX_QUESTION_ITEMS),
+        "findings": _claim_quote_array(MAX_LIST_ITEMS),
+        "explicitly_open": _claim_quote_array(MAX_LIST_ITEMS),
+        "proposed_not_done": _claim_quote_array(MAX_LIST_ITEMS),
+        "decisions_recorded": _claim_quote_array(MAX_LIST_ITEMS),
+        "failures_and_causes": _claim_quote_array(MAX_LIST_ITEMS),
+        "contradicts_or_corrects": _claim_quote_array(MAX_CONTRADICTION_ITEMS),
+    },
+    "required": list(ALL_CLAIM_FIELDS),
+}
+
+assert "minItems" not in json.dumps(GENERATION_SCHEMA), (
+    "GENERATION_SCHEMA must never set minItems on any array -- see the "
+    "comment above this schema and CHANGE B in the module docstring."
+)
+
+
 # --- prompt -------------------------------------------------------------
 
+# No worked example (removed for the fourth pilot -- see module docstring:
+# testing it alongside constrained decoding would make the result
+# unattributable). Shape is now enforced by GENERATION_SCHEMA via Ollama's
+# `format` parameter, not by prose or an example; every field description
+# below is deliberately still a CEILING, not a target -- "up to N", never
+# "N", because the model reaching for a stated maximum by inventing
+# plausible-but-unsupported items is exactly the mechanism that produced
+# the two confirmed fabrications in explicitly_open on the largest document
+# in the third pilot.
 EXTRACTION_PROMPT = """\
 You are extracting what a project decision document CONCLUDED -- not its \
 shape, its opinions about itself, or your judgment of it. Extract ONLY what \
 the document explicitly states. Do not judge correctness, importance, or \
 quality. Do not infer anything not written in the text.
 
-Output ONLY a JSON object (no markdown fence, no prose before or after) with \
-exactly these fields. Each is a list of items; each item is EXACTLY:
+Every field is a list of items; each item is EXACTLY:
 {{"claim": "<your own short sentence stating what this item says, max ~25 words>", \
 "quote": "<a VERBATIM copy-paste of the exact text from the document that \
 supports this claim -- must be an exact substring of the document text \
@@ -143,52 +245,49 @@ not shortened with ellipses>"}}
 
 Do NOT include a line number -- it will be computed separately from your quote.
 
-Fields (each capped at the stated maximum; use fewer or an empty list if the \
-document doesn't have that many, or any):
+Fields (each has an upper limit on how many items it will accept, stated \
+below as "up to N" -- that limit is a CEILING, not a target and not a goal \
+to reach. Extract every item the document genuinely and explicitly \
+supports, however many that is. Returning fewer than the limit -- including \
+zero -- is the CORRECT answer whenever fewer than the limit genuinely \
+exist. Inventing an item to approach or reach the limit is a worse outcome \
+than leaving the field short or empty; it will be mechanically checked \
+against the source and flagged):
 
-question_addressed (max {max_q}): what the document states it set out to \
+question_addressed (up to {max_q}): what the document states it set out to \
   answer, investigate, or decide. Usually near the top.
-findings (max {max_list}): what the document states it found, discovered, \
+findings (up to {max_list}): what the document states it found, discovered, \
   measured, or concluded.
-explicitly_open (max {max_list}): what the document explicitly states was \
+explicitly_open (up to {max_list}): what the document explicitly states was \
   NOT determined, left open, deferred, or unresolved. This corpus commonly \
   uses a "What was not determined" heading or a stated stop condition --\
   look for those, but also any other explicit statement of what remains \
-  unknown or undecided.
-proposed_not_done (max {max_list}): what the document proposes, \
+  unknown or undecided. Most documents genuinely have only a handful of \
+  these, sometimes none -- do not pad the list by generalizing a pattern \
+  from the genuine items into additional invented ones.
+proposed_not_done (up to {max_list}): what the document proposes, \
   recommends, or schedules for later -- work that has NOT yet been done, \
   as of this document.
-decisions_recorded (max {max_list}): decisions the document records as \
+decisions_recorded (up to {max_list}): decisions the document records as \
   having been taken (a choice made, a policy set, a thing paused/enabled/ \
   changed). If the document names who made the decision, that name should \
   appear inside the quote itself -- do not add a separate field for it.
-failures_and_causes (max {max_list}): things the document states were \
+failures_and_causes (up to {max_list}): things the document states were \
   tried and did not work, together with the stated reason -- the reason, \
   if given, should be part of the same quote (pick a quote span that \
   includes both the failure and its stated cause where they appear near \
   each other).
-contradicts_or_corrects (max {max_contra}): places the document explicitly \
+contradicts_or_corrects (up to {max_contra}): places the document explicitly \
   states it corrects, contradicts, retracts, or amends an earlier finding, \
   document, or claim.
 
-If a field has nothing to report, use an empty list []. Do not invent an \
-item to fill a field. A quote that is not an exact substring of the \
-document text is worse than an empty list -- it will be mechanically \
-checked and flagged as unverified.
-
-Example of the exact shape required for EVERY item in EVERY field below \
-(this is a generic illustration, not from the document you are about to \
-read -- do not copy its content):
-"findings": [
-  {{"claim": "The retry loop was removed because it caused duplicate charges.", \
-"quote": "We removed the retry loop entirely once we confirmed it was \
-double-charging customers on transient network failures."}}
-]
+An empty list [] is a normal, expected, and frequently correct answer for \
+any of these fields. Do not invent an item to fill a field. A quote that is \
+not an exact substring of the document text is worse than an empty list -- \
+it will be mechanically checked and flagged as unverified.
 
 DOCUMENT (path: {path}):
 {text}
-
-Respond with ONLY the JSON object.
 """
 
 
@@ -455,7 +554,8 @@ def call_ollama(path_rel: str, text: str, logger: logging.Logger) -> tuple[dict 
         "model": OLLAMA_MODEL,
         "prompt": prompt,
         "stream": False,
-        "options": {"temperature": 0.1, "num_ctx": OLLAMA_NUM_CTX},
+        "format": GENERATION_SCHEMA,
+        "options": {"temperature": 0, "num_ctx": OLLAMA_NUM_CTX},
     }).encode()
 
     req = urllib.request.Request(
@@ -485,6 +585,10 @@ def call_ollama(path_rel: str, text: str, logger: logging.Logger) -> tuple[dict 
         logger.error(f"[{path_rel}] Ollama request failed: {e}")
         return None, meta
 
+    # Under format-constrained decoding this should always be a no-op (a
+    # fence is not valid JSON and the constraint makes it unreachable) --
+    # kept as cheap, harmless defensive verification rather than removed on
+    # the assumption that it can never fire.
     cleaned = strip_fence(raw_text)
     try:
         parsed = json.loads(cleaned)
