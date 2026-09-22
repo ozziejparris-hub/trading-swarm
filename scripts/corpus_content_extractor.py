@@ -30,11 +30,24 @@ Infrastructure matches corpus_reader_index.py deliberately (same box, same
 proven pattern): stateless per document, qwen3-coder:30b-a3b-q4_K_M via
 localhost:11434/api/generate, strict JSON contract, fence stripping,
 hard-fail on parse error (flag and move on, no retry-until-parses), a
-path-based keyset cursor (not OFFSET -- see that script's own comment on
-the 2026-09-13 backfill_market_categories.py incident for why), kill
-conditions on wall clock / own RSS / consecutive failures, and per-run
-telemetry (wall time, CPU seconds, RSS start/peak/end, call count, per-call
-duration).
+completion set (`already_indexed_paths()` against index_file, always read
+in full) determining what's pending for resume, kill conditions on wall
+clock / own RSS / consecutive failures, and per-run telemetry (wall time,
+CPU seconds, RSS start/peak/end, call count, per-call duration).
+
+CORRECTION (2026-09-22): this originally also gated `pending` on a
+path-based keyset cursor (`p > state["last_seen_path"]`, modeled on
+corpus_reader_index.py's own cursor -- see that script's comment on the
+2026-09-13 backfill_market_categories.py incident for why a keyset beats
+OFFSET there). That extra gate was wrong for THIS script once a document
+could fail out of order: a failed document sorting before a later
+document that succeeds gets overtaken by the cursor either way, silently
+and permanently excluding it from every future resume even though it was
+never indexed -- exactly what happened to 6 documents in the 2026-09-21
+run. Removed; `already_indexed_paths()` alone (which reads the whole
+index file regardless of any cursor, so the cursor bought no real
+scan-avoidance on top of it) now determines `pending` completely. See
+brain/decisions/2026-09-22-corpus-budget-and-flock-probe.md.
 
 Differs from it in scope: RECURSES into brain/decisions/archive/ -- the
 structural pass did not, and missed archive/MASTER_HANDOVER_2026-05-20.md
@@ -137,6 +150,7 @@ across documents -- that is a separate, later task by design.
 """
 
 import argparse
+import fcntl
 import json
 import logging
 import os
@@ -200,7 +214,8 @@ def timeout_for_lines(line_count: int) -> int:
     return int(min(MAX_TIMEOUT_SECONDS, max(MIN_TIMEOUT_SECONDS, scaled)))
 
 
-# --- daily_maintenance overlap guard (2026-09-21) --------------------------
+# --- daily_maintenance overlap guard (2026-09-21, switched to the flock
+# probe 2026-09-22) ---------------------------------------------------------
 #
 # This job only reads brain/decisions/*.md and writes jsonl -- it never
 # touches the SQLite database -- so DB lock contention with
@@ -210,65 +225,151 @@ def timeout_for_lines(line_count: int) -> int:
 # long-running corpus job launched in the evening is made to wait out any
 # daily_maintenance run it crosses paths with rather than run alongside it.
 #
-# daily_maintenance.py deliberately has no PID/lock/sentinel file or DB flag
-# of its own -- see scripts/daily_maintenance.py's own comment (and
-# brain/decisions/2026-09-10-geo-backfill-wiring-implementation.md, which
-# rejected a lock/sentinel file, a DB flag, and running-process detection in
-# favor of checkpoint-recency for the same kind of concurrency question
-# elsewhere in this codebase). Its wrapper script does write a plain,
-# append-only log with bracketed-ISO8601 "Starting"/"Finished" lines --
-# that is the one signal that already exists, so this reads it rather than
-# inventing a second mechanism.
-MAINTENANCE_LOG_FILE = Path("/home/parison/projects/first-repo/logs/daily_maintenance.log")
-MAINTENANCE_START_MARKER = "Starting daily-maintenance"
-MAINTENANCE_FINISH_MARKER = "Finished daily-maintenance"
+# ORIGINALLY (2026-09-21) this tailed daily_maintenance.log for unmatched
+# "Starting"/"Finished" markers -- the only signal that existed at the time.
+# bfdf9d6 (same day) then built a proper primitive for exactly this need: a
+# kernel-advisory flock on run_daily_maintenance.sh's own lockfile
+# (scripts/cron_wrappers/run_daily_maintenance.sh.lock), which already
+# doubles as a documented non-blocking external probe
+# (`flock -n LOCKFILE -c true`) -- see that commit's decision doc, Part 7,
+# for the exact migration this follows. The log-tail heuristic was left in
+# place at the time because the corpus run was already in flight; the
+# 2026-09-21 run completed (self-aborted on MAX_RUN_WALL_SECONDS, see
+# brain/decisions/2026-09-22-corpus-budget-and-flock-probe.md) having never
+# actually overlapped a maintenance run, so the log-tail heuristic went
+# completely unexercised in production. Switched here, before this job's
+# next run, to the tested primitive instead.
+#
+# PROBE, NEVER HOLD: this function only ever attempts a non-blocking
+# (LOCK_NB) exclusive lock and, if it succeeds, releases it again in the
+# same call before returning. It never holds the lock across two calls and
+# never blocks waiting for it (LOCK_NB raises immediately instead of
+# waiting). This process is a probe-only consumer of the lock the wrapper
+# script's own guard holds -- were this to ever hold it instead, the next
+# 06:00 daily_maintenance run would be wrongly REFUSED (exit 75, Telegram
+# alert) by a corpus job that has nothing to do with it. Uses the identical
+# kernel primitive and the identical lockfile the guard itself holds, so it
+# cannot disagree with the guard's own idea of whether maintenance is
+# running -- a log line and the true lock state are two different things;
+# querying the same kernel lock the guard holds cannot be wrong the way a
+# second, independent signal could be.
+MAINTENANCE_LOCKFILE = Path(
+    "/home/parison/trading-swarm/scripts/cron_wrappers/run_daily_maintenance.sh.lock"
+)
 MAINTENANCE_POLL_SECONDS = 120
 
 
 def maintenance_in_progress() -> bool:
     """
-    True if daily_maintenance.log's most recent "Starting" line has no
-    "Finished" line after it. Reads only the log's tail (up to 64KB, grown
-    if needed) rather than the whole multi-hundred-thousand-line file --
-    this job may check before every document, so cost matters. The file is
-    append-only in time order, so comparing the two markers' BYTE
-    POSITIONS within the tail (not parsing their embedded timestamps) is
-    enough to tell which is more recent -- deliberately not parsing the
-    bracketed ISO8601 timestamp, since byte order already gives temporal
-    order for free on an append-only log. Fails safe: any read or parse
-    problem (missing file, unexpected format) returns False (not blocking)
-    rather than stalling the run on a log-format surprise this job doesn't
-    own.
+    True if run_daily_maintenance.sh's overlap-guard lock is currently held
+    by another process (i.e. daily_maintenance.py is running). Opens (or
+    creates, matching the wrapper's own `exec 200<>"$LOCKFILE"`) the same
+    lockfile the guard holds, attempts a non-blocking exclusive flock, and
+    immediately releases it again if acquired -- see the PROBE, NEVER HOLD
+    note above; this function never keeps the lock past its own return.
+    Fails safe: any OS-level problem (missing parent directory, permission)
+    returns False (not blocking) rather than stalling the run on something
+    this job doesn't own -- same fail-safe direction as the heuristic this
+    replaces.
     """
-    if not MAINTENANCE_LOG_FILE.exists():
+    try:
+        fd = os.open(str(MAINTENANCE_LOCKFILE), os.O_RDWR | os.O_CREAT, 0o664)
+    except OSError:
         return False
     try:
-        size = MAINTENANCE_LOG_FILE.stat().st_size
-        chunk = 65536
-        with open(MAINTENANCE_LOG_FILE, "rb") as f:
-            while True:
-                read_size = min(chunk, size)
-                f.seek(size - read_size)
-                tail = f.read(read_size).decode("utf-8", errors="replace")
-                last_start = tail.rfind(MAINTENANCE_START_MARKER)
-                last_finish = tail.rfind(MAINTENANCE_FINISH_MARKER)
-                if last_start != -1 or chunk >= size:
-                    break
-                chunk *= 4  # neither marker in this tail yet -- widen and retry
-        if last_start == -1:
-            return False  # no Starting line seen in the available tail
-        if last_finish == -1 or last_finish < last_start:
-            return True  # a Starting line with no Finished line after it
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return True  # lock is held by another process -- in progress
+        else:
+            fcntl.flock(fd, fcntl.LOCK_UN)  # acquired -- release immediately, we are only probing
+            return False
+    except OSError:
         return False
-    except (OSError, UnicodeDecodeError):
-        return False
+    finally:
+        os.close(fd)
 
 
 DEFAULT_SLEEP_BETWEEN_CALLS = 1.0
 
-MAX_RUN_WALL_SECONDS = 6 * 3600
+# Run-level wall-clock ceiling -- catches a RUNAWAY (a run taking materially
+# longer than projected), distinct from the per-call length-scaled timeout
+# above. Raised 2026-09-22 from 6h: that value was inherited from an
+# unrelated prior pass (the structural pass, where a 4h53m run happened to
+# fit under it) and nobody had compared it against this script's own
+# projected runtime before launch. The 2026-09-21 run self-aborted on it at
+# 168/276 documents -- the kill condition itself worked exactly as designed
+# (clean log line, own RSS 34.8MB, no crash); the BUDGET was wrong, not the
+# mechanism. New value from actual data, not the old guess: 168 real calls
+# (162 successes + 6 length-scaled-timeout failures) gave a RUN-level
+# actual-to-(k*lines) ratio of ~1.09 for the successes (18,300.0s actual
+# against 16,726.8s predicted at k=0.539 s/line over 31,033 lines) -- far
+# tighter than the per-call formula's 2.7x, because per-call outliers
+# average out over many documents (see RUN_PROJECTION_SAFETY_MULTIPLIER).
+# Projected for the full corpus (73,407 total lines across brain/decisions/
+# as of 2026-09-22) at that rate with a 1.3x run-level margin: ~14.3h --
+# consistent with the original pre-launch estimate of 10.8-20.5h for this
+# same corpus. Set to 24h: ~68% headroom above that margined full-corpus
+# projection, so a legitimate full run does not itself risk tripping this
+# kill condition, while a run blowing through even that padded estimate by
+# another ~1.7x is still caught. Configurable via env var so tests can
+# exercise both this and the pre-launch assertion below without waiting
+# real hours.
+MAX_RUN_WALL_SECONDS = int(os.environ.get("CORPUS_CONTENT_MAX_RUN_WALL_SECONDS", str(24 * 3600)))
 MAX_OWN_RSS_MB = 500
 MAX_CONSECUTIVE_FAILURES = 5
+
+# --- pre-launch projection assertion (2026-09-22) -------------------------
+#
+# The 2026-09-21 failure's actual root cause: the pre-launch check projected
+# 10.8-20.5h of work but the run inherited MAX_RUN_WALL_SECONDS=6h from an
+# unrelated prior pass -- nobody compared the two numbers before launch.
+# That comparison is moved into the script itself here (project_run_wall_
+# seconds() + the check in main() before the processing loop starts), so it
+# cannot be skipped again by a human forgetting to look.
+#
+# RUN_PROJECTION_SAFETY_MULTIPLIER (1.3, deliberately NOT the per-call
+# 2.7x): at the per-call level, one document's actual time can run far
+# above k*lines (worst observed ratio 2.55x, on a small/noisy document --
+# see TIMEOUT_SAFETY_MULTIPLIER above). At the RUN level, summing over many
+# documents, those per-call outliers average out: reconstructing the
+# 2026-09-21 run's 162 successful calls gives an aggregate ratio of ~1.09
+# (see MAX_RUN_WALL_SECONDS's comment above), not ~2.55. 1.3 keeps real
+# headroom above that observed ~1.09 without importing the per-call
+# multiplier's much larger margin, which would make this assertion refuse
+# runs that would in fact comfortably finish.
+RUN_PROJECTION_SAFETY_MULTIPLIER = 1.3
+# The assertion refuses launch if the (already margined) projection alone
+# would consume more than this fraction of the hard ceiling -- leaving the
+# rest as slack for ordinary per-call variance during the run itself, so a
+# run that just barely passes the assertion is not immediately at risk of
+# tripping MAX_RUN_WALL_SECONDS on ordinary noise.
+PRE_LAUNCH_CEILING_FRACTION = 0.8
+
+
+def project_run_wall_seconds(paths: list[str]) -> tuple[float, int]:
+    """
+    Returns (projected_wall_seconds, total_lines) for the given pending
+    paths. Reads each file only to count lines (the same read process_one()
+    will do again for the real call -- a small, accepted double-read cost
+    for a check that must reflect the actual files about to be processed,
+    not a stale estimate). Uses the per-call timeout formula's own k
+    (TIMEOUT_SECONDS_PER_LINE), UNMULTIPLIED by the per-call safety factor,
+    scaled instead by RUN_PROJECTION_SAFETY_MULTIPLIER -- see that
+    constant's comment for why a much smaller multiplier is justified at
+    this aggregate level. A file that can't be read is skipped (its
+    absence will surface as a read_failed entry when process_one() hits it
+    for real; this projection is a launch check, not authoritative).
+    """
+    total_lines = 0
+    for path_rel in paths:
+        try:
+            text = (REPO_ROOT / path_rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        total_lines += text.count("\n") + 1
+    projected = TIMEOUT_SECONDS_PER_LINE * total_lines * RUN_PROJECTION_SAFETY_MULTIPLIER
+    return projected, total_lines
 
 # Per-field caps -- same rationale as corpus_reader_index.py's
 # MAX_NUMERIC_FINDINGS=8: these are traceable pointers back into the source,
@@ -829,21 +930,21 @@ def discover_paths() -> list[str]:
                   for p in DECISIONS_DIR.rglob("*.md"))
 
 
-# --- checkpointing (path-based keyset cursor, same shape/rationale as
-# corpus_reader_index.py -- see that script for the 2026-09-13 incident this
-# guards against) --------------------------------------------------------
+# --- checkpointing (done-set against index_file; last_seen_path is
+# progress-logging only as of 2026-09-22 -- see the module docstring's
+# CORRECTION note for why it no longer gates `pending`) --------------------
 
-def load_state() -> dict:
-    if STATE_FILE.exists():
+def load_state(state_file: Path = STATE_FILE) -> dict:
+    if state_file.exists():
         try:
-            return json.loads(STATE_FILE.read_text())
+            return json.loads(state_file.read_text())
         except (json.JSONDecodeError, OSError):
             pass
     return {"last_seen_path": None, "processed": 0, "failed": 0}
 
 
-def save_state(state: dict) -> None:
-    STATE_FILE.write_text(json.dumps(state, indent=2))
+def save_state(state: dict, state_file: Path = STATE_FILE) -> None:
+    state_file.write_text(json.dumps(state, indent=2))
 
 
 def already_indexed_paths(index_file: Path) -> set[str]:
@@ -960,14 +1061,48 @@ def main() -> None:
         pending = [line.strip() for line in Path(args.paths_file).read_text().splitlines() if line.strip()]
         logger.info(f"pilot mode: {len(pending)} explicit paths from {args.paths_file}")
     else:
-        state = load_state()
+        state = load_state(state_file)
         done_paths = already_indexed_paths(index_file)
         all_paths = discover_paths()
-        cursor = state["last_seen_path"]
-        pending = [p for p in all_paths if (cursor is None or p > cursor) and p not in done_paths]
+        # 2026-09-22 fix: pending is every discovered path NOT already
+        # successfully indexed -- full stop. The original filter also
+        # required `p > state["last_seen_path"]`, on the assumption that
+        # traversal is monotonic in sorted-path order; it isn't, once a
+        # document can fail: a failed document that sorts BEFORE a later
+        # document that succeeds gets its path overtaken by the cursor
+        # regardless of which branch advances it, permanently excluding it
+        # from every future `pending` computation even though it was never
+        # indexed. done_paths (from already_indexed_paths(), which always
+        # reads the whole index file regardless of any cursor) already does
+        # the actual exclusion work correctly and completely on its own --
+        # the cursor bought no real scan-avoidance on top of it (the index
+        # file is read in full either way) and only introduced this bug.
+        # state["last_seen_path"] is kept for progress logging only now.
+        pending = [p for p in all_paths if p not in done_paths]
         logger.info(f"resuming: last_seen_path={state['last_seen_path']!r} "
                     f"already_indexed={len(done_paths)} discovered_total={len(all_paths)} "
                     f"pending={len(pending)}")
+
+    projected_seconds, projected_lines = project_run_wall_seconds(pending)
+    launch_ceiling = MAX_RUN_WALL_SECONDS * PRE_LAUNCH_CEILING_FRACTION
+    if projected_seconds > launch_ceiling:
+        msg = (
+            f"REFUSING TO LAUNCH: projected wall time for {len(pending)} pending documents "
+            f"({projected_lines} lines) is {projected_seconds:.0f}s ({projected_seconds / 3600:.2f}h) "
+            f"at k={TIMEOUT_SECONDS_PER_LINE}*lines*{RUN_PROJECTION_SAFETY_MULTIPLIER}, which exceeds "
+            f"{PRE_LAUNCH_CEILING_FRACTION:.0%} of MAX_RUN_WALL_SECONDS={MAX_RUN_WALL_SECONDS}s "
+            f"({MAX_RUN_WALL_SECONDS / 3600:.2f}h) -- launch ceiling {launch_ceiling:.0f}s "
+            f"({launch_ceiling / 3600:.2f}h). Raise MAX_RUN_WALL_SECONDS, reduce --limit, or split the run."
+        )
+        logger.error(msg)
+        print(msg, file=sys.stderr)
+        sys.exit(1)
+    logger.info(
+        f"pre-launch assertion passed: projected={projected_seconds:.0f}s "
+        f"({projected_seconds / 3600:.2f}h) for {len(pending)} docs / {projected_lines} lines, "
+        f"launch_ceiling={launch_ceiling:.0f}s ({launch_ceiling / 3600:.2f}h) of hard ceiling "
+        f"{MAX_RUN_WALL_SECONDS}s ({MAX_RUN_WALL_SECONDS / 3600:.2f}h)"
+    )
 
     run_processed = 0
     run_failed = 0
@@ -1011,9 +1146,14 @@ def main() -> None:
             run_failed += 1
             consecutive_failures += 1
             if not args.paths_file:
+                # last_seen_path is progress-logging only now (see the
+                # 2026-09-22 fix in the `pending` computation above) --
+                # advancing it here on a failure is no longer a correctness
+                # question either way, since done_paths alone determines
+                # what gets retried.
                 state["last_seen_path"] = path_rel
                 state["failed"] += 1
-                save_state(state)
+                save_state(state, state_file)
             write_telemetry(telemetry_file, {**call_meta, "outcome": "failed",
                                               "timestamp": datetime.now(timezone.utc).isoformat()})
             logger.warning(f"[{path_rel}] extraction failed, flagged, moving on "
@@ -1030,7 +1170,7 @@ def main() -> None:
         if not args.paths_file:
             state["last_seen_path"] = path_rel
             state["processed"] += 1
-            save_state(state)
+            save_state(state, state_file)
         qv = record["quote_verification"]
         write_telemetry(telemetry_file, {
             **call_meta, "outcome": "ok", "schema_valid": record["schema_valid"],
